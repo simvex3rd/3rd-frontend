@@ -140,7 +140,9 @@ const expensive = useMemo(() => compute(), [deps]);
 - React.memo, useMemo, useCallback 활용
 - Suspense로 lazy loading
 
-## 커밋 규칙
+## Git & 커밋 규칙
+
+### 커밋 메시지 형식
 
 ```
 <type>(<scope>): <subject>
@@ -154,10 +156,186 @@ docs(config): update README
 
 **Scopes:** viewer, ui, panels, hooks, types, lib, stores, config, deps
 
-**주의:**
+### 필수 규칙
 
-- subject는 영문 소문자 동사로 시작
-- Husky + Commitlint가 자동 검증
+**✅ 반드시 지킬 것:**
+
+- **영어로만 작성**: 커밋 메시지는 반드시 영어 사용 (한국어 금지)
+- **소문자 동사로 시작**: subject는 `add`, `fix`, `update` 등 소문자 동사
+- **간결하게**: subject는 50자 이내
+- **현재형 사용**: "added" ❌ → "add" ✅
+
+**❌ Co-Authored-By 규칙:**
+
+- **기본적으로 포함하지 않음**
+- 사용자가 명시적으로 요청할 때만 추가
+- Claude가 자동으로 추가하지 말 것
+
+```bash
+# ❌ 금지 - Co-Authored-By 자동 추가
+git commit -m "feat: add feature
+
+Co-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>"
+
+# ✅ 올바름 - Co-Authored-By 없이
+git commit -m "feat: add feature"
+```
+
+**자동 검증:**
+
+- Husky pre-commit: ESLint + Prettier
+- Husky commit-msg: Commitlint (형식 검증)
+
+### Git 워크플로우
+
+**브랜치 전략:**
+
+```bash
+main              # 프로덕션
+├── feature/*     # 새 기능
+├── fix/*         # 버그 수정
+└── refactor/*    # 리팩토링
+```
+
+**작업 흐름:**
+
+1. 브랜치 생성: `git checkout -b feature/add-camera-controls`
+2. 작업 및 커밋 (atomic commits)
+3. Push 전 rebase: `git pull --rebase origin main`
+4. Push: `git push origin feature/add-camera-controls`
+5. PR 생성 및 리뷰
+
+**주의사항:**
+
+- Push 전에는 rebase 자유롭게 가능
+- Push 후에는 rebase 금지 (force push 방지)
+- Commit은 논리적 단위로 분리 (atomic commits)
+
+## 기본 개발 규칙
+
+### 에러 처리
+
+**원칙:**
+
+- **시스템 경계에서만 처리**: API 호출, 사용자 입력, 외부 데이터
+- 내부 함수 호출은 신뢰 (불필요한 try-catch 금지)
+- 에러는 의미 있는 메시지와 함께 처리
+
+```tsx
+// ✅ 올바른 예 - API 경계에서 처리
+async function fetchData() {
+  try {
+    const response = await fetch("/api/data");
+    if (!response.ok) throw new Error("Failed to fetch");
+    return response.json();
+  } catch (error) {
+    console.error("API Error:", error);
+    throw error;
+  }
+}
+
+// ❌ 잘못된 예 - 내부 함수에 불필요한 try-catch
+function calculateTotal(items: Item[]) {
+  try {
+    return items.reduce((sum, item) => sum + item.price, 0);
+  } catch (error) {
+    // items는 신뢰할 수 있는 내부 데이터
+  }
+}
+```
+
+### 타입 안정성
+
+**원칙:**
+
+- `any` 사용 최소화 (불가피한 경우만)
+- 외부 데이터는 반드시 검증 (Zod, Yup 등)
+- 타입 단언(`as`) 대신 타입 가드 사용
+
+```tsx
+// ✅ 올바른 예 - 타입 가드
+function isUser(data: unknown): data is User {
+  return (
+    typeof data === "object" && data !== null && "id" in data && "name" in data
+  );
+}
+
+// ❌ 잘못된 예 - any 남용
+function process(data: any) {
+  return data.items.map((item: any) => item.value);
+}
+```
+
+### 보안
+
+**필수 체크리스트:**
+
+- [ ] 사용자 입력 검증 및 sanitize (XSS 방지)
+- [ ] API 요청에 CSRF 토큰 포함
+- [ ] 환경 변수로 민감 정보 관리 (`.env.local`)
+- [ ] 클라이언트에 API 키 노출 금지
+- [ ] 서버 컴포넌트에서 인증 확인
+
+```tsx
+// ✅ 올바른 예 - 환경 변수 사용
+const apiKey = process.env.NEXT_PUBLIC_API_KEY;
+
+// ❌ 잘못된 예 - 하드코딩
+const apiKey = "sk-1234567890abcdef";
+```
+
+### 성능
+
+**필수 체크:**
+
+- [ ] 이미지 최적화 (Next.js Image 컴포넌트)
+- [ ] 무거운 컴포넌트는 동적 import
+- [ ] useCallback, useMemo로 불필요한 리렌더링 방지
+- [ ] Three.js 객체는 반드시 dispose
+
+```tsx
+// ✅ 올바른 예 - 동적 import
+const HeavyComponent = dynamic(() => import("./Heavy"), {
+  ssr: false,
+  loading: () => <Spinner />,
+});
+
+// ✅ 올바른 예 - Three.js cleanup
+useEffect(() => {
+  const geometry = new THREE.BoxGeometry();
+  const material = new THREE.MeshBasicMaterial();
+
+  return () => {
+    geometry.dispose();
+    material.dispose();
+  };
+}, []);
+```
+
+### 접근성 (a11y)
+
+**필수 체크:**
+
+- [ ] 모든 버튼에 명확한 레이블
+- [ ] 이미지에 alt 속성
+- [ ] 키보드로 모든 기능 사용 가능
+- [ ] 색상 대비 4.5:1 이상
+
+```tsx
+// ✅ 올바른 예
+<button aria-label="Close menu" onClick={handleClose}>
+  <X className="h-4 w-4" />
+</button>
+
+// ❌ 잘못된 예 - 레이블 없음
+<button onClick={handleClose}>
+  <X className="h-4 w-4" />
+</button>
+```
+
+### 테스트 (나중에 추가 예정)
+
+현재는 테스트 프레임워크 미설정. 추후 Vitest + Testing Library 추가 예정.
 
 ## 파일 생성 규칙
 
@@ -225,20 +403,52 @@ export const useStoreName = create<StoreState>()(
 
 ## 금지 사항
 
-❌ **절대 하지 말 것:**
+### ❌ 절대 하지 말 것
 
-- Three.js 컴포넌트에서 `'use client'` 빼먹기
+**Three.js/R3F:**
+
+- `'use client'` 빼먹기
 - Cleanup 없이 geometry/material 생성
-- 하드코딩된 색상 사용 (`#fff`, `rgb()`)
-- 커밋 메시지에 한글 사용
-- `node_modules/`, `.next/` 수정
-- 환경 변수를 코드에 하드코딩
+- SSR 환경에서 `window`, `document` 직접 사용
 
-⚠️ **주의 사항:**
+**스타일링:**
 
-- SSR 환경에서 `window` 사용 금지 (useEffect 내부에서만)
+- 하드코딩된 색상 (`#fff`, `rgb()`, `hsl()`)
+- Inline styles (특별한 경우 제외)
+- Tailwind 대신 CSS 파일 생성 (global.css 제외)
+
+**Git & 코드:**
+
+- 커밋 메시지에 한국어 사용
+- Co-Authored-By 자동 추가
+- `node_modules/`, `.next/`, `dist/` 수정
+- 환경 변수 하드코딩 (`.env` 파일 사용)
+
+**보안:**
+
+- API 키, 비밀번호 커밋
+- 사용자 입력 검증 없이 사용
+- XSS 취약점 (innerHTML, dangerouslySetInnerHTML 남용)
+
+### ⚠️ 주의 사항
+
+**React:**
+
 - Hooks 순서 변경 금지
-- Three.js dispose 잊지 말기
+- useEffect 의존성 배열 무시 금지
+- 상태 직접 변경 금지 (불변성 유지)
+
+**Three.js:**
+
+- dispose() 잊지 말기 (메모리 누수)
+- 과도한 draw call 주의 (instancing 사용)
+- 무거운 연산은 useFrame 밖으로
+
+**Next.js:**
+
+- 클라이언트 컴포넌트 남용 (서버 컴포넌트 우선)
+- getServerSideProps 남용 (ISR, SSG 검토)
+- Image 컴포넌트 없이 img 태그 사용
 
 ## 자주 사용하는 패턴
 
