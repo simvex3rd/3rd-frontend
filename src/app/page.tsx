@@ -7,7 +7,7 @@ export default function Home() {
   return (
     <div className="h-screen w-full">
       <SceneCanvas>
-        <Model url="https://vazxmixjsiawhamofees.supabase.co/storage/v1/object/public/models/duck/scene.gltf" />
+        <Model url="/models/V4_Engine/Crankshaft.glb" />
       </SceneCanvas>
     </div>
   );
