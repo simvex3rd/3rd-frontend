@@ -9,6 +9,7 @@ import {
 } from "@react-three/drei";
 import { Suspense, ReactNode } from "react";
 import { Stats } from "./Stats";
+import { CameraSync } from "./CameraSync";
 
 interface SceneCanvasProps {
   children: ReactNode;
@@ -28,6 +29,7 @@ export function SceneCanvas({
       gl={{ antialias: true }}
     >
       <Suspense fallback={null}>
+        <CameraSync />
         <ambientLight intensity={0.5} />
         <directionalLight position={[5, 5, 5]} intensity={1} />
         {enableAutoFit ? (
