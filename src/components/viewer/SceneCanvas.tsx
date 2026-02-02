@@ -24,7 +24,14 @@ export function SceneCanvas({
         <ambientLight intensity={0.5} />
         <directionalLight position={[5, 5, 5]} intensity={1} />
         {children}
-        {enableControls && <OrbitControls makeDefault />}
+        {enableControls && (
+          <OrbitControls
+            makeDefault
+            enablePan={true}
+            enableZoom={true}
+            enableRotate={true}
+          />
+        )}
         <Stats />
       </Suspense>
     </Canvas>
