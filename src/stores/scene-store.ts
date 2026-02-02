@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { devtools, persist } from "zustand/middleware";
+import { devtools, persist, createJSONStorage } from "zustand/middleware";
 
 interface SceneState {
   // Model state
@@ -45,6 +45,8 @@ export const useSceneStore = create<SceneState>()(
       }),
       {
         name: "simvex-scene-storage",
+        storage: createJSONStorage(() => localStorage),
+        skipHydration: true,
       }
     ),
     { name: "SceneStore" }
