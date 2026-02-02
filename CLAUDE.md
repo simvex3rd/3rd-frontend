@@ -4,6 +4,12 @@
 
 SIMVEX는 **Three.js + React Three Fiber 기반 3D 시뮬레이션 플랫폼**입니다.
 
+**프로젝트 정보:**
+
+- **기간**: 10일 (단기 집중 개발)
+- **인원**: 2명
+- **배포 주기**: 매일 1-2회 (빠른 반복)
+
 **핵심 기술:**
 
 - Next.js 16 (App Router, Turbopack)
@@ -213,8 +219,14 @@ git branch -d feature/camera-controls
 ```
 feature/xxx → dev (PR + 코드 리뷰)
              ↓
-           dev → main (주 1회 or 중요 기능 완성 시)
+           dev → main (매일 or 기능 완성 시)
 ```
+
+**프로젝트 특성:**
+
+- **기간**: 10일 단기 프로젝트
+- **배포 주기**: 하루 1-2회 (빠른 반복)
+- **dev → main**: 매일 저녁 or 중요 기능 완성 즉시
 
 **주의사항:**
 
