@@ -56,6 +56,68 @@ function calculateTotal(items: Item[]) {
 - 외부 데이터는 반드시 검증 (Zod, Yup 등)
 - 타입 단언(`as`) 대신 타입 가드 사용
 
+### Type vs Interface 사용 기준
+
+프로젝트에서는 **혼용 방식**을 사용하며, 명확한 기준에 따라 선택합니다.
+
+**✅ `type` 사용:**
+
+- 간단한 데이터 구조 (Vector3, Vector4 등)
+- Union types (`type Status = "loading" | "success" | "error"`)
+- Intersection types (`type Combined = A & B`)
+- Tuple types (`type RGB = [number, number, number]`)
+- React 컴포넌트 Props (`type ButtonProps = { ... }`)
+- Utility types의 결과 (`type Partial<Model> = { ... }`)
+
+**✅ `interface` 사용:**
+
+- 도메인 엔티티 (Model, Part, PartGeometry)
+- API 응답 DTO
+- Store 타입 (Zustand)
+- 확장이 필요한 구조
+- 클래스로 구현할 타입
+
+**예시:**
+
+```typescript
+// ✅ type - 간단한 구조
+type Vector3 = { x: number; y: number; z: number };
+type Status = "idle" | "loading" | "success" | "error";
+
+// ✅ interface - 도메인 엔티티
+interface Model {
+  id: number;
+  name: string;
+  parts: Part[];
+}
+
+interface Part {
+  id: number;
+  modelId: number;
+  name: string;
+}
+
+// ✅ type - Union
+type ViewMode = "normal" | "exploded" | "wireframe";
+
+// ✅ interface - 확장 가능
+interface BaseResponse {
+  success: boolean;
+  message: string;
+}
+
+interface DataResponse<T> extends BaseResponse {
+  data: T;
+}
+```
+
+**주의사항:**
+
+- 같은 도메인 내에서는 일관성 유지
+- `Model`, `Part` 등은 모두 interface 사용
+- Props는 모두 type 사용 (React 관례)
+- 고민되면 interface 우선 (확장성)
+
 ### 올바른 예시
 
 ```tsx
