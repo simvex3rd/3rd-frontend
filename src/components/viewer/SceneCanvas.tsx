@@ -10,6 +10,7 @@ import {
 import { Suspense, ReactNode } from "react";
 import { Stats } from "./Stats";
 import { CameraSync } from "./CameraSync";
+import { useSceneStore } from "@/stores/scene-store";
 
 interface SceneCanvasProps {
   children: ReactNode;
@@ -22,6 +23,11 @@ export function SceneCanvas({
   enableControls = true,
   enableAutoFit = true,
 }: SceneCanvasProps) {
+  const hasStoredCamera = useSceneStore((state) => state._hasStoredCamera);
+
+  // Only fit when auto-fit is enabled AND there's no stored camera position
+  const shouldFit = enableAutoFit && !hasStoredCamera;
+
   return (
     <Canvas
       camera={{ position: [0, 0, 5], fov: 50 }}
@@ -32,8 +38,8 @@ export function SceneCanvas({
         <CameraSync />
         <ambientLight intensity={0.5} />
         <directionalLight position={[5, 5, 5]} intensity={1} />
-        {enableAutoFit ? (
-          <Bounds fit clip observe margin={1.2}>
+        {shouldFit ? (
+          <Bounds fit clip observe={false} margin={1.2}>
             {children}
           </Bounds>
         ) : (
