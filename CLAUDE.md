@@ -109,6 +109,11 @@ const Heavy = dynamic(() => import("./Heavy"), { ssr: false });
 
 ## Git & 커밋 규칙
 
+> **⚠️ 중요: 커밋 규칙**
+>
+> 1. **커밋 메시지는 반드시 영어로만 작성** (한국어 절대 금지)
+> 2. **Co-Authored-By는 기본적으로 포함하지 않음** (사용자 명시 요청 시만)
+
 ### 커밋 메시지 형식
 
 ```
@@ -126,14 +131,28 @@ fix(ui): button hover state
 
 **✅ 반드시 지킬 것:**
 
-- 영어로만 작성 (한국어 금지)
-- 소문자 동사로 시작: `add`, `fix`, `update`
-- 50자 이내, 현재형 사용
+- **영어로만 작성** - 한국어 사용 시 commitlint 거부됨
+- **소문자 동사로 시작** - `add`, `fix`, `update` 등
+- **50자 이내**, 현재형 사용 - "added" ❌ → "add" ✅
 
-**❌ Co-Authored-By:**
+**❌ Co-Authored-By 규칙:**
 
-- **기본적으로 포함하지 않음**
-- 사용자가 명시적으로 요청할 때만 추가
+- **기본적으로 절대 포함하지 않음**
+- 사용자가 "Co-Authored-By 넣어줘"라고 명시적으로 요청할 때만 추가
+- Claude가 임의로 추가하면 안 됨
+
+```bash
+# ❌ 절대 금지 - 한국어 커밋
+git commit -m "feat(viewer): 카메라 추가"
+
+# ❌ 절대 금지 - Co-Authored-By 자동 추가
+git commit -m "feat(viewer): add camera
+
+Co-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>"
+
+# ✅ 올바름
+git commit -m "feat(viewer): add camera controls"
+```
 
 **자동 검증:**
 
