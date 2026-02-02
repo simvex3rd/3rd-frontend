@@ -7,13 +7,23 @@ import { useStoreHydration } from "@/hooks/use-store-hydration";
 
 export default function Home() {
   // Restore persisted state from localStorage
-  useStoreHydration();
+  const isHydrated = useStoreHydration();
 
   return (
     <div className="relative h-screen w-full">
-      <SceneCanvas>
-        <Model url="/models/V4_Engine/Crankshaft-draco.glb" />
-      </SceneCanvas>
+      {/* Only render Canvas after hydration to prevent flickering */}
+      {!isHydrated && (
+        <div className="flex h-full items-center justify-center">
+          <p className="text-gray-400">Loading...</p>
+        </div>
+      )}
+
+      {isHydrated && (
+        <SceneCanvas>
+          <Model url="/models/V4_Engine/Crankshaft-draco.glb" />
+        </SceneCanvas>
+      )}
+
       <PartInfoPanel />
     </div>
   );
