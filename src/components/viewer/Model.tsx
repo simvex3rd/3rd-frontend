@@ -10,8 +10,14 @@ interface ModelProps {
   url: string;
 }
 
+// Configure DRACOLoader to use local decoder files
+// This enables loading of Draco-compressed GLTF models
+// Decoder files are located in public/draco/
+useGLTF.setDecoderPath("/draco/");
+
 export function Model({ url }: ModelProps) {
-  const { scene } = useGLTF(url);
+  // Enable Draco compression support (second parameter)
+  const { scene } = useGLTF(url, true);
   const setSelectedObject = useSceneStore((state) => state.setSelectedObject);
   const selectedObject = useSceneStore((state) => state.selectedObject);
 
