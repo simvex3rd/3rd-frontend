@@ -1,7 +1,12 @@
 "use client";
 
 import { Canvas } from "@react-three/fiber";
-import { OrbitControls, Bounds } from "@react-three/drei";
+import {
+  OrbitControls,
+  Bounds,
+  GizmoHelper,
+  GizmoViewport,
+} from "@react-three/drei";
 import { Suspense, ReactNode } from "react";
 import { Stats } from "./Stats";
 
@@ -40,6 +45,12 @@ export function SceneCanvas({
             enableRotate={true}
           />
         )}
+        <GizmoHelper alignment="bottom-right" margin={[80, 80]}>
+          <GizmoViewport
+            axisColors={["#ff4444", "#44ff44", "#4444ff"]}
+            labelColor="white"
+          />
+        </GizmoHelper>
         <Stats />
       </Suspense>
     </Canvas>
