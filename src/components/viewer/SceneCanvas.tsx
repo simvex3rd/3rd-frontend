@@ -38,19 +38,21 @@ export function SceneCanvas({
           children
         )}
         {enableControls && (
-          <OrbitControls
-            makeDefault
-            enablePan={true}
-            enableZoom={true}
-            enableRotate={true}
-          />
+          <>
+            <OrbitControls
+              makeDefault
+              enablePan={true}
+              enableZoom={true}
+              enableRotate={true}
+            />
+            <GizmoHelper alignment="bottom-right" margin={[80, 80]}>
+              <GizmoViewport
+                axisColors={["#ff4444", "#44ff44", "#4444ff"]}
+                labelColor="white"
+              />
+            </GizmoHelper>
+          </>
         )}
-        <GizmoHelper alignment="bottom-right" margin={[80, 80]}>
-          <GizmoViewport
-            axisColors={["#ff4444", "#44ff44", "#4444ff"]}
-            labelColor="white"
-          />
-        </GizmoHelper>
         <Stats />
       </Suspense>
     </Canvas>
