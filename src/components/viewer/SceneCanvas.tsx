@@ -1,7 +1,7 @@
 "use client";
 
 import { Canvas } from "@react-three/fiber";
-import { OrbitControls, Environment } from "@react-three/drei";
+import { OrbitControls } from "@react-three/drei";
 import { Suspense, ReactNode } from "react";
 import { Stats } from "./Stats";
 
@@ -21,7 +21,8 @@ export function SceneCanvas({
       gl={{ antialias: true }}
     >
       <Suspense fallback={null}>
-        <Environment preset="city" />
+        <ambientLight intensity={0.5} />
+        <directionalLight position={[5, 5, 5]} intensity={1} />
         {children}
         {enableControls && <OrbitControls makeDefault />}
         <Stats />
