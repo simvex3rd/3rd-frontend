@@ -159,16 +159,70 @@ git commit -m "feat(viewer): add camera controls"
 - Husky pre-commit: ESLint + Prettier
 - Husky commit-msg: Commitlint
 
-### Git 워크플로우
+### Git 워크플로우 (2명 협업)
+
+**브랜치 구조:**
 
 ```bash
-main              # 프로덕션
-├── feature/*     # 새 기능
-├── fix/*         # 버그 수정
-└── refactor/*    # 리팩토링
+main (프로덕션)
+ └─ dev (개발 통합, default branch)
+     ├─ feature/* (기능별 작업)
+     ├─ fix/* (버그 수정)
+     └─ refactor/* (리팩토링)
 ```
 
-**주의:** Push 전에는 rebase 자유, 후에는 금지 (force push 방지)
+**브랜치 네이밍:**
+
+```
+feature/camera-controls
+feature/ui-panel
+fix/memory-leak
+refactor/store-structure
+docs/update-readme
+chore/update-deps
+```
+
+**작업 흐름:**
+
+```bash
+# 1. 새 기능 시작
+git checkout dev
+git pull origin dev
+git checkout -b feature/camera-controls
+
+# 2. 작업 + 커밋 (atomic commits)
+git add .
+git commit -m "feat(viewer): add orbit controls"
+
+# 3. dev 최신화 (conflict 방지)
+git fetch origin dev
+git rebase origin/dev
+
+# 4. Push + PR 생성
+git push origin feature/camera-controls
+# PR: feature/camera-controls → dev
+
+# 5. 리뷰 + 머지 후 로컬 브랜치 삭제
+git checkout dev
+git pull origin dev
+git branch -d feature/camera-controls
+```
+
+**배포 플로우:**
+
+```
+feature/xxx → dev (PR + 코드 리뷰)
+             ↓
+           dev → main (주 1회 or 중요 기능 완성 시)
+```
+
+**주의사항:**
+
+- **Push 전**: rebase 자유 (히스토리 정리)
+- **Push 후**: rebase 금지 (force push 방지)
+- **PR 크기**: 500줄 이하 권장 (리뷰 용이)
+- **기능 단위**: 하나의 PR = 하나의 기능
+- **Squash merge**: dev로 머지 시 사용 금지 (히스토리 유지)
 
 ## 파일 생성 규칙
 
