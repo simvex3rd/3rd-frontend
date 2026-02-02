@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useThree } from "@react-three/fiber";
 import { useSceneStore } from "@/stores/scene-store";
 
@@ -9,28 +9,37 @@ import { useSceneStore } from "@/stores/scene-store";
  * Saves camera state to localStorage via persist middleware
  */
 export function CameraSync() {
-  const { camera } = useThree();
-  const cameraPosition = useSceneStore((state) => state.cameraPosition);
-  const cameraRotation = useSceneStore((state) => state.cameraRotation);
+  // eslint-disable-next-line react-hooks/exhaustive-deps -- useThree is not an effect callback
+  const { camera, controls } = useThree();
   const setCameraPosition = useSceneStore((state) => state.setCameraPosition);
   const setCameraRotation = useSceneStore((state) => state.setCameraRotation);
+  const hasHydrated = useSceneStore((state) => state._hasHydrated);
 
-  // Restore camera from store on mount
+  // Restore camera only once after hydration (use ref to avoid re-renders)
+  const hasRestoredRef = useRef(false);
+
   useEffect(() => {
-    if (cameraPosition) {
-      camera.position.set(...cameraPosition);
+    if (!hasHydrated || hasRestoredRef.current) return;
+
+    const storedPosition = useSceneStore.getState().cameraPosition;
+    const storedRotation = useSceneStore.getState().cameraRotation;
+
+    if (storedPosition) {
+      camera.position.set(...storedPosition);
     }
-    if (cameraRotation) {
-      camera.rotation.set(...cameraRotation);
+    if (storedRotation) {
+      camera.rotation.set(...storedRotation);
     }
     camera.updateProjectionMatrix();
-  }, [camera, cameraPosition, cameraRotation]);
 
-  // Save camera state on change (throttled via animation frame)
+    hasRestoredRef.current = true;
+  }, [camera, hasHydrated]);
+
+  // Save camera state only when OrbitControls interaction ends
   useEffect(() => {
-    let animationFrameId: number;
+    if (!controls) return;
 
-    const syncCamera = () => {
+    const handleEnd = () => {
       const pos = camera.position.toArray() as [number, number, number];
       const rot = [camera.rotation.x, camera.rotation.y, camera.rotation.z] as [
         number,
@@ -40,20 +49,16 @@ export function CameraSync() {
 
       setCameraPosition(pos);
       setCameraRotation(rot);
-
-      animationFrameId = requestAnimationFrame(syncCamera);
     };
 
-    // Start syncing after a delay (avoid initial spam)
-    const timeoutId = setTimeout(() => {
-      animationFrameId = requestAnimationFrame(syncCamera);
-    }, 1000);
-
+    // Type assertion needed because controls type is not specific enough
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (controls as any).addEventListener("end", handleEnd);
     return () => {
-      clearTimeout(timeoutId);
-      cancelAnimationFrame(animationFrameId);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (controls as any).removeEventListener("end", handleEnd);
     };
-  }, [camera, setCameraPosition, setCameraRotation]);
+  }, [camera, controls, setCameraPosition, setCameraRotation]);
 
   return null;
 }
