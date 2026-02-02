@@ -2,7 +2,12 @@ import { Part } from "@/types/model";
 
 /**
  * Mock Part data for development
+ *
  * TODO: Replace with actual API calls when backend is ready
+ * - Create API service: src/lib/api/parts.ts
+ * - Implement: async function fetchPartByMeshName(meshName: string): Promise<Part | undefined>
+ * - API endpoint: GET /api/parts?meshName={meshName} or GET /api/models/{modelId}/parts/{partName}
+ * - Update getPartByMeshName() to call API instead of using mockParts
  */
 export const mockParts: Record<string, Part> = {
   Crankshaft: {
@@ -79,10 +84,29 @@ export const mockParts: Record<string, Part> = {
 
 /**
  * Get Part info by mesh name
+ *
+ * TODO: Replace with API call when backend is ready
+ * Example implementation:
+ * ```
+ * export async function getPartByMeshName(meshName: string): Promise<Part | undefined> {
+ *   try {
+ *     const response = await fetch(`/api/parts?meshName=${encodeURIComponent(meshName)}`);
+ *     if (!response.ok) return undefined;
+ *     return await response.json();
+ *   } catch (error) {
+ *     console.error('Failed to fetch part:', error);
+ *     return undefined;
+ *   }
+ * }
+ * ```
+ *
  * @param meshName - Name from Three.js mesh
  * @returns Part data or undefined
  */
 export function getPartByMeshName(meshName: string): Part | undefined {
+  // TODO: Replace with API call
+  // return await fetchPartByMeshName(meshName);
+
   // Try exact match first
   if (mockParts[meshName]) {
     return mockParts[meshName];
