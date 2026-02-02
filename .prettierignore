@@ -1,0 +1,11 @@
+.next
+node_modules
+dist
+build
+out
+coverage
+pnpm-lock.yaml
+*.min.js
+*.min.css
+public
+.husky
