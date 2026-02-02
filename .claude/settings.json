@@ -1,0 +1,38 @@
+{
+  "permissions": {
+    "deny": [
+      "**/.env*",
+      "**/node_modules/**",
+      "**/.next/**",
+      "**/dist/**",
+      "**/build/**",
+      "**/.git/**",
+      "**/pnpm-lock.yaml",
+      "**/package-lock.json",
+      "**/*.min.js",
+      "**/*.min.css",
+      "**/storybook-static/**"
+    ]
+  },
+  "environment": {
+    "NODE_ENV": "development"
+  },
+  "tools": {
+    "bash": {
+      "enabled": true
+    },
+    "read": {
+      "enabled": true
+    },
+    "write": {
+      "enabled": true
+    },
+    "edit": {
+      "enabled": true
+    }
+  },
+  "preferences": {
+    "autoFormat": true,
+    "autoLint": true
+  }
+}
