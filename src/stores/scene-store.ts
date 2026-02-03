@@ -13,8 +13,10 @@ interface SceneState {
   // Camera state
   cameraPosition: [number, number, number];
   cameraRotation: [number, number, number];
+  hasSavedCamera: boolean;
   setCameraPosition: (position: [number, number, number]) => void;
   setCameraRotation: (rotation: [number, number, number]) => void;
+  resetCamera: () => void;
 
   // Explode state
   explodeLevel: number;
@@ -40,8 +42,16 @@ export const useSceneStore = create<SceneState>()(
         // Camera state
         cameraPosition: [0, 0, 5],
         cameraRotation: [0, 0, 0],
-        setCameraPosition: (position) => set({ cameraPosition: position }),
+        hasSavedCamera: false,
+        setCameraPosition: (position) =>
+          set({ cameraPosition: position, hasSavedCamera: true }),
         setCameraRotation: (rotation) => set({ cameraRotation: rotation }),
+        resetCamera: () =>
+          set({
+            cameraPosition: [0, 0, 5],
+            cameraRotation: [0, 0, 0],
+            hasSavedCamera: false,
+          }),
 
         // Explode state
         explodeLevel: 0,
@@ -61,6 +71,7 @@ export const useSceneStore = create<SceneState>()(
           selectedObject: state.selectedObject,
           cameraPosition: state.cameraPosition,
           cameraRotation: state.cameraRotation,
+          hasSavedCamera: state.hasSavedCamera,
           explodeLevel: state.explodeLevel,
         }),
         onRehydrateStorage: () => (state) => {

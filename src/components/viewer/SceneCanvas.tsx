@@ -24,15 +24,10 @@ export function SceneCanvas({
   enableAutoFit = true,
 }: SceneCanvasProps) {
   const cameraPosition = useSceneStore((state) => state.cameraPosition);
+  const hasSavedCamera = useSceneStore((state) => state.hasSavedCamera);
 
-  // Check if camera position is not default [0, 0, 5]
-  const hasStoredCamera =
-    cameraPosition[0] !== 0 ||
-    cameraPosition[1] !== 0 ||
-    cameraPosition[2] !== 5;
-
-  // Only fit when auto-fit is enabled AND there's no stored camera position
-  const shouldFit = enableAutoFit && !hasStoredCamera;
+  // Only fit when auto-fit is enabled AND there's no saved camera
+  const shouldFit = enableAutoFit && !hasSavedCamera;
 
   return (
     <Canvas
