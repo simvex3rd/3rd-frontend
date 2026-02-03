@@ -8,7 +8,7 @@ export default function Home() {
   return (
     <div className="relative h-screen w-full">
       <SceneCanvas>
-        <Model url="/models/V4_Engine/Crankshaft.glb" />
+        <Model url="/models/V4_Engine/Crankshaft-draco.glb" />
       </SceneCanvas>
       <PartInfoPanel />
     </div>
