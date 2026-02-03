@@ -23,9 +23,6 @@ interface SceneState {
   // Hydration state
   _hasHydrated: boolean;
   _setHasHydrated: (hydrated: boolean) => void;
-
-  // Helper flag to check if camera position was restored from storage
-  _hasStoredCamera: boolean;
 }
 
 export const useSceneStore = create<SceneState>()(
@@ -53,9 +50,6 @@ export const useSceneStore = create<SceneState>()(
         // Hydration state (internal)
         _hasHydrated: false,
         _setHasHydrated: (hydrated) => set({ _hasHydrated: hydrated }),
-
-        // Camera restore flag (internal)
-        _hasStoredCamera: false,
       }),
       {
         name: "simvex-scene-storage",
@@ -73,18 +67,6 @@ export const useSceneStore = create<SceneState>()(
           if (!state) return;
 
           state._setHasHydrated(true);
-
-          // Check if camera position was restored from storage
-          // (not default [0, 0, 5])
-          const hasCamera =
-            state.cameraPosition &&
-            (state.cameraPosition[0] !== 0 ||
-              state.cameraPosition[1] !== 0 ||
-              state.cameraPosition[2] !== 5);
-
-          if (hasCamera) {
-            state._hasStoredCamera = true;
-          }
         },
       }
     ),
