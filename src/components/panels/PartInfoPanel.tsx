@@ -3,6 +3,14 @@
 import { useSceneStore } from "@/stores/scene-store";
 import { getPartByMeshName } from "@/lib/mock-data";
 
+/**
+ * TODO: Replace mock data with API integration - Track: #12
+ * - Implement async fetchPartByMeshName() from @/lib/api/parts
+ * - Wrap component in Suspense for loading state
+ * - Add error boundary for API failures
+ * - Related issue: #13
+ */
+
 export function PartInfoPanel() {
   const selectedObject = useSceneStore((state) => state.selectedObject);
 
