@@ -25,8 +25,23 @@ export function useStoreHydration(): boolean {
       setHydrated(true);
     });
 
-    // Trigger rehydration from localStorage
-    useSceneStore.persist.rehydrate();
+    // Trigger rehydration from localStorage with error handling
+    try {
+      useSceneStore.persist.rehydrate();
+    } catch (error) {
+      // localStorage may fail in:
+      // - Private/incognito mode (some browsers block access)
+      // - Quota exceeded
+      // - Corrupted data
+      // - Browser security settings
+      console.error("[Hydration] Failed to restore from localStorage:", error);
+
+      // Fallback: Schedule state update to avoid cascading renders
+      // Treat as first-time visitor (allow app to function)
+      queueMicrotask(() => {
+        setHydrated(true);
+      });
+    }
 
     return () => {
       unsubFinishHydration();
