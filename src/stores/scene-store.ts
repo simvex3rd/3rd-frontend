@@ -23,10 +23,6 @@ interface SceneState {
   // Explode state
   explodeLevel: number;
   setExplodeLevel: (level: number) => void;
-
-  // Hydration state
-  _hasHydrated: boolean;
-  _setHasHydrated: (hydrated: boolean) => void;
 }
 
 export const useSceneStore = create<SceneState>()(
@@ -61,17 +57,13 @@ export const useSceneStore = create<SceneState>()(
         // Explode state
         explodeLevel: 0,
         setExplodeLevel: (level) => set({ explodeLevel: level }),
-
-        // Hydration state (internal)
-        _hasHydrated: false,
-        _setHasHydrated: (hydrated) => set({ _hasHydrated: hydrated }),
       }),
       {
         name: "simvex-scene-storage",
         storage: createJSONStorage(() => localStorage),
         skipHydration: true,
         partialize: (state) => ({
-          // Only persist these fields (exclude hydration state)
+          // Only persist these fields
           modelId: state.modelId,
           selectedObject: state.selectedObject,
           cameraPosition: state.cameraPosition,
@@ -80,11 +72,6 @@ export const useSceneStore = create<SceneState>()(
           hasSavedCamera: state.hasSavedCamera,
           explodeLevel: state.explodeLevel,
         }),
-        onRehydrateStorage: () => (state) => {
-          if (!state) return;
-
-          state._setHasHydrated(true);
-        },
       }
     ),
     { name: "SceneStore" }
