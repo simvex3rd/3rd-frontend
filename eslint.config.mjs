@@ -19,6 +19,8 @@ globalIgnores([
   "next-env.d.ts",
   ".storybook/**",
   "storybook-static/**",
+  "public/draco/**", // External third-party library (compiled)
+  ".sisyphus/**",
 ]), // TypeScript configuration
 {
   files: ["**/*.ts", "**/*.tsx"],
