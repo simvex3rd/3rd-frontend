@@ -10,27 +10,27 @@ interface ModelProps {
   url: string;
 }
 
-// Configure DRACOLoader to use local decoder files
-// This enables loading of Draco-compressed GLTF models
-// Decoder files are located in public/draco/
+// DRACOLoader가 로컬 디코더 파일을 사용하도록 설정
+// Draco 압축된 GLTF 모델 로딩을 활성화
+// 디코더 파일은 public/draco/에 위치
 useGLTF.setDecoderPath("/draco/");
 
 export function Model({ url }: ModelProps) {
-  // Enable Draco compression support (second parameter)
+  // Draco 압축 지원 활성화 (두 번째 파라미터)
   const { scene } = useGLTF(url, true);
   const setSelectedObject = useSceneStore((state) => state.setSelectedObject);
   const selectedObject = useSceneStore((state) => state.selectedObject);
 
-  // Initialize meshes with userData
+  // 메시에 userData 초기화
   useEffect(() => {
     scene.traverse((child) => {
       if (child instanceof Mesh) {
-        // Store original name or generate one
+        // 원본 이름 저장 또는 생성
         if (!child.userData.name) {
           child.userData.name = child.name || child.uuid;
         }
 
-        // Store original emissive color
+        // 원본 emissive 색상 저장
         if (
           child.material instanceof MeshStandardMaterial &&
           !child.userData.originalEmissive
@@ -38,13 +38,13 @@ export function Model({ url }: ModelProps) {
           child.userData.originalEmissive = child.material.emissive.clone();
         }
 
-        // Enable raycast for this mesh
+        // 이 메시에 raycast 활성화
         child.userData.selectable = true;
       }
     });
   }, [scene]);
 
-  // Apply highlight effect to selected part
+  // 선택된 부품에 하이라이트 효과 적용
   useEffect(() => {
     scene.traverse((child) => {
       if (
@@ -55,11 +55,11 @@ export function Model({ url }: ModelProps) {
         const isSelected = selectedObject === partName;
 
         if (isSelected) {
-          // Highlight selected part with emissive color
+          // 선택된 부품을 emissive 색상으로 하이라이트
           child.material.emissive = new Color(0x4444ff);
           child.material.emissiveIntensity = 0.5;
         } else {
-          // Restore original emissive
+          // 원본 emissive 복원
           child.material.emissive =
             child.userData.originalEmissive || new Color(0x000000);
           child.material.emissiveIntensity = 1;
