@@ -68,6 +68,43 @@ export function Model({ url }: ModelProps) {
     });
   }, [scene, selectedObject]);
 
+  // Cleanup Three.js resources on unmount to prevent memory leaks
+  useEffect(() => {
+    return () => {
+      scene.traverse((child) => {
+        if (child instanceof Mesh) {
+          // Dispose geometry
+          if (child.geometry) {
+            child.geometry.dispose();
+          }
+
+          // Dispose material(s)
+          if (child.material) {
+            if (Array.isArray(child.material)) {
+              child.material.forEach((material) => {
+                material.dispose();
+                // Dispose textures
+                if (material.map) material.map.dispose();
+                if (material.normalMap) material.normalMap.dispose();
+                if (material.roughnessMap) material.roughnessMap.dispose();
+                if (material.metalnessMap) material.metalnessMap.dispose();
+              });
+            } else {
+              child.material.dispose();
+              // Dispose textures
+              if (child.material.map) child.material.map.dispose();
+              if (child.material.normalMap) child.material.normalMap.dispose();
+              if (child.material.roughnessMap)
+                child.material.roughnessMap.dispose();
+              if (child.material.metalnessMap)
+                child.material.metalnessMap.dispose();
+            }
+          }
+        }
+      });
+    };
+  }, [scene]);
+
   const handleClick = (event: ThreeEvent<MouseEvent>) => {
     event.stopPropagation();
     const mesh = event.object as Mesh;
