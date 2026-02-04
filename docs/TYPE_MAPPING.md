@@ -83,8 +83,8 @@ Property names: camelCase (userId, createdAt, initialPos)
 ```sql
 CREATE TABLE users (
   id varchar PRIMARY KEY,      -- Clerk user ID
-  email varchar NOT NULL,
-  username varchar,
+  email varchar,               -- Nullable (OAuth may not provide)
+  username varchar NOT NULL,   -- Required
   created_at timestamp NOT NULL,
   last_login timestamp NOT NULL
 );
@@ -96,8 +96,8 @@ CREATE TABLE users (
 // src/types/user.ts
 export interface User {
   id: string; // Clerk user ID (format: "user_2N...")
-  email: string;
-  username: string | null;
+  email: string | null; // Nullable (OAuth providers may not provide email)
+  username: string; // Required
   createdAt: Date;
   lastLogin: Date;
 }
@@ -107,8 +107,8 @@ export interface User {
 | Database | TypeScript | Type | Notes |
 |----------|-----------|------|-------|
 | `id` | `id` | `string` | Clerk user ID |
-| `email` | `email` | `string` | Required |
-| `username` | `username` | `string \| null` | Nullable |
+| `email` | `email` | `string \| null` | **Nullable** (OAuth may not provide) |
+| `username` | `username` | `string` | **Required** |
 | `created_at` | `createdAt` | `Date` | Auto timestamp |
 | `last_login` | `lastLogin` | `Date` | Updated on login |
 
@@ -123,8 +123,8 @@ CREATE TABLE chat_sessions (
   id serial PRIMARY KEY,
   user_id varchar NOT NULL REFERENCES users(id),
   model_id integer NOT NULL REFERENCES models(id),
-  title varchar NOT NULL,
-  last_response_id varchar,
+  title varchar,              -- Nullable (may not be set initially)
+  last_response_id varchar,   -- Nullable
   created_at timestamp NOT NULL
 );
 ```
@@ -137,7 +137,7 @@ export interface ChatSession {
   id: number;
   userId: string; // FK: users.id
   modelId: number; // FK: models.id
-  title: string;
+  title: string | null; // Nullable (may not be set initially)
   lastResponseId: string | null;
   createdAt: Date;
 }
@@ -149,7 +149,7 @@ export interface ChatSession {
 | `id` | `id` | `number` | Auto-increment |
 | `user_id` | `userId` | `string` | FK to users |
 | `model_id` | `modelId` | `number` | FK to models |
-| `title` | `title` | `string` | Session title |
+| `title` | `title` | `string \| null` | **Nullable** (may not be set initially) |
 | `last_response_id` | `lastResponseId` | `string \| null` | Nullable |
 | `created_at` | `createdAt` | `Date` | Auto timestamp |
 
@@ -200,10 +200,10 @@ export interface ChatMessage {
 ```sql
 CREATE TABLE models (
   id serial PRIMARY KEY,
-  name varchar NOT NULL,
-  description text,
-  thumbnail_url varchar,
-  file_url varchar
+  name varchar,               -- Nullable
+  description text,           -- Nullable
+  thumbnail_url varchar,      -- Nullable
+  file_url varchar            -- Nullable
 );
 ```
 
@@ -213,7 +213,7 @@ CREATE TABLE models (
 // src/types/model.ts (existing)
 export interface Model {
   id: number;
-  name: string;
+  name: string | null; // Nullable
   description: string | null;
   thumbnailUrl: string | null;
   fileUrl: string | null;
@@ -224,10 +224,10 @@ export interface Model {
 | Database | TypeScript | Type | Notes |
 |----------|-----------|------|-------|
 | `id` | `id` | `number` | Auto-increment |
-| `name` | `name` | `string` | Model name |
+| `name` | `name` | `string \| null` | **Nullable** |
 | `description` | `description` | `string \| null` | Nullable |
-| `thumbnail_url` | `thumbnailUrl` | `string \| null` | Image URL |
-| `file_url` | `fileUrl` | `string \| null` | GLB file URL |
+| `thumbnail_url` | `thumbnailUrl` | `string \| null` | Image URL (nullable) |
+| `file_url` | `fileUrl` | `string \| null` | GLB file URL (nullable) |
 
 ---
 
@@ -239,10 +239,10 @@ export interface Model {
 CREATE TABLE parts (
   id serial PRIMARY KEY,
   model_id integer NOT NULL REFERENCES models(id),
-  name varchar NOT NULL,
-  description text,
-  material varchar,
-  metadata jsonb
+  name varchar,               -- Nullable
+  description text,           -- Nullable
+  material varchar,           -- Nullable
+  metadata jsonb              -- Nullable
 );
 ```
 
@@ -253,18 +253,10 @@ CREATE TABLE parts (
 export interface Part {
   id: number;
   modelId: number; // FK: models.id
-  name: string;
+  name: string | null; // Nullable
   description: string | null;
   material: string | null;
-  metadata: PartMetadata;
-}
-
-export interface PartMetadata {
-  weight?: string;
-  manufacturer?: string;
-  partNumber?: string;
-  tolerance?: string;
-  [key: string]: unknown; // Extensible
+  metadata: Record<string, unknown> | null; // Nullable, extensible object
 }
 ```
 
@@ -273,10 +265,10 @@ export interface PartMetadata {
 |----------|-----------|------|-------|
 | `id` | `id` | `number` | Auto-increment |
 | `model_id` | `modelId` | `number` | FK to models |
-| `name` | `name` | `string` | Part name |
+| `name` | `name` | `string \| null` | **Nullable** |
 | `description` | `description` | `string \| null` | Nullable |
 | `material` | `material` | `string \| null` | Nullable |
-| `metadata` | `metadata` | `PartMetadata` | JSONB (see below) |
+| `metadata` | `metadata` | `Record<string, unknown> \| null` | **Nullable** JSONB (extensible) |
 
 ---
 
@@ -288,10 +280,10 @@ export interface PartMetadata {
 CREATE TABLE part_geometries (
   id serial PRIMARY KEY,
   part_id integer NOT NULL REFERENCES parts(id),
-  initial_pos jsonb NOT NULL,      -- {x, y, z}
-  initial_rot jsonb NOT NULL,      -- {x, y, z, w}
-  initial_scale jsonb NOT NULL,    -- {x, y, z}
-  exploded_pos jsonb NOT NULL      -- {x, y, z}
+  initial_pos jsonb,           -- Nullable: {x, y, z}
+  initial_rot jsonb,           -- Nullable: {x, y, z, w}
+  initial_scale jsonb,         -- Nullable: {x, y, z}
+  exploded_pos jsonb           -- Nullable: {x, y, z}
 );
 ```
 
@@ -302,10 +294,10 @@ CREATE TABLE part_geometries (
 export interface PartGeometry {
   id: number;
   partId: number; // FK: parts.id
-  initialPos: Vector3;
-  initialRot: Vector4;
-  initialScale: Vector3;
-  explodedPos: Vector3;
+  initialPos: Vector3 | null; // Nullable
+  initialRot: Vector4 | null; // Nullable
+  initialScale: Vector3 | null; // Nullable
+  explodedPos: Vector3 | null; // Nullable
 }
 
 export interface Vector3 {
@@ -327,10 +319,10 @@ export interface Vector4 {
 |----------|-----------|------|-------|
 | `id` | `id` | `number` | Auto-increment |
 | `part_id` | `partId` | `number` | FK to parts |
-| `initial_pos` | `initialPos` | `Vector3` | JSONB → Object |
-| `initial_rot` | `initialRot` | `Vector4` | JSONB → Object (quaternion) |
-| `initial_scale` | `initialScale` | `Vector3` | JSONB → Object |
-| `exploded_pos` | `explodedPos` | `Vector3` | JSONB → Object |
+| `initial_pos` | `initialPos` | `Vector3 \| null` | **Nullable** JSONB → Object |
+| `initial_rot` | `initialRot` | `Vector4 \| null` | **Nullable** JSONB → Object (quaternion) |
+| `initial_scale` | `initialScale` | `Vector3 \| null` | **Nullable** JSONB → Object |
+| `exploded_pos` | `explodedPos` | `Vector3 \| null` | **Nullable** JSONB → Object |
 
 ---
 
@@ -344,8 +336,8 @@ CREATE TABLE study_notes (
   user_id varchar NOT NULL REFERENCES users(id),
   model_id integer NOT NULL REFERENCES models(id),
   part_id integer REFERENCES parts(id),
-  content text NOT NULL,
-  updated_at timestamp NOT NULL
+  content text,               -- Nullable (placeholder notes)
+  updated_at timestamp        -- Nullable
 );
 ```
 
@@ -358,8 +350,8 @@ export interface StudyNote {
   userId: string; // FK: users.id
   modelId: number; // FK: models.id
   partId: number | null; // FK: parts.id (nullable)
-  content: string;
-  updatedAt: Date;
+  content: string | null; // Nullable (placeholder notes)
+  updatedAt: Date | null; // Nullable
 }
 ```
 
@@ -370,8 +362,8 @@ export interface StudyNote {
 | `user_id` | `userId` | `string` | FK to users |
 | `model_id` | `modelId` | `number` | FK to models |
 | `part_id` | `partId` | `number \| null` | Optional FK to parts |
-| `content` | `content` | `string` | Markdown text |
-| `updated_at` | `updatedAt` | `Date` | Last modified |
+| `content` | `content` | `string \| null` | **Nullable** (placeholder notes) |
+| `updated_at` | `updatedAt` | `Date \| null` | **Nullable** |
 
 ---
 
@@ -433,9 +425,9 @@ const rotation: Vector4 = { x: 0, y: 0, z: 0, w: 1 };
 
 ---
 
-### PartMetadata (Extensible Object)
+### PartMetadata (Extensible Object, Nullable)
 
-**Database (JSONB):**
+**Database (JSONB, nullable):**
 
 ```json
 {
@@ -446,23 +438,21 @@ const rotation: Vector4 = { x: 0, y: 0, z: 0, w: 1 };
 }
 ```
 
+Or `null` if no metadata is available.
+
 **TypeScript:**
 
 ```typescript
-export interface PartMetadata {
-  weight?: string;
-  manufacturer?: string;
-  partNumber?: string;
-  tolerance?: string;
-  [key: string]: unknown; // Allow additional fields
-}
-
-// Usage
-const metadata: PartMetadata = {
+// metadata is Record<string, unknown> | null (not a separate interface)
+const metadata: Record<string, unknown> | null = {
   weight: "12.5kg",
   manufacturer: "SIMVEX",
   customField: "customValue", // Extensible
 };
+
+// Accessing with null check
+const weight = part.metadata?.weight as string | undefined;
+const manufacturer = part.metadata?.manufacturer as string | undefined;
 ```
 
 ---
