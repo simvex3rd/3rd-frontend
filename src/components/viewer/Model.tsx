@@ -100,6 +100,17 @@ export function Model({ url }: ModelProps) {
                 child.material.metalnessMap.dispose();
             }
           }
+
+          // Clear userData to prevent memory leaks
+          if (child.userData.originalEmissive) {
+            delete child.userData.originalEmissive;
+          }
+          if (child.userData.name) {
+            delete child.userData.name;
+          }
+          if (child.userData.selectable !== undefined) {
+            delete child.userData.selectable;
+          }
         }
       });
     };

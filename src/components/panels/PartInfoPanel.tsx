@@ -40,14 +40,20 @@ export function PartInfoPanel() {
 
   return (
     <div className="absolute right-4 top-4 w-80 rounded-lg border border-gray-700 bg-gray-900/90 p-4 text-white shadow-xl backdrop-blur-sm">
-      <h3 className="mb-3 text-xl font-bold">{partInfo.name}</h3>
+      <h3 className="mb-3 text-xl font-bold">
+        {partInfo.name ?? "Unknown Part"}
+      </h3>
 
       <div className="mb-4 text-sm text-gray-300">
-        <p>{partInfo.description}</p>
+        <p>{partInfo.description ?? "No description available"}</p>
       </div>
 
       <div className="space-y-2 border-t border-gray-700 pt-3">
-        <InfoRow label="Material" value={partInfo.material ?? undefined} />
+        <InfoRow
+          label="Material"
+          value={partInfo.material ?? undefined}
+          isPending={false}
+        />
         <InfoRow
           label="Weight"
           value={partInfo.metadata?.weight as string | undefined}
