@@ -47,25 +47,25 @@ export function PartInfoPanel() {
       </div>
 
       <div className="space-y-2 border-t border-gray-700 pt-3">
-        <InfoRow label="Material" value={partInfo.material} />
+        <InfoRow label="Material" value={partInfo.material ?? undefined} />
         <InfoRow
           label="Weight"
-          value={partInfo.metadata.weight as string}
+          value={partInfo.metadata?.weight as string | undefined}
           isPending={false}
         />
         <InfoRow
           label="Manufacturer"
-          value={partInfo.metadata.manufacturer as string}
+          value={partInfo.metadata?.manufacturer as string | undefined}
           isPending={false}
         />
         <InfoRow
           label="Part Number"
-          value={partInfo.metadata.partNumber as string}
+          value={partInfo.metadata?.partNumber as string | undefined}
           isPending={false}
         />
         <InfoRow
           label="Tolerance"
-          value={partInfo.metadata.tolerance as string}
+          value={partInfo.metadata?.tolerance as string | undefined}
           isPending={false}
         />
       </div>

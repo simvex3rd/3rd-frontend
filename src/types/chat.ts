@@ -31,10 +31,11 @@ export interface ChatSession {
   modelId: number;
 
   /**
-   * 세션 제목
+   * 세션 제목 (DB에서 nullable)
    * 첫 메시지에서 생성되거나 사용자가 직접 지정
+   * 아직 설정되지 않은 경우 null 가능
    */
-  title: string;
+  title: string | null;
 
   /**
    * 마지막 AI 응답 ID (nullable)

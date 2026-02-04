@@ -37,14 +37,15 @@ export interface StudyNote {
   partId: number | null;
 
   /**
-   * 노트 내용 (마크다운 지원)
+   * 노트 내용 (마크다운 지원, DB에서 nullable)
+   * 플레이스홀더 노트인 경우 null 가능
    */
-  content: string;
+  content: string | null;
 
   /**
-   * 마지막 업데이트 시각
+   * 마지막 업데이트 시각 (DB에서 nullable)
    */
-  updatedAt: Date;
+  updatedAt: Date | null;
 }
 
 /**
