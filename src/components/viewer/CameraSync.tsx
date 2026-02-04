@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 import { useThree } from "@react-three/fiber";
 import type { OrbitControls as OrbitControlsImpl } from "three-stdlib";
 import { useSceneStore } from "@/stores/scene-store";
+import { useStoreHydration } from "@/hooks/use-store-hydration";
 
 /**
  * Syncs camera position/rotation/target with Zustand store
@@ -15,7 +16,7 @@ export function CameraSync() {
   const setCameraPosition = useSceneStore((state) => state.setCameraPosition);
   const setCameraRotation = useSceneStore((state) => state.setCameraRotation);
   const setCameraTarget = useSceneStore((state) => state.setCameraTarget);
-  const hasHydrated = useSceneStore((state) => state._hasHydrated);
+  const hasHydrated = useStoreHydration();
 
   // Restore camera only once after hydration (use ref to avoid re-renders)
   const hasRestoredRef = useRef(false);
