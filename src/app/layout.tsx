@@ -47,8 +47,8 @@ export default function RootLayout({
       appearance={{
         baseTheme: dark,
         variables: {
-          colorPrimary: "#3b82f6", // Blue-500
-          colorBackground: "#0a0a0a", // Background color
+          colorPrimary: "#3b82f6", // 파란색-500
+          colorBackground: "#0a0a0a", // 배경색
           colorInputBackground: "#18181b", // Zinc-900
           colorInputText: "#ffffff",
         },
