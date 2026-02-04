@@ -10,10 +10,10 @@ export type Vector4 = { x: number; y: number; z: number; w: number };
  */
 export interface Model {
   id: number;
-  name: string;
-  description: string;
-  thumbnailUrl: string;
-  fileUrl: string;
+  name: string | null;
+  description: string | null;
+  thumbnailUrl: string | null;
+  fileUrl: string | null;
   parts: Part[];
 }
 
@@ -23,10 +23,10 @@ export interface Model {
 export interface Part {
   id: number;
   modelId: number;
-  name: string;
-  description: string;
-  material: string;
-  metadata: Record<string, unknown>; // 중량, 제조사, 규격 등
+  name: string | null;
+  description: string | null;
+  material: string | null;
+  metadata: Record<string, unknown> | null; // 중량, 제조사, 규격 등
   geometries: PartGeometry[]; // 1:N
 }
 
@@ -36,8 +36,8 @@ export interface Part {
 export interface PartGeometry {
   id: number;
   partId: number;
-  initialPos: Vector3; // 초기 위치
-  initialRot: Vector4; // 초기 회전 (Quaternion)
-  initialScale: Vector3; // 초기 스케일
-  explodedPos: Vector3; // 분해도 위치
+  initialPos: Vector3 | null; // 초기 위치
+  initialRot: Vector4 | null; // 초기 회전 (Quaternion)
+  initialScale: Vector3 | null; // 초기 스케일
+  explodedPos: Vector3 | null; // 분해도 위치
 }

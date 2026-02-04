@@ -31,10 +31,11 @@ export interface ChatSession {
   modelId: number;
 
   /**
-   * Session title
+   * Session title (nullable in DB)
    * Generated from first message or user-defined
+   * Can be null if not yet set
    */
-  title: string;
+  title: string | null;
 
   /**
    * Last AI response ID (nullable)
