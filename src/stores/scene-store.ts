@@ -13,19 +13,19 @@ import { devtools, persist, createJSONStorage } from "zustand/middleware";
  * Uses Zustand devtools for debugging in browser extensions.
  */
 interface SceneState {
-  // Model state
+  // 모델 상태
   /** Currently loaded model ID */
   modelId: string | null;
   /** Set the active model ID */
   setModelId: (id: string | null) => void;
 
-  // Part selection
+  // 부품 선택
   /** Currently selected 3D object (mesh name) */
   selectedObject: string | null;
   /** Set the selected object by mesh name */
   setSelectedObject: (id: string | null) => void;
 
-  // Camera state
+  // 카메라 상태
   /** Camera position in 3D space [x, y, z] */
   cameraPosition: [number, number, number];
   /** Camera rotation in Euler angles [x, y, z] */
@@ -43,7 +43,7 @@ interface SceneState {
   /** Reset camera to default position and clear saved state */
   resetCamera: () => void;
 
-  // Explode state
+  // 분해 상태
   /** Explode animation level (0-1, where 0=assembled, 1=fully exploded) */
   explodeLevel: number;
   /** Set explode animation level */
@@ -66,15 +66,15 @@ export const useSceneStore = create<SceneState>()(
   devtools(
     persist(
       (set) => ({
-        // Model state
+        // 모델 상태
         modelId: null,
         setModelId: (id) => set({ modelId: id }),
 
-        // Part selection
+        // 부품 선택
         selectedObject: null,
         setSelectedObject: (id) => set({ selectedObject: id }),
 
-        // Camera state
+        // 카메라 상태
         cameraPosition: [0, 0, 5],
         cameraRotation: [0, 0, 0],
         cameraTarget: [0, 0, 0],
@@ -91,7 +91,7 @@ export const useSceneStore = create<SceneState>()(
             hasSavedCamera: false,
           }),
 
-        // Explode state
+        // 분해 상태
         explodeLevel: 0,
         setExplodeLevel: (level) => set({ explodeLevel: level }),
       }),
@@ -100,7 +100,7 @@ export const useSceneStore = create<SceneState>()(
         storage: createJSONStorage(() => localStorage),
         skipHydration: true,
         partialize: (state) => ({
-          // Only persist these fields
+          // 이 필드들만 영속화
           modelId: state.modelId,
           selectedObject: state.selectedObject,
           cameraPosition: state.cameraPosition,

@@ -1,22 +1,21 @@
 import { Part } from "@/types/model";
 
 /**
- * Mock Part data for development
+ * 개발용 Mock Part 데이터
  *
- * TODO: Replace with actual API calls when backend is ready
- * - Create API service: src/lib/api/parts.ts
- * - Implement: async function fetchPartByMeshName(meshName: string): Promise<Part | undefined>
- * - API endpoint: GET /api/parts?meshName={meshName} or GET /api/models/{modelId}/parts/{partName}
- * - Update getPartByMeshName() to call API instead of using mockParts
+ * TODO: 백엔드 준비되면 실제 API 호출로 교체
+ * - API 서비스 생성: src/lib/api/parts.ts
+ * - 구현: async function fetchPartByMeshName(meshName: string): Promise<Part | undefined>
+ * - API 엔드포인트: GET /api/parts?meshName={meshName} 또는 GET /api/models/{modelId}/parts/{partName}
+ * - getPartByMeshName()을 mockParts 대신 API 호출하도록 업데이트
  */
 export const mockParts: Record<string, Part> = {
   Crankshaft: {
     id: 1,
     modelId: 1,
-    name: "Crankshaft",
-    description:
-      "Main rotating component that converts reciprocating motion to rotational motion",
-    material: "Forged Steel Alloy",
+    name: "크랭크샤프트",
+    description: "왕복 운동을 회전 운동으로 변환하는 주요 회전 부품",
+    material: "단조 강철 합금",
     metadata: {
       weight: "12.5kg",
       manufacturer: "SIMVEX Corp",
@@ -37,9 +36,9 @@ export const mockParts: Record<string, Part> = {
   Piston: {
     id: 2,
     modelId: 1,
-    name: "Piston",
-    description: "Reciprocating component that transfers force to crankshaft",
-    material: "Aluminum Alloy",
+    name: "피스톤",
+    description: "크랭크샤프트로 힘을 전달하는 왕복 운동 부품",
+    material: "알루미늄 합금",
     metadata: {
       weight: "0.8kg",
       manufacturer: "SIMVEX Corp",
@@ -60,9 +59,9 @@ export const mockParts: Record<string, Part> = {
   ConnectingRod: {
     id: 3,
     modelId: 1,
-    name: "Connecting Rod",
-    description: "Links piston to crankshaft",
-    material: "Titanium Alloy",
+    name: "커넥팅 로드",
+    description: "피스톤과 크랭크샤프트를 연결",
+    material: "티타늄 합금",
     metadata: {
       weight: "1.2kg",
       manufacturer: "SIMVEX Corp",
@@ -83,10 +82,10 @@ export const mockParts: Record<string, Part> = {
 };
 
 /**
- * Get Part info by mesh name
+ * 메시 이름으로 Part 정보 가져오기
  *
- * TODO: Replace with API call when backend is ready
- * Example implementation:
+ * TODO: 백엔드 준비되면 API 호출로 교체
+ * 예제 구현:
  * ```
  * export async function getPartByMeshName(meshName: string): Promise<Part | undefined> {
  *   try {
@@ -100,19 +99,19 @@ export const mockParts: Record<string, Part> = {
  * }
  * ```
  *
- * @param meshName - Name from Three.js mesh
- * @returns Part data or undefined
+ * @param meshName - Three.js 메시 이름
+ * @returns Part 데이터 또는 undefined
  */
 export function getPartByMeshName(meshName: string): Part | undefined {
-  // TODO: Replace with API call
+  // TODO: API 호출로 교체
   // return await fetchPartByMeshName(meshName);
 
-  // Try exact match first
+  // 먼저 정확히 일치하는 것 찾기
   if (mockParts[meshName]) {
     return mockParts[meshName];
   }
 
-  // Try case-insensitive search
+  // 대소문자 구분 없이 검색
   const normalizedName = meshName.toLowerCase();
   const matchingKey = Object.keys(mockParts).find(
     (key) => key.toLowerCase() === normalizedName
