@@ -4,11 +4,11 @@ import { useSceneStore } from "@/stores/scene-store";
 import { getPartByMeshName } from "@/lib/mock-data";
 
 /**
- * TODO: Replace mock data with API integration - Track: #12
- * - Implement async fetchPartByMeshName() from @/lib/api/parts
- * - Wrap component in Suspense for loading state
- * - Add error boundary for API failures
- * - Related issue: #13
+ * TODO: Mock 데이터를 API 연동으로 교체 - Track: #12
+ * - @/lib/api/parts에서 async fetchPartByMeshName() 구현
+ * - 로딩 상태를 위해 Suspense로 컴포넌트 감싸기
+ * - API 실패를 위한 error boundary 추가
+ * - 관련 이슈: #13
  */
 
 export function PartInfoPanel() {
