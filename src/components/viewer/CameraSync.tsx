@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { useThree } from "@react-three/fiber";
+import type { OrbitControls as OrbitControlsImpl } from "three-stdlib";
 import { useSceneStore } from "@/stores/scene-store";
 
 /**
@@ -51,12 +52,11 @@ export function CameraSync() {
       setCameraRotation(rot);
     };
 
-    // Type assertion needed because controls type is not specific enough
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (controls as any).addEventListener("end", handleEnd);
+    // Type-safe casting to OrbitControls implementation
+    const orbitControls = controls as OrbitControlsImpl;
+    orbitControls.addEventListener("end", handleEnd);
     return () => {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      (controls as any).removeEventListener("end", handleEnd);
+      orbitControls.removeEventListener("end", handleEnd);
     };
   }, [camera, controls, setCameraPosition, setCameraRotation]);
 
