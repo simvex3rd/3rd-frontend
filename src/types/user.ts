@@ -20,16 +20,16 @@ export interface User {
   id: string;
 
   /**
-   * User email address
-   * Required for authentication
+   * User email address (nullable in DB)
+   * Can be null for OAuth providers without email
    */
-  email: string;
+  email: string | null;
 
   /**
-   * Username (nullable in DB)
-   * Can be null if user hasn't set it yet
+   * Username
+   * Required field in database
    */
-  username: string | null;
+  username: string;
 
   /**
    * Account creation timestamp
@@ -47,8 +47,8 @@ export interface User {
  */
 export interface CreateUserPayload {
   id: string;
-  email: string;
-  username?: string | null;
+  email: string | null;
+  username: string;
 }
 
 /**

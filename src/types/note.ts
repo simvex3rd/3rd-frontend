@@ -37,14 +37,15 @@ export interface StudyNote {
   partId: number | null;
 
   /**
-   * Note content (markdown supported)
+   * Note content (markdown supported, nullable in DB)
+   * Can be null if note is just a placeholder
    */
-  content: string;
+  content: string | null;
 
   /**
-   * Last update timestamp
+   * Last update timestamp (nullable in DB)
    */
-  updatedAt: Date;
+  updatedAt: Date | null;
 }
 
 /**
