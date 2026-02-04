@@ -24,6 +24,24 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const hasClerkKeys =
+    process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY &&
+    !process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY.includes("your_");
+
+  const content = (
+    <html lang="ko">
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+      >
+        {children}
+      </body>
+    </html>
+  );
+
+  if (!hasClerkKeys) {
+    return content;
+  }
+
   return (
     <ClerkProvider
       appearance={{
@@ -36,13 +54,7 @@ export default function RootLayout({
         },
       }}
     >
-      <html lang="ko">
-        <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-        >
-          {children}
-        </body>
-      </html>
+      {content}
     </ClerkProvider>
   );
 }

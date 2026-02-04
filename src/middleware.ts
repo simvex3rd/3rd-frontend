@@ -1,4 +1,10 @@
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
+import { NextResponse } from "next/server";
+
+// Check if Clerk is configured
+const hasClerkKeys =
+  process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY &&
+  !process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY.includes("your_");
 
 /**
  * Public routes that don't require authentication
@@ -20,11 +26,15 @@ const isPublicRoute = createRouteMatcher([
  * - Notes: /api/notes/*
  * - User profile: /api/users/*
  */
-export default clerkMiddleware(async (auth, request) => {
-  if (!isPublicRoute(request)) {
-    await auth.protect();
-  }
-});
+const middleware = hasClerkKeys
+  ? clerkMiddleware(async (auth, request) => {
+      if (!isPublicRoute(request)) {
+        await auth.protect();
+      }
+    })
+  : () => NextResponse.next();
+
+export default middleware;
 
 export const config = {
   matcher: [
