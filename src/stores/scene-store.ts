@@ -2,15 +2,15 @@ import { create } from "zustand";
 import { devtools, persist, createJSONStorage } from "zustand/middleware";
 
 interface SceneState {
-  // Model state
+  // 모델 상태
   modelId: string | null;
   setModelId: (id: string | null) => void;
 
-  // Part selection
+  // 부품 선택
   selectedObject: string | null;
   setSelectedObject: (id: string | null) => void;
 
-  // Camera state
+  // 카메라 상태
   cameraPosition: [number, number, number];
   cameraRotation: [number, number, number];
   cameraTarget: [number, number, number];
@@ -20,7 +20,7 @@ interface SceneState {
   setCameraTarget: (target: [number, number, number]) => void;
   resetCamera: () => void;
 
-  // Explode state
+  // 분해 상태
   explodeLevel: number;
   setExplodeLevel: (level: number) => void;
 }
@@ -29,15 +29,15 @@ export const useSceneStore = create<SceneState>()(
   devtools(
     persist(
       (set) => ({
-        // Model state
+        // 모델 상태
         modelId: null,
         setModelId: (id) => set({ modelId: id }),
 
-        // Part selection
+        // 부품 선택
         selectedObject: null,
         setSelectedObject: (id) => set({ selectedObject: id }),
 
-        // Camera state
+        // 카메라 상태
         cameraPosition: [0, 0, 5],
         cameraRotation: [0, 0, 0],
         cameraTarget: [0, 0, 0],
@@ -54,7 +54,7 @@ export const useSceneStore = create<SceneState>()(
             hasSavedCamera: false,
           }),
 
-        // Explode state
+        // 분해 상태
         explodeLevel: 0,
         setExplodeLevel: (level) => set({ explodeLevel: level }),
       }),
@@ -63,7 +63,7 @@ export const useSceneStore = create<SceneState>()(
         storage: createJSONStorage(() => localStorage),
         skipHydration: true,
         partialize: (state) => ({
-          // Only persist these fields
+          // 이 필드들만 영속화
           modelId: state.modelId,
           selectedObject: state.selectedObject,
           cameraPosition: state.cameraPosition,
