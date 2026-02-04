@@ -13,9 +13,11 @@ interface SceneState {
   // Camera state
   cameraPosition: [number, number, number];
   cameraRotation: [number, number, number];
+  cameraTarget: [number, number, number];
   hasSavedCamera: boolean;
   setCameraPosition: (position: [number, number, number]) => void;
   setCameraRotation: (rotation: [number, number, number]) => void;
+  setCameraTarget: (target: [number, number, number]) => void;
   resetCamera: () => void;
 
   // Explode state
@@ -42,14 +44,17 @@ export const useSceneStore = create<SceneState>()(
         // Camera state
         cameraPosition: [0, 0, 5],
         cameraRotation: [0, 0, 0],
+        cameraTarget: [0, 0, 0],
         hasSavedCamera: false,
         setCameraPosition: (position) =>
           set({ cameraPosition: position, hasSavedCamera: true }),
         setCameraRotation: (rotation) => set({ cameraRotation: rotation }),
+        setCameraTarget: (target) => set({ cameraTarget: target }),
         resetCamera: () =>
           set({
             cameraPosition: [0, 0, 5],
             cameraRotation: [0, 0, 0],
+            cameraTarget: [0, 0, 0],
             hasSavedCamera: false,
           }),
 
@@ -71,6 +76,7 @@ export const useSceneStore = create<SceneState>()(
           selectedObject: state.selectedObject,
           cameraPosition: state.cameraPosition,
           cameraRotation: state.cameraRotation,
+          cameraTarget: state.cameraTarget,
           hasSavedCamera: state.hasSavedCamera,
           explodeLevel: state.explodeLevel,
         }),
