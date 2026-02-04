@@ -60,13 +60,32 @@ nvm use  # Node 버전 자동 로드
 
 ## 🚀 Quick Start
 
-### 1. 설치
+### 1. 환경 변수 설정
+
+```bash
+cp .env.example .env.local
+```
+
+`.env.local` 파일을 열어 Clerk API 키를 설정하세요:
+
+```env
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_test_your_actual_key
+CLERK_SECRET_KEY=sk_test_your_actual_key
+```
+
+**Clerk 키 발급 방법:**
+
+1. [Clerk Dashboard](https://dashboard.clerk.com)에서 애플리케이션 생성
+2. **Publishable Key**와 **Secret Key** 복사
+3. `.env.local`에 붙여넣기
+
+### 2. 설치
 
 ```bash
 pnpm install
 ```
 
-### 2. 개발 서버 실행
+### 3. 개발 서버 실행
 
 ```bash
 pnpm dev
@@ -74,7 +93,7 @@ pnpm dev
 
 http://localhost:3000 에서 확인
 
-### 3. Storybook 실행 (선택)
+### 4. Storybook 실행 (선택)
 
 ```bash
 pnpm storybook
@@ -82,7 +101,7 @@ pnpm storybook
 
 http://localhost:6006 에서 컴포넌트 확인
 
-### 4. 빌드
+### 5. 빌드
 
 ```bash
 pnpm build
