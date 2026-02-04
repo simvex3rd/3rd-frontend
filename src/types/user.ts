@@ -20,16 +20,16 @@ export interface User {
   id: string;
 
   /**
-   * 사용자 이메일 주소
-   * 인증에 필요
+   * 사용자 이메일 주소 (DB에서 nullable)
+   * OAuth 제공자에 따라 null일 수 있음
    */
-  email: string;
+  email: string | null;
 
   /**
-   * 사용자명 (DB에서 nullable)
-   * 아직 설정하지 않은 경우 null 가능
+   * 사용자명
+   * DB에서 필수 필드
    */
-  username: string | null;
+  username: string;
 
   /**
    * 계정 생성 시각
@@ -47,8 +47,8 @@ export interface User {
  */
 export interface CreateUserPayload {
   id: string;
-  email: string;
-  username?: string | null;
+  email: string | null;
+  username: string;
 }
 
 /**
