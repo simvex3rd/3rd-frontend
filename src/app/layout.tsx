@@ -1,13 +1,9 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist_Mono } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
 import { dark } from "@clerk/themes";
+import { Analytics } from "@vercel/analytics/react";
 import "./globals.css";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
@@ -15,9 +11,47 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "SIMVEX - 3D Simulation Platform",
+  title: "SIMVEX - 공학 학습용 3D 기계 부품 뷰어",
   description:
-    "High-performance 3D simulation and visualization platform built with React Three Fiber and Next.js",
+    "3D 시각화를 통한 직관적인 기계 구조 학습 플랫폼. 웹 기반 3D 뷰어로 복잡한 기계 부품의 구조를 쉽게 이해하고 학습할 수 있습니다.",
+  keywords: [
+    "3D 뷰어",
+    "기계 부품",
+    "공학 교육",
+    "3D 시각화",
+    "CAD 뷰어",
+    "기계 학습",
+  ],
+  authors: [{ name: "SIMVEX Team" }],
+  creator: "SIMVEX",
+  publisher: "SIMVEX",
+  openGraph: {
+    title: "SIMVEX - 공학 학습용 3D 기계 부품 뷰어",
+    description: "3D 시각화를 통한 직관적인 기계 구조 학습 플랫폼",
+    url: "https://simvex-3rd.vercel.app",
+    siteName: "SIMVEX",
+    locale: "ko_KR",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "SIMVEX - 공학 학습용 3D 기계 부품 뷰어",
+    description: "3D 시각화를 통한 직관적인 기계 구조 학습 플랫폼",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+  verification: {
+    google: "google-site-verification-placeholder",
+  },
 };
 
 /**
@@ -41,10 +75,9 @@ export default function RootLayout({
 
   const content = (
     <html lang="ko">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <body className={`${geistMono.variable} antialiased`}>
         {children}
+        <Analytics />
       </body>
     </html>
   );
