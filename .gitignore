@@ -50,19 +50,46 @@ storybook-static/
 # IDE
 .vscode/
 .idea/
+.fleet/
 *.swp
 *.swo
 *~
+*.code-workspace
 
 # OS
 Thumbs.db
+.DS_Store
 
 # Logs
 logs/
+*.log
 
 # Temporary
 tmp/
 temp/
 *.tmp
-
 *storybook.log
+
+# Cache
+.turbo/
+.eslintcache
+.stylelintcache
+
+# Test
+.nyc_output/
+playwright-report/
+test-results/
+coverage.json
+
+# Figma
+figma-downloads/
+*.figma
+
+# MCP (Model Context Protocol)
+.mcp.json
+
+# Sisyphus
+.sisyphus
+
+# Private files
+.private/
