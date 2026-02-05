@@ -25,6 +25,16 @@ export const metadata: Metadata = {
   authors: [{ name: "SIMVEX Team" }],
   creator: "SIMVEX",
   publisher: "SIMVEX",
+  manifest: "/manifest.json",
+  icons: {
+    icon: [
+      { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+      { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+      { url: "/icon-192.png", sizes: "192x192", type: "image/png" },
+      { url: "/icon-512.png", sizes: "512x512", type: "image/png" },
+    ],
+    apple: [{ url: "/apple-icon.png", sizes: "180x180", type: "image/png" }],
+  },
   openGraph: {
     title: "SIMVEX - 공학 학습용 3D 기계 부품 뷰어",
     description: "3D 시각화를 통한 직관적인 기계 구조 학습 플랫폼",
@@ -75,6 +85,14 @@ export default function RootLayout({
 
   const content = (
     <html lang="ko">
+      <head>
+        <link
+          rel="stylesheet"
+          as="style"
+          crossOrigin="anonymous"
+          href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css"
+        />
+      </head>
       <body className={`${geistMono.variable} antialiased`}>
         {children}
         <Analytics />
