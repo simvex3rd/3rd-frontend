@@ -51,7 +51,7 @@ export function PartSidebar() {
         </div>
 
         {/* Content Box */}
-        <div className="w-full h-[250px] bg-[rgba(212,212,212,0.3)] border-[3px] border-[var(--primary-cyan)] rounded-[24px] flex items-center justify-center px-[48px] py-[48px]">
+        <div className="w-full h-[250px] bg-[rgba(212,212,212,0.3)] border-[3px] border-[var(--primary-cyan)] rounded-[24px] flex items-center justify-center px-[153px] py-[105px]">
           <p className="font-medium text-[16px] leading-[1.5] text-white text-center">
             {partInfo?.description ||
               `${selectedObject}에 대해 궁금한 점이 있으신가요?`}
@@ -70,7 +70,7 @@ export function PartSidebar() {
         </div>
 
         {/* Content Box */}
-        <div className="w-full h-[250px] bg-[rgba(212,212,212,0.3)] border-[3px] border-[var(--primary-cyan)] rounded-[24px] flex items-center justify-center px-[48px] py-[48px]">
+        <div className="w-full h-[250px] bg-[rgba(212,212,212,0.3)] border-[3px] border-[var(--primary-cyan)] rounded-[24px] flex items-center justify-center px-[153px] py-[105px]">
           {partInfo ? (
             <div className="flex flex-col gap-2 text-center">
               <p className="font-bold text-[18px] leading-[1.4] text-[var(--primary-cyan)]">
