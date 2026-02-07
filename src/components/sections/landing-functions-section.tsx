@@ -29,8 +29,8 @@ export function LandingFunctionsSection() {
       className={cn(
         "min-h-screen snap-start snap-always",
         "flex flex-col items-center justify-center",
-        "px-4 py-12 md:px-8 md:py-24 lg:px-20",
-        "bg-background",
+        "px-20 py-24",
+        "bg-[#171717]",
         "transition-all duration-700 ease-out",
         isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"
       )}
