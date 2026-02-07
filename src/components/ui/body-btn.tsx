@@ -18,10 +18,10 @@ const bodyBtnVariants = cva(
     variants: {
       status: {
         default:
-          "bg-[#737373]/30 border-[#02EEE1] hover:bg-[#1AA9A0]/30 active:bg-[#01645F]/30",
-        primary: "bg-[#02EEE1]/30 border-[#02EEE1]",
-        hover: "bg-[#1AA9A0]/30 border-[#02EEE1]",
-        press: "bg-[#01645F]/30 border-[#02EEE1]",
+          "bg-[var(--gray-500)]/30 border-[var(--primary-cyan)] hover:bg-[var(--primary-cyan-hover)]/30 active:bg-[var(--primary-cyan-press)]/30",
+        primary: "bg-[var(--primary-cyan)]/30 border-[var(--primary-cyan)]",
+        hover: "bg-[var(--primary-cyan-hover)]/30 border-[var(--primary-cyan)]",
+        press: "bg-[var(--primary-cyan-press)]/30 border-[var(--primary-cyan)]",
       },
     },
     defaultVariants: {
@@ -52,7 +52,7 @@ export function BodyBtn({
       )}
       {...props}
     >
-      <span className="font-semibold text-[14px] leading-[1.5] text-[#E5E5E5] text-center">
+      <span className="font-semibold text-[14px] leading-[1.5] text-[var(--gray-200)] text-center">
         {children}
       </span>
     </button>

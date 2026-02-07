@@ -28,12 +28,13 @@ const inputVariants = cva(
     variants: {
       variant: {
         default:
-          "border-[#d4d4d4] bg-white text-[#171717] placeholder:text-[#737373] focus-within:border-[#2b7fff]",
-        focus: "border-[#2b7fff] bg-white text-[#171717]",
-        fill: "border-[#e5e5e5] bg-white text-[#171717]",
-        error: "border-[#fb2c36] bg-white text-[#171717]",
-        success: "border-[#00c950] bg-white text-[#171717]",
-        disable: "border-[#d4d4d4] bg-[#f5f5f5] text-[#d4d4d4]",
+          "border-[var(--gray-300)] bg-white text-[var(--bg-dark)] placeholder:text-[var(--gray-500)] focus-within:border-[var(--blue-primary)]",
+        focus: "border-[var(--blue-primary)] bg-white text-[var(--bg-dark)]",
+        fill: "border-[var(--gray-200)] bg-white text-[var(--bg-dark)]",
+        error: "border-[var(--red-error)] bg-white text-[var(--bg-dark)]",
+        success: "border-[var(--green-success)] bg-white text-[var(--bg-dark)]",
+        disable:
+          "border-[var(--gray-300)] bg-[var(--gray-100)] text-[var(--gray-300)]",
       },
     },
     defaultVariants: {
@@ -74,7 +75,7 @@ export function Input({
         <Icon
           className={cn(
             "h-6 w-6 shrink-0",
-            disabled ? "text-[#d4d4d4]" : "text-[#737373]"
+            disabled ? "text-[var(--gray-300)]" : "text-[var(--gray-500)]"
           )}
         />
       )}
