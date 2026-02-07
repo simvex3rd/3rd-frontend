@@ -48,12 +48,11 @@ export function LandingStudyModelSection() {
         {landingContent.studyModel.heading}
       </h2>
 
-      {/* Model Cards Grid */}
+      {/* Model Cards - Horizontal Row */}
       <div
         className={cn(
-          "grid gap-4 md:gap-6 lg:gap-8",
-          "grid-cols-1 sm:grid-cols-2 lg:grid-cols-4",
-          "max-w-7xl w-full"
+          "flex gap-6 items-center justify-start",
+          "w-full overflow-x-auto"
         )}
       >
         {landingContent.studyModel.models.map((model, index) => (
