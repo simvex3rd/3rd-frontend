@@ -141,12 +141,31 @@
   --sidebar-ring: oklch(0.708 0 0);
 
   /* SIMVEX Brand Colors */
-  --primary-cyan: oklch(0.88 0.15 195); /* rgba(0.01, 0.93, 0.88) */
-  --primary-cyan-hover: oklch(0.7 0.12 195); /* rgba(0.00, 0.66, 0.63) */
-  --primary-cyan-press: oklch(0.48 0.1 195); /* rgba(0.00, 0.39, 0.37) */
+  --primary-cyan: oklch(0.88 0.15 195); /* #02EEE1 - rgba(0.01, 0.93, 0.88) */
+  --primary-cyan-hover: oklch(
+    0.7 0.12 195
+  ); /* #01A9A0 - rgba(0.00, 0.66, 0.63) */
+  --primary-cyan-press: oklch(
+    0.48 0.1 195
+  ); /* #01645F - rgba(0.00, 0.39, 0.37) */
+
+  /* Grayscale */
+  --gray-50: oklch(0.98 0 0); /* #fafafa */
+  --gray-100: oklch(0.96 0 0); /* #f5f5f5 */
+  --gray-200: oklch(0.9 0 0); /* #e5e5e5 */
+  --gray-300: oklch(0.83 0 0); /* #d4d4d4 */
+  --gray-500: oklch(0.45 0 0); /* #737373 */
   --gray-hover: oklch(0.63 0 0); /* rgba(0.63, 0.63, 0.63) */
   --gray-disabled: oklch(0.96 0 0); /* rgba(0.96, 0.96, 0.96) */
-  --bg-dark: oklch(0.09 0 0); /* rgba(0.09, 0.09, 0.09) */
+
+  /* Background */
+  --bg-dark: oklch(0.09 0 0); /* #171717 - rgba(0.09, 0.09, 0.09) */
+  --bg-black: oklch(0 0 0); /* #000000 */
+
+  /* State Colors */
+  --blue-primary: oklch(0.6 0.2 250); /* #2b7fff */
+  --red-error: oklch(0.55 0.22 25); /* #fb2c36 */
+  --green-success: oklch(0.65 0.18 145); /* #00c950 */
 }
 
 .dark {
@@ -186,9 +205,24 @@
   --primary-cyan: oklch(0.85 0.15 195); /* Slightly dimmed for dark mode */
   --primary-cyan-hover: oklch(0.68 0.12 195);
   --primary-cyan-press: oklch(0.46 0.1 195);
+
+  /* Grayscale - Dark Theme */
+  --gray-50: oklch(0.15 0 0); /* Darker for dark mode */
+  --gray-100: oklch(0.2 0 0);
+  --gray-200: oklch(0.25 0 0);
+  --gray-300: oklch(0.4 0 0);
+  --gray-500: oklch(0.55 0 0);
   --gray-hover: oklch(0.6 0 0);
   --gray-disabled: oklch(0.3 0 0); /* Darker for dark mode */
+
+  /* Background - Dark Theme */
   --bg-dark: oklch(0.12 0 0);
+  --bg-black: oklch(0.05 0 0);
+
+  /* State Colors - Dark Theme */
+  --blue-primary: oklch(0.58 0.18 250);
+  --red-error: oklch(0.6 0.2 25);
+  --green-success: oklch(0.62 0.16 145);
 }
 
 /* Typography Scale */
