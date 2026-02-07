@@ -12,10 +12,14 @@ const meta: Meta<typeof MarkdownRenderer> = {
   component: MarkdownRenderer,
   parameters: {
     layout: "padded",
+    backgrounds: {
+      default: "dark",
+      values: [{ name: "dark", value: "#090909" }],
+    },
     docs: {
       description: {
         component:
-          "A comprehensive markdown renderer with syntax highlighting, supporting all common markdown features including headings, lists, code blocks, tables, and more.",
+          "A comprehensive markdown renderer with syntax highlighting, supporting all common markdown features including headings, lists, code blocks, tables, and more. Styled according to Figma design (node-337:1343).",
       },
     },
   },
@@ -307,7 +311,7 @@ export const ChatMessage: Story = {
   },
   decorators: [
     (Story) => (
-      <div className="max-w-[500px] bg-[var(--gray-100)] p-4 rounded-lg">
+      <div className="max-w-[500px] p-4">
         <Story />
       </div>
     ),
@@ -350,7 +354,7 @@ export const DarkTheme: Story = {
   },
   decorators: [
     (Story) => (
-      <div className="dark bg-[var(--bg-dark)] p-6 min-h-screen">
+      <div className="p-6">
         <Story />
       </div>
     ),
@@ -363,8 +367,7 @@ export const DarkTheme: Story = {
 export const CustomStyled: Story = {
   args: {
     children: chatMessageMarkdown,
-    className:
-      "border border-[var(--primary-cyan)] p-4 rounded-lg bg-[var(--card)]",
+    className: "border border-[var(--primary-cyan)] p-4 rounded-lg",
   },
 };
 
@@ -386,7 +389,7 @@ Use \`compact\` mode for **chat bubbles** and narrow containers.
   },
   decorators: [
     (Story) => (
-      <div className="max-w-[276px] bg-[var(--gray-100)] p-3 rounded-lg">
+      <div className="max-w-[276px] p-3">
         <Story />
       </div>
     ),
