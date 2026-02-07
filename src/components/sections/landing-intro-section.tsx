@@ -55,10 +55,10 @@ export function LandingIntroSection() {
         {/* Heading */}
         <h1
           className={cn(
-            "text-center font-bold text-foreground",
-            "text-[32px] leading-tight",
-            "md:text-[52px] md:leading-tight",
-            "lg:text-[96px] lg:leading-tight",
+            "text-left font-extrabold text-foreground whitespace-pre-line",
+            "text-[32px] leading-[1.25]",
+            "md:text-[52px] md:leading-[1.25]",
+            "lg:text-[96px] lg:leading-[1.25]",
             "max-w-4xl"
           )}
         >
@@ -68,21 +68,30 @@ export function LandingIntroSection() {
         {/* Subtitle */}
         <p
           className={cn(
-            "text-center text-muted-foreground",
-            "text-lg md:text-xl lg:text-2xl",
-            "max-w-2xl"
+            "text-left text-[#e5e5e5] whitespace-pre-line font-bold",
+            "text-lg md:text-2xl lg:text-[40px]",
+            "leading-[1.25]",
+            "max-w-[792px]"
           )}
         >
-          {landingContent.intro.subtitle}
+          {landingContent.intro.subtitle.split("3D 인터랙션").map((part, i) =>
+            i === 0 ? (
+              <span key={i}>{part}</span>
+            ) : (
+              <span key={i}>
+                <span className="text-[#02eee1]">3D 인터랙션</span>
+                {part.split("AI 튜터")[0]}
+                <span className="text-[#02eee1]">AI 튜터</span>
+                {part.split("AI 튜터")[1]}
+              </span>
+            )
+          )}
         </p>
 
-        {/* CTA Buttons */}
-        <div className="flex flex-col md:flex-row items-center gap-4 md:gap-6 mt-4 md:mt-8">
+        {/* CTA Button */}
+        <div className="flex items-center mt-4 md:mt-8">
           <CTAButton variant="primary">
             {landingContent.intro.ctaPrimary}
-          </CTAButton>
-          <CTAButton variant="default">
-            {landingContent.intro.ctaSecondary}
           </CTAButton>
         </div>
       </div>
