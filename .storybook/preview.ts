@@ -1,4 +1,5 @@
 import type { Preview } from "@storybook/nextjs-vite";
+import { themes } from "@storybook/theming";
 import "../src/app/globals.css";
 
 const preview: Preview = {
@@ -17,13 +18,16 @@ const preview: Preview = {
       values: [
         {
           name: "dark",
-          value: "#000000",
+          value: "#090909",
         },
         {
           name: "light",
           value: "#ffffff",
         },
       ],
+    },
+    docs: {
+      theme: themes.dark,
     },
   },
 };
