@@ -34,3 +34,11 @@ export const metadata: Metadata = {
     follow: true,
   },
 };
+
+export default function LandingLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return <>{children}</>;
+}
