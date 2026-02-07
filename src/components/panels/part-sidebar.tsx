@@ -2,7 +2,7 @@
 
 import { useSceneStore } from "@/stores/scene-store";
 import { getPartByMeshName } from "@/lib/mock-data";
-import { Sparkles, Box } from "lucide-react";
+import Image from "next/image";
 
 /**
  * Part Sidebar Component
@@ -44,7 +44,13 @@ export function PartSidebar() {
       <div className="flex flex-col gap-4 items-start w-full">
         {/* Header with Icon */}
         <div className="flex gap-4 items-center">
-          <Sparkles className="w-[37px] h-[37px] text-[var(--primary-cyan)]" />
+          <Image
+            src="/icons/ai-assistant.svg"
+            alt="AI Assistant"
+            width={37}
+            height={37}
+            className="shrink-0"
+          />
           <h2 className="font-semibold text-[32px] leading-[1.25] text-[var(--primary-cyan)]">
             AI Assistant
           </h2>
@@ -63,7 +69,13 @@ export function PartSidebar() {
       <div className="flex flex-col gap-4 items-start w-full">
         {/* Header with Icon */}
         <div className="flex gap-4 items-start">
-          <Box className="w-[37px] h-[38px] text-[var(--primary-cyan)]" />
+          <Image
+            src="/icons/part-info.svg"
+            alt="Part Info"
+            width={37}
+            height={38}
+            className="shrink-0"
+          />
           <h2 className="font-semibold text-[32px] leading-[1.25] text-[var(--primary-cyan)]">
             Part Info
           </h2>
