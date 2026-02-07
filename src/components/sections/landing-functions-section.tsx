@@ -60,12 +60,11 @@ export function LandingFunctionsSection() {
           )}
       </h2>
 
-      {/* Feature Cards Grid */}
+      {/* Feature Cards - Horizontal Row */}
       <div
         className={cn(
-          "grid gap-4 md:gap-6 lg:gap-8",
-          "grid-cols-1 md:grid-cols-2",
-          "max-w-7xl w-full"
+          "flex gap-12 items-center justify-center",
+          "w-full max-w-[1760px]"
         )}
       >
         {landingContent.functions.features.map((feature, index) => (
