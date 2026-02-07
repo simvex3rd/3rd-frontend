@@ -51,3 +51,63 @@ export const Interactive: Story = {
     );
   },
 };
+
+export const PartClick: Story = {
+  args: {
+    value: 1,
+    label: "Part Click Zoom",
+    variant: "part-click",
+  },
+};
+
+export const PartClickInteractive: Story = {
+  args: {},
+  render: () => {
+    const [value, setValue] = useState(1);
+    return (
+      <div className="flex flex-col items-center gap-12">
+        <SlideBar
+          value={value}
+          onChange={setValue}
+          label="Part Click Zoom Level"
+          variant="part-click"
+        />
+        <div className="text-white">
+          <p className="text-center text-2xl font-bold">
+            ZOOM LEVEL: <span className="text-(--primary-cyan)">{value}</span>
+          </p>
+        </div>
+      </div>
+    );
+  },
+};
+
+export const Comparison: Story = {
+  args: {},
+  render: () => {
+    const [defaultValue, setDefaultValue] = useState(5);
+    const [partClickValue, setPartClickValue] = useState(5);
+    return (
+      <div className="flex flex-col items-center gap-20">
+        <div className="flex flex-col items-center gap-4">
+          <p className="text-white text-sm font-medium">Default (1200px)</p>
+          <SlideBar
+            value={defaultValue}
+            onChange={setDefaultValue}
+            label="Default Zoom Level"
+            variant="default"
+          />
+        </div>
+        <div className="flex flex-col items-center gap-4">
+          <p className="text-white text-sm font-medium">Part Click (960px)</p>
+          <SlideBar
+            value={partClickValue}
+            onChange={setPartClickValue}
+            label="Part Click Zoom Level"
+            variant="part-click"
+          />
+        </div>
+      </div>
+    );
+  },
+};

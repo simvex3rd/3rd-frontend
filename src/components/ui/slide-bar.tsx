@@ -2,6 +2,7 @@
 
 import { cn } from "@/lib/utils";
 import { useState, useCallback, type HTMLAttributes } from "react";
+import { cva, type VariantProps } from "class-variance-authority";
 
 /**
  * Slide bar component with 10 zoom levels and keyboard accessibility.
@@ -22,14 +23,27 @@ import { useState, useCallback, type HTMLAttributes } from "react";
  * @param {string} [props.label] - Accessible label
  * @param {number} [props.min=1] - Minimum value
  * @param {number} [props.max=10] - Maximum value
+ * @param {"default" | "part-click"} [props.variant="default"] - Visual variant (1200px or 960px width)
  *
  * @see {@link https://figma.com/file/Vz80RydxWcYHVnn2iuyV0m/SIMVEX} Figma Design
  */
 
-export interface SlideBarProps extends Omit<
-  HTMLAttributes<HTMLDivElement>,
-  "onChange"
-> {
+const slideBarVariants = cva("relative h-[57px] select-none", {
+  variants: {
+    variant: {
+      default: "w-[1200px]",
+      "part-click": "w-[960px]",
+    },
+  },
+  defaultVariants: {
+    variant: "default",
+  },
+});
+
+export interface SlideBarProps
+  extends
+    Omit<HTMLAttributes<HTMLDivElement>, "onChange">,
+    VariantProps<typeof slideBarVariants> {
   value?: number;
   onChange?: (value: number) => void;
   label?: string;
@@ -44,6 +58,7 @@ export function SlideBar({
   label = "Zoom level",
   min = 1,
   max = 10,
+  variant = "default",
   ...props
 }: SlideBarProps) {
   const [internalValue, setInternalValue] = useState(1);
@@ -58,16 +73,18 @@ export function SlideBar({
     [min, max, onChange]
   );
 
-  // Position calculation for the 120px wide thumb on a 1200px track
+  // Track width varies by variant: 1200px (default) or 960px (part-click)
+  const trackWidth = variant === "part-click" ? 960 : 1200;
+  const thumbWidth = 120;
+
+  // Position calculation for the 120px wide thumb
   // At min (1), left = 0px
-  // At max (10), left = 1080px (1200 - 120)
-  const thumbPosition = ((value - min) / (max - min)) * (1200 - 120);
+  // At max (10), left = trackWidth - thumbWidth
+  const thumbPosition =
+    ((value - min) / (max - min)) * (trackWidth - thumbWidth);
 
   return (
-    <div
-      className={cn("relative h-[57px] w-[1200px] select-none", className)}
-      {...props}
-    >
+    <div className={cn(slideBarVariants({ variant }), className)} {...props}>
       {/* Track */}
       <div className="absolute top-[21px] h-[16px] w-full rounded-full bg-[#D9D9D9] shadow-[inset_0px_4px_4px_rgba(0,0,0,0.25)]" />
 
