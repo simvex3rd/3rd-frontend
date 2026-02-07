@@ -35,7 +35,7 @@ export function AiAssistant({
             viewBox="0 0 24 24"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
-            className="w-full h-full text-[#02EEE1]"
+            className="w-full h-full text-[var(--primary-cyan)]"
           >
             <path
               d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM12 20C7.59 20 4 16.41 4 12C4 7.59 7.59 4 12 4C16.41 4 20 7.59 20 12C20 16.41 16.41 20 12 20Z"
@@ -50,13 +50,13 @@ export function AiAssistant({
             />
           </svg>
         </div>
-        <h2 className="font-semibold text-[32px] leading-[1.25] text-[#02EEE1]">
+        <h2 className="font-semibold text-[32px] leading-[1.25] text-[var(--primary-cyan)]">
           {title}
         </h2>
       </div>
 
       {/* Content Box */}
-      <div className="w-full h-[250px] flex items-center justify-center px-[30px] py-[30px] bg-[#D4D4D4]/30 border-[3px] border-[#02EEE1] rounded-[24px] backdrop-blur-sm">
+      <div className="w-full h-[250px] flex items-center justify-center px-[30px] py-[30px] bg-[var(--gray-300)]/30 border-[3px] border-[var(--primary-cyan)] rounded-[24px] backdrop-blur-sm">
         <p className="font-medium text-[16px] leading-[1.5] text-white whitespace-pre-wrap">
           {text}
         </p>
