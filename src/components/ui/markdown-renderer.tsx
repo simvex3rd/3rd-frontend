@@ -6,6 +6,7 @@ import "highlight.js/styles/github-dark.css";
 
 /**
  * Markdown renderer component with syntax highlighting for code blocks.
+ * Styled according to Figma design specs (node-337:1343).
  *
  * @component
  * @example
@@ -37,9 +38,8 @@ export function MarkdownRenderer({
   return (
     <div
       className={cn(
-        "markdown-renderer",
-        "text-[var(--body-md)] leading-[var(--body-line-height)]",
-        "text-[var(--foreground)]",
+        "markdown-renderer flex flex-col gap-4",
+        compact && "gap-2",
         className
       )}
       {...props}
@@ -47,132 +47,99 @@ export function MarkdownRenderer({
       <ReactMarkdown
         rehypePlugins={[rehypeHighlight]}
         components={{
-          // Headings
+          // Headings - Figma: 16px bold #fafafa
           h1: ({ children }) => (
-            <h1
-              className={cn(
-                "text-[var(--heading-lg)] leading-[var(--heading-line-height)]",
-                "font-bold text-[var(--foreground)]",
-                compact ? "mb-2" : "mb-4"
-              )}
-            >
+            <h1 className="text-[16px] font-bold leading-[1.5] text-[#fafafa] mb-0">
               {children}
             </h1>
           ),
           h2: ({ children }) => (
-            <h2
-              className={cn(
-                "text-[var(--heading-md)] leading-[var(--heading-line-height)]",
-                "font-semibold text-[var(--foreground)]",
-                compact ? "mb-2 mt-3" : "mb-3 mt-6"
-              )}
-            >
+            <h2 className="text-[16px] font-bold leading-[1.5] text-[#fafafa] mb-0">
               {children}
             </h2>
           ),
           h3: ({ children }) => (
-            <h3
-              className={cn(
-                "text-[var(--heading-sm)] leading-[var(--heading-line-height)]",
-                "font-semibold text-[var(--foreground)]",
-                compact ? "mb-1.5 mt-2.5" : "mb-2 mt-4"
-              )}
-            >
+            <h3 className="text-[16px] font-bold leading-[1.5] text-[#fafafa] mb-0">
               {children}
             </h3>
           ),
           h4: ({ children }) => (
-            <h4
-              className={cn(
-                "text-[var(--heading-xs)] leading-[var(--heading-line-height)]",
-                "font-semibold text-[var(--foreground)]",
-                compact ? "mb-1.5 mt-2" : "mb-2 mt-3"
-              )}
-            >
+            <h4 className="text-[16px] font-bold leading-[1.5] text-[#fafafa] mb-0">
               {children}
             </h4>
           ),
-
-          // Paragraphs
-          p: ({ children }) => (
-            <p className={compact ? "mb-2" : "mb-4"}>{children}</p>
+          h5: ({ children }) => (
+            <h5 className="text-[16px] font-bold leading-[1.5] text-[#fafafa] mb-0">
+              {children}
+            </h5>
+          ),
+          h6: ({ children }) => (
+            <h6 className="text-[16px] font-bold leading-[1.5] text-[#fafafa] mb-0">
+              {children}
+            </h6>
           ),
 
-          // Lists
+          // Paragraphs - Figma: 14px medium #d4d4d4
+          p: ({ children }) => (
+            <p className="text-[14px] font-medium leading-[1.5] text-[#d4d4d4] mb-0">
+              {children}
+            </p>
+          ),
+
+          // Lists - Figma: 14px medium #d4d4d4
           ul: ({ children }) => (
-            <ul
-              className={cn(
-                "list-disc list-inside",
-                compact ? "mb-2 space-y-1" : "mb-4 space-y-2"
-              )}
-            >
+            <ul className="list-disc list-inside text-[14px] font-medium text-[#d4d4d4] mb-0">
               {children}
             </ul>
           ),
           ol: ({ children }) => (
-            <ol
-              className={cn(
-                "list-decimal list-inside",
-                compact ? "mb-2 space-y-1" : "mb-4 space-y-2"
-              )}
-            >
+            <ol className="list-decimal list-inside text-[14px] font-medium text-[#d4d4d4] mb-0">
               {children}
             </ol>
           ),
           li: ({ children }) => (
-            <li className="text-[var(--foreground)]">{children}</li>
+            <li className="text-[14px] font-medium leading-[1.5] text-[#d4d4d4]">
+              {children}
+            </li>
           ),
 
-          // Code
+          // Code - Figma: rgba(1,100,95,0.5) bg, cyan border, white text
           code: ({ className, children, ...props }) => {
             const isInline = !className;
             return isInline ? (
               <code
-                className="bg-[var(--gray-100)] dark:bg-[var(--gray-300)] text-[var(--primary-cyan)] px-1.5 py-0.5 rounded text-[0.9em] font-mono"
+                className="bg-[rgba(1,100,95,0.5)] border border-[var(--primary-cyan)] rounded px-1 text-[14px] font-medium text-white"
                 {...props}
               >
                 {children}
               </code>
             ) : (
-              <code className={className} {...props}>
+              <code
+                className="text-[14px] font-medium leading-[1.5] text-white"
+                {...props}
+              >
                 {children}
               </code>
             );
           },
           pre: ({ children }) => (
-            <pre
-              className={cn(
-                "bg-[var(--gray-100)] dark:bg-[var(--bg-dark)]",
-                "border border-[var(--gray-300)]",
-                "rounded-lg p-4 overflow-x-auto",
-                "font-mono text-[var(--body-sm)]",
-                compact ? "mb-2" : "mb-4"
-              )}
-            >
+            <pre className="bg-[rgba(1,100,95,0.5)] border-2 border-[var(--primary-cyan)] rounded-[16px] p-4 mb-0 overflow-x-auto">
               {children}
             </pre>
           ),
 
-          // Blockquote
+          // Blockquote - Figma: cyan color
           blockquote: ({ children }) => (
-            <blockquote
-              className={cn(
-                "border-l-4 border-[var(--primary-cyan)] pl-4 py-2",
-                "bg-[var(--gray-50)] dark:bg-[var(--gray-100)]",
-                "text-[var(--gray-500)]",
-                "italic",
-                compact ? "mb-2" : "mb-4"
-              )}
-            >
+            <blockquote className="border-l-4 border-[var(--primary-cyan)] pl-4 text-[14px] font-medium leading-[1.5] text-[var(--primary-cyan)] mb-0">
               {children}
             </blockquote>
           ),
 
-          // Links
+          // Links - cyan with hover
           a: ({ href, children }) => (
             <a
               href={href}
-              className="text-[var(--primary-cyan)] hover:text-[var(--primary-cyan-hover)] underline transition-colors"
+              className="text-[var(--primary-cyan)] hover:underline transition-colors"
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -181,49 +148,40 @@ export function MarkdownRenderer({
           ),
 
           // Horizontal rule
-          hr: () => (
-            <hr
-              className={cn(
-                "border-[var(--gray-300)]",
-                compact ? "my-2" : "my-6"
-              )}
-            />
-          ),
+          hr: () => <hr className="border-[var(--gray-300)] my-4" />,
 
-          // Emphasis
+          // Emphasis - Figma colors
           strong: ({ children }) => (
-            <strong className="font-bold text-[var(--foreground)]">
-              {children}
-            </strong>
+            <strong className="font-bold text-[#fafafa]">{children}</strong>
           ),
           em: ({ children }) => (
-            <em className="italic text-[var(--foreground)]">{children}</em>
+            <em className="italic text-[#d4d4d4]">{children}</em>
           ),
 
           // Table
           table: ({ children }) => (
-            <div className={cn("overflow-x-auto", compact ? "mb-2" : "mb-4")}>
-              <table className="min-w-full border-collapse border border-[var(--gray-300)]">
+            <div className="overflow-x-auto mb-0">
+              <table className="min-w-full border-collapse border-2 border-[var(--primary-cyan)]">
                 {children}
               </table>
             </div>
           ),
           thead: ({ children }) => (
-            <thead className="bg-[var(--gray-100)] dark:bg-[var(--gray-200)]">
-              {children}
-            </thead>
+            <thead className="bg-[rgba(1,100,95,0.3)]">{children}</thead>
           ),
           tbody: ({ children }) => <tbody>{children}</tbody>,
           tr: ({ children }) => (
-            <tr className="border-b border-[var(--gray-300)]">{children}</tr>
+            <tr className="border-b border-[var(--primary-cyan)]">
+              {children}
+            </tr>
           ),
           th: ({ children }) => (
-            <th className="px-4 py-2 text-left font-semibold text-[var(--foreground)]">
+            <th className="px-4 py-2 text-left font-semibold text-[#fafafa] text-[14px]">
               {children}
             </th>
           ),
           td: ({ children }) => (
-            <td className="px-4 py-2 text-[var(--foreground)]">{children}</td>
+            <td className="px-4 py-2 text-[#d4d4d4] text-[14px]">{children}</td>
           ),
         }}
       >
