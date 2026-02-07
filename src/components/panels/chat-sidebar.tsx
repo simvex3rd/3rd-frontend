@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import { MessageCirclePlus } from "lucide-react";
+import Image from "next/image";
 import type { HTMLAttributes } from "react";
 
 /**
@@ -58,21 +58,13 @@ export function ChatSidebar({
     >
       {/* Hamburger Icon - 40x40 (상단) */}
       <div className="w-[40px] h-[40px] shrink-0 flex items-center justify-center">
-        <svg
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          className="text-[#e5e5e5]"
-        >
-          <path
-            d="M3 12H21M3 6H21M3 18H21"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-          />
-        </svg>
+        <Image
+          src="/icons/hamburger.svg"
+          alt="Menu"
+          width={40}
+          height={40}
+          className="shrink-0"
+        />
       </div>
 
       {/* New Chat + History (하단) */}
@@ -83,10 +75,12 @@ export function ChatSidebar({
           className="flex items-center gap-2 transition-colors hover:opacity-80 active:opacity-60"
           aria-label="New chat"
         >
-          <MessageCirclePlus
-            size={24}
-            className="shrink-0 text-[#e5e5e5]"
-            strokeWidth={1.5}
+          <Image
+            src="/icons/chat.svg"
+            alt="New Chat"
+            width={24}
+            height={24}
+            className="shrink-0"
           />
           <p className="font-semibold text-[16px] leading-[1.5] text-[#e5e5e5]">
             New Chat
