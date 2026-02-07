@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 
 export const metadata: Metadata = {
   title: "SIMVEX - 시뮬레이션으로 미래를 설계하다",
@@ -24,15 +24,16 @@ export const metadata: Metadata = {
     title: "SIMVEX - 시뮬레이션으로 미래를 설계하다",
     description: "3D 시뮬레이션 기반 학습 플랫폼",
   },
-  viewport: {
-    width: "device-width",
-    initialScale: 1,
-    maximumScale: 5,
-  },
   robots: {
     index: true,
     follow: true,
   },
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
 };
 
 export default function LandingLayout({
