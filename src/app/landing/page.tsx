@@ -5,8 +5,6 @@ import { LandingFunctionsSection } from "@/components/sections/landing-functions
 import { LandingStudyModelSection } from "@/components/sections/landing-study-model-section";
 import { LandingFooterSection } from "@/components/sections/landing-footer-section";
 
-export { metadata } from "./metadata";
-
 /**
  * Landing page with scroll-snap sections.
  *

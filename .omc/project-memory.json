@@ -1,0 +1,477 @@
+{
+  "version": "1.0.0",
+  "lastScanned": 1770485025174,
+  "projectRoot": "/Users/justn/Projects/3rd-frontend",
+  "techStack": {
+    "languages": [
+      {
+        "name": "JavaScript/TypeScript",
+        "version": null,
+        "confidence": "high",
+        "markers": ["package.json"]
+      },
+      {
+        "name": "TypeScript",
+        "version": null,
+        "confidence": "high",
+        "markers": ["tsconfig.json"]
+      }
+    ],
+    "frameworks": [
+      {
+        "name": "next",
+        "version": "16.1.6",
+        "category": "fullstack"
+      },
+      {
+        "name": "react",
+        "version": "19.2.3",
+        "category": "frontend"
+      },
+      {
+        "name": "react-dom",
+        "version": "19.2.3",
+        "category": "frontend"
+      },
+      {
+        "name": "vite",
+        "version": "7.3.1",
+        "category": "build"
+      }
+    ],
+    "packageManager": "pnpm",
+    "runtime": null
+  },
+  "build": {
+    "buildCommand": "pnpm build",
+    "testCommand": null,
+    "lintCommand": "pnpm lint",
+    "devCommand": "pnpm dev",
+    "scripts": {
+      "dev": "next dev",
+      "build": "next build",
+      "start": "next start",
+      "lint": "eslint",
+      "lint:fix": "eslint --fix",
+      "format": "prettier --write \"src/**/*.{ts,tsx,css,json}\"",
+      "format:check": "prettier --check \"src/**/*.{ts,tsx,css,json}\"",
+      "type-check": "tsc --noEmit",
+      "storybook": "storybook dev -p 6006",
+      "build-storybook": "storybook build",
+      "prepare": "husky"
+    }
+  },
+  "conventions": {
+    "namingStyle": null,
+    "importStyle": "ES modules",
+    "testPattern": null,
+    "fileOrganization": "type-based"
+  },
+  "structure": {
+    "isMonorepo": true,
+    "workspaces": [],
+    "mainDirectories": ["docs", "public", "scripts", "src"],
+    "gitBranches": {
+      "defaultBranch": "main",
+      "branchingStrategy": null
+    }
+  },
+  "customNotes": [],
+  "directoryMap": {
+    "docs": {
+      "path": "docs",
+      "purpose": "Documentation",
+      "fileCount": 5,
+      "lastAccessed": 1770485025145,
+      "keyFiles": [
+        "ARCHITECTURE.md",
+        "DESIGN_TOKENS.md",
+        "DEVELOPMENT_GUIDE.md",
+        "TROUBLESHOOTING.md",
+        "TYPE_MAPPING.md"
+      ]
+    },
+    "public": {
+      "path": "public",
+      "purpose": "Public files",
+      "fileCount": 8,
+      "lastAccessed": 1770485025149,
+      "keyFiles": [
+        "favicon-16x16.png",
+        "favicon-32x32.png",
+        "favicon.ico",
+        "grid.svg",
+        "icon-192.png"
+      ]
+    },
+    "scripts": {
+      "path": "scripts",
+      "purpose": "Build/utility scripts",
+      "fileCount": 2,
+      "lastAccessed": 1770485025150,
+      "keyFiles": ["generate-favicons.mjs", "svg-to-png.mjs"]
+    },
+    "src": {
+      "path": "src",
+      "purpose": "Source code",
+      "fileCount": 1,
+      "lastAccessed": 1770485025150,
+      "keyFiles": ["middleware.ts"]
+    },
+    "storybook-static": {
+      "path": "storybook-static",
+      "purpose": null,
+      "fileCount": 19,
+      "lastAccessed": 1770485025151,
+      "keyFiles": [
+        "favicon-16x16.png",
+        "favicon-32x32.png",
+        "favicon-wrapper.svg",
+        "favicon.ico",
+        "favicon.svg"
+      ]
+    },
+    "src/app": {
+      "path": "src/app",
+      "purpose": "Application code",
+      "fileCount": 8,
+      "lastAccessed": 1770485025151,
+      "keyFiles": ["apple-icon.png", "favicon.ico", "globals.css"]
+    },
+    "src/components": {
+      "path": "src/components",
+      "purpose": "UI components",
+      "fileCount": 0,
+      "lastAccessed": 1770485025151,
+      "keyFiles": []
+    },
+    "src/lib": {
+      "path": "src/lib",
+      "purpose": "Library code",
+      "fileCount": 4,
+      "lastAccessed": 1770485025152,
+      "keyFiles": ["env.ts", "mock-data.ts", "sanitize.ts"]
+    },
+    "src/types": {
+      "path": "src/types",
+      "purpose": "Type definitions",
+      "fileCount": 6,
+      "lastAccessed": 1770485025152,
+      "keyFiles": ["api.ts", "chat.ts", "model.ts"]
+    },
+    "storybook-static/assets": {
+      "path": "storybook-static/assets",
+      "purpose": "Static assets",
+      "fileCount": 64,
+      "lastAccessed": 1770485025152,
+      "keyFiles": [
+        "Button.stories-Dcxp5gXN.js",
+        "Color-6BZIO3FS-BfG1qIrT.js",
+        "DocsRenderer-LL677BLK-B9SHUUA9.js"
+      ]
+    }
+  },
+  "hotPaths": [
+    {
+      "path": "src/components/panels/part-sidebar.tsx",
+      "accessCount": 6,
+      "lastAccessed": 1770488044295,
+      "type": "file"
+    },
+    {
+      "path": "src/components/ui/markdown-renderer.stories.tsx",
+      "accessCount": 6,
+      "lastAccessed": 1770488276959,
+      "type": "file"
+    },
+    {
+      "path": "src/components/ui/cta-button.tsx",
+      "accessCount": 5,
+      "lastAccessed": 1770490059448,
+      "type": "file"
+    },
+    {
+      "path": "src/components/panels/footer.tsx",
+      "accessCount": 5,
+      "lastAccessed": 1770490094890,
+      "type": "file"
+    },
+    {
+      "path": "src/components/ui/value-card.tsx",
+      "accessCount": 5,
+      "lastAccessed": 1770490123031,
+      "type": "file"
+    },
+    {
+      "path": "src/components/ui/model-card.tsx",
+      "accessCount": 5,
+      "lastAccessed": 1770490157780,
+      "type": "file"
+    },
+    {
+      "path": "src/components/panels/chat-sidebar.tsx",
+      "accessCount": 4,
+      "lastAccessed": 1770488059723,
+      "type": "file"
+    },
+    {
+      "path": "src",
+      "accessCount": 4,
+      "lastAccessed": 1770489362033,
+      "type": "directory"
+    },
+    {
+      "path": "src/app/page.tsx",
+      "accessCount": 4,
+      "lastAccessed": 1770489813997,
+      "type": "file"
+    },
+    {
+      "path": "src/components/ui/logo.tsx",
+      "accessCount": 4,
+      "lastAccessed": 1770490246276,
+      "type": "file"
+    },
+    {
+      "path": "src/components/common/Icon.tsx",
+      "accessCount": 4,
+      "lastAccessed": 1770490250638,
+      "type": "file"
+    },
+    {
+      "path": "src/components/ui/part-popup.stories.tsx",
+      "accessCount": 3,
+      "lastAccessed": 1770488256635,
+      "type": "file"
+    },
+    {
+      "path": "src/components/layouts/main-layout.tsx",
+      "accessCount": 3,
+      "lastAccessed": 1770489348580,
+      "type": "file"
+    },
+    {
+      "path": "src/components/panels/login-header.tsx",
+      "accessCount": 3,
+      "lastAccessed": 1770489349043,
+      "type": "file"
+    },
+    {
+      "path": "src/app/globals.css",
+      "accessCount": 3,
+      "lastAccessed": 1770489354485,
+      "type": "file"
+    },
+    {
+      "path": "package.json",
+      "accessCount": 3,
+      "lastAccessed": 1770489358776,
+      "type": "file"
+    },
+    {
+      "path": "src/components/panels/navigation.tsx",
+      "accessCount": 3,
+      "lastAccessed": 1770489370484,
+      "type": "file"
+    },
+    {
+      "path": "src/components/panels/chat-sidebar.stories.tsx",
+      "accessCount": 2,
+      "lastAccessed": 1770488311665,
+      "type": "file"
+    },
+    {
+      "path": "src/components/panels/part-sidebar.stories.tsx",
+      "accessCount": 2,
+      "lastAccessed": 1770488316283,
+      "type": "file"
+    },
+    {
+      "path": ".storybook/preview.ts",
+      "accessCount": 2,
+      "lastAccessed": 1770488447917,
+      "type": "file"
+    },
+    {
+      "path": "src/components",
+      "accessCount": 2,
+      "lastAccessed": 1770489234948,
+      "type": "directory"
+    },
+    {
+      "path": "src/components/ui/button.tsx",
+      "accessCount": 2,
+      "lastAccessed": 1770489238242,
+      "type": "file"
+    },
+    {
+      "path": "src/components/ui/card.tsx",
+      "accessCount": 2,
+      "lastAccessed": 1770489238430,
+      "type": "file"
+    },
+    {
+      "path": "src/components/ui",
+      "accessCount": 2,
+      "lastAccessed": 1770489238558,
+      "type": "directory"
+    },
+    {
+      "path": "src/app/layout.tsx",
+      "accessCount": 2,
+      "lastAccessed": 1770489365100,
+      "type": "file"
+    },
+    {
+      "path": "src/components/ui/value-card.stories.tsx",
+      "accessCount": 2,
+      "lastAccessed": 1770489369882,
+      "type": "file"
+    },
+    {
+      "path": "src/components/ui/slide-bar.tsx",
+      "accessCount": 1,
+      "lastAccessed": 1770485152748,
+      "type": "file"
+    },
+    {
+      "path": "src/components/ui/markdown-renderer.tsx",
+      "accessCount": 1,
+      "lastAccessed": 1770485153223,
+      "type": "file"
+    },
+    {
+      "path": "src/components/ui/part-popup.tsx",
+      "accessCount": 1,
+      "lastAccessed": 1770485153732,
+      "type": "file"
+    },
+    {
+      "path": "public/icons/ai-assistant.svg",
+      "accessCount": 1,
+      "lastAccessed": 1770487958409,
+      "type": "file"
+    },
+    {
+      "path": "public/icons/part-info.svg",
+      "accessCount": 1,
+      "lastAccessed": 1770488002513,
+      "type": "file"
+    },
+    {
+      "path": "public/icons/hamburger.svg",
+      "accessCount": 1,
+      "lastAccessed": 1770488004259,
+      "type": "file"
+    },
+    {
+      "path": "public/icons/chat.svg",
+      "accessCount": 1,
+      "lastAccessed": 1770488026629,
+      "type": "file"
+    },
+    {
+      "path": "src/components/ui/slide-bar.stories.tsx",
+      "accessCount": 1,
+      "lastAccessed": 1770488160109,
+      "type": "file"
+    },
+    {
+      "path": "src/app/sign-in/[[...sign-in]]/page.tsx",
+      "accessCount": 1,
+      "lastAccessed": 1770489220621,
+      "type": "file"
+    },
+    {
+      "path": "src/app/sign-up/[[...sign-up]]/page.tsx",
+      "accessCount": 1,
+      "lastAccessed": 1770489220863,
+      "type": "file"
+    },
+    {
+      "path": "",
+      "accessCount": 1,
+      "lastAccessed": 1770489223921,
+      "type": "directory"
+    },
+    {
+      "path": "src/components/ui/link-button.tsx",
+      "accessCount": 1,
+      "lastAccessed": 1770489225563,
+      "type": "file"
+    },
+    {
+      "path": "src/components/ui/icon-button.tsx",
+      "accessCount": 1,
+      "lastAccessed": 1770489225781,
+      "type": "file"
+    },
+    {
+      "path": "src/app",
+      "accessCount": 1,
+      "lastAccessed": 1770489226759,
+      "type": "directory"
+    },
+    {
+      "path": "src/components/ui/text-field.tsx",
+      "accessCount": 1,
+      "lastAccessed": 1770489228222,
+      "type": "file"
+    },
+    {
+      "path": "src/components/viewer/SceneCanvas.tsx",
+      "accessCount": 1,
+      "lastAccessed": 1770489228368,
+      "type": "file"
+    },
+    {
+      "path": "src/components/ui/input.tsx",
+      "accessCount": 1,
+      "lastAccessed": 1770489228378,
+      "type": "file"
+    },
+    {
+      "path": "src/components/viewer/Model.tsx",
+      "accessCount": 1,
+      "lastAccessed": 1770489228729,
+      "type": "file"
+    },
+    {
+      "path": "src/components/ui/help-message.tsx",
+      "accessCount": 1,
+      "lastAccessed": 1770489230945,
+      "type": "file"
+    },
+    {
+      "path": "src/components/ui/label.tsx",
+      "accessCount": 1,
+      "lastAccessed": 1770489231180,
+      "type": "file"
+    },
+    {
+      "path": "src/hooks/use-store-hydration.ts",
+      "accessCount": 1,
+      "lastAccessed": 1770489236991,
+      "type": "file"
+    },
+    {
+      "path": "src/stores/scene-store.ts",
+      "accessCount": 1,
+      "lastAccessed": 1770489238838,
+      "type": "file"
+    },
+    {
+      "path": "src/components/ui/card.stories.tsx",
+      "accessCount": 1,
+      "lastAccessed": 1770489241118,
+      "type": "file"
+    },
+    {
+      "path": "src/components/panels/PartInfoPanel.tsx",
+      "accessCount": 1,
+      "lastAccessed": 1770489245497,
+      "type": "file"
+    }
+  ],
+  "userDirectives": []
+}
