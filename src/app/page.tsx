@@ -1,30 +1,39 @@
 "use client";
 
-import { SceneCanvas } from "@/components/viewer/SceneCanvas";
-import { Model } from "@/components/viewer/Model";
-import { PartInfoPanel } from "@/components/panels/PartInfoPanel";
-import { useStoreHydration } from "@/hooks/use-store-hydration";
+import { LandingIntroSection } from "@/components/sections/landing-intro-section";
+import { LandingFunctionsSection } from "@/components/sections/landing-functions-section";
+import { LandingStudyModelSection } from "@/components/sections/landing-study-model-section";
+import { LandingFooterSection } from "@/components/sections/landing-footer-section";
 
-export default function Home() {
-  // Restore persisted state from localStorage
-  const isHydrated = useStoreHydration();
-
+/**
+ * Landing page with scroll-snap sections.
+ *
+ * Features:
+ * - CSS scroll-snap for smooth section transitions
+ * - 4 full-screen sections (Intro, Functions, Study Model, Footer)
+ * - Scroll-triggered animations on each section
+ * - Keyboard navigation support
+ * - Mobile touch gesture support
+ *
+ * @page
+ * @example
+ * Navigate to: /landing
+ *
+ * @see {@link https://www.figma.com/design/Vz80RydxWcYHVnn2iuyV0m?node-id=130-652} Figma Design
+ */
+export default function LandingPage() {
   return (
-    <div className="relative h-screen w-full">
-      {/* Only render Canvas after hydration to prevent flickering */}
-      {!isHydrated && (
-        <div className="flex h-full items-center justify-center">
-          <p className="text-gray-400">Loading...</p>
-        </div>
-      )}
-
-      {isHydrated && (
-        <SceneCanvas>
-          <Model url="/models/V4_Engine/Crankshaft-draco.glb" />
-        </SceneCanvas>
-      )}
-
-      <PartInfoPanel />
+    <div
+      className="h-screen overflow-y-scroll snap-y snap-mandatory scroll-smooth"
+      style={{
+        // Safari-specific smooth scrolling
+        WebkitOverflowScrolling: "touch",
+      }}
+    >
+      <LandingIntroSection />
+      <LandingFunctionsSection />
+      <LandingStudyModelSection />
+      <LandingFooterSection />
     </div>
   );
 }

@@ -8,9 +8,12 @@ const hasClerkKeys =
 
 /**
  * Public routes that don't require authentication
- * - Landing page: /
- * - 3D viewer: / (public access to view models)
+ * - Landing page: / (scroll-snap landing page)
+ * - Sign in/up pages
  * - Model API: /api/models, /api/parts (read-only)
+ *
+ * Protected routes (require authentication):
+ * - 3D viewer: /viewer
  */
 const isPublicRoute = createRouteMatcher([
   "/",

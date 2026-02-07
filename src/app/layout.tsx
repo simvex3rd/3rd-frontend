@@ -11,16 +11,15 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "SIMVEX - 공학 학습용 3D 기계 부품 뷰어",
+  title: "SIMVEX - 시뮬레이션으로 미래를 설계하다",
   description:
-    "3D 시각화를 통한 직관적인 기계 구조 학습 플랫폼. 웹 기반 3D 뷰어로 복잡한 기계 부품의 구조를 쉽게 이해하고 학습할 수 있습니다.",
+    "SIMVEX는 3D 시뮬레이션 기반 학습 플랫폼입니다. 실시간 3D 환경에서 직관적인 학습 경험을 제공합니다.",
   keywords: [
-    "3D 뷰어",
-    "기계 부품",
-    "공학 교육",
-    "3D 시각화",
-    "CAD 뷰어",
-    "기계 학습",
+    "3D 시뮬레이션",
+    "학습 플랫폼",
+    "과학 실험",
+    "가상 실험",
+    "AI 학습",
   ],
   authors: [{ name: "SIMVEX Team" }],
   creator: "SIMVEX",
@@ -36,8 +35,9 @@ export const metadata: Metadata = {
     apple: [{ url: "/apple-icon.png", sizes: "180x180", type: "image/png" }],
   },
   openGraph: {
-    title: "SIMVEX - 공학 학습용 3D 기계 부품 뷰어",
-    description: "3D 시각화를 통한 직관적인 기계 구조 학습 플랫폼",
+    title: "SIMVEX - 시뮬레이션으로 미래를 설계하다",
+    description:
+      "3D 시뮬레이션 기반 학습 플랫폼으로 안전한 가상 환경에서 다양한 실험을 수행하세요.",
     url: "https://simvex-3rd.vercel.app",
     siteName: "SIMVEX",
     locale: "ko_KR",
@@ -45,8 +45,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "SIMVEX - 공학 학습용 3D 기계 부품 뷰어",
-    description: "3D 시각화를 통한 직관적인 기계 구조 학습 플랫폼",
+    title: "SIMVEX - 시뮬레이션으로 미래를 설계하다",
+    description: "3D 시뮬레이션 기반 학습 플랫폼",
   },
   robots: {
     index: true,
