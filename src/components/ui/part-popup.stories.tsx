@@ -4,15 +4,6 @@ import { PartPopup } from "./part-popup";
 const meta = {
   title: "UI/PartPopup",
   component: PartPopup,
-  parameters: {
-    layout: "centered",
-    docs: {
-      description: {
-        component:
-          "Tooltip-style popup with question and YES button. 3-corner border radius (말풍선 형태). Figma spec: 272x78px (node-236:1141).",
-      },
-    },
-  },
   tags: ["autodocs"],
   argTypes: {
     variant: {
@@ -29,9 +20,22 @@ const meta = {
       description: "YES button click handler",
     },
   },
+  parameters: {
+    layout: "centered",
+    backgrounds: {
+      default: "dark",
+      values: [{ name: "dark", value: "#090909" }],
+    },
+    docs: {
+      description: {
+        component:
+          "Tooltip-style popup with question and YES button. 3-corner border radius (말풍선 형태). Figma spec: 272x78px (node-236:1141).",
+      },
+    },
+  },
   decorators: [
     (Story) => (
-      <div className="p-8 bg-[var(--bg-dark)]">
+      <div className="p-8">
         <Story />
       </div>
     ),

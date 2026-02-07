@@ -16,6 +16,10 @@ const meta = {
   component: PartSidebar,
   parameters: {
     layout: "centered",
+    backgrounds: {
+      default: "dark",
+      values: [{ name: "dark", value: "#090909" }],
+    },
     docs: {
       description: {
         component:
@@ -26,7 +30,7 @@ const meta = {
   tags: ["autodocs"],
   decorators: [
     (Story) => (
-      <div className="bg-[var(--bg-dark)] p-8">
+      <div className="p-8">
         <Story />
       </div>
     ),
