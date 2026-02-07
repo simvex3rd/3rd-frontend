@@ -24,7 +24,7 @@ import { LandingFooterSection } from "@/components/sections/landing-footer-secti
 export default function LandingPage() {
   return (
     <div
-      className="h-screen overflow-y-scroll snap-y snap-mandatory scroll-smooth"
+      className="h-screen overflow-y-scroll snap-y snap-mandatory scroll-smooth bg-[#171717]"
       style={{
         // Safari-specific smooth scrolling
         WebkitOverflowScrolling: "touch",
