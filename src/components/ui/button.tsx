@@ -26,9 +26,9 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        fill: "bg-[#02EEE1] text-white hover:bg-[#01A9A0] active:bg-[#01645F] shadow-sm hover:shadow-md",
+        fill: "bg-[var(--primary-cyan)] text-white hover:bg-[var(--primary-cyan-hover)] active:bg-[var(--primary-cyan-press)] shadow-sm hover:shadow-md",
         outline:
-          "border-2 border-[#02EEE1] text-[#02EEE1] bg-transparent hover:bg-[#02EEE1]/10 active:bg-[#02EEE1]/20",
+          "border-2 border-[var(--primary-cyan)] text-[var(--primary-cyan)] bg-transparent hover:bg-[var(--primary-cyan)]/10 active:bg-[var(--primary-cyan)]/20",
       },
       size: {
         default: "h-[40px] w-[145px] px-4",
@@ -36,7 +36,7 @@ const buttonVariants = cva(
       status: {
         default: "",
         disable:
-          "bg-[#f5f5f5] text-[#d4d4d4] border-[#d4d4d4] cursor-not-allowed pointer-events-none",
+          "bg-[var(--gray-100)] text-[var(--gray-300)] border-[var(--gray-300)] cursor-not-allowed pointer-events-none",
       },
     },
     defaultVariants: {
