@@ -2,19 +2,19 @@
 
 import { useSceneStore } from "@/stores/scene-store";
 import { getPartByMeshName } from "@/lib/mock-data";
-import { X } from "lucide-react";
+import { Sparkles, Box } from "lucide-react";
 
 /**
  * Part Sidebar Component
  *
- * Full-height sidebar that displays detailed part information when a part is selected.
- * Follows Figma design: Side bar-if click part (400x750)
+ * Displays AI Assistant and Part Info when a part is selected.
+ * Follows Figma design: Side bar-if click part (400x750px, node-232:967)
  *
  * Features:
  * - Integration with scene store for selected part state
- * - Dismissible with close button
- * - Displays part details, specifications, and metadata
- * - Different from PartInfoPanel (this is a full sidebar layout)
+ * - Two sections: AI Assistant + Part Info
+ * - Glassmorphism design with rgba(212,212,212,0.3) background
+ * - 3px cyan border, 24px border radius, 48px padding
  *
  * @component
  * @example
@@ -22,12 +22,11 @@ import { X } from "lucide-react";
  * <PartSidebar />
  * ```
  *
- * @see {@link https://figma.com/file/Vz80RydxWcYHVnn2iuyV0m/SIMVEX} Figma Design
+ * @see {@link https://figma.com/file/Vz80RydxWcYHVnn2iuyV0m/SIMVEX} Figma Design (node-232:967)
  */
 
 export function PartSidebar() {
   const selectedObject = useSceneStore((state) => state.selectedObject);
-  const setSelectedObject = useSceneStore((state) => state.setSelectedObject);
 
   if (!selectedObject) {
     return null;
@@ -35,167 +34,64 @@ export function PartSidebar() {
 
   const partInfo = getPartByMeshName(selectedObject);
 
-  const handleClose = () => {
-    setSelectedObject(null);
-  };
-
   return (
     <aside
-      className="fixed right-0 top-0 h-screen w-[400px] border-l-2 border-[var(--primary-cyan)]/30 bg-[var(--bg-black)]/95 shadow-[-8px_0_30px_rgba(2,238,225,0.15)] backdrop-blur-lg transition-transform duration-300 ease-out"
+      className="flex flex-col items-center justify-center w-[400px] h-[750px] border-[3px] border-solid border-[var(--primary-cyan)] bg-[rgba(212,212,212,0.3)] rounded-[24px] p-12 gap-8 backdrop-blur-sm transition-all duration-300"
       role="complementary"
       aria-label="Part information sidebar"
     >
-      <div className="flex h-full flex-col">
-        {/* Header */}
-        <div className="flex items-center justify-between border-b border-[var(--primary-cyan)]/20 p-6">
-          <h2 className="text-[20px] font-bold text-[var(--primary-cyan)]">
-            Part Details
+      {/* AI Assistant Section */}
+      <div className="flex flex-col gap-4 items-start w-full">
+        {/* Header with Icon */}
+        <div className="flex gap-4 items-center">
+          <Sparkles className="w-[37px] h-[37px] text-[var(--primary-cyan)]" />
+          <h2 className="font-semibold text-[32px] leading-[1.25] text-[var(--primary-cyan)]">
+            AI Assistant
           </h2>
-          <button
-            onClick={handleClose}
-            className="rounded-lg p-2 text-gray-400 transition-colors hover:bg-[var(--primary-cyan)]/10 hover:text-[var(--primary-cyan)]"
-            aria-label="Close sidebar"
-          >
-            <X size={20} />
-          </button>
         </div>
 
-        {/* Content */}
-        <div className="flex-1 overflow-y-auto p-6">
-          {!partInfo ? (
-            <div className="space-y-4">
-              <div className="rounded-lg border border-[var(--primary-cyan)]/20 bg-[var(--primary-cyan)]/5 p-4">
-                <h3 className="mb-2 text-[18px] font-semibold text-[var(--gray-50)]">
-                  Selected Part
-                </h3>
-                <p className="text-[14px] text-gray-300">{selectedObject}</p>
-              </div>
-              <div className="rounded-lg border border-yellow-500/30 bg-yellow-500/10 p-4">
-                <p className="text-[13px] text-yellow-400">
-                  Part information not available (API pending)
-                </p>
-              </div>
-            </div>
-          ) : (
-            <div className="space-y-6">
-              {/* Part Name & ID */}
-              <div>
-                <h3 className="mb-2 text-[28px] font-bold leading-tight text-[var(--primary-cyan)]">
-                  {partInfo.name ?? "Unknown Part"}
-                </h3>
-                <p className="font-mono text-[12px] text-[var(--primary-cyan)]/50">
-                  ID: {partInfo.id}
-                </p>
-              </div>
-
-              {/* Description */}
-              <div className="rounded-lg border border-[var(--primary-cyan)]/20 bg-[var(--primary-cyan)]/5 p-4">
-                <h4 className="mb-2 text-[14px] font-semibold uppercase tracking-wider text-gray-400">
-                  Description
-                </h4>
-                <p className="text-[15px] leading-[1.6] text-gray-200">
-                  {partInfo.description ?? "No description available"}
-                </p>
-              </div>
-
-              {/* Specifications */}
-              <div>
-                <h4 className="mb-3 text-[14px] font-semibold uppercase tracking-wider text-gray-400">
-                  Specifications
-                </h4>
-                <div className="space-y-3">
-                  <SpecRow label="Material" value={partInfo.material} />
-                  <SpecRow
-                    label="Weight"
-                    value={partInfo.metadata?.weight as string | undefined}
-                  />
-                  <SpecRow
-                    label="Tolerance"
-                    value={partInfo.metadata?.tolerance as string | undefined}
-                  />
-                </div>
-              </div>
-
-              {/* Manufacturing Info */}
-              <div>
-                <h4 className="mb-3 text-[14px] font-semibold uppercase tracking-wider text-gray-400">
-                  Manufacturing
-                </h4>
-                <div className="space-y-3">
-                  <SpecRow
-                    label="Manufacturer"
-                    value={
-                      partInfo.metadata?.manufacturer as string | undefined
-                    }
-                  />
-                  <SpecRow
-                    label="Part Number"
-                    value={partInfo.metadata?.partNumber as string | undefined}
-                  />
-                </div>
-              </div>
-
-              {/* Additional Metadata */}
-              {partInfo.geometries &&
-                partInfo.geometries.length > 0 &&
-                partInfo.geometries[0] &&
-                partInfo.geometries[0].initialPos &&
-                partInfo.geometries[0].initialScale && (
-                  <div>
-                    <h4 className="mb-3 text-[14px] font-semibold uppercase tracking-wider text-gray-400">
-                      Geometry Data
-                    </h4>
-                    <div className="space-y-2 rounded-lg border border-[var(--primary-cyan)]/20 bg-[var(--bg-black)]/40 p-4">
-                      <div className="grid grid-cols-3 gap-2 text-[12px]">
-                        <div>
-                          <span className="text-gray-500">Position</span>
-                          <p className="font-mono text-gray-300">
-                            {partInfo.geometries[0].initialPos.x.toFixed(1)},{" "}
-                            {partInfo.geometries[0].initialPos.y.toFixed(1)},{" "}
-                            {partInfo.geometries[0].initialPos.z.toFixed(1)}
-                          </p>
-                        </div>
-                        <div>
-                          <span className="text-gray-500">Scale</span>
-                          <p className="font-mono text-gray-300">
-                            {partInfo.geometries[0].initialScale.x.toFixed(2)}
-                          </p>
-                        </div>
-                        <div>
-                          <span className="text-gray-500">Geometries</span>
-                          <p className="font-mono text-gray-300">
-                            {partInfo.geometries.length}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                )}
-            </div>
-          )}
-        </div>
-
-        {/* Footer */}
-        <div className="border-t border-[var(--primary-cyan)]/20 p-6">
-          <p className="text-center text-[11px] text-gray-500">
-            Click on another part to view its details
+        {/* Content Box */}
+        <div className="w-full h-[250px] bg-[rgba(212,212,212,0.3)] border-[3px] border-[var(--primary-cyan)] rounded-[24px] flex items-center justify-center px-[48px] py-[48px]">
+          <p className="font-medium text-[16px] leading-[1.5] text-white text-center">
+            {partInfo?.description ||
+              `${selectedObject}에 대해 궁금한 점이 있으신가요?`}
           </p>
         </div>
       </div>
-    </aside>
-  );
-}
 
-/**
- * Specification row component for displaying key-value pairs
- */
-function SpecRow({ label, value }: { label: string; value?: string | null }) {
-  return (
-    <div className="flex items-center justify-between rounded-lg border border-[var(--primary-cyan)]/10 bg-[var(--bg-black)]/30 px-4 py-3">
-      <span className="text-[14px] text-gray-400">{label}</span>
-      <span className="text-[14px] font-medium text-[var(--gray-50)]">
-        {value || "N/A"}
-      </span>
-    </div>
+      {/* Part Info Section */}
+      <div className="flex flex-col gap-4 items-start w-full">
+        {/* Header with Icon */}
+        <div className="flex gap-4 items-start">
+          <Box className="w-[37px] h-[38px] text-[var(--primary-cyan)]" />
+          <h2 className="font-semibold text-[32px] leading-[1.25] text-[var(--primary-cyan)]">
+            Part Info
+          </h2>
+        </div>
+
+        {/* Content Box */}
+        <div className="w-full h-[250px] bg-[rgba(212,212,212,0.3)] border-[3px] border-[var(--primary-cyan)] rounded-[24px] flex items-center justify-center px-[48px] py-[48px]">
+          {partInfo ? (
+            <div className="flex flex-col gap-2 text-center">
+              <p className="font-bold text-[18px] leading-[1.4] text-[var(--primary-cyan)]">
+                {partInfo.name || selectedObject}
+              </p>
+              <p className="font-medium text-[14px] leading-[1.5] text-white">
+                Material: {partInfo.material || "N/A"}
+              </p>
+              <p className="font-medium text-[14px] leading-[1.5] text-white">
+                {partInfo.metadata?.weight
+                  ? `Weight: ${partInfo.metadata.weight}`
+                  : ""}
+              </p>
+            </div>
+          ) : (
+            <p className="font-medium text-[16px] leading-[1.5] text-white text-center">
+              {selectedObject}
+            </p>
+          )}
+        </div>
+      </div>
+    </aside>
   );
 }
