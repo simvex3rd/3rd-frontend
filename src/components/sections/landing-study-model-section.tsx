@@ -39,9 +39,10 @@ export function LandingStudyModelSection() {
       {/* Section Heading */}
       <h2
         className={cn(
-          "text-center font-bold text-foreground mb-8 md:mb-12 lg:mb-16",
-          "text-[40px] md:text-[52px] lg:text-[64px]",
-          "leading-tight"
+          "text-left font-bold text-[#e5e5e5] mb-6 md:mb-8 lg:mb-6",
+          "text-[32px] md:text-[40px] lg:text-[52px]",
+          "leading-[1.25]",
+          "w-full"
         )}
       >
         {landingContent.studyModel.heading}

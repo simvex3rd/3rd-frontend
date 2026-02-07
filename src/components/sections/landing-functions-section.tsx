@@ -39,12 +39,25 @@ export function LandingFunctionsSection() {
       {/* Section Heading */}
       <h2
         className={cn(
-          "text-center font-bold text-foreground mb-8 md:mb-12 lg:mb-16",
-          "text-[40px] md:text-[52px] lg:text-[64px]",
-          "leading-tight"
+          "text-center font-extrabold text-foreground mb-8 md:mb-12 lg:mb-20",
+          "text-[40px] md:text-[52px] lg:text-[96px]",
+          "leading-[1.25]"
         )}
       >
-        {landingContent.functions.heading}
+        {landingContent.functions.heading
+          .split(landingContent.functions.headingHighlight)
+          .map((part, i) =>
+            i === 0 ? (
+              <span key={i}>{part}</span>
+            ) : (
+              <span key={i}>
+                <span className="text-[#02eee1]">
+                  {landingContent.functions.headingHighlight}
+                </span>
+                {part}
+              </span>
+            )
+          )}
       </h2>
 
       {/* Feature Cards Grid */}

@@ -3,70 +3,65 @@
  *
  * Figma reference: https://www.figma.com/design/Vz80RydxWcYHVnn2iuyV0m
  * - Full page: node-id=130-652
- * - Intro: node-id=147-317
- * - Functions: node-id=147-327
- * - Study Model: node-id=147-354
  */
 
 export const landingContent = {
   intro: {
-    // TODO: Extract from Figma node-id=147-317
-    heading: "시뮬레이션으로 미래를 설계하다",
-    subtitle: "SIMVEX는 3D 시뮬레이션 기반 학습 플랫폼입니다",
-    ctaPrimary: "시작하기",
-    ctaSecondary: "둘러보기",
+    heading: "이론을 넘어,\n현실로 들어서다.",
+    subtitle:
+      "복잡한 공학 시스템,\n3D 인터랙션과 AI 튜터로 완벽하게 마스터하세요.",
+    ctaPrimary: "지금 바로 학습 시작하기",
   },
 
   functions: {
-    // TODO: Extract from Figma node-id=147-327
-    heading: "핵심 기능",
+    heading: "당신의 학습 경험을 혁신합니다",
+    headingHighlight: "학습 경험을 혁신", // cyan color
     features: [
       {
         iconName: "landing/box-3d-stroke",
-        title: "3D 시뮬레이션",
-        description: "실시간 3D 환경에서 직관적인 학습 경험을 제공합니다",
+        title: "3D 몰입형 인터랙션",
+        description:
+          "보고 만지고 분해하며,\n이론을 직관적인 경험으로 바꿉니다.",
+        variant: "default" as const,
+      },
+      {
+        iconName: "landing/chat-dots",
+        title: "AI 기반 맞춤형 튜터링",
+        description: "궁금증은 바로 해결!\nAI 튜터가 당신의 이해를 돕습니다.",
         variant: "default" as const,
       },
       {
         iconName: "landing/chart-line",
-        title: "데이터 분석",
-        description: "시뮬레이션 결과를 실시간으로 분석하고 시각화합니다",
+        title: "정교한 데이터 시각화",
+        description:
+          "숨겨진 공학 원리,\n정밀한 데이터를 통해 완벽하게 파악합니다.",
         variant: "default" as const,
-      },
-      {
-        iconName: "landing/chemistry",
-        title: "과학 실험",
-        description: "안전한 가상 환경에서 다양한 실험을 수행할 수 있습니다",
-        variant: "default" as const,
-      },
-      {
-        iconName: "landing/chip",
-        title: "AI 기반 학습",
-        description: "인공지능이 개인화된 학습 경로를 제시합니다",
-        variant: "primary" as const,
       },
     ],
   },
 
   studyModel: {
-    // TODO: Extract from Figma node-id=147-354
-    heading: "학습 모델",
+    heading: "다양한 분야의 핵심 모델을 탐색하세요",
     models: [
       {
+        iconName: "landing/chip",
+        modelName: "회로공학",
+      },
+      {
         iconName: "landing/chemistry",
-        modelName: "화학 실험",
+        modelName: "화학공학",
       },
       {
         iconName: "landing/electricity",
-        modelName: "전기 회로",
-      },
-      {
-        iconName: "landing/space-rocket",
-        modelName: "우주 과학",
+        modelName: "전기공학",
       },
       {
         iconName: "landing/settings",
-        modelName: "기계 공학",
+        modelName: "기계공학",
+      },
+      {
+        iconName: "landing/space-rocket",
+        modelName: "항공우주공학",
       },
     ],
   },
