@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/nextjs-vite";
+import type { Meta, StoryObj } from "@storybook/nextjs";
 import { ChatSidebar } from "./chat-sidebar";
 
 const meta = {
@@ -6,167 +6,115 @@ const meta = {
   component: ChatSidebar,
   parameters: {
     layout: "centered",
-    backgrounds: {
-      default: "dark",
-      values: [{ name: "dark", value: "#1a1a1a" }],
+    docs: {
+      description: {
+        component:
+          "Chat sidebar with history list and new chat button. Figma spec: 311x879px, #404040 background, 160px gap (node-236:1535).",
+      },
     },
   },
   tags: ["autodocs"],
   argTypes: {
-    onConversationSelect: { action: "conversation selected" },
-    onNewChat: { action: "new chat clicked" },
+    conversations: {
+      description: "Array of conversation objects",
+    },
+    onConversationSelect: {
+      action: "conversation-selected",
+      description: "Callback when a conversation is selected",
+    },
+    onNewChat: {
+      action: "new-chat",
+      description: "Callback when new chat button is clicked",
+    },
   },
+  decorators: [
+    (Story) => (
+      <div className="bg-[var(--bg-dark)] p-4">
+        <Story />
+      </div>
+    ),
+  ],
 } satisfies Meta<typeof ChatSidebar>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-const sampleConversations = [
-  {
-    id: "1",
-    title: "How to optimize Three.js performance?",
-    timestamp: "2024-01-15 14:30",
-    isActive: false,
-  },
-  {
-    id: "2",
-    title: "React Three Fiber best practices",
-    timestamp: "2024-01-15 15:45",
-    isActive: true,
-  },
-  {
-    id: "3",
-    title: "3D model loading strategies",
-    timestamp: "2024-01-14 10:20",
-    isActive: false,
-  },
-  {
-    id: "4",
-    title: "Shader materials guide",
-    timestamp: "2024-01-14 09:15",
-    isActive: false,
-  },
-  {
-    id: "5",
-    title: "Camera controls implementation",
-    timestamp: "2024-01-13 16:40",
-    isActive: false,
-  },
-];
-
-/**
- * Default chat sidebar with conversation history
- */
 export const Default: Story = {
-  args: {
-    conversations: sampleConversations,
-  },
-};
-
-/**
- * Empty state when no conversations exist
- */
-export const Empty: Story = {
   args: {
     conversations: [],
   },
 };
 
-/**
- * Sidebar with only one conversation
- */
-export const SingleConversation: Story = {
+export const WithConversations: Story = {
   args: {
     conversations: [
-      {
-        id: "1",
-        title: "First conversation",
-        timestamp: "2024-01-15 14:30",
-        isActive: true,
-      },
+      { id: "1", title: "엔진 조립 방법", isActive: false },
+      { id: "2", title: "피스톤 분해 순서", isActive: false },
+      { id: "3", title: "크랭크샤프트 설명", isActive: true },
+      { id: "4", title: "실린더 헤드 교체", isActive: false },
+      { id: "5", title: "타이밍 벨트 장착", isActive: false },
     ],
   },
 };
 
-/**
- * Sidebar with many conversations (scrollable)
- */
 export const ManyConversations: Story = {
   args: {
     conversations: [
-      ...sampleConversations,
-      {
-        id: "6",
-        title: "Lighting setup in R3F",
-        timestamp: "2024-01-12 11:30",
-        isActive: false,
-      },
-      {
-        id: "7",
-        title: "Physics simulation with Rapier",
-        timestamp: "2024-01-11 13:20",
-        isActive: false,
-      },
-      {
-        id: "8",
-        title: "Post-processing effects",
-        timestamp: "2024-01-10 15:50",
-        isActive: false,
-      },
-      {
-        id: "9",
-        title: "Instancing for performance",
-        timestamp: "2024-01-09 09:40",
-        isActive: false,
-      },
-      {
-        id: "10",
-        title: "Custom geometry creation",
-        timestamp: "2024-01-08 14:15",
-        isActive: false,
-      },
+      { id: "1", title: "엔진 조립 방법", isActive: false },
+      { id: "2", title: "피스톤 분해 순서", isActive: false },
+      { id: "3", title: "크랭크샤프트 설명", isActive: true },
+      { id: "4", title: "실린더 헤드 교체", isActive: false },
+      { id: "5", title: "타이밍 벨트 장착", isActive: false },
+      { id: "6", title: "캠샤프트 위치 센서", isActive: false },
+      { id: "7", title: "오일 펌프 점검", isActive: false },
+      { id: "8", title: "냉각수 교환 방법", isActive: false },
+      { id: "9", title: "스파크 플러그 교체", isActive: false },
+      { id: "10", title: "연료 필터 점검", isActive: false },
     ],
   },
 };
 
-/**
- * Sidebar with long conversation titles (truncated)
- */
 export const LongTitles: Story = {
   args: {
     conversations: [
       {
         id: "1",
         title:
-          "This is a very long conversation title that should be truncated with ellipsis",
-        timestamp: "2024-01-15 14:30",
+          "엔진 블록의 실린더 보어와 피스톤 링 간격 측정 방법에 대한 상세 설명",
         isActive: false,
       },
       {
         id: "2",
-        title:
-          "Another extremely long title that demonstrates how the component handles overflow text gracefully",
-        timestamp: "2024-01-15 15:45",
+        title: "크랭크샤프트 베어링 클리어런스 검사 및 조정 절차",
         isActive: true,
       },
       {
         id: "3",
-        title: "Short title",
-        timestamp: "2024-01-14 10:20",
+        title: "밸브 타이밍 조정과 캠샤프트 설치 시 주의사항",
         isActive: false,
       },
     ],
   },
 };
 
-/**
- * Interactive example with callbacks
- */
+export const SingleActive: Story = {
+  args: {
+    conversations: [{ id: "1", title: "현재 대화", isActive: true }],
+  },
+};
+
 export const Interactive: Story = {
   args: {
-    conversations: sampleConversations,
-  },
-  render: (args) => {
-    return <ChatSidebar {...args} />;
+    conversations: [
+      { id: "1", title: "엔진 조립 방법", isActive: false },
+      { id: "2", title: "피스톤 분해 순서", isActive: false },
+      { id: "3", title: "크랭크샤프트 설명", isActive: true },
+    ],
+    onConversationSelect: (id: string) => {
+      console.log("Selected conversation:", id);
+    },
+    onNewChat: () => {
+      console.log("New chat clicked");
+    },
   },
 };
