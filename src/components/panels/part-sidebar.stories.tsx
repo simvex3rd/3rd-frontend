@@ -82,7 +82,7 @@ export const Specs: Story = {
 
 - **Dimensions:** 400px × 750px
 - **Background:** rgba(212,212,212,0.3)
-- **Border:** 3px solid var(--primary-cyan)
+- **Border:** 3px solid primary (Tailwind color)
 - **Border Radius:** 24px
 - **Padding:** 48px (p-12)
 - **Gap:** 32px (gap-8) between sections
@@ -117,19 +117,19 @@ export const DesignTokens: Story = {
 // Outer container
 "flex flex-col items-center justify-center"
 "w-[400px] h-[750px]"
-"border-[3px] border-solid border-[var(--primary-cyan)]"
+"border-[3px] border-solid border-primary"
 "bg-[rgba(212,212,212,0.3)]"
 "rounded-[24px] p-12 gap-8"
 "backdrop-blur-sm transition-all duration-300"
 
 // Section headers
 "flex gap-4 items-center"
-"font-semibold text-[32px] leading-[1.25] text-[var(--primary-cyan)]"
+"font-semibold text-[32px] leading-[1.25] text-primary"
 
 // Content boxes
 "w-full h-[250px]"
 "bg-[rgba(212,212,212,0.3)]"
-"border-[3px] border-[var(--primary-cyan)]"
+"border-[3px] border-primary"
 "rounded-[24px]"
 "flex items-center justify-center px-[48px] py-[48px]"
 

@@ -136,8 +136,8 @@ export function ChatHistory({
       <div className="flex-1 overflow-y-auto space-y-6">
         {filteredConversations.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-full text-center px-4">
-            <LucideMessageSquare className="h-12 w-12 text-[var(--gray-400)] mb-4" />
-            <p className="text-[var(--gray-500)] text-sm">
+            <LucideMessageSquare className="h-12 w-12 text-neutral-400 mb-4" />
+            <p className="text-neutral-500 text-sm">
               {searchQuery ? "No conversations found" : "No conversations yet"}
             </p>
           </div>
@@ -203,7 +203,7 @@ function ConversationGroup({
 }: ConversationGroupProps) {
   return (
     <div className="space-y-2">
-      <h3 className="text-xs font-semibold text-[var(--gray-500)] uppercase tracking-wider px-2">
+      <h3 className="text-xs font-semibold text-neutral-500 uppercase tracking-wider px-2">
         {title}
       </h3>
       <div className="space-y-2">
@@ -243,8 +243,7 @@ function ConversationCard({
     <Card
       className={cn(
         "p-3 cursor-pointer group relative",
-        isSelected &&
-          "ring-2 ring-[var(--blue-primary)] bg-[var(--blue-primary)]/5"
+        isSelected && "ring-2 ring-blue-500 bg-blue-500/5"
       )}
       onClick={() => onSelect?.(conversation.id)}
     >
@@ -253,17 +252,15 @@ function ConversationCard({
           <h4
             className={cn(
               "text-sm font-medium truncate mb-1",
-              isSelected
-                ? "text-[var(--blue-primary)]"
-                : "text-[var(--bg-dark)]"
+              isSelected ? "text-blue-500" : "text-neutral-950"
             )}
           >
             {conversation.title}
           </h4>
-          <p className="text-xs text-[var(--gray-500)] line-clamp-2">
+          <p className="text-xs text-neutral-500 line-clamp-2">
             {conversation.preview}
           </p>
-          <p className="text-[10px] text-[var(--gray-400)] mt-2">
+          <p className="text-[10px] text-neutral-400 mt-2">
             {formatTimestamp(conversation.timestamp)}
           </p>
         </div>
@@ -271,7 +268,7 @@ function ConversationCard({
           onClick={handleDelete}
           className={cn(
             "shrink-0 p-1.5 rounded-md transition-all opacity-0 group-hover:opacity-100",
-            "hover:bg-[var(--red-error)]/10 text-[var(--gray-500)] hover:text-[var(--red-error)]"
+            "hover:bg-red-500/10 text-neutral-500 hover:text-red-500"
           )}
           aria-label="Delete conversation"
         >

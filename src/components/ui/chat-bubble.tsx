@@ -53,12 +53,12 @@ const chatBubbleContentVariants = cva(
 );
 
 const chatBubbleMessageVariants = cva(
-  "rounded-[16px] px-4 py-3 text-[var(--body-md)] leading-[var(--body-line-height)] break-words",
+  "rounded-[16px] px-4 py-3 text-base leading-6 break-words",
   {
     variants: {
       variant: {
-        user: "bg-[var(--primary-cyan)] text-white",
-        ai: "bg-[var(--gray-100)] text-[var(--foreground)] border border-[var(--gray-300)]",
+        user: "bg-primary text-white",
+        ai: "bg-neutral-100 text-neutral-950 border border-neutral-300",
       },
     },
     defaultVariants: {
@@ -90,7 +90,7 @@ export function ChatBubble({
       {/* Avatar */}
       {avatar && (
         <div className="flex-shrink-0">
-          <div className="w-10 h-10 rounded-full overflow-hidden bg-[var(--gray-200)] flex items-center justify-center">
+          <div className="w-10 h-10 rounded-full overflow-hidden bg-neutral-200 flex items-center justify-center">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={avatar}
@@ -110,9 +110,7 @@ export function ChatBubble({
 
         {/* Timestamp */}
         {timestamp && (
-          <span className="text-[var(--body-sm)] text-[var(--gray-500)] px-2">
-            {timestamp}
-          </span>
+          <span className="text-sm text-neutral-500 px-2">{timestamp}</span>
         )}
       </div>
     </div>

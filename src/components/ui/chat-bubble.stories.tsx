@@ -135,7 +135,7 @@ export const WithoutTimestamp: Story = {
 
 export const Conversation: Story = {
   render: () => (
-    <div className="w-[700px] flex flex-col gap-4 p-4 bg-[var(--bg-dark)] rounded-lg">
+    <div className="w-[700px] flex flex-col gap-4 p-4 bg-neutral-950 rounded-lg">
       <ChatBubble
         variant="user"
         avatar="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix"
@@ -185,9 +185,7 @@ export const AllVariants: Story = {
   render: () => (
     <div className="w-[700px] flex flex-col gap-6">
       <div className="flex flex-col gap-2">
-        <h3 className="text-[var(--heading-sm)] font-semibold">
-          User Messages
-        </h3>
+        <h3 className="text-lg font-semibold">User Messages</h3>
         <div className="flex flex-col gap-4">
           <ChatBubble
             variant="user"
@@ -212,7 +210,7 @@ export const AllVariants: Story = {
       </div>
 
       <div className="flex flex-col gap-2">
-        <h3 className="text-[var(--heading-sm)] font-semibold">AI Messages</h3>
+        <h3 className="text-lg font-semibold">AI Messages</h3>
         <div className="flex flex-col gap-4">
           <ChatBubble
             variant="ai"
@@ -242,7 +240,7 @@ export const AllVariants: Story = {
 export const ResponsiveLayout: Story = {
   render: () => (
     <div className="w-full max-w-[900px] flex flex-col gap-4 p-4">
-      <p className="text-sm text-[var(--gray-500)]">
+      <p className="text-sm text-neutral-500">
         Resize the viewport to see how chat bubbles adapt to different screen
         sizes (max-width: 70%)
       </p>

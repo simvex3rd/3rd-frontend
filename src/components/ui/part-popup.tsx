@@ -24,7 +24,7 @@ import type { HTMLAttributes } from "react";
 
 const partPopupVariants = cva(
   // Base classes - 272px width, 3-corner border radius (말풍선 형태)
-  "inline-flex flex-col items-end justify-center gap-1 rounded-bl-[16px] rounded-br-[16px] rounded-tr-[16px] border-2 border-solid border-[var(--primary-cyan)] bg-[rgba(212,212,212,0.3)] px-4 py-2 transition-all",
+  "inline-flex flex-col items-end justify-center gap-1 rounded-bl-[16px] rounded-br-[16px] rounded-tr-[16px] border-2 border-solid border-primary bg-[rgba(212,212,212,0.3)] px-4 py-2 transition-all",
   {
     variants: {
       variant: {

@@ -39,8 +39,8 @@ export function PartInfoPanel() {
   }
 
   return (
-    <div className="absolute right-4 top-4 w-80 rounded-[24px] border-2 border-[var(--primary-cyan)]/30 bg-[var(--bg-black)]/40 p-6 text-[var(--gray-50)] shadow-[0_0_30px_rgba(2,238,225,0.1)] backdrop-blur-md transition-all hover:border-[var(--primary-cyan)]/60">
-      <h3 className="mb-4 text-[24px] font-bold leading-tight text-[var(--primary-cyan)]">
+    <div className="absolute right-4 top-4 w-80 rounded-[24px] border-2 border-primary/30 bg-neutral-950/40 p-6 text-neutral-50 shadow-[0_0_30px_rgba(2,238,225,0.1)] backdrop-blur-md transition-all hover:border-primary/60">
+      <h3 className="mb-4 text-[24px] font-bold leading-tight text-primary">
         {partInfo.name ?? "Unknown Part"}
       </h3>
 
@@ -48,7 +48,7 @@ export function PartInfoPanel() {
         <p>{partInfo.description ?? "No description available"}</p>
       </div>
 
-      <div className="space-y-3 border-t border-[var(--primary-cyan)]/20 pt-4">
+      <div className="space-y-3 border-t border-primary/20 pt-4">
         <InfoRow
           label="Material"
           value={partInfo.material ?? undefined}
@@ -76,10 +76,8 @@ export function PartInfoPanel() {
         />
       </div>
 
-      <div className="mt-6 border-t border-[var(--primary-cyan)]/20 pt-3">
-        <p className="text-xs text-[var(--primary-cyan)]/50 font-mono">
-          ID: {partInfo.id}
-        </p>
+      <div className="mt-6 border-t border-primary/20 pt-3">
+        <p className="text-xs text-primary/50 font-mono">ID: {partInfo.id}</p>
       </div>
     </div>
   );
