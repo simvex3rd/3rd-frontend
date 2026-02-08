@@ -81,7 +81,7 @@ export default function SignUpPage() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-black px-4 font-sans">
+    <div className="flex min-h-screen items-center justify-center bg-background px-4 font-sans">
       <div
         className="relative flex w-[375px] md:w-[480px] flex-col items-center gap-[80px] rounded-[24px] bg-neutral-900 px-[32px] py-[80px]"
         data-node-id="175:748"
@@ -113,7 +113,7 @@ export default function SignUpPage() {
               data-node-id="175:724"
             >
               <p
-                className="w-auto h-[24px] font-[Pretendard] text-[16px] font-normal leading-[1.5] text-center text-white"
+                className="w-auto h-[24px] font-[Pretendard] text-[16px] font-normal leading-[1.5] text-center text-neutral-50"
                 data-node-id="175:658"
               >
                 이전에 생성한 계정이 있으신가요?

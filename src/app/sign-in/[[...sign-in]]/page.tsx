@@ -50,7 +50,7 @@ export default function SignInPage() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-black px-4 font-sans">
+    <div className="flex min-h-screen items-center justify-center bg-background px-4 font-sans">
       <div
         className="relative flex w-[375px] md:w-[480px] flex-col items-center gap-[80px] rounded-[24px] bg-neutral-900 px-[32px] py-[80px]"
         data-node-id="160:1146"

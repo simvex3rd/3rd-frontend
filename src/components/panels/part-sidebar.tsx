@@ -58,7 +58,7 @@ export function PartSidebar() {
 
         {/* Content Box */}
         <div className="w-full h-[250px] bg-[rgba(212,212,212,0.3)] border-[3px] border-primary rounded-[24px] flex items-center justify-center px-[153px] py-[105px]">
-          <p className="font-medium text-[16px] leading-[1.5] text-white text-center">
+          <p className="font-medium text-[16px] leading-[1.5] text-neutral-50 text-center">
             {partInfo?.description ||
               `${selectedObject}에 대해 궁금한 점이 있으신가요?`}
           </p>
@@ -88,17 +88,17 @@ export function PartSidebar() {
               <p className="font-bold text-[18px] leading-[1.4] text-primary">
                 {partInfo.name || selectedObject}
               </p>
-              <p className="font-medium text-[14px] leading-[1.5] text-white">
+              <p className="font-medium text-[14px] leading-[1.5] text-neutral-50">
                 Material: {partInfo.material || "N/A"}
               </p>
-              <p className="font-medium text-[14px] leading-[1.5] text-white">
+              <p className="font-medium text-[14px] leading-[1.5] text-neutral-50">
                 {partInfo.metadata?.weight
                   ? `Weight: ${partInfo.metadata.weight}`
                   : ""}
               </p>
             </div>
           ) : (
-            <p className="font-medium text-[16px] leading-[1.5] text-white text-center">
+            <p className="font-medium text-[16px] leading-[1.5] text-neutral-50 text-center">
               {selectedObject}
             </p>
           )}
