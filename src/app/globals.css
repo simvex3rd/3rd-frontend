@@ -8,10 +8,12 @@
   body {
     zoom: 0.75 !important;
     min-height: 133.33vh !important; /* Compensate for zoom */
+    background-color: #171717 !important; /* neutral-900 */
   }
 
   html {
     overflow-y: auto !important;
+    background-color: #171717 !important; /* neutral-900 */
   }
 }
 
@@ -19,6 +21,11 @@
   body {
     zoom: 1 !important;
     min-height: 100vh !important;
+    background-color: #171717 !important; /* neutral-900 */
+  }
+
+  html {
+    background-color: #171717 !important; /* neutral-900 */
   }
 }
 
