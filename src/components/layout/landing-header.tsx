@@ -65,7 +65,7 @@ export function LandingHeader() {
           <CTAButton
             variant="primary"
             size="compact"
-            className="h-[40px] px-6 text-[14px] font-bold rounded-full shadow-[0_0_12px_hsl(var(--primary)/0.25)] border border-primary/30"
+            className="h-[40px] px-6 text-[14px] font-bold rounded-full shadow-glow-sm border border-primary/30"
           >
             시작하기
           </CTAButton>

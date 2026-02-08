@@ -92,10 +92,7 @@ export function LandingIntroSection() {
 
             {/* CTA Button */}
             <div className="flex items-center pt-6">
-              <CTAButton
-                variant="primary"
-                className="shadow-[0_0_20px_rgba(2,238,225,0.3)]"
-              >
+              <CTAButton variant="primary" className="shadow-glow-md">
                 {landingContent.intro.ctaPrimary}
               </CTAButton>
             </div>

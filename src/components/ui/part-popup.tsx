@@ -29,7 +29,7 @@ const partPopupVariants = cva(
     variants: {
       variant: {
         default: "",
-        highlight: "shadow-[0_0_12px_rgba(2,238,225,0.2)]",
+        highlight: "shadow-glow-sm",
       },
     },
     defaultVariants: {
