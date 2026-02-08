@@ -1,9 +1,11 @@
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 import type { ButtonHTMLAttributes } from "react";
+import { type LucideIcon } from "lucide-react";
 
 /**
  * Button component with fill/outline variants and disabled states.
+ * Based on verified design specs from docs/phase2-ui-basic.md
  *
  * @component
  * @example
@@ -12,31 +14,30 @@ import type { ButtonHTMLAttributes } from "react";
  * <Button variant="outline" disabled>Disabled</Button>
  * ```
  *
- * @param {ButtonProps} props - Component props
- * @param {"fill" | "outline"} [props.variant="fill"] - Button style variant
- * @param {boolean} [props.disabled=false] - Disable button interaction
+ * Dimensions: 145×40px (default)
+ * Font: 16px/1.5 medium
+ * Border Radius: 8px
+ * States: Default, Hover, Press, Disabled
  *
- * @see {@link https://figma.com/file/Vz80RydxWcYHVnn2iuyV0m/SIMVEX} Figma Design
+ * @see {@link https://figma.com/file/Vz80RydxWcYHVnn2iuyV0m/SIMVEX?node-id=160-989} Figma Design
  */
 
-import { type LucideIcon } from "lucide-react";
-
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 rounded-[8px] font-medium text-[16px] leading-[1.5] transition-all duration-200 focus-visible:outline-none disabled:cursor-not-allowed",
+  // Base classes - matches Figma specs exactly
+  "inline-flex items-center justify-center gap-2 rounded-lg font-medium text-base leading-normal transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 disabled:cursor-not-allowed",
   {
     variants: {
       variant: {
-        fill: "bg-[var(--primary-cyan)] text-white hover:bg-[var(--primary-cyan-hover)] active:bg-[var(--primary-cyan-press)] shadow-sm hover:shadow-md",
+        // Fill variant - primary cyan background
+        fill: "bg-primary text-white hover:bg-primary-hover active:bg-primary-press disabled:bg-neutral-100 disabled:text-neutral-300",
+        // Outline variant - transparent with border
         outline:
-          "border-2 border-[var(--primary-cyan)] text-[var(--primary-cyan)] bg-transparent hover:bg-[var(--primary-cyan)]/10 active:bg-[var(--primary-cyan)]/20",
+          "border-2 border-primary text-primary bg-transparent hover:border-primary-hover hover:text-primary-hover active:border-primary-press active:text-primary-press disabled:border-neutral-300 disabled:text-neutral-300 disabled:bg-neutral-100",
       },
       size: {
-        default: "h-[40px] w-[145px] px-4",
-      },
-      status: {
-        default: "",
-        disable:
-          "bg-[var(--gray-100)] text-[var(--gray-300)] border-[var(--gray-300)] cursor-not-allowed pointer-events-none",
+        default: "h-10 w-auto min-w-[145px] px-4",
+        sm: "h-8 px-3 text-sm",
+        lg: "h-12 px-6",
       },
     },
     defaultVariants: {
@@ -57,7 +58,7 @@ export interface ButtonProps
 export function Button({
   className,
   variant = "fill",
-  size,
+  size = "default",
   disabled,
   leadingIcon: LeadingIcon,
   trailingIcon: TrailingIcon,
@@ -66,20 +67,13 @@ export function Button({
 }: ButtonProps) {
   return (
     <button
-      className={cn(
-        buttonVariants({
-          variant,
-          size,
-          status: disabled ? "disable" : "default",
-        }),
-        className
-      )}
+      className={cn(buttonVariants({ variant, size }), className)}
       disabled={disabled}
       {...props}
     >
-      {LeadingIcon && <LeadingIcon className="h-5 w-5 shrink-0" />}
-      <span>{children}</span>
-      {TrailingIcon && <TrailingIcon className="h-5 w-5 shrink-0" />}
+      {LeadingIcon && <LeadingIcon className="h-6 w-6 shrink-0" />}
+      {children && <span>{children}</span>}
+      {TrailingIcon && <TrailingIcon className="h-6 w-6 shrink-0" />}
     </button>
   );
 }

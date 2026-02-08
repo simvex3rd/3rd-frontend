@@ -3,36 +3,49 @@ import { cn } from "@/lib/utils";
 import type { ButtonHTMLAttributes } from "react";
 
 /**
- * CTA (Call To Action) button component with enhanced styling.
- * Larger than regular button for primary actions.
+ * CTA (Call To Action) button component with glassmorphic styling.
+ * Larger, more prominent button for primary actions on landing pages.
+ * Based on verified design specs from docs/phase2-ui-basic.md
  *
  * @component
  * @example
  * ```tsx
- * <CTAButton variant="primary">Get Started</CTAButton>
- * <CTAButton variant="default">Learn More</CTAButton>
+ * <CTAButton variant="primary">시작하기</CTAButton>
+ * <CTAButton variant="default">로그인/가입</CTAButton>
  * ```
  *
- * @param {CTAButtonProps} props - Component props
- * @param {"default" | "primary"} [props.variant="primary"] - Button style variant
- * @param {boolean} [props.disabled=false] - Disable button interaction
+ * Dimensions: 210×(52-68)px
+ * Font: 32px/1.25 semibold
+ * Border Radius: 24px
+ * Border: 5px solid with opacity
+ * Shadow: Card glow (4px 4px 20px rgba(2,238,225,0.1))
+ * States: Default, Primary, Hover, Press
  *
- * @see {@link https://figma.com/file/Vz80RydxWcYHVnn2iuyV0m/SIMVEX} Figma Design
+ * @see {@link https://figma.com/file/Vz80RydxWcYHVnn2iuyV0m/SIMVEX?node-id=90-41} Figma Design
  */
 
 const ctaButtonVariants = cva(
-  // Base classes
-  "inline-flex items-center justify-center rounded-[24px] border-[5px] border-solid font-semibold transition-all duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary-cyan)]",
+  // Base classes - glassmorphic effect with border and shadow
+  "inline-flex items-center justify-center gap-4 rounded-[24px] border-[5px] border-solid font-semibold text-xl leading-tight transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 backdrop-blur-sm shadow-card-glow",
   {
     variants: {
       variant: {
+        // Default - white glassmorphic background
         default:
-          "bg-white/30 text-[#FAFAFA] border-white/20 hover:bg-white/40 active:bg-white/50 backdrop-blur-sm",
+          "bg-white/30 text-neutral-50 border-primary/20 hover:bg-hover-30 active:bg-press-30",
+        // Primary - cyan glassmorphic background
         primary:
-          "bg-(--primary-cyan)/30 text-[#FAFAFA] border-(--primary-cyan)/20 shadow-[0_0_24px_rgba(2,238,225,0.15)] hover:bg-(--primary-cyan-hover)/30 hover:border-(--primary-cyan-hover)/20 active:bg-(--primary-cyan-press)/30 active:border-(--primary-cyan-press)/20 backdrop-blur-sm transition-all duration-300",
+          "bg-primary-30 text-neutral-50 border-primary/20 hover:bg-hover-30 active:bg-press-30",
+        // Hover state (for demo/storybook)
+        hover: "bg-hover-30 text-neutral-50 border-primary/20",
+        // Press state (for demo/storybook)
+        press: "bg-press-30 text-neutral-50 border-primary/20",
       },
       size: {
-        default: "h-[80px] w-[210px] px-6 py-0 text-[32px] leading-[1.25]",
+        // Default size - landing page CTA
+        default: "h-[68px] w-[210px] px-6 py-4",
+        // Compact size - header CTA
+        compact: "h-[52px] w-[210px] px-6 py-3",
       },
     },
     defaultVariants: {
@@ -49,20 +62,23 @@ export interface CTAButtonProps
 
 export function CTAButton({
   className,
-  variant,
-  size,
+  variant = "primary",
+  size = "default",
   disabled,
+  children,
   ...props
 }: CTAButtonProps) {
   return (
     <button
       className={cn(
         ctaButtonVariants({ variant, size }),
-        "disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:shadow-none",
+        disabled && "opacity-50 cursor-not-allowed pointer-events-none",
         className
       )}
       disabled={disabled}
       {...props}
-    />
+    >
+      {children}
+    </button>
   );
 }
