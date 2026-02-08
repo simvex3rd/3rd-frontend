@@ -173,57 +173,69 @@
   },
   "hotPaths": [
     {
+      "path": "src",
+      "accessCount": 34,
+      "lastAccessed": 1770550664584,
+      "type": "directory"
+    },
+    {
       "path": "src/app/sign-up/[[...sign-up]]/page.tsx",
-      "accessCount": 32,
-      "lastAccessed": 1770550507777,
+      "accessCount": 33,
+      "lastAccessed": 1770550654966,
       "type": "file"
     },
     {
       "path": "src/app/sign-in/[[...sign-in]]/page.tsx",
-      "accessCount": 25,
-      "lastAccessed": 1770550504299,
+      "accessCount": 26,
+      "lastAccessed": 1770550654464,
       "type": "file"
     },
     {
-      "path": "src",
-      "accessCount": 23,
-      "lastAccessed": 1770550528116,
-      "type": "directory"
-    },
-    {
       "path": "src/components/ui/markdown-renderer.tsx",
-      "accessCount": 15,
-      "lastAccessed": 1770550171833,
+      "accessCount": 19,
+      "lastAccessed": 1770550744049,
       "type": "file"
     },
     {
       "path": "src/components/panels/part-sidebar.tsx",
-      "accessCount": 14,
-      "lastAccessed": 1770550271645,
+      "accessCount": 18,
+      "lastAccessed": 1770550742269,
       "type": "file"
     },
     {
       "path": "src/components/panels/PartInfoPanel.tsx",
-      "accessCount": 13,
-      "lastAccessed": 1770550500662,
-      "type": "file"
-    },
-    {
-      "path": "src/components/ui/cta-button.tsx",
-      "accessCount": 11,
-      "lastAccessed": 1770550170341,
+      "accessCount": 14,
+      "lastAccessed": 1770550634561,
       "type": "file"
     },
     {
       "path": "",
-      "accessCount": 11,
-      "lastAccessed": 1770550187973,
+      "accessCount": 13,
+      "lastAccessed": 1770550651757,
       "type": "directory"
     },
     {
+      "path": "src/components/ui/cta-button.tsx",
+      "accessCount": 12,
+      "lastAccessed": 1770550629022,
+      "type": "file"
+    },
+    {
       "path": "src/app/globals.css",
+      "accessCount": 12,
+      "lastAccessed": 1770550629410,
+      "type": "file"
+    },
+    {
+      "path": "src/components/ui/model-card.tsx",
       "accessCount": 11,
-      "lastAccessed": 1770550375923,
+      "lastAccessed": 1770550627180,
+      "type": "file"
+    },
+    {
+      "path": "src/components/ui/value-card.tsx",
+      "accessCount": 11,
+      "lastAccessed": 1770550627682,
       "type": "file"
     },
     {
@@ -233,27 +245,21 @@
       "type": "file"
     },
     {
-      "path": "src/components/ui/model-card.tsx",
+      "path": "src/components/panels/chat-sidebar.tsx",
       "accessCount": 10,
-      "lastAccessed": 1770550382378,
+      "lastAccessed": 1770550643460,
       "type": "file"
     },
     {
-      "path": "src/components/ui/value-card.tsx",
+      "path": "src/components/ui/part-popup.tsx",
       "accessCount": 10,
-      "lastAccessed": 1770550382686,
+      "lastAccessed": 1770550735965,
       "type": "file"
     },
     {
       "path": "src/components/panels/footer.tsx",
       "accessCount": 9,
       "lastAccessed": 1770549493070,
-      "type": "file"
-    },
-    {
-      "path": "src/components/panels/chat-sidebar.tsx",
-      "accessCount": 9,
-      "lastAccessed": 1770549828065,
       "type": "file"
     },
     {
@@ -269,6 +275,24 @@
       "type": "file"
     },
     {
+      "path": "src/components/ui/input.tsx",
+      "accessCount": 8,
+      "lastAccessed": 1770550633502,
+      "type": "file"
+    },
+    {
+      "path": "src/components/ui/icon-button.tsx",
+      "accessCount": 8,
+      "lastAccessed": 1770550635116,
+      "type": "file"
+    },
+    {
+      "path": "src/components/common/Icon.tsx",
+      "accessCount": 8,
+      "lastAccessed": 1770550745078,
+      "type": "file"
+    },
+    {
       "path": "src/components/panels/navigation.tsx",
       "accessCount": 7,
       "lastAccessed": 1770549492688,
@@ -281,21 +305,9 @@
       "type": "file"
     },
     {
-      "path": "src/components/ui/icon-button.tsx",
+      "path": "src/app/layout.tsx",
       "accessCount": 7,
-      "lastAccessed": 1770550169963,
-      "type": "file"
-    },
-    {
-      "path": "src/components/ui/part-popup.tsx",
-      "accessCount": 7,
-      "lastAccessed": 1770550178483,
-      "type": "file"
-    },
-    {
-      "path": "src/components/ui/input.tsx",
-      "accessCount": 7,
-      "lastAccessed": 1770550389428,
+      "lastAccessed": 1770550644164,
       "type": "file"
     },
     {
@@ -308,12 +320,6 @@
       "path": "src/components/ui/text-field.tsx",
       "accessCount": 6,
       "lastAccessed": 1770547319224,
-      "type": "file"
-    },
-    {
-      "path": "src/app/layout.tsx",
-      "accessCount": 6,
-      "lastAccessed": 1770550383519,
       "type": "file"
     },
     {
@@ -335,9 +341,9 @@
       "type": "file"
     },
     {
-      "path": "src/components/common/Icon.tsx",
+      "path": "src/components/ui/slide-bar.tsx",
       "accessCount": 5,
-      "lastAccessed": 1770550558249,
+      "lastAccessed": 1770550637205,
       "type": "file"
     },
     {
@@ -356,12 +362,6 @@
       "path": "src/components/panels/login-header.tsx",
       "accessCount": 4,
       "lastAccessed": 1770545929279,
-      "type": "file"
-    },
-    {
-      "path": "src/components/ui/slide-bar.tsx",
-      "accessCount": 4,
-      "lastAccessed": 1770549828953,
       "type": "file"
     },
     {
@@ -413,6 +413,12 @@
       "type": "directory"
     },
     {
+      "path": "src/components/viewer/SceneCanvas.tsx",
+      "accessCount": 2,
+      "lastAccessed": 1770550644224,
+      "type": "file"
+    },
+    {
       "path": "public/icons/ai-assistant.svg",
       "accessCount": 1,
       "lastAccessed": 1770487958409,
@@ -440,12 +446,6 @@
       "path": "src/components/ui/slide-bar.stories.tsx",
       "accessCount": 1,
       "lastAccessed": 1770488160109,
-      "type": "file"
-    },
-    {
-      "path": "src/components/viewer/SceneCanvas.tsx",
-      "accessCount": 1,
-      "lastAccessed": 1770489228368,
       "type": "file"
     },
     {

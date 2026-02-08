@@ -36,7 +36,7 @@ export function PartSidebar() {
 
   return (
     <aside
-      className="flex flex-col items-center justify-center w-[400px] h-[750px] border-[3px] border-solid border-primary bg-[rgba(212,212,212,0.3)] rounded-[24px] p-12 gap-8 backdrop-blur-sm transition-all duration-300"
+      className="flex flex-col items-center justify-center w-[400px] h-[750px] border-[3px] border-solid border-primary bg-gray-30 rounded-[24px] p-12 gap-8 backdrop-blur-sm transition-all duration-300"
       role="complementary"
       aria-label="Part information sidebar"
     >
@@ -57,7 +57,7 @@ export function PartSidebar() {
         </div>
 
         {/* Content Box */}
-        <div className="w-full h-[250px] bg-[rgba(212,212,212,0.3)] border-[3px] border-primary rounded-[24px] flex items-center justify-center px-[153px] py-[105px]">
+        <div className="w-full h-[250px] bg-gray-30 border-[3px] border-primary rounded-[24px] flex items-center justify-center px-[153px] py-[105px]">
           <p className="font-medium text-[16px] leading-[1.5] text-neutral-50 text-center">
             {partInfo?.description ||
               `${selectedObject}에 대해 궁금한 점이 있으신가요?`}
@@ -82,7 +82,7 @@ export function PartSidebar() {
         </div>
 
         {/* Content Box */}
-        <div className="w-full h-[250px] bg-[rgba(212,212,212,0.3)] border-[3px] border-primary rounded-[24px] flex items-center justify-center px-[153px] py-[105px]">
+        <div className="w-full h-[250px] bg-gray-30 border-[3px] border-primary rounded-[24px] flex items-center justify-center px-[153px] py-[105px]">
           {partInfo ? (
             <div className="flex flex-col gap-2 text-center">
               <p className="font-bold text-[18px] leading-[1.4] text-primary">

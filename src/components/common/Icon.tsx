@@ -28,7 +28,7 @@ interface IconProps {
  * @example
  * ```tsx
  * <Icon name="menu" size={24} />
- * <Icon name="close" size={32} className="text-red-500" />
+ * <Icon name="close" size={32} className="text-error" />
  * ```
  */
 export function Icon({ name, size = 24, className, alt = "" }: IconProps) {
