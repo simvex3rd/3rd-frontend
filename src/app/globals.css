@@ -3,6 +3,25 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* CRITICAL: Zoom scaling - must be at top before any @layer */
+@media (max-width: 1919px) {
+  body {
+    zoom: 0.75 !important;
+    min-height: 133.33vh !important; /* Compensate for zoom */
+  }
+
+  html {
+    overflow-y: auto !important;
+  }
+}
+
+@media (min-width: 1920px) {
+  body {
+    zoom: 1 !important;
+    min-height: 100vh !important;
+  }
+}
+
 @theme inline {
   /* ============================================
      SIMVEX Design System - Verified Tokens
