@@ -38,11 +38,15 @@ export default function ViewerPage() {
         </div>
       )}
 
-      {/* 3D Canvas Background (z-0) - Large fixed size, centered */}
+      {/* 3D Canvas Background (z-0) - Full viewport with scale compensation */}
       {isHydrated && (
         <div
-          className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-0"
-          style={{ width: "4000px", height: "2100px" }}
+          className="absolute left-1/2 top-1/2 z-0"
+          style={{
+            width: "100vw",
+            height: "100vh",
+            transform: "translate(-50%, -50%) scale(1.3333)",
+          }}
         >
           <SceneCanvas>
             <Model url="/models/V4_Engine/Crankshaft-draco.glb" />
