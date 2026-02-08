@@ -68,11 +68,11 @@ export default function ViewerPage() {
       </div>
 
       {/* Part Info Panel - Side Overlay */}
-      {hasPartSelected && (
+      {/* {hasPartSelected && (
         <div className="absolute right-0 top-0 h-full pointer-events-auto z-20">
           <PartInfoPanel />
         </div>
-      )}
+      )} */}
     </div>
   );
 }
