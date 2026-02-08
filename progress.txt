@@ -1,0 +1,58 @@
+# SIMVEX Frontend Implementation Progress
+
+## Status: IN PROGRESS
+Started: 2026-02-08
+
+---
+
+## Phase A: Infrastructure Setup
+- [x] A-1: Tailwind config with design tokens (colors, spacing, typography) ✅
+- [x] A-2: Global styles and CSS variables ✅
+- [ ] A-3: shadcn/ui theme configuration
+
+## Phase B: Basic UI Components
+- [ ] B-1: Button (Primary, Outline, Ghost variants)
+- [ ] B-2: CTAButton (Default, Primary, Hover, Press states)
+- [ ] B-3: Input components (InputField, TextField)
+- [ ] B-4: Label and HelpMessage
+- [ ] B-5: ALinkButton
+
+## Phase C: Layout Components
+- [ ] C-1: Logo component
+- [ ] C-2: Navigation (landing page nav)
+- [ ] C-3: LoginHeader (AppHeader)
+- [ ] C-4: Footer
+- [ ] C-5: Toolbar (horizontal + vertical variants)
+- [ ] C-6: Slidebar (zoom slider)
+
+## Phase D: Domain Components
+- [ ] D-1: ValueCard (3D interaction, AI tutor, visualization cards)
+- [ ] D-2: ModelCard (engineering category cards)
+- [ ] D-3: Chat components (UserChat, AIChat bubbles)
+- [ ] D-4: BodyBtn (suggestion chips)
+- [ ] D-5: PartPopup
+- [ ] D-6: SidebarIfClickPart (AI Assistant + Part Info panels)
+
+## Phase E: Page Assembly
+- [ ] E-1: Landing page sections (Intro, Function, StudyModel)
+- [ ] E-2: Auth pages (Login, Signup)
+- [ ] E-3: Main page (3D viewer layout)
+
+## Phase F: Integration & Verification
+- [ ] F-1: Build verification (npm run build)
+- [ ] F-2: Routing verification
+- [ ] F-3: Page transitions
+- [ ] F-4: Final cleanup
+
+---
+
+## Current Iteration: 1
+## Completed: Phase A-1, A-2 - Design tokens and global styles
+## Next Task: Phase A-3 - shadcn/ui theme configuration
+
+---
+
+## Notes
+- Documentation verified 100% accurate
+- Using docs/ as source of truth
+- Figma MCP available if clarification needed
