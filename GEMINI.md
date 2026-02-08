@@ -108,6 +108,74 @@ import { Button } from "@/components/ui/button";
 - 1440px 뷰포트에서 자동으로 `80px → 60px`, `40px → 30px`로 스케일링됨
 - **스케일링 코드 수정 금지** - globals.css 최상단에 위치, 다른 @layer보다 우선
 
+### Three.js Canvas & Zoom 보정
+
+**⚠️ 중요: Canvas는 특별한 보정이 필요합니다**
+
+React Three Fiber Canvas는 CSS zoom 영향을 받아 예상과 다르게 렌더링됩니다. 다음 패턴을 **반드시** 따라야 합니다.
+
+```tsx
+// ✅ 올바른 패턴 (src/app/viewer/page.tsx 참고)
+<div
+  className="absolute left-1/2 top-1/2 z-0"
+  style={{
+    width: "100vw",
+    height: "100vh",
+    transform: "translate(-50%, -50%) scale(1.3333)",
+  }}
+>
+  <SceneCanvas>
+    <Model url="/model.glb" />
+  </SceneCanvas>
+</div>
+```
+
+**핵심 포인트:**
+
+1. **중앙 정렬**: `left: 50%, top: 50%` + `translate(-50%, -50%)`
+   - Container 중심 = Viewport 중심을 유지
+   - 카메라가 보는 중심이 화면 중앙이 됨
+
+2. **Zoom 보정**: `scale(1.3333)`
+   - Body zoom: 0.75의 역수 (1 / 0.75 = 1.3333)
+   - 최종 크기: 100vw × 1.3333 × 0.75 = 100vw (viewport와 일치)
+
+3. **좌표계 일치**:
+   - Container: 100vw × 100vh (내부 좌표계)
+   - Viewport: 100vw × 100vh (실제 화면)
+   - 3D 모델이 정확히 화면 중앙에 렌더링됨
+
+**❌ 하지 말 것:**
+
+```tsx
+// ❌ inset-0 + transformOrigin 사용 (작동 안 함)
+<div
+  className="absolute inset-0"
+  style={{
+    transform: 'scale(1.3333)',
+    transformOrigin: 'center'  // ← 예상대로 작동 안 함
+  }}
+>
+
+// ❌ 큰 고정 크기 사용 (모델이 왼쪽 위로 치우침)
+<div style={{ width: '4000px', height: '2100px' }}>
+
+// ❌ 133.33vw 사용 (카메라 중심이 viewport 중심에서 벗어남)
+<div style={{ width: '133.33vw', height: '133.33vh' }}>
+```
+
+**디버깅:**
+
+문제가 발생하면 `.claude/CANVAS_ZOOM_TROUBLESHOOTING.md` 참고
+
+```bash
+# Canvas 중심 확인
+const canvas = document.querySelector('canvas');
+const rect = canvas.getBoundingClientRect();
+console.log('Canvas center:', rect.left + rect.width / 2, rect.top + rect.height / 2);
+console.log('Viewport center:', window.innerWidth / 2, window.innerHeight / 2);
+```
+
 ### 상태 관리
 
 ```tsx
