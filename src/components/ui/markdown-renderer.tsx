@@ -167,7 +167,7 @@ export function MarkdownRenderer({
             </div>
           ),
           thead: ({ children }) => (
-            <thead className="bg-[rgba(1,100,95,0.3)]">{children}</thead>
+            <thead className="bg-formula-bg/30">{children}</thead>
           ),
           tbody: ({ children }) => <tbody>{children}</tbody>,
           tr: ({ children }) => (
