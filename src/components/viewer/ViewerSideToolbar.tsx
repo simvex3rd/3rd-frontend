@@ -16,12 +16,14 @@
  */
 
 import { cn } from "@/lib/utils";
+import { useUIStore } from "@/stores/ui-store";
 
 interface ViewerSideToolbarProps {
   className?: string;
 }
 
 export function ViewerSideToolbar({ className }: ViewerSideToolbarProps) {
+  const { activeSideTool, setSideTool, openChat } = useUIStore();
   return (
     <div
       className={cn(
@@ -38,7 +40,14 @@ export function ViewerSideToolbar({ className }: ViewerSideToolbarProps) {
     >
       {/* AI Assistant - icon rotated to appear upright */}
       <button
-        className="w-[30px] h-[30px] flex items-center justify-center -rotate-90 text-primary hover:text-primary-light transition-colors"
+        onClick={() => {
+          setSideTool("ai");
+          openChat();
+        }}
+        className={cn(
+          "w-[30px] h-[30px] flex items-center justify-center -rotate-90 text-primary hover:text-primary-light transition-colors",
+          activeSideTool === "ai" && "bg-primary/30 ring-[2px] ring-primary"
+        )}
         aria-label="Open AI Assistant"
         title="AI Assistant"
       >
@@ -55,7 +64,13 @@ export function ViewerSideToolbar({ className }: ViewerSideToolbarProps) {
 
       {/* Search Parts - icon rotated to appear upright */}
       <button
-        className="w-[30px] h-[30px] flex items-center justify-center -rotate-90 text-primary hover:text-primary-light transition-colors"
+        onClick={() =>
+          setSideTool(activeSideTool === "search" ? null : "search")
+        }
+        className={cn(
+          "w-[30px] h-[30px] flex items-center justify-center -rotate-90 text-primary hover:text-primary-light transition-colors",
+          activeSideTool === "search" && "bg-primary/30 ring-[2px] ring-primary"
+        )}
         aria-label="Search parts"
         title="Search parts"
       >
@@ -86,7 +101,11 @@ export function ViewerSideToolbar({ className }: ViewerSideToolbarProps) {
 
       {/* Edit/Annotate - icon rotated to appear upright */}
       <button
-        className="w-[30px] h-[30px] flex items-center justify-center -rotate-90 text-primary hover:text-primary-light transition-colors"
+        onClick={() => setSideTool(activeSideTool === "edit" ? null : "edit")}
+        className={cn(
+          "w-[30px] h-[30px] flex items-center justify-center -rotate-90 text-primary hover:text-primary-light transition-colors",
+          activeSideTool === "edit" && "bg-primary/30 ring-[2px] ring-primary"
+        )}
         aria-label="Edit annotations"
         title="Edit annotations"
       >

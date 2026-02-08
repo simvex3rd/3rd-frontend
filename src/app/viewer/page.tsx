@@ -9,6 +9,7 @@ import { PartInfoPanel } from "@/components/panels/PartInfoPanel";
 import { ChatInterface } from "@/components/panels/ChatInterface";
 import { useStoreHydration } from "@/hooks/use-store-hydration";
 import { useSceneStore } from "@/stores/scene-store";
+import { useUIStore } from "@/stores/ui-store";
 import { ViewerHeader } from "@/components/viewer/ViewerHeader";
 
 /**
@@ -26,6 +27,8 @@ export default function ViewerPage() {
   const isHydrated = useStoreHydration();
   const selectedObject = useSceneStore((state) => state.selectedObject);
   const hasPartSelected = !!selectedObject;
+  const { isPartInfoVisible } = useUIStore();
+  const showPartInfo = hasPartSelected && isPartInfoVisible;
 
   return (
     <div className="relative w-full max-[1919px]:h-[133.33vh] h-screen bg-neutral-900 overflow-hidden">
@@ -78,7 +81,7 @@ export default function ViewerPage() {
       </div>
 
       {/* Part Info Panel - Side Overlay, left of chat when part selected */}
-      {hasPartSelected && (
+      {showPartInfo && (
         <div className="absolute right-[442px] top-0 h-full pointer-events-auto z-20">
           <PartInfoPanel />
         </div>

@@ -7,6 +7,7 @@ import { MarkdownRenderer } from "@/components/ui/markdown-renderer";
 import { LucideChevronDown, LucideChevronUp } from "lucide-react";
 import type { HTMLAttributes } from "react";
 import { useSceneStore } from "@/stores/scene-store";
+import { useUIStore } from "@/stores/ui-store";
 import { usePartData } from "@/hooks/use-part-data";
 
 /**
@@ -49,7 +50,7 @@ export function ChatInterface({
   initialMessages = [],
   ...props
 }: ChatInterfaceProps) {
-  const [isOpen, setIsOpen] = useState(defaultOpen);
+  const { isChatOpen, toggleChat } = useUIStore();
   const [messages, setMessages] = useState<Message[]>(initialMessages);
   const [inputValue, setInputValue] = useState("");
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -145,7 +146,7 @@ ${partData.description ? `설명: ${partData.description}` : ""}
     <div
       className={cn(
         "fixed right-0 top-0 h-screen transition-all duration-300 z-30 flex flex-col",
-        isOpen ? "w-[442px]" : "w-[80px]",
+        isChatOpen ? "w-[442px]" : "w-[80px]",
         className
       )}
       {...props}
@@ -154,7 +155,7 @@ ${partData.description ? `설명: ${partData.description}` : ""}
       <div
         className={cn(
           "h-full flex flex-col backdrop-blur-md transition-all duration-300",
-          isOpen ? "rounded-l-[24px]" : "rounded-l-[12px]"
+          isChatOpen ? "rounded-l-[24px]" : "rounded-l-[12px]"
         )}
         style={{
           backgroundColor: "rgba(64, 64, 64, 0.7)",
@@ -164,18 +165,18 @@ ${partData.description ? `설명: ${partData.description}` : ""}
         <div
           className={cn(
             "h-[67px] shrink-0 flex items-center px-[24px] transition-all duration-300",
-            isOpen ? "rounded-tl-[24px]" : "rounded-tl-[12px]"
+            isChatOpen ? "rounded-tl-[24px]" : "rounded-tl-[12px]"
           )}
           style={{ backgroundColor: "#404040" }}
         >
           <div className="flex items-center justify-between w-full">
             {/* Toggle Button */}
             <button
-              onClick={() => setIsOpen(!isOpen)}
+              onClick={toggleChat}
               className="text-neutral-50 hover:text-primary transition-colors p-[8px] -ml-[8px]"
-              aria-label={isOpen ? "Collapse chat" : "Expand chat"}
+              aria-label={isChatOpen ? "Collapse chat" : "Expand chat"}
             >
-              {isOpen ? (
+              {isChatOpen ? (
                 <LucideChevronUp className="w-[24px] h-[24px]" />
               ) : (
                 <LucideChevronDown className="w-[24px] h-[24px]" />
@@ -183,7 +184,7 @@ ${partData.description ? `설명: ${partData.description}` : ""}
             </button>
 
             {/* Title */}
-            {isOpen && (
+            {isChatOpen && (
               <div className="flex items-center gap-[8px]">
                 <h2 className="font-semibold text-[18px] leading-[1.5] text-primary">
                   SIMVEX Assistant
@@ -194,7 +195,7 @@ ${partData.description ? `설명: ${partData.description}` : ""}
         </div>
 
         {/* Chat Content - Only visible when open */}
-        {isOpen && (
+        {isChatOpen && (
           <>
             {/* Messages Area */}
             <div

@@ -17,12 +17,21 @@
  */
 
 import { cn } from "@/lib/utils";
+import { useUIStore } from "@/stores/ui-store";
 
 interface ViewerToolbarProps {
   className?: string;
 }
 
 export function ViewerToolbar({ className }: ViewerToolbarProps) {
+  const {
+    activeViewerTool,
+    setViewerTool,
+    isWireframeMode,
+    toggleWireframe,
+    isCameraLocked,
+    toggleCameraLock,
+  } = useUIStore();
   return (
     <div
       className={cn(
@@ -39,7 +48,14 @@ export function ViewerToolbar({ className }: ViewerToolbarProps) {
     >
       {/* Focus Tool */}
       <button
-        className="w-[30px] h-[30px] flex items-center justify-center text-primary hover:text-primary-light transition-colors"
+        onClick={() =>
+          setViewerTool(activeViewerTool === "focus" ? null : "focus")
+        }
+        className={cn(
+          "w-[30px] h-[30px] flex items-center justify-center text-primary hover:text-primary-light transition-colors",
+          activeViewerTool === "focus" &&
+            "bg-primary/30 ring-[2px] ring-primary"
+        )}
         aria-label="Focus selected object"
         title="Focus selected object"
       >
@@ -56,7 +72,11 @@ export function ViewerToolbar({ className }: ViewerToolbarProps) {
 
       {/* Wireframe Toggle */}
       <button
-        className="w-[30px] h-[30px] flex items-center justify-center text-primary hover:text-primary-light transition-colors"
+        onClick={toggleWireframe}
+        className={cn(
+          "w-[30px] h-[30px] flex items-center justify-center text-primary hover:text-primary-light transition-colors",
+          isWireframeMode && "bg-primary/30 ring-[2px] ring-primary"
+        )}
         aria-label="Toggle wireframe view"
         title="Toggle wireframe view"
       >
@@ -73,7 +93,11 @@ export function ViewerToolbar({ className }: ViewerToolbarProps) {
 
       {/* Camera Lock */}
       <button
-        className="w-[30px] h-[30px] flex items-center justify-center text-primary hover:text-primary-light transition-colors"
+        onClick={toggleCameraLock}
+        className={cn(
+          "w-[30px] h-[30px] flex items-center justify-center text-primary hover:text-primary-light transition-colors",
+          isCameraLocked && "bg-primary/30 ring-[2px] ring-primary"
+        )}
         aria-label="Lock camera position"
         title="Lock camera position"
       >
@@ -95,7 +119,14 @@ export function ViewerToolbar({ className }: ViewerToolbarProps) {
 
       {/* Measurement Tool */}
       <button
-        className="w-[30px] h-[30px] flex items-center justify-center text-primary hover:text-primary-light transition-colors"
+        onClick={() =>
+          setViewerTool(activeViewerTool === "measure" ? null : "measure")
+        }
+        className={cn(
+          "w-[30px] h-[30px] flex items-center justify-center text-primary hover:text-primary-light transition-colors",
+          activeViewerTool === "measure" &&
+            "bg-primary/30 ring-[2px] ring-primary"
+        )}
         aria-label="Measure distances"
         title="Measure distances"
       >
