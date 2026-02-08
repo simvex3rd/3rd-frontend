@@ -124,16 +124,16 @@ export const Interactive: Story = {
 
     return (
       <div className="space-y-4">
-        <div className="space-y-2 rounded-lg bg-[var(--gray-50)] p-4 min-h-[200px]">
+        <div className="space-y-2 rounded-lg bg-neutral-50 p-4 min-h-[200px]">
           {messages.length === 0 ? (
-            <p className="text-[var(--gray-500)] text-sm text-center py-8">
+            <p className="text-neutral-500 text-sm text-center py-8">
               No messages yet. Type something and press send!
             </p>
           ) : (
             messages.map((msg, i) => (
               <div
                 key={i}
-                className="rounded-lg bg-[var(--primary-cyan)] text-white px-3 py-2 max-w-[80%] ml-auto"
+                className="rounded-lg bg-primary text-white px-3 py-2 max-w-[80%] ml-auto"
               >
                 {msg}
               </div>
@@ -148,7 +148,7 @@ export const Interactive: Story = {
           showCounter
           maxLength={500}
         />
-        <p className="text-xs text-[var(--gray-500)]">
+        <p className="text-xs text-neutral-500">
           Press Enter to send, Shift+Enter for new line
         </p>
       </div>

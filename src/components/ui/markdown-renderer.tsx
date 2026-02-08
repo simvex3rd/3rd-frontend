@@ -108,7 +108,7 @@ export function MarkdownRenderer({
             const isInline = !className;
             return isInline ? (
               <code
-                className="bg-[rgba(1,100,95,0.5)] border border-[var(--primary-cyan)] rounded px-1 text-[14px] font-medium text-neutral-50"
+                className="bg-[rgba(1,100,95,0.5)] border border-primary rounded px-1 text-[14px] font-medium text-neutral-50"
                 {...props}
               >
                 {children}
@@ -123,14 +123,14 @@ export function MarkdownRenderer({
             );
           },
           pre: ({ children }) => (
-            <pre className="bg-[rgba(1,100,95,0.5)] border-2 border-[var(--primary-cyan)] rounded-[16px] p-4 mb-0 overflow-x-auto">
+            <pre className="bg-[rgba(1,100,95,0.5)] border-2 border-primary rounded-[16px] p-4 mb-0 overflow-x-auto">
               {children}
             </pre>
           ),
 
           // Blockquote - Figma: cyan color
           blockquote: ({ children }) => (
-            <blockquote className="border-l-4 border-[var(--primary-cyan)] pl-4 text-[14px] font-medium leading-[1.5] text-[var(--primary-cyan)] mb-0">
+            <blockquote className="border-l-4 border-primary pl-4 text-[14px] font-medium leading-[1.5] text-primary mb-0">
               {children}
             </blockquote>
           ),
@@ -139,7 +139,7 @@ export function MarkdownRenderer({
           a: ({ href, children }) => (
             <a
               href={href}
-              className="text-[var(--primary-cyan)] hover:underline transition-colors"
+              className="text-primary hover:underline transition-colors"
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -148,7 +148,7 @@ export function MarkdownRenderer({
           ),
 
           // Horizontal rule
-          hr: () => <hr className="border-[var(--gray-300)] my-4" />,
+          hr: () => <hr className="border-neutral-300 my-4" />,
 
           // Emphasis - Figma colors
           strong: ({ children }) => (
@@ -161,7 +161,7 @@ export function MarkdownRenderer({
           // Table
           table: ({ children }) => (
             <div className="overflow-x-auto mb-0">
-              <table className="min-w-full border-collapse border-2 border-[var(--primary-cyan)]">
+              <table className="min-w-full border-collapse border-2 border-primary">
                 {children}
               </table>
             </div>
@@ -171,9 +171,7 @@ export function MarkdownRenderer({
           ),
           tbody: ({ children }) => <tbody>{children}</tbody>,
           tr: ({ children }) => (
-            <tr className="border-b border-[var(--primary-cyan)]">
-              {children}
-            </tr>
+            <tr className="border-b border-primary">{children}</tr>
           ),
           th: ({ children }) => (
             <th className="px-4 py-2 text-left font-semibold text-neutral-50 text-[14px]">

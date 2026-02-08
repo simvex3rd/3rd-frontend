@@ -367,7 +367,7 @@ export const DarkTheme: Story = {
 export const CustomStyled: Story = {
   args: {
     children: chatMessageMarkdown,
-    className: "border border-[var(--primary-cyan)] p-4 rounded-lg",
+    className: "border border-primary p-4 rounded-lg",
   },
 };
 

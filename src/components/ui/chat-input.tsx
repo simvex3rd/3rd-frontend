@@ -31,12 +31,11 @@ const chatInputVariants = cva(
     variants: {
       variant: {
         default:
-          "border-[var(--gray-300)] bg-white text-[var(--bg-dark)] placeholder:text-[var(--gray-500)] focus-within:border-[var(--blue-primary)]",
-        focus: "border-[var(--blue-primary)] bg-white text-[var(--bg-dark)]",
-        error: "border-[var(--red-error)] bg-white text-[var(--bg-dark)]",
-        success: "border-[var(--green-success)] bg-white text-[var(--bg-dark)]",
-        disable:
-          "border-[var(--gray-300)] bg-[var(--gray-100)] text-[var(--gray-300)]",
+          "border-neutral-300 bg-white text-neutral-950 placeholder:text-neutral-500 focus-within:border-blue-500",
+        focus: "border-blue-500 bg-white text-neutral-950",
+        error: "border-red-500 bg-white text-neutral-950",
+        success: "border-green-500 bg-white text-neutral-950",
+        disable: "border-neutral-300 bg-neutral-100 text-neutral-300",
       },
     },
     defaultVariants: {
@@ -124,8 +123,8 @@ export const ChatInput = forwardRef<HTMLTextAreaElement, ChatInputProps>(
             className={cn(
               "mb-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-[6px] transition-all",
               hasContent && !disabled
-                ? "bg-[var(--primary-cyan)] text-white hover:bg-[var(--primary-cyan-hover)] active:bg-[var(--primary-cyan-press)]"
-                : "bg-[var(--gray-100)] text-[var(--gray-300)] cursor-not-allowed"
+                ? "bg-primary text-white hover:bg-cyan-500 active:bg-cyan-600"
+                : "bg-neutral-100 text-neutral-300 cursor-not-allowed"
             )}
             aria-label="Send message"
           >
@@ -136,9 +135,7 @@ export const ChatInput = forwardRef<HTMLTextAreaElement, ChatInputProps>(
           <div
             className={cn(
               "text-right text-xs",
-              charCount > maxLength * 0.9
-                ? "text-[var(--red-error)]"
-                : "text-[var(--gray-500)]"
+              charCount > maxLength * 0.9 ? "text-red-500" : "text-neutral-500"
             )}
           >
             {charCount} / {maxLength}

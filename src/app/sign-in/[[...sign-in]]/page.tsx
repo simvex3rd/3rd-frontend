@@ -18,8 +18,8 @@ export default function SignInPage() {
 
   if (!isLoaded) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-[#121212]">
-        <Loader2 className="h-8 w-8 animate-spin text-[var(--primary-cyan)]" />
+      <div className="flex min-h-screen items-center justify-center bg-neutral-950">
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
       </div>
     );
   }
@@ -43,7 +43,6 @@ export default function SignInPage() {
       }
     } catch (err: unknown) {
       const clerkError = err as { errors?: Array<{ longMessage?: string }> };
-      console.error("error", clerkError.errors?.[0]);
       setError(clerkError.errors?.[0]?.longMessage || "오류가 발생했습니다.");
     } finally {
       setIsLoading(false);
@@ -53,14 +52,14 @@ export default function SignInPage() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-black px-4 font-sans">
       <div
-        className="relative flex w-[375px] md:w-[480px] flex-col items-center gap-[80px] rounded-[24px] bg-[#171717] px-[32px] py-[80px]"
+        className="relative flex w-[375px] md:w-[480px] flex-col items-center gap-[80px] rounded-[24px] bg-neutral-900 px-[32px] py-[80px]"
         data-node-id="160:1146"
         // Shadow removed as per Figma design (flat design)
       >
         {/* Header - Login */}
         <div className="flex h-[30px] w-full flex-none flex-col items-center justify-center order-0 grow-0 self-stretch">
           <p
-            className="text-center font-[Pretendard] text-[24px] font-semibold leading-[1.25] text-[#FAFAFA]"
+            className="text-center font-[Pretendard] text-[24px] font-semibold leading-[1.25] text-neutral-50"
             data-node-id="160:1144"
           >
             로그인
@@ -83,7 +82,7 @@ export default function SignInPage() {
               data-node-id="160:945"
             >
               <div className="h-[24px] w-full relative">
-                <label className="absolute inset-0 font-[Pretendard] text-[16px] font-medium leading-[1.5] text-[#E5E5E5]">
+                <label className="absolute inset-0 font-[Pretendard] text-[16px] font-medium leading-[1.5] text-neutral-200">
                   이메일
                 </label>
               </div>
@@ -103,7 +102,7 @@ export default function SignInPage() {
               data-node-id="160:955"
             >
               <div className="h-[24px] w-full relative">
-                <label className="absolute inset-0 font-[Pretendard] text-[16px] font-medium leading-[1.5] text-[#E5E5E5]">
+                <label className="absolute inset-0 font-[Pretendard] text-[16px] font-medium leading-[1.5] text-neutral-200">
                   비밀번호
                 </label>
               </div>
@@ -124,7 +123,7 @@ export default function SignInPage() {
             >
               <Link
                 href="/forgot-password"
-                className="absolute inset-0 font-[Pretendard] text-[16px] font-normal leading-[1.5] text-[#E5E5E5] text-right hover:text-white transition-colors"
+                className="absolute inset-0 font-[Pretendard] text-[16px] font-normal leading-[1.5] text-neutral-200 text-right hover:text-white transition-colors"
               >
                 아이디/비밀번호 찾기
               </Link>
@@ -147,13 +146,13 @@ export default function SignInPage() {
             <button
               onClick={handleSubmit}
               disabled={isLoading}
-              className="flex h-[40px] w-full flex-none flex-row items-center justify-center gap-[8px] rounded-[8px] bg-[#02EEE1] px-[16px] hover:opacity-90 disabled:opacity-50 transition-opacity"
+              className="flex h-[40px] w-full flex-none flex-row items-center justify-center gap-[8px] rounded-[8px] bg-primary px-[16px] hover:opacity-90 disabled:opacity-50 transition-opacity"
               data-node-id="160:1087"
             >
               {isLoading ? (
-                <Loader2 className="h-5 w-5 animate-spin text-white" />
+                <Loader2 className="h-5 w-5 animate-spin text-neutral-900" />
               ) : null}
-              <p className="font-[Pretendard] text-[16px] font-medium leading-[1.5] text-white text-center">
+              <p className="font-[Pretendard] text-[16px] font-medium leading-[1.5] text-neutral-900 text-center">
                 로그인
               </p>
             </button>
@@ -162,10 +161,10 @@ export default function SignInPage() {
             <Link href="/sign-up" className="w-full">
               <button
                 type="button"
-                className="box-border flex h-[40px] w-full flex-none flex-row items-center justify-center gap-[8px] rounded-[8px] border-[2px] border-[#02EEE1] px-[16px] hover:bg-[#02EEE1]/10 transition-colors"
+                className="box-border flex h-[40px] w-full flex-none flex-row items-center justify-center gap-[8px] rounded-[8px] border-[2px] border-primary px-[16px] hover:bg-primary/10 transition-colors"
                 data-node-id="160:1093"
               >
-                <p className="font-[Pretendard] text-[16px] font-medium leading-[1.5] text-[#02EEE1] text-center">
+                <p className="font-[Pretendard] text-[16px] font-medium leading-[1.5] text-primary text-center">
                   계정 만들기
                 </p>
               </button>
