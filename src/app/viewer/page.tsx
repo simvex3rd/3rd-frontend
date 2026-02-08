@@ -38,9 +38,12 @@ export default function ViewerPage() {
         </div>
       )}
 
-      {/* 3D Canvas Background (z-0) */}
+      {/* 3D Canvas Background (z-0) - Large fixed size, centered */}
       {isHydrated && (
-        <div className="absolute inset-0 z-0">
+        <div
+          className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-0"
+          style={{ width: "4000px", height: "2100px" }}
+        >
           <SceneCanvas>
             <Model url="/models/V4_Engine/Crankshaft-draco.glb" />
           </SceneCanvas>

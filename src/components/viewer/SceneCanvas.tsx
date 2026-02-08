@@ -34,6 +34,7 @@ export function SceneCanvas({
       camera={{ position: cameraPosition, fov: 50 }}
       dpr={[1, 2]}
       gl={{ antialias: true }}
+      style={{ width: "100%", height: "100%", display: "block" }}
     >
       <Suspense fallback={null}>
         <CameraSync />
