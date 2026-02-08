@@ -124,7 +124,7 @@ export default function SignUpPage() {
               >
                 <Link
                   href="/sign-in"
-                  className="absolute inset-0 font-[Pretendard] text-[16px] font-normal leading-[1.5] text-center underline text-neutral-300 hover:text-white transition-colors"
+                  className="absolute inset-0 font-[Pretendard] text-[16px] font-normal leading-[1.5] text-center underline text-neutral-300 hover:text-neutral-50 transition-colors"
                 >
                   로그인
                 </Link>
@@ -253,7 +253,7 @@ export default function SignUpPage() {
               )}
 
               {error && (
-                <div className="flex w-full items-center gap-2 rounded-lg bg-red-500/10 p-3 text-sm text-red-500 border border-red-500/20">
+                <div className="flex w-full items-center gap-2 rounded-lg bg-error/10 p-3 text-sm text-error border border-error/20">
                   <AlertCircle className="h-4 w-4 shrink-0" />
                   <p>{error}</p>
                 </div>

@@ -16,7 +16,7 @@ export function PartInfoPanel() {
 
   if (!selectedObject) {
     return (
-      <div className="absolute right-4 top-4 w-80 rounded-lg border border-neutral-700 bg-neutral-900/90 p-4 text-white backdrop-blur-sm">
+      <div className="absolute right-4 top-4 w-80 rounded-lg border border-neutral-700 bg-neutral-900/90 p-4 text-neutral-50 backdrop-blur-sm">
         <p className="text-sm text-neutral-400">
           Click on a part to see its details
         </p>
@@ -28,7 +28,7 @@ export function PartInfoPanel() {
 
   if (!partInfo) {
     return (
-      <div className="absolute right-4 top-4 w-80 rounded-lg border border-neutral-700 bg-neutral-900/90 p-4 text-white backdrop-blur-sm">
+      <div className="absolute right-4 top-4 w-80 rounded-lg border border-neutral-700 bg-neutral-900/90 p-4 text-neutral-50 backdrop-blur-sm">
         <h3 className="mb-2 text-lg font-semibold">Selected Part</h3>
         <p className="text-sm text-neutral-300">{selectedObject}</p>
         <p className="mt-2 text-xs text-warning">

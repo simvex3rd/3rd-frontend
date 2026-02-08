@@ -192,6 +192,32 @@ All color values, typography, spacing, border-radius, shadows, and opacity varia
 
 **Final Verification**: npm run build - SUCCESS with 0 TypeScript errors ✅
 
+### Additional Issues Found (Iteration 4) - ALL FIXED ✅
+
+**Round 2 Architect Review identified 12 more violations:**
+
+1. ✅ **PartInfoPanel.tsx** (10 violations) - FIXED
+   - Replaced all `gray-*` with `neutral-*` (8 instances)
+   - Replaced `yellow-400` with `warning` (2 instances)
+   - CRITICAL: These classes didn't exist in Tailwind v4 @theme
+
+2. ✅ **text-white → text-neutral-50** (8 files) - FIXED
+   - part-sidebar.tsx, ai-assistant.tsx, chat-bubble.tsx
+   - chat-input.tsx, sign-up/page.tsx
+
+3. ✅ **bg-black → bg-background** (2 files) - FIXED
+   - sign-in/page.tsx, sign-up/page.tsx
+
+4. ✅ **cyan-\* → primary tokens** - FIXED
+   - chat-input.tsx: `hover:bg-cyan-500` → `hover:bg-primary-hover`
+
+5. ✅ **Placeholder hardcoded colors** - FIXED
+   - landing-intro-section.tsx: All `#1a1a1a`, `#333`, `#666` → design tokens
+
+**Final Status**: 100% design system compliance ✅
+**Total Files Modified**: 35 production files
+**Total Commits**: 3 (covering all fixes)
+
 ---
 
 ---

@@ -14,7 +14,7 @@ export default function Home() {
       {/* Only render Canvas after hydration to prevent flickering */}
       {!isHydrated && (
         <div className="flex h-full items-center justify-center">
-          <p className="text-gray-400">Loading...</p>
+          <p className="text-neutral-400">Loading...</p>
         </div>
       )}
 

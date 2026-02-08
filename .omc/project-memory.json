@@ -174,21 +174,21 @@
   "hotPaths": [
     {
       "path": "src/app/sign-up/[[...sign-up]]/page.tsx",
-      "accessCount": 28,
-      "lastAccessed": 1770550283457,
+      "accessCount": 32,
+      "lastAccessed": 1770550507777,
+      "type": "file"
+    },
+    {
+      "path": "src/app/sign-in/[[...sign-in]]/page.tsx",
+      "accessCount": 25,
+      "lastAccessed": 1770550504299,
       "type": "file"
     },
     {
       "path": "src",
-      "accessCount": 21,
-      "lastAccessed": 1770550188962,
+      "accessCount": 23,
+      "lastAccessed": 1770550528116,
       "type": "directory"
-    },
-    {
-      "path": "src/app/sign-in/[[...sign-in]]/page.tsx",
-      "accessCount": 21,
-      "lastAccessed": 1770550270913,
-      "type": "file"
     },
     {
       "path": "src/components/ui/markdown-renderer.tsx",
@@ -200,6 +200,12 @@
       "path": "src/components/panels/part-sidebar.tsx",
       "accessCount": 14,
       "lastAccessed": 1770550271645,
+      "type": "file"
+    },
+    {
+      "path": "src/components/panels/PartInfoPanel.tsx",
+      "accessCount": 13,
+      "lastAccessed": 1770550500662,
       "type": "file"
     },
     {
@@ -215,33 +221,27 @@
       "type": "directory"
     },
     {
+      "path": "src/app/globals.css",
+      "accessCount": 11,
+      "lastAccessed": 1770550375923,
+      "type": "file"
+    },
+    {
       "path": "src/app/page.tsx",
       "accessCount": 10,
       "lastAccessed": 1770550169412,
       "type": "file"
     },
     {
-      "path": "src/app/globals.css",
-      "accessCount": 10,
-      "lastAccessed": 1770550191787,
-      "type": "file"
-    },
-    {
-      "path": "src/components/panels/PartInfoPanel.tsx",
-      "accessCount": 10,
-      "lastAccessed": 1770550299757,
-      "type": "file"
-    },
-    {
       "path": "src/components/ui/model-card.tsx",
-      "accessCount": 9,
-      "lastAccessed": 1770546034201,
+      "accessCount": 10,
+      "lastAccessed": 1770550382378,
       "type": "file"
     },
     {
       "path": "src/components/ui/value-card.tsx",
-      "accessCount": 9,
-      "lastAccessed": 1770546065776,
+      "accessCount": 10,
+      "lastAccessed": 1770550382686,
       "type": "file"
     },
     {
@@ -293,6 +293,12 @@
       "type": "file"
     },
     {
+      "path": "src/components/ui/input.tsx",
+      "accessCount": 7,
+      "lastAccessed": 1770550389428,
+      "type": "file"
+    },
+    {
       "path": "src/components",
       "accessCount": 6,
       "lastAccessed": 1770547274486,
@@ -305,9 +311,9 @@
       "type": "file"
     },
     {
-      "path": "src/components/ui/input.tsx",
+      "path": "src/app/layout.tsx",
       "accessCount": 6,
-      "lastAccessed": 1770549493480,
+      "lastAccessed": 1770550383519,
       "type": "file"
     },
     {
@@ -329,15 +335,9 @@
       "type": "file"
     },
     {
-      "path": "src/app/layout.tsx",
-      "accessCount": 5,
-      "lastAccessed": 1770547344953,
-      "type": "file"
-    },
-    {
       "path": "src/components/common/Icon.tsx",
-      "accessCount": 4,
-      "lastAccessed": 1770490250638,
+      "accessCount": 5,
+      "lastAccessed": 1770550558249,
       "type": "file"
     },
     {
