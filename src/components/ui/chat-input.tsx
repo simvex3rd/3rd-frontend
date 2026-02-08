@@ -31,10 +31,10 @@ const chatInputVariants = cva(
     variants: {
       variant: {
         default:
-          "border-neutral-300 bg-white text-neutral-950 placeholder:text-neutral-500 focus-within:border-blue-500",
-        focus: "border-blue-500 bg-white text-neutral-950",
-        error: "border-red-500 bg-white text-neutral-950",
-        success: "border-green-500 bg-white text-neutral-950",
+          "border-neutral-300 bg-white text-neutral-950 placeholder:text-neutral-500 focus-within:border-info",
+        focus: "border-info bg-white text-neutral-950",
+        error: "border-error bg-white text-neutral-950",
+        success: "border-success bg-white text-neutral-950",
         disable: "border-neutral-300 bg-neutral-100 text-neutral-300",
       },
     },
@@ -135,7 +135,7 @@ export const ChatInput = forwardRef<HTMLTextAreaElement, ChatInputProps>(
           <div
             className={cn(
               "text-right text-xs",
-              charCount > maxLength * 0.9 ? "text-red-500" : "text-neutral-500"
+              charCount > maxLength * 0.9 ? "text-error" : "text-neutral-500"
             )}
           >
             {charCount} / {maxLength}

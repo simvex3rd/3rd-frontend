@@ -18,10 +18,10 @@ const bodyBtnVariants = cva(
     variants: {
       status: {
         default:
-          "bg-neutral-500/30 border-primary hover:bg-cyan-500/30 active:bg-cyan-600/30",
+          "bg-neutral-500/30 border-primary hover:bg-primary-hover/30 active:bg-primary-press/30",
         primary: "bg-primary/30 border-primary",
-        hover: "bg-cyan-500/30 border-primary",
-        press: "bg-cyan-600/30 border-primary",
+        hover: "bg-primary-hover/30 border-primary",
+        press: "bg-primary-press/30 border-primary",
       },
     },
     defaultVariants: {

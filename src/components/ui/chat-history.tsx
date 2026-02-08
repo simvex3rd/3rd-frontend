@@ -243,7 +243,7 @@ function ConversationCard({
     <Card
       className={cn(
         "p-3 cursor-pointer group relative",
-        isSelected && "ring-2 ring-blue-500 bg-blue-500/5"
+        isSelected && "ring-2 ring-info bg-info/5"
       )}
       onClick={() => onSelect?.(conversation.id)}
     >
@@ -252,7 +252,7 @@ function ConversationCard({
           <h4
             className={cn(
               "text-sm font-medium truncate mb-1",
-              isSelected ? "text-blue-500" : "text-neutral-950"
+              isSelected ? "text-info" : "text-neutral-950"
             )}
           >
             {conversation.title}
@@ -268,7 +268,7 @@ function ConversationCard({
           onClick={handleDelete}
           className={cn(
             "shrink-0 p-1.5 rounded-md transition-all opacity-0 group-hover:opacity-100",
-            "hover:bg-red-500/10 text-neutral-500 hover:text-red-500"
+            "hover:bg-error/10 text-neutral-500 hover:text-error"
           )}
           aria-label="Delete conversation"
         >
