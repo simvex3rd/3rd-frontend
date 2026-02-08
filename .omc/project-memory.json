@@ -305,6 +305,12 @@
       "type": "file"
     },
     {
+      "path": "package.json",
+      "accessCount": 8,
+      "lastAccessed": 1770553316077,
+      "type": "file"
+    },
+    {
       "path": "src/components/panels/navigation.tsx",
       "accessCount": 7,
       "lastAccessed": 1770549492688,
@@ -344,12 +350,6 @@
       "path": "src/components/ui/help-message.tsx",
       "accessCount": 5,
       "lastAccessed": 1770547320178,
-      "type": "file"
-    },
-    {
-      "path": "package.json",
-      "accessCount": 4,
-      "lastAccessed": 1770545029540,
       "type": "file"
     },
     {
