@@ -36,14 +36,14 @@ export function PartSidebar() {
 
   return (
     <aside
-      className="flex flex-col items-center justify-center w-[400px] h-[750px] border-[3px] border-solid border-primary bg-gray-30 rounded-[24px] p-12 gap-8 backdrop-blur-sm transition-all duration-300"
+      className="flex flex-col items-center justify-center w-[400px] h-[750px] border-[3px] border-solid border-primary bg-gray-30 rounded-[24px] p-[48px] gap-[32px] backdrop-blur-sm transition-all duration-300"
       role="complementary"
       aria-label="Part information sidebar"
     >
       {/* AI Assistant Section */}
-      <div className="flex flex-col gap-4 items-start w-full">
+      <div className="flex flex-col gap-[16px] items-start w-full">
         {/* Header with Icon */}
-        <div className="flex gap-4 items-center">
+        <div className="flex gap-[16px] items-center">
           <Image
             src="/icons/ai-assistant.svg"
             alt="AI Assistant"
@@ -66,9 +66,9 @@ export function PartSidebar() {
       </div>
 
       {/* Part Info Section */}
-      <div className="flex flex-col gap-4 items-start w-full">
+      <div className="flex flex-col gap-[16px] items-start w-full">
         {/* Header with Icon */}
-        <div className="flex gap-4 items-start">
+        <div className="flex gap-[16px] items-start">
           <Image
             src="/icons/part-info.svg"
             alt="Part Info"
@@ -84,7 +84,7 @@ export function PartSidebar() {
         {/* Content Box */}
         <div className="w-full h-[250px] bg-gray-30 border-[3px] border-primary rounded-[24px] flex items-center justify-center px-[153px] py-[105px]">
           {partInfo ? (
-            <div className="flex flex-col gap-2 text-center">
+            <div className="flex flex-col gap-[8px] text-center">
               <p className="font-bold text-[18px] leading-[1.4] text-primary">
                 {partInfo.name || selectedObject}
               </p>

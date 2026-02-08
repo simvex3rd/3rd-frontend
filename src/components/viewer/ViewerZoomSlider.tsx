@@ -3,7 +3,7 @@
 /**
  * ViewerZoomSlider Component
  *
- * Bottom zoom slider control.
+ * Bottom explode slider control.
  * Matches Figma design:
  * - Default: 1200x57px (no part selected)
  * - Compact: 960x57px (part selected)
@@ -14,7 +14,7 @@
  */
 
 import { cn } from "@/lib/utils";
-import { useState } from "react";
+import { useSceneStore } from "@/stores/scene-store";
 
 interface ViewerZoomSliderProps {
   className?: string;
@@ -25,12 +25,12 @@ export function ViewerZoomSlider({
   className,
   compact = false,
 }: ViewerZoomSliderProps) {
-  const [zoomValue, setZoomValue] = useState(10); // 0-100 range
+  const explodeLevel = useSceneStore((state) => state.explodeLevel);
+  const setExplodeLevel = useSceneStore((state) => state.setExplodeLevel);
   const sliderWidth = compact ? 720 : 900; // 960*0.75=720, 1200*0.75=900
-  const trackWidth = sliderWidth - 4; // Account for container padding
 
   const handleSliderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setZoomValue(Number(e.target.value));
+    setExplodeLevel(Number(e.target.value));
   };
 
   return (
@@ -38,7 +38,7 @@ export function ViewerZoomSlider({
       className={cn("h-[57px] overflow-hidden relative", className)}
       style={{ width: `${sliderWidth}px` }}
       role="group"
-      aria-label="Zoom control"
+      aria-label="분해도 control"
     >
       {/* Track background container with padding */}
       <div className="absolute left-0 top-[10.5px] w-full flex flex-col items-start p-[10px]">
@@ -50,22 +50,23 @@ export function ViewerZoomSlider({
       <input
         type="range"
         min="0"
-        max="100"
-        value={zoomValue}
+        max="1"
+        step="0.01"
+        value={explodeLevel}
         onChange={handleSliderChange}
         className="absolute left-0 top-[12.5px] h-[32px] opacity-0 cursor-pointer z-20"
         style={{ width: `${sliderWidth}px` }}
-        aria-label="Zoom level"
+        aria-label="분해도"
         aria-valuemin={0}
-        aria-valuemax={100}
-        aria-valuenow={zoomValue}
+        aria-valuemax={1}
+        aria-valuenow={explodeLevel}
       />
 
       {/* Custom thumb */}
       <div
-        className="absolute top-[12.5px] h-[32px] w-[120px] bg-primary-30 border-2 border-primary rounded-full pointer-events-none transition-all duration-150 shadow-slider-thumb"
+        className="absolute top-[12.5px] h-[32px] w-[120px] bg-primary-30 border-[2px] border-primary rounded-full pointer-events-none transition-all duration-150 shadow-slider-thumb"
         style={{
-          left: `${(zoomValue / 100) * (sliderWidth - 120)}px`,
+          left: `${explodeLevel * (sliderWidth - 120)}px`,
         }}
       />
     </div>

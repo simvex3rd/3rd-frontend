@@ -32,7 +32,7 @@ const labelVariants = cva(
       },
       size: {
         // Default - form label size (16px)
-        default: "text-base leading-normal",
+        default: "text-[16px] leading-normal",
         // Large - navigation label size (40px, 70px width from Figma 1920px design)
         lg: "text-[40px] font-bold leading-tight w-[70px]",
       },

@@ -23,7 +23,7 @@ import type { HTMLAttributes, ReactNode } from "react";
  */
 
 const chatBubbleVariants = cva(
-  "flex gap-3 w-full transition-all duration-200",
+  "flex gap-[12px] w-full transition-all duration-200",
   {
     variants: {
       variant: {
@@ -38,7 +38,7 @@ const chatBubbleVariants = cva(
 );
 
 const chatBubbleContentVariants = cva(
-  "flex flex-col gap-1 max-w-[70%] min-w-[120px]",
+  "flex flex-col gap-[4px] max-w-[70%] min-w-[120px]",
   {
     variants: {
       variant: {
@@ -53,7 +53,7 @@ const chatBubbleContentVariants = cva(
 );
 
 const chatBubbleMessageVariants = cva(
-  "rounded-[16px] px-4 py-3 text-base leading-6 break-words",
+  "rounded-[16px] px-[16px] py-[12px] text-[16px] leading-6 break-words",
   {
     variants: {
       variant: {
@@ -90,7 +90,7 @@ export function ChatBubble({
       {/* Avatar */}
       {avatar && (
         <div className="flex-shrink-0">
-          <div className="w-10 h-10 rounded-full overflow-hidden bg-neutral-200 flex items-center justify-center">
+          <div className="w-[40px] h-[40px] rounded-full overflow-hidden bg-neutral-200 flex items-center justify-center">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={avatar}
@@ -110,7 +110,9 @@ export function ChatBubble({
 
         {/* Timestamp */}
         {timestamp && (
-          <span className="text-sm text-neutral-500 px-2">{timestamp}</span>
+          <span className="text-[14px] text-neutral-500 px-[8px]">
+            {timestamp}
+          </span>
         )}
       </div>
     </div>

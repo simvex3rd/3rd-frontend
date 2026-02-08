@@ -25,7 +25,7 @@ import { Search, type LucideIcon } from "lucide-react";
 
 const inputVariants = cva(
   // Base classes - matches Figma specs exactly
-  "relative flex h-10 w-full items-center gap-1 rounded-[8px] border border-solid px-3 py-3 text-base font-normal leading-normal transition-colors duration-150 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 disabled:cursor-not-allowed",
+  "relative flex h-[40px] w-full items-center gap-[4px] rounded-[8px] border border-solid px-[12px] py-[12px] text-[16px] font-normal leading-normal transition-colors duration-150 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 disabled:cursor-not-allowed",
   {
     variants: {
       variant: {
@@ -87,7 +87,7 @@ export function Input({
       {rightIcon && (
         <Icon
           className={cn(
-            "h-6 w-6 shrink-0",
+            "h-[24px] w-[24px] shrink-0",
             disabled ? "text-neutral-300" : "text-neutral-500"
           )}
           aria-hidden="true"

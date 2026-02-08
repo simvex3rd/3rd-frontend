@@ -1,7 +1,7 @@
 "use client";
 
 import { useSceneStore } from "@/stores/scene-store";
-import { getPartByMeshName } from "@/lib/mock-data";
+import { usePartData } from "@/hooks/use-part-data";
 import Image from "next/image";
 
 /**
@@ -16,12 +16,7 @@ import Image from "next/image";
  * - Two sections: AI Assistant + Part Info
  * - Glassmorphism design with rgba(212,212,212,0.3) background
  * - 3px cyan border, 24px border radius, 48px padding
- *
- * TODO: Mock 데이터를 API 연동으로 교체 - Track: #12
- * - @/lib/api/parts에서 async fetchPartByMeshName() 구현
- * - 로딩 상태를 위해 Suspense로 컴포넌트 감싸기
- * - API 실패를 위한 error boundary 추가
- * - 관련 이슈: #13
+ * - Real-time API integration with loading/error states
  *
  * @component
  * @see {@link https://figma.com/file/Vz80RydxWcYHVnn2iuyV0m/SIMVEX} Figma Design (node-232:967)
@@ -29,23 +24,22 @@ import Image from "next/image";
 
 export function PartInfoPanel() {
   const selectedObject = useSceneStore((state) => state.selectedObject);
+  const { partData, loading, error } = usePartData(selectedObject);
 
   if (!selectedObject) {
     return null;
   }
 
-  const partInfo = getPartByMeshName(selectedObject);
-
   return (
     <aside
-      className="flex flex-col items-center justify-center w-[400px] h-[750px] border-[3px] border-solid border-primary bg-gray-30 rounded-[24px] p-12 gap-8 backdrop-blur-sm transition-all duration-300 shrink-0 z-10"
+      className="flex flex-col items-center justify-center w-[400px] h-[750px] border-[3px] border-solid border-primary bg-gray-30 rounded-[24px] p-[48px] gap-[32px] backdrop-blur-sm transition-all duration-300 shrink-0 z-10"
       role="complementary"
       aria-label="Part information sidebar"
     >
       {/* AI Assistant Section */}
-      <div className="flex flex-col gap-4 items-start w-full">
+      <div className="flex flex-col gap-[16px] items-start w-full">
         {/* Header with Icon */}
-        <div className="flex gap-4 items-center">
+        <div className="flex gap-[16px] items-center">
           <Image
             src="/icons/ai-assistant.svg"
             alt="AI Assistant"
@@ -59,18 +53,28 @@ export function PartInfoPanel() {
         </div>
 
         {/* Content Box */}
-        <div className="w-full h-[250px] bg-gray-30 border-[3px] border-primary rounded-[24px] flex items-center justify-center px-10 py-12">
-          <p className="font-medium text-[16px] leading-[1.5] text-neutral-50 text-center">
-            {partInfo?.description ||
-              `${selectedObject}에 대해 궁금한 점이 있으신가요?`}
-          </p>
+        <div className="w-full h-[250px] bg-gray-30 border-[3px] border-primary rounded-[24px] flex items-center justify-center px-[40px] py-[48px]">
+          {loading ? (
+            <p className="font-medium text-[16px] leading-[1.5] text-neutral-400 text-center">
+              Loading...
+            </p>
+          ) : error ? (
+            <p className="font-medium text-[16px] leading-[1.5] text-red-400 text-center">
+              {error}
+            </p>
+          ) : (
+            <p className="font-medium text-[16px] leading-[1.5] text-neutral-50 text-center">
+              {partData?.description ||
+                `${selectedObject}에 대해 궁금한 점이 있으신가요?`}
+            </p>
+          )}
         </div>
       </div>
 
       {/* Part Info Section */}
-      <div className="flex flex-col gap-4 items-start w-full">
+      <div className="flex flex-col gap-[16px] items-start w-full">
         {/* Header with Icon */}
-        <div className="flex gap-4 items-start">
+        <div className="flex gap-[16px] items-start">
           <Image
             src="/icons/part-info.svg"
             alt="Part Info"
@@ -84,18 +88,26 @@ export function PartInfoPanel() {
         </div>
 
         {/* Content Box */}
-        <div className="w-full h-[250px] bg-gray-30 border-[3px] border-primary rounded-[24px] flex items-center justify-center px-10 py-12">
-          {partInfo ? (
-            <div className="flex flex-col gap-2 text-center">
+        <div className="w-full h-[250px] bg-gray-30 border-[3px] border-primary rounded-[24px] flex items-center justify-center px-[40px] py-[48px]">
+          {loading ? (
+            <p className="font-medium text-[16px] leading-[1.5] text-neutral-400 text-center">
+              Loading...
+            </p>
+          ) : error ? (
+            <p className="font-medium text-[16px] leading-[1.5] text-red-400 text-center">
+              {error}
+            </p>
+          ) : partData ? (
+            <div className="flex flex-col gap-[8px] text-center">
               <p className="font-bold text-[18px] leading-[1.4] text-primary">
-                {partInfo.name || selectedObject}
+                {partData.name || selectedObject}
               </p>
               <p className="font-medium text-[14px] leading-[1.5] text-neutral-50">
-                Material: {partInfo.material || "N/A"}
+                Material: {partData.material || "N/A"}
               </p>
               <p className="font-medium text-[14px] leading-[1.5] text-neutral-50">
-                {partInfo.metadata?.weight
-                  ? `Weight: ${partInfo.metadata.weight}`
+                {partData.metadata?.weight
+                  ? `Weight: ${partData.metadata.weight}`
                   : ""}
               </p>
             </div>

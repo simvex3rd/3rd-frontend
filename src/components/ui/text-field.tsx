@@ -56,12 +56,12 @@ export function TextField({
 
   return (
     <div
-      className={cn("flex flex-col gap-0.5 w-full max-w-[320px]", className)}
+      className={cn("flex flex-col gap-[2px] w-full max-w-[320px]", className)}
     >
       {label && (
         <label
           htmlFor={inputId}
-          className="text-base font-medium leading-normal text-neutral-200"
+          className="text-[16px] font-medium leading-normal text-neutral-200"
         >
           {label}
         </label>

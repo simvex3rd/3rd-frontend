@@ -69,8 +69,8 @@ export function Footer({
         {/* Left Side: Logo & Copyright - 163px width matches Figma */}
         <div className="flex flex-col gap-[8px] items-start py-[75px] w-[163px] h-[239px]">
           <Logo size="small" />
-          <p className="text-base text-neutral-300 leading-[1.406]">© 2026</p>
-          <p className="text-base text-neutral-50 leading-normal">
+          <p className="text-[16px] text-neutral-300 leading-[1.406]">© 2026</p>
+          <p className="text-[16px] text-neutral-50 leading-normal">
             All rights reserved.
           </p>
         </div>

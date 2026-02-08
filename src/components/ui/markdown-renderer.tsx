@@ -48,8 +48,8 @@ export function MarkdownRenderer({
   return (
     <div
       className={cn(
-        "markdown-renderer flex flex-col gap-4",
-        compact && "gap-2",
+        "markdown-renderer flex flex-col gap-[16px]",
+        compact && "gap-[8px]",
         widthClass,
         className
       )}
@@ -119,7 +119,7 @@ export function MarkdownRenderer({
             const isInline = !className;
             return isInline ? (
               <code
-                className="bg-formula-bg border border-primary rounded px-1 text-[14px] font-medium text-neutral-50"
+                className="bg-formula-bg border border-primary rounded px-[4px] text-[14px] font-medium text-neutral-50"
                 {...props}
               >
                 {children}
@@ -134,14 +134,14 @@ export function MarkdownRenderer({
             );
           },
           pre: ({ children }) => (
-            <pre className="bg-formula-bg border-2 border-primary rounded-[16px] p-4 mb-0 overflow-x-auto">
+            <pre className="bg-formula-bg border-[2px] border-primary rounded-[16px] p-[16px] mb-0 overflow-x-auto">
               {children}
             </pre>
           ),
 
           // Blockquote - Figma: cyan color
           blockquote: ({ children }) => (
-            <blockquote className="border-l-4 border-primary pl-4 text-[14px] font-medium leading-[1.5] text-primary mb-0">
+            <blockquote className="border-l-[4px] border-primary pl-[16px] text-[14px] font-medium leading-[1.5] text-primary mb-0">
               {children}
             </blockquote>
           ),
@@ -159,7 +159,7 @@ export function MarkdownRenderer({
           ),
 
           // Horizontal rule
-          hr: () => <hr className="border-neutral-300 my-4" />,
+          hr: () => <hr className="border-neutral-300 my-[16px]" />,
 
           // Emphasis - Figma colors
           strong: ({ children }) => (
@@ -172,7 +172,7 @@ export function MarkdownRenderer({
           // Table
           table: ({ children }) => (
             <div className="overflow-x-auto mb-0">
-              <table className="min-w-full border-collapse border-2 border-primary">
+              <table className="min-w-full border-collapse border-[2px] border-primary">
                 {children}
               </table>
             </div>
@@ -185,12 +185,12 @@ export function MarkdownRenderer({
             <tr className="border-b border-primary">{children}</tr>
           ),
           th: ({ children }) => (
-            <th className="px-4 py-2 text-left font-semibold text-neutral-50 text-[14px]">
+            <th className="px-[16px] py-[8px] text-left font-semibold text-neutral-50 text-[14px]">
               {children}
             </th>
           ),
           td: ({ children }) => (
-            <td className="px-4 py-2 text-neutral-300 text-[14px]">
+            <td className="px-[16px] py-[8px] text-neutral-300 text-[14px]">
               {children}
             </td>
           ),

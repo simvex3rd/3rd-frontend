@@ -25,7 +25,7 @@ import { Icon } from "@/components/common/Icon";
  */
 
 const modelCardVariants = cva(
-  "relative flex flex-col items-center justify-center text-center w-[332.8px] h-[241px] p-6 rounded-[24px] border-[5px] border-solid transition-all duration-300 backdrop-blur-sm shadow-card-glow",
+  "relative flex flex-col items-center justify-center text-center w-[332.8px] h-[241px] p-[24px] rounded-[24px] border-[5px] border-solid transition-all duration-300 backdrop-blur-sm shadow-card-glow",
   {
     variants: {
       variant: {
@@ -66,7 +66,7 @@ export function ModelCard({
 }: ModelCardProps) {
   return (
     <div className={cn(modelCardVariants({ variant }), className)} {...props}>
-      <div className="flex flex-col items-center gap-6">
+      <div className="flex flex-col items-center gap-[24px]">
         <div className="flex items-center justify-center shrink-0">
           <Icon
             name={iconName}

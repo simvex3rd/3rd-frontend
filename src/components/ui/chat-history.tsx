@@ -120,7 +120,10 @@ export function ChatHistory({
   );
 
   return (
-    <div className={cn("flex h-full flex-col gap-4 p-4", className)} {...props}>
+    <div
+      className={cn("flex h-full flex-col gap-[16px] p-[16px]", className)}
+      {...props}
+    >
       {/* Search Input */}
       <div className="shrink-0">
         <Input
@@ -133,11 +136,11 @@ export function ChatHistory({
       </div>
 
       {/* Conversation List */}
-      <div className="flex-1 overflow-y-auto space-y-6">
+      <div className="flex-1 overflow-y-auto space-y-[24px]">
         {filteredConversations.length === 0 ? (
-          <div className="flex flex-col items-center justify-center h-full text-center px-4">
-            <LucideMessageSquare className="h-12 w-12 text-neutral-400 mb-4" />
-            <p className="text-neutral-500 text-sm">
+          <div className="flex flex-col items-center justify-center h-full text-center px-[16px]">
+            <LucideMessageSquare className="h-[48px] w-[48px] text-neutral-400 mb-[16px]" />
+            <p className="text-neutral-500 text-[14px]">
               {searchQuery ? "No conversations found" : "No conversations yet"}
             </p>
           </div>
@@ -202,11 +205,11 @@ function ConversationGroup({
   onDelete,
 }: ConversationGroupProps) {
   return (
-    <div className="space-y-2">
-      <h3 className="text-xs font-semibold text-neutral-500 uppercase tracking-wider px-2">
+    <div className="space-y-[8px]">
+      <h3 className="text-[12px] font-semibold text-neutral-500 uppercase tracking-wider px-[8px]">
         {title}
       </h3>
-      <div className="space-y-2">
+      <div className="space-y-[8px]">
         {conversations.map((conv) => (
           <ConversationCard
             key={conv.id}
@@ -242,37 +245,37 @@ function ConversationCard({
   return (
     <Card
       className={cn(
-        "p-3 cursor-pointer group relative",
+        "p-[12px] cursor-pointer group relative",
         isSelected && "ring-2 ring-info bg-info/5"
       )}
       onClick={() => onSelect?.(conversation.id)}
     >
-      <div className="flex items-start justify-between gap-2">
+      <div className="flex items-start justify-between gap-[8px]">
         <div className="flex-1 min-w-0">
           <h4
             className={cn(
-              "text-sm font-medium truncate mb-1",
+              "text-[14px] font-medium truncate mb-[4px]",
               isSelected ? "text-info" : "text-neutral-950"
             )}
           >
             {conversation.title}
           </h4>
-          <p className="text-xs text-neutral-500 line-clamp-2">
+          <p className="text-[12px] text-neutral-500 line-clamp-2">
             {conversation.preview}
           </p>
-          <p className="text-[10px] text-neutral-400 mt-2">
+          <p className="text-[10px] text-neutral-400 mt-[8px]">
             {formatTimestamp(conversation.timestamp)}
           </p>
         </div>
         <button
           onClick={handleDelete}
           className={cn(
-            "shrink-0 p-1.5 rounded-md transition-all opacity-0 group-hover:opacity-100",
+            "shrink-0 p-[6px] rounded-md transition-all opacity-0 group-hover:opacity-100",
             "hover:bg-error/10 text-neutral-500 hover:text-error"
           )}
           aria-label="Delete conversation"
         >
-          <LucideTrash2 className="h-4 w-4" />
+          <LucideTrash2 className="h-[16px] w-[16px]" />
         </button>
       </div>
     </Card>

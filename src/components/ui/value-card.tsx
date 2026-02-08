@@ -70,7 +70,7 @@ export function ValueCard({
 
   return (
     <div className={cn(valueCardVariants({ variant }), className)} {...props}>
-      <div className="flex flex-col items-center gap-8">
+      <div className="flex flex-col items-center gap-[32px]">
         <div className="flex items-center justify-center shrink-0">
           <Icon
             name={iconName}
@@ -82,7 +82,7 @@ export function ValueCard({
             alt=""
           />
         </div>
-        <div className="flex flex-col gap-0">
+        <div className="flex flex-col gap-[0px]">
           <h3
             className={cn(
               "text-[40px] font-bold leading-tight",
@@ -91,7 +91,7 @@ export function ValueCard({
           >
             {title}
           </h3>
-          <p className="text-2xl font-semibold text-neutral-300 leading-normal">
+          <p className="text-[32px] font-semibold text-neutral-300 leading-normal">
             {description}
           </p>
         </div>

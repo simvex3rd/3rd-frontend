@@ -2,9 +2,10 @@
 
 import { useGLTF } from "@react-three/drei";
 import { useEffect } from "react";
-import { Mesh, MeshStandardMaterial, Color } from "three";
-import { ThreeEvent } from "@react-three/fiber";
+import { Mesh, MeshStandardMaterial, Color, Box3, Vector3 } from "three";
+import { ThreeEvent, useFrame } from "@react-three/fiber";
 import { useSceneStore } from "@/stores/scene-store";
+import { api } from "@/lib/api";
 
 interface ModelProps {
   url: string;
@@ -20,8 +21,9 @@ export function Model({ url }: ModelProps) {
   const { scene } = useGLTF(url, true);
   const setSelectedObject = useSceneStore((state) => state.setSelectedObject);
   const selectedObject = useSceneStore((state) => state.selectedObject);
+  const explodeLevel = useSceneStore((state) => state.explodeLevel);
 
-  // 메시에 userData 초기화
+  // 메시에 userData 초기화 + API 데이터 로드
   useEffect(() => {
     scene.traverse((child) => {
       if (child instanceof Mesh) {
@@ -40,8 +42,38 @@ export function Model({ url }: ModelProps) {
 
         // 이 메시에 raycast 활성화
         child.userData.selectable = true;
+
+        // 초기 위치 저장 (explode 애니메이션용)
+        if (!child.userData.initialPosition) {
+          child.userData.initialPosition = child.position.clone();
+        }
       }
     });
+
+    // API에서 부품 geometry 데이터 가져오기
+    const loadPartGeometry = async () => {
+      try {
+        const modelId = "default-model"; // TODO: 실제 modelId 사용
+        const modelData = await api.models.getDetail(modelId);
+
+        scene.traverse((child) => {
+          if (child instanceof Mesh) {
+            const partName = child.userData.name || child.name;
+            const partData = modelData.parts.find(
+              (p) => p.name === partName || p.id === partName
+            );
+
+            if (partData?.geometry) {
+              child.userData.partGeometry = partData.geometry;
+            }
+          }
+        });
+      } catch (error) {
+        console.error("Failed to load part geometry data:", error);
+      }
+    };
+
+    loadPartGeometry();
   }, [scene]);
 
   // 선택된 부품에 하이라이트 효과 적용
@@ -67,6 +99,53 @@ export function Model({ url }: ModelProps) {
       }
     });
   }, [scene, selectedObject]);
+
+  // Animate parts based on explode level
+  useFrame(() => {
+    scene.traverse((child) => {
+      if (child instanceof Mesh && child.userData.partGeometry) {
+        const { initial_position, exploded_position } =
+          child.userData.partGeometry;
+        const initialPos = child.userData.initialPosition;
+
+        if (initial_position && exploded_position && initialPos) {
+          // Lerp between initial and exploded positions
+          const targetX =
+            initialPos.x +
+            (exploded_position[0] - initial_position[0]) * explodeLevel;
+          const targetY =
+            initialPos.y +
+            (exploded_position[1] - initial_position[1]) * explodeLevel;
+          const targetZ =
+            initialPos.z +
+            (exploded_position[2] - initial_position[2]) * explodeLevel;
+
+          // Smooth transition with lerp
+          child.position.lerp(new Vector3(targetX, targetY, targetZ), 0.1);
+        }
+      }
+    });
+  });
+
+  // Auto-scale model to fit viewport
+  useEffect(() => {
+    const box = new Box3().setFromObject(scene);
+    const size = box.getSize(new Vector3());
+    const center = box.getCenter(new Vector3());
+
+    // Calculate scale to fit TARGET_SIZE
+    const maxDim = Math.max(size.x, size.y, size.z);
+    const TARGET_SIZE = 5; // Desired size in world units
+    const scale = TARGET_SIZE / maxDim;
+
+    // Apply scale and center
+    scene.scale.setScalar(scale);
+    scene.position.copy(center).multiplyScalar(-scale);
+
+    console.log(
+      `Model scaled: ${scale.toFixed(3)}x, centered at (${center.x.toFixed(2)}, ${center.y.toFixed(2)}, ${center.z.toFixed(2)})`
+    );
+  }, [scene]);
 
   // Cleanup Three.js resources on unmount to prevent memory leaks
   useEffect(() => {

@@ -51,7 +51,7 @@ export function ChatSidebar({
   return (
     <div
       className={cn(
-        "flex flex-col w-full max-w-[365px] h-[879px] bg-neutral-700 p-6 gap-40",
+        "flex flex-col w-full max-w-[365px] h-[879px] bg-neutral-700 p-[24px] gap-[160px]",
         className
       )}
       {...props}
@@ -68,11 +68,11 @@ export function ChatSidebar({
       </div>
 
       {/* New Chat + History (하단) */}
-      <div className="flex flex-col gap-12 flex-1">
+      <div className="flex flex-col gap-[48px] flex-1">
         {/* New Chat Button */}
         <button
           onClick={onNewChat}
-          className="flex items-center gap-2 transition-colors hover:opacity-80 active:opacity-60"
+          className="flex items-center gap-[8px] transition-colors hover:opacity-80 active:opacity-60"
           aria-label="New chat"
         >
           <Image
@@ -88,8 +88,8 @@ export function ChatSidebar({
         </button>
 
         {/* History Section */}
-        <div className="flex flex-col gap-1">
-          <p className="font-semibold text-[16px] leading-[1.5] text-neutral-200 mb-1">
+        <div className="flex flex-col gap-[4px]">
+          <p className="font-semibold text-[16px] leading-[1.5] text-neutral-200 mb-[4px]">
             History
           </p>
 

@@ -23,7 +23,7 @@ import type { HTMLAttributes } from "react";
 
 const helpMessageVariants = cva(
   // Base classes - Body/sm/regular (12px/1.5/400)
-  "text-xs font-normal leading-[1.5] h-[18px]",
+  "text-[12px] font-normal leading-[1.5] h-[18px]",
   {
     variants: {
       variant: {

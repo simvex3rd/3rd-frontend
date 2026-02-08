@@ -23,7 +23,7 @@ export default function SignUpPage() {
   if (!isLoaded) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-neutral-950">
-        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+        <Loader2 className="h-[32px] w-[32px] animate-spin text-primary" />
       </div>
     );
   }
@@ -81,9 +81,9 @@ export default function SignUpPage() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-4 font-sans">
+    <div className="flex min-h-screen items-center justify-center bg-background px-[16px] font-sans">
       <div
-        className="relative flex w-full max-w-[375px] md:max-w-[480px] lg:max-w-[480px] flex-col items-center gap-20 rounded-[24px] bg-neutral-900 px-8 py-20"
+        className="relative flex w-full max-w-[375px] md:max-w-[480px] lg:max-w-[480px] flex-col items-center gap-[80px] rounded-[24px] bg-neutral-900 px-[32px] py-[80px]"
         data-node-id="175:748"
         // Shadow removed per Figma
       >
@@ -99,12 +99,12 @@ export default function SignUpPage() {
 
         {/* Frame 30 (Form Container) */}
         <div
-          className="flex w-full flex-none flex-col items-start gap-8 order-1 grow-0 self-stretch"
+          className="flex w-full flex-none flex-col items-start gap-[32px] order-1 grow-0 self-stretch"
           data-node-id="175:747"
         >
           {/* Frame 29 (Inputs) */}
           <div
-            className="flex w-full flex-none flex-col items-start gap-4 order-0 grow-0 self-stretch"
+            className="flex w-full flex-none flex-col items-start gap-[16px] order-0 grow-0 self-stretch"
             data-node-id="175:744"
           >
             {/* Header Link Section (Frame 25) */}
@@ -133,19 +133,19 @@ export default function SignUpPage() {
 
             <form
               onSubmit={handleSubmit}
-              className="flex w-full flex-col items-start gap-4 self-stretch order-1"
+              className="flex w-full flex-col items-start gap-[16px] self-stretch order-1"
               data-node-id="175:743"
             >
               {!verifying ? (
                 <>
                   {/* Name Split (Frame 27) */}
                   <div
-                    className="flex w-full flex-none flex-row items-center gap-2 order-0 grow-0 self-stretch"
+                    className="flex w-full flex-none flex-row items-center gap-[8px] order-0 grow-0 self-stretch"
                     data-node-id="175:742"
                   >
                     {/* Last Name */}
                     <div
-                      className="flex flex-1 flex-col items-start gap-0.5 grow-0"
+                      className="flex flex-1 flex-col items-start gap-[2px] grow-0"
                       data-node-id="175:694"
                     >
                       <div className="h-[24px] w-[40px] relative">
@@ -164,7 +164,7 @@ export default function SignUpPage() {
                     </div>
                     {/* First Name */}
                     <div
-                      className="flex flex-1 flex-col items-start gap-0.5 grow-1"
+                      className="flex flex-1 flex-col items-start gap-[2px] grow-1"
                       data-node-id="175:704"
                     >
                       <div className="h-[24px] w-[40px] relative">
@@ -185,7 +185,7 @@ export default function SignUpPage() {
 
                   {/* Email */}
                   <div
-                    className="flex w-full flex-none flex-col items-start gap-0.5 order-0 grow-0 self-stretch"
+                    className="flex w-full flex-none flex-col items-start gap-[2px] order-0 grow-0 self-stretch"
                     data-node-id="175:670"
                   >
                     <div className="h-[24px] w-[40px] relative">
@@ -205,7 +205,7 @@ export default function SignUpPage() {
 
                   {/* Password */}
                   <div
-                    className="flex w-full flex-none flex-col items-start gap-0.5 order-1 grow-0 self-stretch"
+                    className="flex w-full flex-none flex-col items-start gap-[2px] order-1 grow-0 self-stretch"
                     data-node-id="175:685"
                   >
                     <div className="h-[24px] w-[40px] relative">
@@ -228,7 +228,7 @@ export default function SignUpPage() {
                   </div>
                 </>
               ) : (
-                <div className="flex w-full flex-none flex-col items-start gap-0.5 order-0 grow-0 self-stretch">
+                <div className="flex w-full flex-none flex-col items-start gap-[2px] order-0 grow-0 self-stretch">
                   <div className="h-[24px] w-full relative">
                     <label className="absolute inset-0 font-[Pretendard] text-[16px] font-medium leading-[1.5] text-neutral-200">
                       인증 코드
@@ -253,8 +253,8 @@ export default function SignUpPage() {
               )}
 
               {error && (
-                <div className="flex w-full items-center gap-2 rounded-lg bg-error/10 p-3 text-sm text-error border border-error/20">
-                  <AlertCircle className="h-4 w-4 shrink-0" />
+                <div className="flex w-full items-center gap-[8px] rounded-lg bg-error/10 p-[12px] text-[14px] text-error border-[1px] border-error/20">
+                  <AlertCircle className="h-[16px] w-[16px] shrink-0" />
                   <p>{error}</p>
                 </div>
               )}
@@ -262,11 +262,11 @@ export default function SignUpPage() {
               <button
                 type="submit"
                 disabled={isLoading}
-                className="flex h-[40px] w-full flex-none flex-row items-center justify-center gap-2 rounded-[8px] bg-primary px-4 self-stretch hover:opacity-90 disabled:opacity-50 mt-0 transition-opacity"
+                className="flex h-[40px] w-full flex-none flex-row items-center justify-center gap-[8px] rounded-[8px] bg-primary px-[16px] self-stretch hover:opacity-90 disabled:opacity-50 mt-0 transition-opacity"
                 data-node-id="175:679"
               >
                 {isLoading ? (
-                  <Loader2 className="h-5 w-5 animate-spin text-neutral-900" />
+                  <Loader2 className="h-[20px] w-[20px] animate-spin text-neutral-900" />
                 ) : null}
                 <p className="font-[Pretendard] text-[16px] font-medium leading-[1.5] text-neutral-900 text-center">
                   {verifying ? "이메일 인증" : "계정 만들기"}

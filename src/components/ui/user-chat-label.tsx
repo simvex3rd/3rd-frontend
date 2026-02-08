@@ -32,12 +32,12 @@ export function UserChatLabel({
   return (
     <div
       className={cn(
-        "flex items-center justify-between w-[365px] h-[40px] px-4 py-2 bg-primary/30 rounded-tl-lg rounded-tr-lg rounded-bl-lg",
+        "flex items-center justify-between w-[365px] h-[40px] px-[16px] py-[8px] bg-primary/30 rounded-tl-[8px] rounded-tr-[8px] rounded-bl-[8px]",
         className
       )}
       {...props}
     >
-      <p className="flex-1 font-normal text-base leading-[1.5] text-neutral-50">
+      <p className="flex-1 font-normal text-[16px] leading-[1.5] text-neutral-50">
         {text}
       </p>
     </div>

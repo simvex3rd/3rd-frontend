@@ -38,13 +38,13 @@ export function SecondaryNav({
   return (
     <nav
       className={cn(
-        "flex h-12 items-center gap-6 border-b border-border px-4",
+        "flex h-[48px] items-center gap-[24px] border-b border-border px-[16px]",
         className
       )}
       {...props}
     >
       {links.map((link) => (
-        <LinkButton key={link.href} href={link.href} className="text-xs">
+        <LinkButton key={link.href} href={link.href} className="text-[12px]">
           {link.label}
         </LinkButton>
       ))}

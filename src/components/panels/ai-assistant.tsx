@@ -20,13 +20,13 @@ export function AiAssistant({
   return (
     <div
       className={cn(
-        "flex flex-col gap-4 items-start relative w-[416px]",
+        "flex flex-col gap-[16px] items-start relative w-[416px]",
         className
       )}
       {...props}
     >
       {/* Header */}
-      <div className="flex gap-4 items-center justify-center relative shrink-0">
+      <div className="flex gap-[16px] items-center justify-center relative shrink-0">
         <div className="relative shrink-0 size-[37px] overflow-hidden">
           {/* Simple AI Icon Placeholder or SVG */}
           <svg

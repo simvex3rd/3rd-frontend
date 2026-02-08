@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { cn } from "@/lib/utils";
 import { Logo } from "@/components/ui/logo";
 import { CTAButton } from "@/components/ui/cta-button";
 
@@ -14,7 +13,7 @@ const navLinks = [
 
 export function LandingHeader() {
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 px-20 h-[102px] flex items-center transition-all duration-300">
+    <header className="fixed top-0 left-0 right-0 z-50 px-[80px] h-[102px] flex items-center transition-all duration-300">
       {/* Background with Glow Effect */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         {/* Subtle dark backdrop */}
@@ -44,9 +43,9 @@ export function LandingHeader() {
             <Link
               key={link.label}
               href={link.href}
-              className="block h-[36px] w-auto px-2 relative cursor-pointer"
+              className="block h-[36px] w-auto px-[8px] relative cursor-pointer"
             >
-              <p className="relative w-full h-full text-neutral-50 text-[30px] font-bold leading-[1.25] text-center hover:text-primary transition-colors flex items-center justify-center whitespace-nowrap px-2">
+              <p className="relative w-full h-full text-neutral-50 text-[30px] font-bold leading-[1.25] text-center hover:text-primary transition-colors flex items-center justify-center whitespace-nowrap px-[8px]">
                 {link.label}
               </p>
             </Link>
@@ -58,14 +57,14 @@ export function LandingHeader() {
           <CTAButton
             variant="default"
             size="default"
-            className="!w-[157.5px] !text-[24px] !rounded-[18px] !border-[3.75px] whitespace-nowrap !px-2"
+            className="!w-[157.5px] !text-[24px] !rounded-[18px] !border-[3.75px] whitespace-nowrap !px-[8px]"
           >
             로그인/가입
           </CTAButton>
           <CTAButton
             variant="primary"
             size="default"
-            className="!w-[157.5px] !text-[24px] !rounded-[18px] !border-[3.75px] whitespace-nowrap !px-2"
+            className="!w-[157.5px] !text-[24px] !rounded-[18px] !border-[3.75px] whitespace-nowrap !px-[8px]"
           >
             시작하기
           </CTAButton>

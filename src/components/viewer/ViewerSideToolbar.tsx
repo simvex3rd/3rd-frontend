@@ -26,9 +26,9 @@ export function ViewerSideToolbar({ className }: ViewerSideToolbarProps) {
     <div
       className={cn(
         "w-[225px] h-[37.5px]",
-        "flex items-center justify-center gap-3",
+        "flex items-center justify-center gap-[12px]",
         "bg-gray-30 border-[3px] border-primary rounded-[12px]",
-        "px-[90px] py-3",
+        "px-[90px] py-[12px]",
         "shadow-card-glow",
         "backdrop-blur-sm",
         className

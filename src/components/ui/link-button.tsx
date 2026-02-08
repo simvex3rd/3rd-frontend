@@ -35,7 +35,7 @@ export function LinkButton({
     <Link
       href={href}
       className={cn(
-        "inline-flex items-center text-base font-normal leading-normal text-gray-200 transition-colors duration-150 hover:text-primary hover:underline active:text-primary-press focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2",
+        "inline-flex items-center text-[16px] font-normal leading-normal text-gray-200 transition-colors duration-150 hover:text-primary hover:underline active:text-primary-press focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2",
         className
       )}
       {...props}

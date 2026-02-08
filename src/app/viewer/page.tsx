@@ -6,6 +6,7 @@ import { ViewerToolbar } from "@/components/viewer/ViewerToolbar";
 import { ViewerSideToolbar } from "@/components/viewer/ViewerSideToolbar";
 import { ViewerZoomSlider } from "@/components/viewer/ViewerZoomSlider";
 import { PartInfoPanel } from "@/components/panels/PartInfoPanel";
+import { ChatInterface } from "@/components/panels/ChatInterface";
 import { useStoreHydration } from "@/hooks/use-store-hydration";
 import { useSceneStore } from "@/stores/scene-store";
 import { ViewerHeader } from "@/components/viewer/ViewerHeader";
@@ -71,12 +72,17 @@ export default function ViewerPage() {
         <ViewerZoomSlider compact={hasPartSelected} />
       </div>
 
-      {/* Part Info Panel - Side Overlay */}
-      {/* {hasPartSelected && (
-        <div className="absolute right-0 top-0 h-full pointer-events-auto z-20">
+      {/* Chat Interface - Right side, always visible */}
+      <div className="absolute right-0 top-0 h-full pointer-events-auto z-30">
+        <ChatInterface />
+      </div>
+
+      {/* Part Info Panel - Side Overlay, left of chat when part selected */}
+      {hasPartSelected && (
+        <div className="absolute right-[442px] top-0 h-full pointer-events-auto z-20">
           <PartInfoPanel />
         </div>
-      )} */}
+      )}
     </div>
   );
 }

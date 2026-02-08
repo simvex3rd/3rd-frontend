@@ -26,7 +26,7 @@ import { forwardRef, useState } from "react";
 
 const chatInputVariants = cva(
   // Base classes
-  "relative flex w-full items-end gap-2 rounded-[8px] border border-solid px-3 py-2 transition-all backdrop-blur-sm focus-within:outline-none disabled:cursor-not-allowed",
+  "relative flex w-full items-end gap-[8px] rounded-[8px] border border-solid px-[12px] py-[8px] transition-all backdrop-blur-sm focus-within:outline-none disabled:cursor-not-allowed",
   {
     variants: {
       variant: {
@@ -98,7 +98,7 @@ export const ChatInput = forwardRef<HTMLTextAreaElement, ChatInputProps>(
     };
 
     return (
-      <div className="flex flex-col gap-1">
+      <div className="flex flex-col gap-[4px]">
         <div
           className={cn(
             chatInputVariants({ variant: disabled ? "disable" : variant }),
@@ -107,7 +107,7 @@ export const ChatInput = forwardRef<HTMLTextAreaElement, ChatInputProps>(
         >
           <textarea
             ref={ref}
-            className="min-h-[40px] max-h-[120px] flex-1 resize-none bg-transparent py-1.5 text-[16px] leading-[1.5] outline-none placeholder:text-inherit"
+            className="min-h-[40px] max-h-[120px] flex-1 resize-none bg-transparent py-[6px] text-[16px] leading-[1.5] outline-none placeholder:text-inherit"
             disabled={disabled}
             maxLength={maxLength}
             value={value}
@@ -121,20 +121,20 @@ export const ChatInput = forwardRef<HTMLTextAreaElement, ChatInputProps>(
             onClick={handleSend}
             disabled={disabled || !hasContent}
             className={cn(
-              "mb-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-[6px] transition-all",
+              "mb-[4px] flex h-[32px] w-[32px] shrink-0 items-center justify-center rounded-[6px] transition-all",
               hasContent && !disabled
                 ? "bg-primary text-neutral-50 hover:bg-primary-hover active:bg-primary-press"
                 : "bg-neutral-100 text-neutral-300 cursor-not-allowed"
             )}
             aria-label="Send message"
           >
-            <SendIcon className="h-5 w-5" />
+            <SendIcon className="h-[20px] w-[20px]" />
           </button>
         </div>
         {showCounter && maxLength && (
           <div
             className={cn(
-              "text-right text-xs",
+              "text-right text-[12px]",
               charCount > maxLength * 0.9 ? "text-error" : "text-neutral-500"
             )}
           >

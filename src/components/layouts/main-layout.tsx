@@ -51,7 +51,7 @@ export function MainLayout({
     <div className={cn("flex min-h-screen flex-col", className)} {...props}>
       <LoginHeader {...headerProps} />
       <main className="flex-1">
-        <div className="container px-8 py-12">{children}</div>
+        <div className="container px-[32px] py-[48px]">{children}</div>
       </main>
       <Footer {...footerProps} />
     </div>

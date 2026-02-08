@@ -26,12 +26,13 @@ import type { HTMLAttributes } from "react";
  */
 
 const toolBarVariants = cva(
-  "flex items-center justify-center border-3 border-primary rounded-2xl bg-white/10 backdrop-blur-md shadow-primary-glow transition-all",
+  "flex items-center justify-center border-[3px] border-primary rounded-[16px] bg-white/10 backdrop-blur-md shadow-primary-glow transition-all",
   {
     variants: {
       variant: {
-        horizontal: "flex-row w-[500px] h-[50px] gap-12 px-40 py-4",
-        vertical: "flex-col w-[50px] h-[300px] gap-4 px-4 py-16",
+        horizontal:
+          "flex-row w-[500px] h-[50px] gap-[48px] px-[160px] py-[16px]",
+        vertical: "flex-col w-[50px] h-[300px] gap-[16px] px-[16px] py-[64px]",
       },
     },
     defaultVariants: {
@@ -66,7 +67,7 @@ export function ToolBar({ className, variant, tools, ...props }: ToolBarProps) {
             aria-label={tool.label}
             className="hover:scale-110 active:scale-90 transition-transform"
           />
-          <div className="pointer-events-none absolute left-1/2 -top-12 z-10 hidden -translate-x-1/2 whitespace-nowrap rounded-md bg-primary px-3 py-1.5 text-xs font-bold text-neutral-900 opacity-0 transition-opacity group-hover:block group-hover:opacity-100 shadow-primary-glow">
+          <div className="pointer-events-none absolute left-1/2 -top-[48px] z-10 hidden -translate-x-1/2 whitespace-nowrap rounded-[6px] bg-primary px-[12px] py-[6px] text-[12px] font-bold text-neutral-900 opacity-0 transition-opacity group-hover:block group-hover:opacity-100 shadow-primary-glow">
             {tool.label}
           </div>
         </div>
