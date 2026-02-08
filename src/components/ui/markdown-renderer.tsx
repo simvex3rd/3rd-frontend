@@ -108,7 +108,7 @@ export function MarkdownRenderer({
             const isInline = !className;
             return isInline ? (
               <code
-                className="bg-[rgba(1,100,95,0.5)] border border-primary rounded px-1 text-[14px] font-medium text-neutral-50"
+                className="bg-formula-bg border border-primary rounded px-1 text-[14px] font-medium text-neutral-50"
                 {...props}
               >
                 {children}
@@ -123,7 +123,7 @@ export function MarkdownRenderer({
             );
           },
           pre: ({ children }) => (
-            <pre className="bg-[rgba(1,100,95,0.5)] border-2 border-primary rounded-[16px] p-4 mb-0 overflow-x-auto">
+            <pre className="bg-formula-bg border-2 border-primary rounded-[16px] p-4 mb-0 overflow-x-auto">
               {children}
             </pre>
           ),
