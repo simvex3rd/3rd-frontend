@@ -1,0 +1,24 @@
+{
+  "created_at": "2026-02-08T11:41:14.836Z",
+  "trigger": "auto",
+  "active_modes": {
+    "ralph": {
+      "iteration": 0,
+      "prompt": ""
+    },
+    "ultrawork": {
+      "original_prompt": "/oh-my-claudecode:ralph ## 미션: SIMVEX 프론트엔드 최종 검증 (Pixel-Perfect 목표)\n                                                                                                                                                               \n구현된 코드를 Figma 원본 + docs/ 문서와 1:1 비교하여 불일치를 전부 수정해.\n                                                                                                                                                               \n## 검증 방법                                                                     \n- Figma MCP를 적극 사용 (get_design_context, get_screenshot, get_variable_defs)\n- 문서와 코드 비교 후, 문서도 의심되면 Figma 원본을 진실의 근원으로 삼아\n\n## 참조\n- docs/phase1-landing.md, docs/phase1-auth.md, docs/phase1-main.md\n- docs/phase2-ui-basic.md, docs/phase2-layout.md, docs/phase2-domain.md\n- docs/phase3-design-system.md, docs/phase3-matching.md\n\n---\n\n## 검증 항목 (전부 체크할 것)\n\n### 1. 디자인 토큰 검증\n- [ ] tailwind.config.ts / globals.css의 모든 색상값이 Figma get_variable_defs와 일치하는지\n- [ ] Primary: #02eee1, Hover: #01a9a0, Press: #01645f 정확한지\n- [ ] Neutral 스케일 (50~950) 전부 hex 비교\n- [ ] Semantic 색상 (error, success, warning, info) 정확한지\n- [ ] 폰트 사이즈 스케일이 Figma와 일치하는지 (12/14/16/24/32/40/52/96px)\n- [ ] line-height 값 (heading 125%, body 150%) 맞는지\n- [ ] font-weight (400/500/600/700/800) 맞는지\n- [ ] spacing 스케일이 8px 그리드 기반으로 정확한지\n- [ ] border-radius 값들 (4/8/12/16/24/32px) 일치하는지\n- [ ] box-shadow 값들이 Figma 그림자와 동일한지\n- [ ] opacity/glassmorphism 값들 (10%/20%/30%) 정확한지\n\n### 2. 컴포넌트별 검증 (각 컴포넌트마다)\n- [ ] Figma get_screenshot으로 원본 스크린샷 촬영\n- [ ] 크기 (width, height) 비교 — px 오차 ±2px 이내\n- [ ] padding, margin, gap 비교\n- [ ] 배경색, 텍스트 색상, 테두리 색상 hex 비교\n- [ ] 폰트 (family, size, weight, line-height) 비교\n- [ ] border-radius 비교\n- [ ] 상태별 스타일 검증 (default/hover/active/disabled/focus)\n- [ ] shadcn/ui 커스터마이징이 Figma와 맞는지\n- [ ] 아이콘 크기, 색상, 위치 정확한지\n\n### 3. 레이아웃 검증 (각 페이지마다)\n- [ ] Figma get_design_context로 전체 레이아웃 구조 확인\n- [ ] 컴포넌트 배치 순서가 Figma와 동일한지\n- [ ] flex/grid 방향, gap, align, justify 비교\n- [ ] 섹션 간 spacing 비교\n- [ ] 컨테이너 max-width 올바른지\n- [ ] z-index 레이어링 순서 맞는지\n- [ ] overflow 처리 맞는지\n\n### 4. 랜딩 페이지 세부 검증\n- [ ] scroll snap 동작\n- [ ] 각 섹션 높이 (100vh 또는 고정값)\n- [ ] Hero 텍스트 크기, 위치, 색상\n- [ ] CTA 버튼 크기, 색상, hover 효과\n- [ ] 배경 그라디언트/이미지\n- [ ] 네비게이션 바 위치, 투명도, backdrop-blur\n- [ ] Footer 레이아웃\n\n### 5. 인증 페이지 세부 검증\n- [ ] Login/Signup 폼 크기, 위치 (중앙 정렬)\n- [ ] Input 필드 크기, placeholder 스타일\n- [ ] 버튼 크기, 색상, 위치\n- [ ] 에러 메시지 스타일\n- [ ] 폼 간 전환 구조\n\n### 6. 메인 페이지 세부 검증\n- [ ] 사이드바 너비, 배경색, 아이템 간격\n- [ ] 툴바 높이, 아이콘 배치, 간격\n- [ ] 뷰어 영역 크기, 배경색\n- [ ] 채팅 패널 너비, 메시지 버블 스타일\n- [ ] AI 어시스턴트 영역 레이아웃\n\n### 7. 타이포그래피 검증\n- [ ] Pretendard Variable 폰트 로딩 정상\n- [ ] fallback 폰트 체인 올바른지\n- [ ] heading/body 렌더링 크기 확인\n- [ ] 하드코딩된 font-size 없는지\n\n### 8. 접근성 검증\n- [ ] 색상 명암비 4.5:1 이상 (WCAG AA)\n- [ ] 클릭 영역 최소 44x44px\n- [ ] focus-visible 스타일 존재\n- [ ] alt 텍스트, aria-label 적절\n\n### 9. 빌드 및 코드 품질 검증\n- [ ] npm run build 에러 0\n- [ ] TypeScript 에러 0\n- [ ] ESLint 경고/에러 0\n- [ ] 미사용 import 없음\n- [ ] 하드코딩 색상/px 없음\n- [ ] console.log 없음\n- [ ] any 타입 없음\n\n### 10. 라우팅 및 네비게이션 검증\n- [ ] 모든 페이지 경로 접근 가능\n- [ ] 404 처리\n- [ ] 페이지 간 이동 정상\n\n---\n\n## 매 이터레이션마다\n1. verification-report.md 읽어서 진행 상황 파악\n2. 다음 미검증 항목 체크 (Figma MCP 적극 활용)\n3. 불일치 발견 시 [MISMATCH] 기록 → 코드 수정 → [FIXED] 업데이트\n4. npm run build 통과 확인\n5. git add -A && git commit -m 'fix: [수정 내용]'\n6. verification-report.md 업데이트\n\n## 완료 조건\n- 10개 카테고리 전부 검증 완료\n- [MISMATCH] 전부 [FIXED]로 전환\n- npm run build 에러 0\n- verification-report.md에 미검증 항목 0개\n\n모든 조건 충족 시 <promise>VERIFIED</promise> 출력"
+    }
+  },
+  "todo_summary": {
+    "pending": 0,
+    "in_progress": 0,
+    "completed": 0
+  },
+  "wisdom_exported": false,
+  "background_jobs": {
+    "active": [],
+    "recent": [],
+    "stats": null
+  }
+}

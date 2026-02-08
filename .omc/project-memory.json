@@ -174,8 +174,8 @@
   "hotPaths": [
     {
       "path": "src",
-      "accessCount": 34,
-      "lastAccessed": 1770550664584,
+      "accessCount": 43,
+      "lastAccessed": 1770550834965,
       "type": "directory"
     },
     {
@@ -192,20 +192,20 @@
     },
     {
       "path": "src/components/ui/markdown-renderer.tsx",
-      "accessCount": 19,
-      "lastAccessed": 1770550744049,
+      "accessCount": 22,
+      "lastAccessed": 1770550969692,
       "type": "file"
     },
     {
       "path": "src/components/panels/part-sidebar.tsx",
-      "accessCount": 18,
-      "lastAccessed": 1770550742269,
+      "accessCount": 19,
+      "lastAccessed": 1770550819868,
       "type": "file"
     },
     {
       "path": "src/components/panels/PartInfoPanel.tsx",
-      "accessCount": 14,
-      "lastAccessed": 1770550634561,
+      "accessCount": 15,
+      "lastAccessed": 1770550817456,
       "type": "file"
     },
     {
@@ -216,14 +216,14 @@
     },
     {
       "path": "src/components/ui/cta-button.tsx",
-      "accessCount": 12,
-      "lastAccessed": 1770550629022,
+      "accessCount": 13,
+      "lastAccessed": 1770550816187,
       "type": "file"
     },
     {
       "path": "src/app/globals.css",
-      "accessCount": 12,
-      "lastAccessed": 1770550629410,
+      "accessCount": 13,
+      "lastAccessed": 1770550835252,
       "type": "file"
     },
     {
@@ -239,6 +239,12 @@
       "type": "file"
     },
     {
+      "path": "src/components/ui/part-popup.tsx",
+      "accessCount": 11,
+      "lastAccessed": 1770550818480,
+      "type": "file"
+    },
+    {
       "path": "src/app/page.tsx",
       "accessCount": 10,
       "lastAccessed": 1770550169412,
@@ -251,15 +257,15 @@
       "type": "file"
     },
     {
-      "path": "src/components/ui/part-popup.tsx",
-      "accessCount": 10,
-      "lastAccessed": 1770550735965,
-      "type": "file"
-    },
-    {
       "path": "src/components/panels/footer.tsx",
       "accessCount": 9,
       "lastAccessed": 1770549493070,
+      "type": "file"
+    },
+    {
+      "path": "src/components/ui/slide-bar.tsx",
+      "accessCount": 9,
+      "lastAccessed": 1770550968772,
       "type": "file"
     },
     {
@@ -293,6 +299,12 @@
       "type": "file"
     },
     {
+      "path": "src/app/layout.tsx",
+      "accessCount": 8,
+      "lastAccessed": 1770550819142,
+      "type": "file"
+    },
+    {
       "path": "src/components/panels/navigation.tsx",
       "accessCount": 7,
       "lastAccessed": 1770549492688,
@@ -302,12 +314,6 @@
       "path": "src/components/panels/part-sidebar.stories.tsx",
       "accessCount": 7,
       "lastAccessed": 1770550016494,
-      "type": "file"
-    },
-    {
-      "path": "src/app/layout.tsx",
-      "accessCount": 7,
-      "lastAccessed": 1770550644164,
       "type": "file"
     },
     {
@@ -338,12 +344,6 @@
       "path": "src/components/ui/help-message.tsx",
       "accessCount": 5,
       "lastAccessed": 1770547320178,
-      "type": "file"
-    },
-    {
-      "path": "src/components/ui/slide-bar.tsx",
-      "accessCount": 5,
-      "lastAccessed": 1770550637205,
       "type": "file"
     },
     {
