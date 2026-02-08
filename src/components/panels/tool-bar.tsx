@@ -26,7 +26,7 @@ import type { HTMLAttributes } from "react";
  */
 
 const toolBarVariants = cva(
-  "flex items-center justify-center p-2 border-2 border-[var(--primary-cyan)]/20 rounded-[24px] bg-white/10 backdrop-blur-md shadow-[0_0_20px_rgba(2,238,225,0.1)] transition-all",
+  "flex items-center justify-center p-2 border-2 border-primary/20 rounded-[24px] bg-white/10 backdrop-blur-md shadow-card-glow transition-all",
   {
     variants: {
       variant: {
@@ -66,7 +66,7 @@ export function ToolBar({ className, variant, tools, ...props }: ToolBarProps) {
             aria-label={tool.label}
             className="hover:scale-110 active:scale-90 transition-transform"
           />
-          <div className="pointer-events-none absolute left-1/2 -top-12 z-10 hidden -translate-x-1/2 whitespace-nowrap rounded-md bg-[var(--primary-cyan)] px-3 py-1.5 text-xs font-bold text-black opacity-0 transition-opacity group-hover:block group-hover:opacity-100 shadow-[0_4px_12px_rgba(2,238,225,0.3)]">
+          <div className="pointer-events-none absolute left-1/2 -top-12 z-10 hidden -translate-x-1/2 whitespace-nowrap rounded-md bg-primary px-3 py-1.5 text-xs font-bold text-neutral-900 opacity-0 transition-opacity group-hover:block group-hover:opacity-100 shadow-primary-glow">
             {tool.label}
           </div>
         </div>
