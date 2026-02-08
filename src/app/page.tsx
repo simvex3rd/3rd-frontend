@@ -4,6 +4,7 @@ import { LandingIntroSection } from "@/components/sections/landing-intro-section
 import { LandingFunctionsSection } from "@/components/sections/landing-functions-section";
 import { LandingStudyModelSection } from "@/components/sections/landing-study-model-section";
 import { LandingFooterSection } from "@/components/sections/landing-footer-section";
+import { LandingHeader } from "@/components/layout/landing-header";
 
 /**
  * Landing page with scroll-snap sections.
@@ -23,17 +24,22 @@ import { LandingFooterSection } from "@/components/sections/landing-footer-secti
  */
 export default function LandingPage() {
   return (
-    <div
-      className="h-screen overflow-y-scroll snap-y snap-mandatory scroll-smooth bg-[#171717]"
-      style={{
-        // Safari-specific smooth scrolling
-        WebkitOverflowScrolling: "touch",
-      }}
-    >
-      <LandingIntroSection />
-      <LandingFunctionsSection />
-      <LandingStudyModelSection />
-      <LandingFooterSection />
+    <div className="min-h-screen bg-background overflow-x-hidden">
+      <LandingHeader />
+      <main className="flex flex-col">
+        <div id="intro">
+          <LandingIntroSection />
+        </div>
+        <div id="functions">
+          <LandingFunctionsSection />
+        </div>
+        <div id="models">
+          <LandingStudyModelSection />
+        </div>
+        <div id="footer">
+          <LandingFooterSection />
+        </div>
+      </main>
     </div>
   );
 }
