@@ -1,40 +1,51 @@
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 import type { InputHTMLAttributes } from "react";
+import { Search, type LucideIcon } from "lucide-react";
 
 /**
- * Input component with multiple state variants.
+ * Input component with validation states and optional icon.
+ * Based on verified design specs from docs/phase2-ui-basic.md
  *
  * @component
  * @example
  * ```tsx
- * <Input variant="default" placeholder="Enter text" />
- * <Input variant="error" value="Invalid input" />
- * <Input variant="success" value="Valid input" />
+ * <Input placeholder="Search..." />
+ * <Input variant="error" placeholder="Invalid input" />
+ * <Input variant="success" placeholder="Valid input" rightIcon />
  * ```
  *
- * @param {InputProps} props - Component props
- * @param {"default" | "focus" | "fill" | "error" | "success" | "disable"} [props.variant="default"] - Input state variant
+ * Dimensions: 320×40px (default)
+ * Font: 16px/1.5 regular
+ * Border Radius: 8px
+ * States: Default, Focus, Fill, Error, Success, Disabled
  *
- * @see {@link https://figma.com/file/Vz80RydxWcYHVnn2iuyV0m/SIMVEX} Figma Design
+ * @see {@link https://figma.com/file/Vz80RydxWcYHVnn2iuyV0m/SIMVEX?node-id=147-809} Figma Design
  */
 
-import { LucideSearch, type LucideIcon } from "lucide-react";
-
 const inputVariants = cva(
-  // Base classes
-  "relative flex h-[40px] w-full items-center gap-2 rounded-[8px] border border-solid px-3 py-3 text-[16px] leading-[1.5] transition-all backdrop-blur-sm focus-within:outline-none disabled:cursor-not-allowed",
+  // Base classes - matches Figma specs exactly
+  "relative flex h-10 w-full items-center gap-1 rounded-lg border border-solid px-3 py-3 text-base font-normal leading-normal transition-colors duration-150 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 disabled:cursor-not-allowed",
   {
     variants: {
       variant: {
+        // Default - gray border, white background
         default:
-          "border-[var(--gray-300)] bg-white text-[var(--bg-dark)] placeholder:text-[var(--gray-500)] focus-within:border-[var(--blue-primary)]",
-        focus: "border-[var(--blue-primary)] bg-white text-[var(--bg-dark)]",
-        fill: "border-[var(--gray-200)] bg-white text-[var(--bg-dark)]",
-        error: "border-[var(--red-error)] bg-white text-[var(--bg-dark)]",
-        success: "border-[var(--green-success)] bg-white text-[var(--bg-dark)]",
-        disable:
-          "border-[var(--gray-300)] bg-[var(--gray-100)] text-[var(--gray-300)]",
+          "border-neutral-300 bg-white text-foreground placeholder:text-neutral-500 focus-within:border-info focus-within:ring-info",
+        // Focus - blue border (programmatic state)
+        focus:
+          "border-info bg-white text-foreground placeholder:text-neutral-500 ring-2 ring-info ring-offset-2",
+        // Fill - light gray border with content
+        fill: "border-neutral-200 bg-white text-foreground",
+        // Error - red border
+        error:
+          "border-error bg-white text-foreground placeholder:text-neutral-500 focus-within:border-error focus-within:ring-error",
+        // Success - green border
+        success:
+          "border-success bg-white text-foreground placeholder:text-neutral-500 focus-within:border-success focus-within:ring-success",
+        // Disabled - gray background and border
+        disabled:
+          "border-neutral-300 bg-neutral-100 text-neutral-300 placeholder:text-neutral-300",
       },
     },
     defaultVariants: {
@@ -57,26 +68,29 @@ export function Input({
   rightIcon = false,
   ...props
 }: InputProps) {
-  const Icon = typeof rightIcon === "function" ? rightIcon : LucideSearch;
+  const Icon = typeof rightIcon === "function" ? rightIcon : Search;
 
   return (
     <div
       className={cn(
-        inputVariants({ variant: disabled ? "disable" : variant }),
+        inputVariants({ variant: disabled ? "disabled" : variant }),
         className
       )}
     >
       <input
-        className="flex-1 bg-transparent outline-none placeholder:text-inherit"
+        className="flex-1 bg-transparent outline-none placeholder:text-inherit disabled:cursor-not-allowed"
         disabled={disabled}
+        aria-invalid={variant === "error" ? "true" : undefined}
+        aria-disabled={disabled ? "true" : undefined}
         {...props}
       />
       {rightIcon && (
         <Icon
           className={cn(
             "h-6 w-6 shrink-0",
-            disabled ? "text-[var(--gray-300)]" : "text-[var(--gray-500)]"
+            disabled ? "text-neutral-300" : "text-neutral-500"
           )}
+          aria-hidden="true"
         />
       )}
     </div>
