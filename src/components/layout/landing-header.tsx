@@ -14,7 +14,7 @@ const navLinks = [
 
 export function LandingHeader() {
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 h-[136px] px-[80px] transition-all duration-300">
+    <header className="fixed top-0 left-0 right-0 z-50 h-[136px] px-20 transition-all duration-300">
       {/* Background with Glow Effect */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         {/* Subtle dark backdrop */}
@@ -39,7 +39,7 @@ export function LandingHeader() {
         </div>
 
         {/* Center: Navigation - Positioned Absolutely to ensure true center */}
-        <nav className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 hidden md:flex items-center gap-[48px]">
+        <nav className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 hidden md:flex items-center gap-12">
           {navLinks.map((link) => (
             <Link
               key={link.label}

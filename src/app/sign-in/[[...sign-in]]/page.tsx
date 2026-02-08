@@ -52,7 +52,7 @@ export default function SignInPage() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4 font-sans">
       <div
-        className="relative flex w-[375px] md:w-[480px] flex-col items-center gap-[80px] rounded-[24px] bg-neutral-900 px-[32px] py-[80px]"
+        className="relative flex w-[375px] md:w-[480px] flex-col items-center gap-20 rounded-[24px] bg-neutral-900 px-8 py-20"
         data-node-id="160:1146"
         // Shadow removed as per Figma design (flat design)
       >
@@ -68,17 +68,17 @@ export default function SignInPage() {
 
         {/* Form Container */}
         <div
-          className="flex h-auto w-full flex-none flex-col items-start gap-[16px] order-1 grow-0 self-stretch"
+          className="flex h-auto w-full flex-none flex-col items-start gap-4 order-1 grow-0 self-stretch"
           data-node-id="160:1145"
         >
           {/* Login Form Inputs */}
           <form
             onSubmit={handleSubmit}
-            className="flex w-full flex-col items-end justify-center gap-[4px] self-stretch"
+            className="flex w-full flex-col items-end justify-center gap-1 self-stretch"
           >
             {/* Email Field */}
             <div
-              className="flex flex-col items-start gap-[2px] w-full self-stretch"
+              className="flex flex-col items-start gap-0.5 w-full self-stretch"
               data-node-id="160:945"
             >
               <div className="h-[24px] w-full relative">
@@ -98,7 +98,7 @@ export default function SignInPage() {
 
             {/* Password Field */}
             <div
-              className="flex flex-col items-start gap-[2px] w-full self-stretch"
+              className="flex flex-col items-start gap-0.5 w-full self-stretch"
               data-node-id="160:955"
             >
               <div className="h-[24px] w-full relative">
@@ -139,14 +139,14 @@ export default function SignInPage() {
 
           {/* Btn Group */}
           <div
-            className="flex flex-col items-start gap-[4px] w-full self-stretch"
+            className="flex flex-col items-start gap-1 w-full self-stretch"
             data-node-id="160:1143"
           >
             {/* Login Button */}
             <button
               onClick={handleSubmit}
               disabled={isLoading}
-              className="flex h-[40px] w-full flex-none flex-row items-center justify-center gap-[8px] rounded-[8px] bg-primary px-[16px] hover:opacity-90 disabled:opacity-50 transition-opacity"
+              className="flex h-[40px] w-full flex-none flex-row items-center justify-center gap-2 rounded-[8px] bg-primary px-[16px] hover:opacity-90 disabled:opacity-50 transition-opacity"
               data-node-id="160:1087"
             >
               {isLoading ? (
@@ -161,7 +161,7 @@ export default function SignInPage() {
             <Link href="/sign-up" className="w-full">
               <button
                 type="button"
-                className="box-border flex h-[40px] w-full flex-none flex-row items-center justify-center gap-[8px] rounded-[8px] border-[2px] border-primary px-[16px] hover:bg-primary/10 transition-colors"
+                className="box-border flex h-[40px] w-full flex-none flex-row items-center justify-center gap-2 rounded-[8px] border-[2px] border-primary px-[16px] hover:bg-primary/10 transition-colors"
                 data-node-id="160:1093"
               >
                 <p className="font-[Pretendard] text-[16px] font-medium leading-[1.5] text-primary text-center">

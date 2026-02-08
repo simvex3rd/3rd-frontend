@@ -174,20 +174,20 @@
   "hotPaths": [
     {
       "path": "src",
-      "accessCount": 59,
-      "lastAccessed": 1770551083085,
+      "accessCount": 70,
+      "lastAccessed": 1770552636503,
       "type": "directory"
     },
     {
       "path": "src/app/sign-up/[[...sign-up]]/page.tsx",
-      "accessCount": 33,
-      "lastAccessed": 1770550654966,
+      "accessCount": 41,
+      "lastAccessed": 1770552789709,
       "type": "file"
     },
     {
       "path": "src/app/sign-in/[[...sign-in]]/page.tsx",
-      "accessCount": 26,
-      "lastAccessed": 1770550654464,
+      "accessCount": 35,
+      "lastAccessed": 1770552777994,
       "type": "file"
     },
     {
@@ -221,15 +221,21 @@
       "type": "file"
     },
     {
+      "path": "src/components/ui/cta-button.tsx",
+      "accessCount": 14,
+      "lastAccessed": 1770551310656,
+      "type": "file"
+    },
+    {
       "path": "",
       "accessCount": 13,
       "lastAccessed": 1770550651757,
       "type": "directory"
     },
     {
-      "path": "src/components/ui/cta-button.tsx",
+      "path": "src/components/panels/chat-sidebar.tsx",
       "accessCount": 13,
-      "lastAccessed": 1770550816187,
+      "lastAccessed": 1770552726238,
       "type": "file"
     },
     {
@@ -251,27 +257,21 @@
       "type": "file"
     },
     {
-      "path": "src/components/panels/chat-sidebar.tsx",
-      "accessCount": 10,
-      "lastAccessed": 1770550643460,
-      "type": "file"
-    },
-    {
       "path": "src/components/ui/slide-bar.tsx",
       "accessCount": 10,
       "lastAccessed": 1770551063213,
       "type": "file"
     },
     {
-      "path": "src/components/panels/footer.tsx",
-      "accessCount": 9,
-      "lastAccessed": 1770549493070,
+      "path": "src/app/layout.tsx",
+      "accessCount": 10,
+      "lastAccessed": 1770551302228,
       "type": "file"
     },
     {
-      "path": "src/app/layout.tsx",
+      "path": "src/components/panels/footer.tsx",
       "accessCount": 9,
-      "lastAccessed": 1770551054599,
+      "lastAccessed": 1770549493070,
       "type": "file"
     },
     {
