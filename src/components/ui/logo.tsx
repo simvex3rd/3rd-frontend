@@ -1,12 +1,8 @@
-"use client";
-
 import Image from "next/image";
 import { cn } from "@/lib/utils";
-import { useTheme } from "next-themes";
-import { useEffect, useState } from "react";
 
 /**
- * Logo component with theme awareness (light/dark mode).
+ * Logo component.
  *
  * @component
  * @example
@@ -37,36 +33,9 @@ const sizeMap = {
 };
 
 export function Logo({ size = "medium", className }: LogoProps) {
-  const { resolvedTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
-
-  // Avoid hydration mismatch
-  /* eslint-disable react-hooks/set-state-in-effect */
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-  /* eslint-enable react-hooks/set-state-in-effect */
-
-  if (!mounted) {
-    return (
-      <div
-        style={{
-          width: sizeMap[size].width,
-          height: sizeMap[size].height,
-        }}
-        className={cn("inline-block", className)}
-      />
-    );
-  }
-
-  const logoSrc =
-    resolvedTheme === "dark"
-      ? "/logos/dark-medium.png"
-      : "/logos/light-medium.png";
-
   return (
     <Image
-      src={logoSrc}
+      src="/logo.png"
       alt="SIMVEX Logo"
       width={sizeMap[size].width}
       height={sizeMap[size].height}

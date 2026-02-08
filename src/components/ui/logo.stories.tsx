@@ -26,7 +26,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    size: "medium",
+    size: "large",
   },
 };
 
@@ -57,12 +57,12 @@ export const AllSizes: Story = {
         <Logo size="small" />
       </div>
       <div>
-        <p className="mb-2 text-sm text-muted-foreground">Medium (Default)</p>
+        <p className="mb-2 text-sm text-muted-foreground">Medium</p>
         <Logo size="medium" />
       </div>
       <div>
         <p className="mb-2 text-sm text-muted-foreground">
-          Large (Figma Size: 325×69)
+          Large (Default - Figma 1920px: 325×69)
         </p>
         <Logo size="large" />
       </div>
