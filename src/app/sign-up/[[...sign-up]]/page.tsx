@@ -83,7 +83,7 @@ export default function SignUpPage() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4 font-sans">
       <div
-        className="relative flex w-[375px] md:w-[480px] flex-col items-center gap-20 rounded-[24px] bg-neutral-900 px-8 py-20"
+        className="relative flex w-full max-w-[375px] md:max-w-[480px] lg:max-w-[480px] flex-col items-center gap-20 rounded-[24px] bg-neutral-900 px-8 py-20"
         data-node-id="175:748"
         // Shadow removed per Figma
       >
