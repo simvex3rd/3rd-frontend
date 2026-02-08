@@ -26,11 +26,11 @@ export function ViewerToolbar({ className }: ViewerToolbarProps) {
   return (
     <div
       className={cn(
-        "w-[500px] h-[50px]",
-        "flex items-center justify-center gap-12",
-        "bg-gray-30 border-[3px] border-primary rounded-[16px]",
-        "px-40 py-4",
-        "shadow-[4px_4px_20px_0px_rgba(2,238,225,0.1)]",
+        "w-[375px] h-[37.5px]",
+        "flex items-center justify-center gap-9",
+        "bg-gray-30 border-[3px] border-primary rounded-[12px]",
+        "px-[120px] py-3",
+        "shadow-card-glow",
         "backdrop-blur-sm",
         className
       )}
@@ -39,11 +39,11 @@ export function ViewerToolbar({ className }: ViewerToolbarProps) {
     >
       {/* Focus Tool */}
       <button
-        className="w-10 h-10 flex items-center justify-center text-primary hover:text-primary-light transition-colors"
+        className="w-[30px] h-[30px] flex items-center justify-center text-primary hover:text-primary-light transition-colors"
         aria-label="Focus selected object"
         title="Focus selected object"
       >
-        <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+        <svg width="30" height="30" viewBox="0 0 40 40" fill="none">
           <path
             d="M8.75 13.75V8.75H13.75M26.25 8.75H31.25V13.75M31.25 26.25V31.25H26.25M13.75 31.25H8.75V26.25"
             stroke="currentColor"
@@ -56,11 +56,11 @@ export function ViewerToolbar({ className }: ViewerToolbarProps) {
 
       {/* Wireframe Toggle */}
       <button
-        className="w-10 h-10 flex items-center justify-center text-primary hover:text-primary-light transition-colors"
+        className="w-[30px] h-[30px] flex items-center justify-center text-primary hover:text-primary-light transition-colors"
         aria-label="Toggle wireframe view"
         title="Toggle wireframe view"
       >
-        <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+        <svg width="30" height="30" viewBox="0 0 40 40" fill="none">
           <path
             d="M20 6L32 13V27L20 34L8 27V13L20 6Z"
             stroke="currentColor"
@@ -73,11 +73,11 @@ export function ViewerToolbar({ className }: ViewerToolbarProps) {
 
       {/* Camera Lock */}
       <button
-        className="w-10 h-10 flex items-center justify-center text-primary hover:text-primary-light transition-colors"
+        className="w-[30px] h-[30px] flex items-center justify-center text-primary hover:text-primary-light transition-colors"
         aria-label="Lock camera position"
         title="Lock camera position"
       >
-        <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+        <svg width="30" height="30" viewBox="0 0 40 40" fill="none">
           <path
             d="M20 28C22.7614 28 25 25.7614 25 23C25 20.2386 22.7614 18 20 18C17.2386 18 15 20.2386 15 23C15 25.7614 17.2386 28 20 28Z"
             stroke="currentColor"
@@ -95,11 +95,11 @@ export function ViewerToolbar({ className }: ViewerToolbarProps) {
 
       {/* Measurement Tool */}
       <button
-        className="w-10 h-10 flex items-center justify-center text-primary hover:text-primary-light transition-colors"
+        className="w-[30px] h-[30px] flex items-center justify-center text-primary hover:text-primary-light transition-colors"
         aria-label="Measure distances"
         title="Measure distances"
       >
-        <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+        <svg width="30" height="30" viewBox="0 0 40 40" fill="none">
           <path
             d="M10 8L32 30M10 8V16M10 8H18M32 30H24M32 30V22"
             stroke="currentColor"

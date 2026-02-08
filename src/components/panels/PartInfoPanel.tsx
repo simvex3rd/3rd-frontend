@@ -49,8 +49,8 @@ export function PartInfoPanel() {
           <Image
             src="/icons/ai-assistant.svg"
             alt="AI Assistant"
-            width={37}
-            height={37}
+            width={40}
+            height={40}
             className="shrink-0"
           />
           <h2 className="font-semibold text-[32px] leading-[1.25] text-primary">
@@ -59,7 +59,7 @@ export function PartInfoPanel() {
         </div>
 
         {/* Content Box */}
-        <div className="w-full h-[250px] bg-gray-30 border-[3px] border-primary rounded-[24px] flex items-center justify-center px-[153px] py-[105px]">
+        <div className="w-full h-[250px] bg-gray-30 border-[3px] border-primary rounded-[24px] flex items-center justify-center px-10 py-12">
           <p className="font-medium text-[16px] leading-[1.5] text-neutral-50 text-center">
             {partInfo?.description ||
               `${selectedObject}에 대해 궁금한 점이 있으신가요?`}
@@ -74,8 +74,8 @@ export function PartInfoPanel() {
           <Image
             src="/icons/part-info.svg"
             alt="Part Info"
-            width={37}
-            height={38}
+            width={40}
+            height={40}
             className="shrink-0"
           />
           <h2 className="font-semibold text-[32px] leading-[1.25] text-primary">
@@ -84,7 +84,7 @@ export function PartInfoPanel() {
         </div>
 
         {/* Content Box */}
-        <div className="w-full h-[250px] bg-gray-30 border-[3px] border-primary rounded-[24px] flex items-center justify-center px-[153px] py-[105px]">
+        <div className="w-full h-[250px] bg-gray-30 border-[3px] border-primary rounded-[24px] flex items-center justify-center px-10 py-12">
           {partInfo ? (
             <div className="flex flex-col gap-2 text-center">
               <p className="font-bold text-[18px] leading-[1.4] text-primary">

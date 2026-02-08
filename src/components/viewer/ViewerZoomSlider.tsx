@@ -26,7 +26,7 @@ export function ViewerZoomSlider({
   compact = false,
 }: ViewerZoomSliderProps) {
   const [zoomValue, setZoomValue] = useState(10); // 0-100 range
-  const sliderWidth = compact ? 960 : 1200;
+  const sliderWidth = compact ? 720 : 900; // 960*0.75=720, 1200*0.75=900
   const trackWidth = sliderWidth - 4; // Account for container padding
 
   const handleSliderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -41,14 +41,9 @@ export function ViewerZoomSlider({
       aria-label="Zoom control"
     >
       {/* Track background container with padding */}
-      <div className="absolute left-0 top-[11px] w-full flex flex-col items-start p-[10px]">
+      <div className="absolute left-0 top-[10.5px] w-full flex flex-col items-start p-[10px]">
         {/* Track */}
-        <div
-          className="h-[16px] bg-[#d9d9d9] rounded-full relative w-full"
-          style={{
-            boxShadow: "inset 0px 4px 4px 0px rgba(0,0,0,0.25)",
-          }}
-        />
+        <div className="h-[16px] bg-[#d9d9d9] rounded-full relative w-full shadow-track-inset" />
       </div>
 
       {/* Slider input (invisible but functional) */}
@@ -58,8 +53,8 @@ export function ViewerZoomSlider({
         max="100"
         value={zoomValue}
         onChange={handleSliderChange}
-        className="absolute left-0 top-[13px] w-full h-[32px] opacity-0 cursor-pointer z-20"
-        style={{ width: `${trackWidth}px` }}
+        className="absolute left-0 top-[12.5px] h-[32px] opacity-0 cursor-pointer z-20"
+        style={{ width: `${sliderWidth}px` }}
         aria-label="Zoom level"
         aria-valuemin={0}
         aria-valuemax={100}
@@ -68,10 +63,9 @@ export function ViewerZoomSlider({
 
       {/* Custom thumb */}
       <div
-        className="absolute top-[13px] h-[32px] w-[120px] bg-primary-30 border-2 border-primary rounded-full pointer-events-none transition-all duration-150"
+        className="absolute top-[12.5px] h-[32px] w-[120px] bg-primary-30 border-2 border-primary rounded-full pointer-events-none transition-all duration-150 shadow-slider-thumb"
         style={{
-          left: `${(zoomValue / 100) * (trackWidth - 120)}px`,
-          boxShadow: "4px 4px 10px 2px rgba(0,0,0,0.25)",
+          left: `${(zoomValue / 100) * (sliderWidth - 120)}px`,
         }}
       />
     </div>
