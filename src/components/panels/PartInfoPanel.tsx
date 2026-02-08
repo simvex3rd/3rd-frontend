@@ -39,7 +39,7 @@ export function PartInfoPanel() {
   }
 
   return (
-    <div className="absolute right-4 top-4 w-80 rounded-[24px] border-2 border-primary/30 bg-neutral-950/40 p-6 text-neutral-50 shadow-[0_0_30px_rgba(2,238,225,0.1)] backdrop-blur-md transition-all hover:border-primary/60">
+    <div className="absolute right-4 top-4 w-80 rounded-[24px] border-2 border-primary/30 bg-neutral-950/40 p-6 text-neutral-50 shadow-glow-lg backdrop-blur-md transition-all hover:border-primary/60">
       <h3 className="mb-4 text-[24px] font-bold leading-tight text-primary">
         {partInfo.name ?? "Unknown Part"}
       </h3>

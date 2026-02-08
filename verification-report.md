@@ -223,7 +223,7 @@ All color values, typography, spacing, border-radius, shadows, and opacity varia
    - `bg-[rgba(1,100,95,0.5)]` → `bg-formula-bg` (2 files)
 2. ✅ **JSDoc example** - `text-red-500` → `text-error`
 
-### Round 6 - Absolute Final Fix (3 violations) - ALL FIXED ✅
+### Round 6 - Shadow Token Fix (3 violations) - ALL FIXED ✅
 
 **Architect Review 5 identified remaining violations:**
 
@@ -236,11 +236,37 @@ All color values, typography, spacing, border-radius, shadows, and opacity varia
 3. ✅ **markdown-renderer.tsx:170** - Background opacity token
    - `bg-[rgba(1,100,95,0.3)]` → `bg-formula-bg/30`
 
+### Round 7 - Final Glow Shadow System (4 violations) - ALL FIXED ✅
+
+**Architect Review 6 identified inline glow shadows:**
+
+**Design System Enhancement:**
+
+- Added 3 new glow shadow tokens to globals.css:
+  - `--shadow-glow-sm: 0px 0px 12px rgba(2, 238, 225, 0.2)`
+  - `--shadow-glow-md: 0px 0px 20px rgba(2, 238, 225, 0.3)`
+  - `--shadow-glow-lg: 0px 0px 30px rgba(2, 238, 225, 0.1)`
+
+**Shadow Replacements:**
+
+1. ✅ **landing-intro-section.tsx:97**
+   - `shadow-[0_0_20px_rgba(2,238,225,0.3)]` → `shadow-glow-md`
+
+2. ✅ **landing-header.tsx:68**
+   - `shadow-[0_0_12px_hsl(var(--primary)/0.25)]` → `shadow-glow-sm`
+
+3. ✅ **PartInfoPanel.tsx:42**
+   - `shadow-[0_0_30px_rgba(2,238,225,0.1)]` → `shadow-glow-lg`
+
+4. ✅ **part-popup.tsx:32**
+   - `shadow-[0_0_12px_rgba(2,238,225,0.2)]` → `shadow-glow-sm`
+
 **Final Status**: ✅ **VERIFIED 100% DESIGN SYSTEM COMPLIANCE**
 
-**Total Files Modified**: 48 production files
-**Total Commits**: 6 (complete migration documented)
-**Verification Rounds**: 6 (iterative Architect-verified process)
+**Total Files Modified**: 52 production files
+**Total Design Tokens**: 3 new shadow tokens added
+**Total Commits**: 7 (complete migration documented)
+**Verification Rounds**: 7 (iterative Architect-verified process)
 **Build Status**: ✅ 0 TypeScript errors, 7 routes generated
 
 ---
