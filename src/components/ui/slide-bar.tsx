@@ -86,11 +86,11 @@ export function SlideBar({
   return (
     <div className={cn(slideBarVariants({ variant }), className)} {...props}>
       {/* Track */}
-      <div className="absolute top-[23px] h-[12px] w-full rounded-full bg-[#D9D9D9] shadow-[inset_0px_4px_4px_rgba(0,0,0,0.25)]" />
+      <div className="absolute top-[23px] h-[12px] w-full rounded-full bg-neutral-300 shadow-[inset_0px_4px_4px_rgba(0,0,0,0.25)]" />
 
       {/* Thumb / Slider Handle */}
       <div
-        className="absolute top-[13px] h-[32px] w-[120px] rounded-full border-2 border-[#02EEE1] bg-[#02EEE1]/30 shadow-[4px_4px_10px_2px_rgba(0,0,0,0.25)] backdrop-blur-md transition-all duration-300 ease-out cursor-pointer"
+        className="absolute top-[13px] h-[32px] w-[120px] rounded-full border-2 border-primary bg-primary/30 shadow-[4px_4px_10px_2px_rgba(0,0,0,0.25)] backdrop-blur-md transition-all duration-300 ease-out cursor-pointer"
         style={{ left: `${thumbPosition}px` }}
       />
 

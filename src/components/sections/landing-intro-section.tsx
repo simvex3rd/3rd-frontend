@@ -2,7 +2,6 @@
 
 import { useIntersectionObserver } from "@/hooks/use-intersection-observer";
 import { cn } from "@/lib/utils";
-import { Logo } from "@/components/ui/logo";
 import { CTAButton } from "@/components/ui/cta-button";
 import { landingContent } from "@/app/landing/content";
 
@@ -28,10 +27,10 @@ export function LandingIntroSection() {
     <section
       ref={ref}
       className={cn(
-        "relative min-h-screen snap-start snap-always",
+        "relative w-full",
         "flex items-center justify-center",
-        "px-20 py-24",
-        "bg-[#171717]",
+        "px-20 pt-[298px] pb-32", // Exact Figma top spacing
+        "bg-background",
         "transition-all duration-700 ease-out",
         isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"
       )}
@@ -48,53 +47,75 @@ export function LandingIntroSection() {
       />
 
       {/* Two-column layout: Text (left) + Visual (right) */}
-      <div className="relative z-10 flex items-center justify-between w-full max-w-[1760px] gap-12">
+      <div className="relative z-10 flex items-start justify-between w-full max-w-[1760px] gap-8">
         {/* Left: Text Content */}
-        <div className="flex flex-col gap-10 max-w-[792px]">
+        <div className="flex flex-col gap-8 max-w-[800px] pt-4">
           {/* Heading */}
           <h1
             className={cn(
-              "font-extrabold text-foreground whitespace-pre-line",
-              "text-[96px] leading-[1.25]"
+              "font-black text-foreground whitespace-pre-line", // font-black for thicker weight
+              "text-[80px]",
+              "leading-[1.1]",
+              "tracking-tight"
             )}
           >
             {landingContent.intro.heading}
           </h1>
 
           {/* Subtitle */}
-          <p
-            className={cn(
-              "text-[#e5e5e5] whitespace-pre-line font-bold",
-              "text-[40px] leading-[1.25]"
-            )}
-          >
-            {landingContent.intro.subtitle
-              .split("3D 인터랙션")
-              .map((part, i) =>
-                i === 0 ? (
-                  <span key={i}>{part}</span>
-                ) : (
-                  <span key={i}>
-                    <span className="text-[#02eee1]">3D 인터랙션</span>
-                    {part.split("AI 튜터")[0]}
-                    <span className="text-[#02eee1]">AI 튜터</span>
-                    {part.split("AI 튜터")[1]}
-                  </span>
-                )
+          <div className="flex flex-col gap-8 pl-1">
+            <p
+              className={cn(
+                "text-neutral-200 whitespace-pre-line font-medium",
+                "text-[24px]",
+                "leading-[1.5]",
+                "opacity-80"
               )}
-          </p>
+            >
+              {landingContent.intro.subtitle
+                .split("3D 인터랙션")
+                .map((part, i) =>
+                  i === 0 ? (
+                    <span key={i}>{part}</span>
+                  ) : (
+                    <span key={i}>
+                      <span className="text-primary font-bold">
+                        3D 인터랙션
+                      </span>
+                      {part.split("AI 튜터")[0]}
+                      <span className="text-primary font-bold">AI 튜터</span>
+                      {part.split("AI 튜터")[1]}
+                    </span>
+                  )
+                )}
+            </p>
 
-          {/* CTA Button */}
-          <div className="flex items-center">
-            <CTAButton variant="primary">
-              {landingContent.intro.ctaPrimary}
-            </CTAButton>
+            {/* CTA Button */}
+            <div className="flex items-center pt-6">
+              <CTAButton
+                variant="primary"
+                className="shadow-[0_0_20px_rgba(2,238,225,0.3)]"
+              >
+                {landingContent.intro.ctaPrimary}
+              </CTAButton>
+            </div>
           </div>
         </div>
 
         {/* Right: Main Visual */}
-        <div className="flex-shrink-0 w-[970px] h-[477px] bg-[#1a1a1a] border-2 border-[#333] rounded-lg flex items-center justify-center">
-          <span className="text-[#666] text-xl">Main Visual</span>
+        <div className="flex-shrink-0 w-[800px] h-[500px] bg-[#1a1a1a] border border-[#333] rounded-[24px] flex items-center justify-center overflow-hidden relative">
+          {/* Placeholder with clearer wireframe style */}
+          <div
+            className="absolute inset-0 opacity-100"
+            style={{
+              backgroundImage:
+                "linear-gradient(45deg, transparent 48%, #333 48%, #333 52%, transparent 52%), linear-gradient(-45deg, transparent 48%, #333 48%, #333 52%, transparent 52%)",
+              backgroundSize: "100% 100%",
+            }}
+          />
+          <span className="relative z-10 text-[#666] text-2xl font-semibold bg-[#1a1a1a] px-4 py-2 rounded">
+            3D Simulation View
+          </span>
         </div>
       </div>
     </section>

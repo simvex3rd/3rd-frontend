@@ -27,10 +27,10 @@ export function LandingFunctionsSection() {
     <section
       ref={ref}
       className={cn(
-        "min-h-screen snap-start snap-always",
+        "w-full",
         "flex flex-col items-center justify-center",
-        "px-20 py-24",
-        "bg-[#171717]",
+        "px-20 py-24", // Reduced padding
+        "bg-background",
         "transition-all duration-700 ease-out",
         isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"
       )}
@@ -39,9 +39,9 @@ export function LandingFunctionsSection() {
       {/* Section Heading */}
       <h2
         className={cn(
-          "text-center font-extrabold text-foreground mb-8 md:mb-12 lg:mb-20",
-          "text-[40px] md:text-[52px] lg:text-[96px]",
-          "leading-[1.25]"
+          "text-center font-extrabold text-foreground mb-20",
+          "text-[64px]", // Reduced from 96px to match Figma scale better
+          "leading-[1.2]"
         )}
       >
         {landingContent.functions.heading
@@ -51,7 +51,7 @@ export function LandingFunctionsSection() {
               <span key={i}>{part}</span>
             ) : (
               <span key={i}>
-                <span className="text-[#02eee1]">
+                <span className="text-primary">
                   {landingContent.functions.headingHighlight}
                 </span>
                 {part}
@@ -63,8 +63,8 @@ export function LandingFunctionsSection() {
       {/* Feature Cards - Horizontal Row */}
       <div
         className={cn(
-          "flex gap-12 items-center justify-center",
-          "w-full max-w-[1760px]"
+          "grid grid-cols-3 gap-8", // Changed to grid for equal spacing
+          "w-full max-w-[1400px]"
         )}
       >
         {landingContent.functions.features.map((feature, index) => (
@@ -75,9 +75,9 @@ export function LandingFunctionsSection() {
             title={feature.title}
             description={feature.description}
             className={cn(
-              "w-full h-auto",
+              "w-full h-auto min-h-[320px]", // Fixed height
               "transition-all duration-300",
-              "hover:scale-105"
+              "hover:translate-y-[-8px]"
             )}
           />
         ))}
