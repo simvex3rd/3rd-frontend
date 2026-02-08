@@ -14,7 +14,7 @@ const navLinks = [
 
 export function LandingHeader() {
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 h-[136px] px-20 transition-all duration-300">
+    <header className="fixed top-0 left-0 right-0 z-50 px-20 py-8 transition-all duration-300">
       {/* Background with Glow Effect */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         {/* Subtle dark backdrop */}
@@ -30,23 +30,21 @@ export function LandingHeader() {
       </div>
 
       {/* Content Container */}
-      <div className="relative z-10 w-full h-full flex items-center justify-between">
+      <div className="relative z-10 w-full flex items-center gap-12">
         {/* Left: Logo */}
-        <div className="flex-shrink-0">
+        <div className="flex-shrink-0 w-[325px]">
           <Link href="/" aria-label="SIMVEX Home">
             <Logo size="small" />
           </Link>
         </div>
 
-        {/* Center: Navigation - Positioned Absolutely to ensure true center */}
-        <nav className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 hidden md:flex items-center gap-12">
+        {/* Center: Navigation */}
+        <nav className="flex-1 flex items-center gap-20">
           {navLinks.map((link) => (
             <Link
               key={link.label}
               href={link.href}
-              className={cn(
-                "text-neutral-50/60 text-[15px] font-medium hover:text-primary transition-colors"
-              )}
+              className="h-12 w-[70px] flex items-center justify-center text-neutral-50 text-[40px] font-bold leading-[1.25] hover:text-primary transition-colors"
             >
               {link.label}
             </Link>
@@ -55,18 +53,10 @@ export function LandingHeader() {
 
         {/* Right: Auth Buttons */}
         <div className="flex-shrink-0 flex items-center gap-4">
-          <CTAButton
-            variant="default"
-            size="compact"
-            className="bg-white/5 border-white/10 text-neutral-50 hover:bg-white/10 text-[14px] font-medium h-[40px] px-6 rounded-full"
-          >
-            로그인 / 가입
+          <CTAButton variant="default" size="default" className="w-[210px]">
+            로그인/가입
           </CTAButton>
-          <CTAButton
-            variant="primary"
-            size="compact"
-            className="h-[40px] px-6 text-[14px] font-bold rounded-full shadow-glow-sm border border-primary/30"
-          >
+          <CTAButton variant="primary" size="default" className="w-[210px]">
             시작하기
           </CTAButton>
         </div>
