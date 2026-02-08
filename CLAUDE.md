@@ -85,6 +85,29 @@ import { Button } from "@/components/ui/button";
 - Tailwind utility classes 사용
 - 하드코딩 색상 금지 (CSS 변수 사용: `bg-background`)
 
+### 뷰포트 & 스케일링
+
+**⚠️ 중요: 자동 CSS 스케일링**
+
+프로젝트는 **1920px 기준 디자인**으로 개발되며, **1440px 이하 뷰포트에서 자동으로 75% 스케일링**됩니다.
+
+```css
+/* src/app/globals.css - 자동 적용됨 */
+@media (max-width: 1919px) {
+  body {
+    zoom: 0.75 !important; /* 75% 스케일링 */
+    min-height: 133.33vh !important; /* 스크롤 보정 */
+  }
+}
+```
+
+**핵심 규칙:**
+
+- 모든 컴포넌트는 **1920px 기준**으로 픽셀 값 사용
+- `px-[80px]`, `text-[40px]` 등 **절대 픽셀 값** 사용 (Tailwind 유틸리티 대신)
+- 1440px 뷰포트에서 자동으로 `80px → 60px`, `40px → 30px`로 스케일링됨
+- **스케일링 코드 수정 금지** - globals.css 최상단에 위치, 다른 @layer보다 우선
+
 ### 상태 관리
 
 ```tsx
