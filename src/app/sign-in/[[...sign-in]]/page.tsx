@@ -50,9 +50,9 @@ export default function SignInPage() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-4 font-sans">
+    <div className="flex min-h-screen w-full items-center justify-center bg-background px-4 font-sans">
       <div
-        className="relative flex w-[375px] md:w-[480px] flex-col items-center gap-20 rounded-[24px] bg-neutral-900 px-8 py-20"
+        className="relative flex w-[375px] flex-col items-center gap-20 rounded-[24px] bg-neutral-900 px-8 py-20"
         data-node-id="160:1146"
         // Shadow removed as per Figma design (flat design)
       >
