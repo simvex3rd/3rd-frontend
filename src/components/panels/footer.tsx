@@ -54,40 +54,42 @@ export function Footer({
   className,
   sections: _sections,
   socialLinks: _socialLinks,
-  copyright: _copyright = "© 2026 All rights reserved.",
+  copyright: _copyright = "© 2026 SIMVEX. All rights reserved.",
   ...props
 }: FooterProps) {
   return (
     <footer
       className={cn(
-        "w-full h-[339px] flex items-center px-20 py-10 bg-black",
+        "w-full py-16 px-20 bg-background border-t border-neutral-800",
         className
       )}
       {...props}
     >
-      <div className="flex w-full items-end justify-between">
+      <div className="w-full max-w-[1760px] mx-auto flex items-end justify-between">
         {/* Left Side: Logo & Copyright */}
-        <div className="flex flex-col gap-2 items-start justify-center py-[75px]">
+        <div className="flex flex-col gap-6 items-start">
           <Logo size="small" />
-          <p className="text-[16px] text-[var(--gray-300)] leading-[1.4] mt-2">
-            © 2026
-          </p>
-          <p className="text-[16px] text-[var(--gray-50)] leading-normal">
-            All rights reserved.
-          </p>
+          <div className="flex flex-col gap-1">
+            <p className="text-sm text-neutral-400 leading-relaxed">
+              © 2026 SIMVEX
+            </p>
+            <p className="text-sm text-neutral-500 leading-relaxed">
+              All rights reserved.
+            </p>
+          </div>
         </div>
 
         {/* Right Side: Policy Links */}
-        <div className="flex gap-10 items-end justify-end pb-[75px]">
+        <div className="flex gap-8 items-center pb-1">
           <LinkButton
             href="/privacy"
-            className="text-[32px] font-semibold text-[var(--gray-50)] leading-[1.25] hover:text-[var(--primary-cyan)]"
+            className="text-sm !text-neutral-500 !font-normal hover:!text-primary transition-colors no-underline"
           >
             Privacy Policy
           </LinkButton>
           <LinkButton
             href="/terms"
-            className="text-[32px] font-semibold text-[var(--gray-50)] leading-[1.25] hover:text-[var(--primary-cyan)]"
+            className="text-sm !text-neutral-500 !font-normal hover:!text-primary transition-colors no-underline"
           >
             Terms of Service
           </LinkButton>
