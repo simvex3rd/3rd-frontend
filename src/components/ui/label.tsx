@@ -4,32 +4,42 @@ import type { LabelHTMLAttributes } from "react";
 
 /**
  * Label component for form elements.
+ * Based on verified design specs from docs/phase2-ui-basic.md
  *
  * @component
  * @example
  * ```tsx
  * <Label htmlFor="email">Email</Label>
- * <Label variant="press">Pressed Label</Label>
+ * <Label size="lg" variant="active">Navigation</Label>
  * ```
  *
- * @param {LabelProps} props - Component props
- * @param {"default" | "press"} [props.variant="default"] - Label variant
+ * Note: The "Label" in Figma (node 120:375) is a 40px navigation label.
+ * This component supports both form labels (16px) and navigation labels (40px).
  *
- * @see {@link https://figma.com/file/Vz80RydxWcYHVnn2iuyV0m/SIMVEX} Figma Design
+ * @see {@link https://figma.com/file/Vz80RydxWcYHVnn2iuyV0m/SIMVEX?node-id=120-375} Figma Design
  */
 
 const labelVariants = cva(
-  // Base classes - 14px body-md
-  "inline-flex items-center text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70",
+  // Base classes
+  "inline-flex items-center font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70",
   {
     variants: {
       variant: {
-        default: "text-foreground",
-        press: "text-[var(--primary-cyan)]",
+        // Default - white text for form labels
+        default: "text-neutral-200",
+        // Active - cyan text for active navigation
+        active: "text-primary",
+      },
+      size: {
+        // Default - form label size (16px)
+        default: "text-base leading-normal",
+        // Large - navigation label size (40px)
+        lg: "text-[40px] font-bold leading-tight",
       },
     },
     defaultVariants: {
       variant: "default",
+      size: "default",
     },
   }
 );
@@ -39,8 +49,11 @@ export interface LabelProps
     LabelHTMLAttributes<HTMLLabelElement>,
     VariantProps<typeof labelVariants> {}
 
-export function Label({ className, variant, ...props }: LabelProps) {
+export function Label({ className, variant, size, ...props }: LabelProps) {
   return (
-    <label className={cn(labelVariants({ variant }), className)} {...props} />
+    <label
+      className={cn(labelVariants({ variant, size }), className)}
+      {...props}
+    />
   );
 }
