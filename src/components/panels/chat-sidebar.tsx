@@ -51,7 +51,7 @@ export function ChatSidebar({
   return (
     <div
       className={cn(
-        "flex flex-col w-[311px] h-[879px] bg-neutral-700 p-6 gap-[160px]",
+        "flex flex-col w-[311px] h-[879px] bg-neutral-700 p-6 gap-40",
         className
       )}
       {...props}
@@ -88,7 +88,7 @@ export function ChatSidebar({
         </button>
 
         {/* History Section */}
-        <div className="flex flex-col gap-[7px]">
+        <div className="flex flex-col gap-1">
           <p className="font-semibold text-[16px] leading-[1.5] text-neutral-200 mb-1">
             History
           </p>

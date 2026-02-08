@@ -38,7 +38,7 @@ export function SecondaryNav({
   return (
     <nav
       className={cn(
-        "flex h-12 items-center gap-6 border-b border-[var(--border)] px-4",
+        "flex h-12 items-center gap-6 border-b border-border px-4",
         className
       )}
       {...props}
