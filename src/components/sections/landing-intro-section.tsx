@@ -103,17 +103,17 @@ export function LandingIntroSection() {
         </div>
 
         {/* Right: Main Visual */}
-        <div className="flex-shrink-0 w-[800px] h-[500px] bg-[#1a1a1a] border border-[#333] rounded-[24px] flex items-center justify-center overflow-hidden relative">
+        <div className="flex-shrink-0 w-[800px] h-[500px] bg-neutral-900 border border-neutral-700 rounded-[24px] flex items-center justify-center overflow-hidden relative">
           {/* Placeholder with clearer wireframe style */}
           <div
             className="absolute inset-0 opacity-100"
             style={{
               backgroundImage:
-                "linear-gradient(45deg, transparent 48%, #333 48%, #333 52%, transparent 52%), linear-gradient(-45deg, transparent 48%, #333 48%, #333 52%, transparent 52%)",
+                "linear-gradient(45deg, transparent 48%, rgb(55, 65, 81) 48%, rgb(55, 65, 81) 52%, transparent 52%), linear-gradient(-45deg, transparent 48%, rgb(55, 65, 81) 48%, rgb(55, 65, 81) 52%, transparent 52%)",
               backgroundSize: "100% 100%",
             }}
           />
-          <span className="relative z-10 text-[#666] text-2xl font-semibold bg-[#1a1a1a] px-4 py-2 rounded">
+          <span className="relative z-10 text-neutral-500 text-2xl font-semibold bg-neutral-900 px-4 py-2 rounded">
             3D Simulation View
           </span>
         </div>

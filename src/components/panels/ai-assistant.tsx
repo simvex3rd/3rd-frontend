@@ -57,7 +57,7 @@ export function AiAssistant({
 
       {/* Content Box */}
       <div className="w-full h-[250px] flex items-center justify-center px-[30px] py-[30px] bg-neutral-300/30 border-[3px] border-primary rounded-[24px] backdrop-blur-sm">
-        <p className="font-medium text-[16px] leading-[1.5] text-white whitespace-pre-wrap">
+        <p className="font-medium text-[16px] leading-[1.5] text-neutral-50 whitespace-pre-wrap">
           {text}
         </p>
       </div>

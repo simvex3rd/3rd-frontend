@@ -57,7 +57,7 @@ const chatBubbleMessageVariants = cva(
   {
     variants: {
       variant: {
-        user: "bg-primary text-white",
+        user: "bg-primary text-neutral-50",
         ai: "bg-neutral-100 text-neutral-950 border border-neutral-300",
       },
     },

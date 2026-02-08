@@ -174,32 +174,62 @@
   "hotPaths": [
     {
       "path": "src/app/sign-up/[[...sign-up]]/page.tsx",
-      "accessCount": 22,
-      "lastAccessed": 1770550092968,
-      "type": "file"
-    },
-    {
-      "path": "src/app/sign-in/[[...sign-in]]/page.tsx",
-      "accessCount": 18,
-      "lastAccessed": 1770550092164,
-      "type": "file"
-    },
-    {
-      "path": "src/components/ui/markdown-renderer.tsx",
-      "accessCount": 14,
-      "lastAccessed": 1770549943224,
+      "accessCount": 28,
+      "lastAccessed": 1770550283457,
       "type": "file"
     },
     {
       "path": "src",
-      "accessCount": 14,
-      "lastAccessed": 1770550010678,
+      "accessCount": 21,
+      "lastAccessed": 1770550188962,
       "type": "directory"
     },
     {
+      "path": "src/app/sign-in/[[...sign-in]]/page.tsx",
+      "accessCount": 21,
+      "lastAccessed": 1770550270913,
+      "type": "file"
+    },
+    {
+      "path": "src/components/ui/markdown-renderer.tsx",
+      "accessCount": 15,
+      "lastAccessed": 1770550171833,
+      "type": "file"
+    },
+    {
+      "path": "src/components/panels/part-sidebar.tsx",
+      "accessCount": 14,
+      "lastAccessed": 1770550271645,
+      "type": "file"
+    },
+    {
       "path": "src/components/ui/cta-button.tsx",
+      "accessCount": 11,
+      "lastAccessed": 1770550170341,
+      "type": "file"
+    },
+    {
+      "path": "",
+      "accessCount": 11,
+      "lastAccessed": 1770550187973,
+      "type": "directory"
+    },
+    {
+      "path": "src/app/page.tsx",
       "accessCount": 10,
-      "lastAccessed": 1770549821897,
+      "lastAccessed": 1770550169412,
+      "type": "file"
+    },
+    {
+      "path": "src/app/globals.css",
+      "accessCount": 10,
+      "lastAccessed": 1770550191787,
+      "type": "file"
+    },
+    {
+      "path": "src/components/panels/PartInfoPanel.tsx",
+      "accessCount": 10,
+      "lastAccessed": 1770550299757,
       "type": "file"
     },
     {
@@ -221,39 +251,15 @@
       "type": "file"
     },
     {
-      "path": "src/app/page.tsx",
-      "accessCount": 9,
-      "lastAccessed": 1770549498606,
-      "type": "file"
-    },
-    {
       "path": "src/components/panels/chat-sidebar.tsx",
       "accessCount": 9,
       "lastAccessed": 1770549828065,
       "type": "file"
     },
     {
-      "path": "src/app/globals.css",
-      "accessCount": 9,
-      "lastAccessed": 1770549851600,
-      "type": "file"
-    },
-    {
       "path": "src/components/ui/button.tsx",
       "accessCount": 8,
       "lastAccessed": 1770549665765,
-      "type": "file"
-    },
-    {
-      "path": "",
-      "accessCount": 8,
-      "lastAccessed": 1770549848225,
-      "type": "directory"
-    },
-    {
-      "path": "src/components/panels/part-sidebar.tsx",
-      "accessCount": 8,
-      "lastAccessed": 1770549958143,
       "type": "file"
     },
     {
@@ -275,6 +281,18 @@
       "type": "file"
     },
     {
+      "path": "src/components/ui/icon-button.tsx",
+      "accessCount": 7,
+      "lastAccessed": 1770550169963,
+      "type": "file"
+    },
+    {
+      "path": "src/components/ui/part-popup.tsx",
+      "accessCount": 7,
+      "lastAccessed": 1770550178483,
+      "type": "file"
+    },
+    {
       "path": "src/components",
       "accessCount": 6,
       "lastAccessed": 1770547274486,
@@ -290,18 +308,6 @@
       "path": "src/components/ui/input.tsx",
       "accessCount": 6,
       "lastAccessed": 1770549493480,
-      "type": "file"
-    },
-    {
-      "path": "src/components/ui/part-popup.tsx",
-      "accessCount": 6,
-      "lastAccessed": 1770549948103,
-      "type": "file"
-    },
-    {
-      "path": "src/components/ui/icon-button.tsx",
-      "accessCount": 6,
-      "lastAccessed": 1770549949791,
       "type": "file"
     },
     {
@@ -374,12 +380,6 @@
       "path": "src/components/ui/link-button.tsx",
       "accessCount": 3,
       "lastAccessed": 1770545838233,
-      "type": "file"
-    },
-    {
-      "path": "src/components/panels/PartInfoPanel.tsx",
-      "accessCount": 3,
-      "lastAccessed": 1770549978891,
       "type": "file"
     },
     {

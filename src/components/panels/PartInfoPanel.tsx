@@ -16,8 +16,8 @@ export function PartInfoPanel() {
 
   if (!selectedObject) {
     return (
-      <div className="absolute right-4 top-4 w-80 rounded-lg border border-gray-700 bg-gray-900/90 p-4 text-white backdrop-blur-sm">
-        <p className="text-sm text-gray-400">
+      <div className="absolute right-4 top-4 w-80 rounded-lg border border-neutral-700 bg-neutral-900/90 p-4 text-white backdrop-blur-sm">
+        <p className="text-sm text-neutral-400">
           Click on a part to see its details
         </p>
       </div>
@@ -28,10 +28,10 @@ export function PartInfoPanel() {
 
   if (!partInfo) {
     return (
-      <div className="absolute right-4 top-4 w-80 rounded-lg border border-gray-700 bg-gray-900/90 p-4 text-white backdrop-blur-sm">
+      <div className="absolute right-4 top-4 w-80 rounded-lg border border-neutral-700 bg-neutral-900/90 p-4 text-white backdrop-blur-sm">
         <h3 className="mb-2 text-lg font-semibold">Selected Part</h3>
-        <p className="text-sm text-gray-300">{selectedObject}</p>
-        <p className="mt-2 text-xs text-yellow-400">
+        <p className="text-sm text-neutral-300">{selectedObject}</p>
+        <p className="mt-2 text-xs text-warning">
           Part information not available (API pending)
         </p>
       </div>
@@ -44,7 +44,7 @@ export function PartInfoPanel() {
         {partInfo.name ?? "Unknown Part"}
       </h3>
 
-      <div className="mb-6 text-[14px] font-medium leading-[1.6] text-gray-200">
+      <div className="mb-6 text-[14px] font-medium leading-[1.6] text-neutral-200">
         <p>{partInfo.description ?? "No description available"}</p>
       </div>
 
@@ -94,9 +94,9 @@ function InfoRow({
 }) {
   return (
     <div className="flex justify-between text-sm">
-      <span className="text-gray-400">{label}:</span>
+      <span className="text-neutral-400">{label}:</span>
       {isPending ? (
-        <span className="text-yellow-400">API pending</span>
+        <span className="text-warning">API pending</span>
       ) : (
         <span className="font-medium">{value || "N/A"}</span>
       )}

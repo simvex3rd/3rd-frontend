@@ -123,7 +123,7 @@ export const ChatInput = forwardRef<HTMLTextAreaElement, ChatInputProps>(
             className={cn(
               "mb-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-[6px] transition-all",
               hasContent && !disabled
-                ? "bg-primary text-white hover:bg-cyan-500 active:bg-cyan-600"
+                ? "bg-primary text-neutral-50 hover:bg-primary-hover active:bg-primary-press"
                 : "bg-neutral-100 text-neutral-300 cursor-not-allowed"
             )}
             aria-label="Send message"
