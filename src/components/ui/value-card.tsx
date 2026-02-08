@@ -4,7 +4,8 @@ import { Icon } from "@/components/common/Icon";
 import type { HTMLAttributes } from "react";
 
 /**
- * Value card component displaying icon, title, and description.
+ * ValueCard component - displays value proposition with icon, title, and description.
+ * Based on verified design specs from docs/phase2-domain.md
  *
  * @component
  * @example
@@ -12,29 +13,33 @@ import type { HTMLAttributes } from "react";
  * <ValueCard
  *   variant="default"
  *   iconName="ai-fill"
- *   title="AI-Powered"
- *   description="Advanced AI technology for simulation"
+ *   title="AI 기반 학습"
+ *   description="인공지능 기술로 맞춤형 학습"
  * />
  * ```
  *
- * @param {ValueCardProps} props - Component props
- * @param {"default" | "primary"} [props.variant="default"] - Card style variant
- * @param {string} props.iconName - Icon filename without extension
- * @param {string} props.title - Card title
- * @param {string} props.description - Card description
+ * Dimensions: 327.2×241px
+ * Border: 5px solid, 24px radius
+ * States: Default (gray), Primary (cyan), Hover, Press
  *
- * @see {@link https://figma.com/file/Vz80RydxWcYHVnn2iuyV0m/SIMVEX} Figma Design
+ * @see {@link https://figma.com/file/Vz80RydxWcYHVnn2iuyV0m/SIMVEX?node-id=144-277} Figma Design
  */
 
 const valueCardVariants = cva(
-  "relative flex flex-col items-center justify-center text-center w-[567px] h-[358px] p-8 rounded-[24px] border-[5px] border-solid transition-all duration-300 backdrop-blur-md",
+  "relative flex flex-col items-center justify-center text-center w-[327px] h-[241px] p-8 rounded-[24px] border-[5px] border-solid transition-all duration-300 backdrop-blur-sm shadow-card-glow",
   {
     variants: {
       variant: {
+        // Default - gray background, cyan title
         default:
-          "bg-white/10 border-white/10 text-white shadow-lg hover:bg-white/20 active:bg-white/25",
+          "bg-gray-30 border-primary/20 hover:bg-hover-30 active:bg-press-30",
+        // Primary - cyan background, white title
         primary:
-          "bg-(--primary-cyan)/30 border-(--primary-cyan)/20 shadow-[0_0_24px_rgba(2,238,225,0.15)] hover:bg-(--primary-cyan-hover)/30 hover:border-(--primary-cyan-hover)/20 active:bg-(--primary-cyan-press)/30",
+          "bg-primary-30 border-primary/20 hover:bg-hover-30 active:bg-press-30",
+        // Hover state (for demo)
+        hover: "bg-hover-30 border-primary/20",
+        // Press state (for demo)
+        press: "bg-press-30 border-primary/20",
       },
     },
     defaultVariants: {
@@ -60,30 +65,33 @@ export function ValueCard({
   description,
   ...props
 }: ValueCardProps) {
+  const isPrimary =
+    variant === "primary" || variant === "hover" || variant === "press";
+
   return (
     <div className={cn(valueCardVariants({ variant }), className)} {...props}>
-      <div className="flex flex-col items-center gap-8">
+      <div className="flex flex-col items-center gap-6">
         <div className="flex items-center justify-center shrink-0">
           <Icon
             name={iconName}
-            size={118}
+            size={147}
             className={cn(
-              "transition-transform duration-300 group-hover:scale-110",
-              variant === "primary" ? "text-white" : "text-(--primary-cyan)"
+              "transition-transform duration-300",
+              isPrimary ? "text-neutral-50" : "text-primary"
             )}
             alt=""
           />
         </div>
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-3">
           <h3
             className={cn(
-              "text-[40px] font-bold leading-[1.25] tracking-tight",
-              variant === "primary" ? "text-white" : "text-(--primary-cyan)"
+              "text-[32px] font-semibold leading-tight",
+              isPrimary ? "text-neutral-50" : "text-primary"
             )}
           >
             {title}
           </h3>
-          <p className="text-[24px] font-semibold text-[#d4d4d4] leading-normal opacity-80">
+          <p className="text-lg font-semibold text-neutral-300 leading-normal">
             {description}
           </p>
         </div>

@@ -1,43 +1,44 @@
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 import type { HTMLAttributes } from "react";
+import { Icon } from "@/components/common/Icon";
 
 /**
- * Model card component displaying thumbnail, name, and metadata.
+ * ModelCard component - displays 3D model category with icon and title.
+ * Based on verified design specs from docs/phase2-domain.md
  *
  * @component
  * @example
  * ```tsx
  * <ModelCard
  *   variant="default"
- *   thumbnailSrc="/models/model-1.png"
- *   modelName="Building Model"
- *   author="John Doe"
- *   date="2024-02-06"
+ *   iconName="electronics-chip"
+ *   modelName="기계공학"
  * />
  * ```
  *
- * @param {ModelCardProps} props - Component props
- * @param {"default" | "primary"} [props.variant="default"] - Card style variant
- * @param {string} props.thumbnailSrc - Thumbnail image path
- * @param {string} props.modelName - Model name
- * @param {string} [props.author] - Model author
- * @param {string} [props.date] - Upload/modified date
+ * Dimensions: 327.2×241px
+ * Border: 5px solid, 24px radius
+ * States: Default (gray), Primary (cyan), Hover, Press
  *
- * @see {@link https://figma.com/file/Vz80RydxWcYHVnn2iuyV0m/SIMVEX} Figma Design
+ * @see {@link https://figma.com/file/Vz80RydxWcYHVnn2iuyV0m/SIMVEX?node-id=144-299} Figma Design
  */
 
-import { Icon } from "@/components/common/Icon";
-
 const modelCardVariants = cva(
-  "relative flex flex-col items-center justify-center text-center w-[327px] h-[241px] p-6 rounded-[24px] border-[5px] border-solid transition-all duration-300 backdrop-blur-md",
+  "relative flex flex-col items-center justify-center text-center w-[327px] h-[241px] p-6 rounded-[24px] border-[5px] border-solid transition-all duration-300 backdrop-blur-sm shadow-card-glow",
   {
     variants: {
       variant: {
+        // Default - gray background, cyan text
         default:
-          "bg-white/10 border-white/10 text-white shadow-lg hover:bg-white/20 active:bg-white/25",
+          "bg-gray-30 border-primary/20 text-primary hover:bg-hover-30 hover:text-neutral-50 active:bg-press-30 active:text-neutral-50",
+        // Primary - cyan background, white text
         primary:
-          "bg-(--primary-cyan)/30 border-(--primary-cyan)/20 shadow-[0_0_24px_rgba(2,238,225,0.15)] hover:bg-(--primary-cyan-hover)/30 hover:border-(--primary-cyan-hover)/20 active:bg-(--primary-cyan-press)/30",
+          "bg-primary-30 border-primary/20 text-neutral-50 hover:bg-hover-30 active:bg-press-30",
+        // Hover state (for demo)
+        hover: "bg-hover-30 border-primary/20 text-neutral-50",
+        // Press state (for demo)
+        press: "bg-press-30 border-primary/20 text-neutral-50",
       },
     },
     defaultVariants: {
@@ -67,22 +68,12 @@ export function ModelCard({
         <div className="flex items-center justify-center shrink-0">
           <Icon
             name={iconName}
-            size={110}
-            className={cn(
-              "transition-transform duration-300 group-hover:scale-110",
-              variant === "primary" ? "text-white" : "text-(--primary-cyan)"
-            )}
+            size={113}
+            className="transition-transform duration-300"
             alt=""
           />
         </div>
-        <h3
-          className={cn(
-            "text-[32px] font-semibold leading-[1.25] tracking-tight",
-            variant === "primary" ? "text-white" : "text-(--primary-cyan)"
-          )}
-        >
-          {modelName}
-        </h3>
+        <h3 className="text-[32px] font-semibold leading-tight">{modelName}</h3>
       </div>
     </div>
   );
