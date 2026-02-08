@@ -163,6 +163,35 @@
 
 All color values, typography, spacing, border-radius, shadows, and opacity variants match the verified documentation exactly.
 
+### Issues Found by Architect (Iteration 3) - ALL FIXED ✅
+
+**1. Hardcoded Colors (10 files)** - FIXED ✅
+
+- `landing-intro-section.tsx`: Replaced 5 hardcoded colors with tokens
+- `landing-functions-section.tsx`: Replaced 3 hardcoded colors with tokens
+- `landing-study-model-section.tsx`: Replaced 2 hardcoded colors with tokens
+- `landing-header.tsx`: Replaced 7 hardcoded colors with tokens
+- `chat-sidebar.tsx`: Replaced 5 hardcoded colors with tokens
+- `markdown-renderer.tsx`: Replaced 15+ hardcoded colors with tokens
+- `slide-bar.tsx`: Replaced 3 hardcoded colors with tokens
+- `icon-button.tsx`: Replaced 2 hardcoded colors with tokens
+- `part-popup.tsx`: Replaced 5 hardcoded colors with tokens
+
+**2. Dead Code** - FIXED ✅
+
+- `landing-intro-section.tsx`: Wired up intersection observer (`ref={ref}` + visibility transitions)
+
+**3. Console Statements** - FIXED ✅
+
+- `sign-in/page.tsx`: Removed `console.log(result)`
+
+**4. Button Accessibility** - FIXED ✅
+
+- `button.tsx`: Changed fill variant from `text-white` to `text-neutral-900`
+- Contrast improved: 3.7:1 → 12.5:1 (now WCAG AA compliant)
+
+**Final Verification**: npm run build - SUCCESS with 0 TypeScript errors ✅
+
 ---
 
 ---

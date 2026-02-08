@@ -29,7 +29,7 @@ const buttonVariants = cva(
     variants: {
       variant: {
         // Fill variant - primary cyan background
-        fill: "bg-primary text-white hover:bg-primary-hover active:bg-primary-press disabled:bg-neutral-100 disabled:text-neutral-300",
+        fill: "bg-primary text-neutral-900 hover:bg-primary-hover active:bg-primary-press disabled:bg-neutral-100 disabled:text-neutral-300",
         // Outline variant - transparent with border
         outline:
           "border-2 border-primary text-primary bg-transparent hover:border-primary-hover hover:text-primary-hover active:border-primary-press active:text-primary-press disabled:border-neutral-300 disabled:text-neutral-300 disabled:bg-neutral-100",

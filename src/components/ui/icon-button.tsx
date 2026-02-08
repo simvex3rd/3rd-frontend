@@ -56,7 +56,7 @@ export function IconButton({
     <button
       className={cn(
         iconButtonVariants({ size }),
-        "rounded-xl hover:bg-white/10 active:bg-white/20 active:scale-95 transition-all text-[#fafafa] hover:text-[#02EEE1]",
+        "rounded-xl hover:bg-white/10 active:bg-white/20 active:scale-95 transition-all text-neutral-50 hover:text-primary",
         "disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-transparent",
         className
       )}

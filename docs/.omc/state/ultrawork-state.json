@@ -1,0 +1,8 @@
+{
+  "active": true,
+  "started_at": "2026-02-08T09:53:40.116Z",
+  "original_prompt": "/ralph-loop \"\n\n## 미션: Figma ↔ 문서 100% 매칭 검증\n\ndocs/ 폴더의 정찰 문서들을 Figma MCP로 재검증해서 정확도 100%를 달성해.\n\n## 검증 대상\n\n- docs/phase1-landing.md\n\n- docs/phase1-auth.md  \n\n- docs/phase1-main.md\n\n- docs/phase2-ui-basic.md\n\n- docs/phase2-layout.md\n\n- docs/phase2-domain.md\n\n- docs/phase3-matching.md\n\n- docs/phase3-design-system.md\n\n## 매 이터레이션마다 할 일\n\n1. 문서에서 아직 미검증인 항목 하나 선택\n\n2. 해당 node-id로 get_design_context 또는 get_screenshot 호출\n\n3. Figma 실제값 vs 문서 기록값 비교\n\n4. 오차 발견 시 문서 직접 수정\n\n5. progress.txt에 검증 완료 항목 체크 + 수정 내역 기록\n\n## 검증 항목 (컴포넌트당)\n\n- 색상값 (hex 정확히)\n\n- 크기 (width, height, padding, gap)\n\n- 폰트 (family, size, weight, line-height)\n\n- border-radius\n\n- 그림자/블러\n\n- Auto Layout 방향 및 spacing\n\n- Tailwind 매핑이 올바른지\n\n## 우선순위\n\n1. phase3-design-system.md (디자인 토큰이 틀리면 전부 틀림)\n\n2. phase2 컴포넌트들 (실제 구현에 직결)\n\n3. phase1 페이지 레이아웃\n\n4. phase3-matching.md\n\n## 완료 조건\n\n- 모든 컴포넌트 검증 완료\n\n- 수정 사항 0개 남음 (연속 2회 이터레이션에서 수정 없으면 수렴 판정)\n\n- npm run build에 영향 없음 확인\n\n연속 2회 이터레이션에서 수정 사항이 0개면 <promise>VERIFIED</promise> 출력\n\n\" --max-iterations 25 --completion-promise \"VERIFIED\"",
+  "session_id": "9b56fb20-70fa-40b3-8e18-f405d6b2a861",
+  "reinforcement_count": 0,
+  "last_checked_at": "2026-02-08T09:53:40.116Z"
+}

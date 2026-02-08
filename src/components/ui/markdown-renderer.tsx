@@ -47,75 +47,75 @@ export function MarkdownRenderer({
       <ReactMarkdown
         rehypePlugins={[rehypeHighlight]}
         components={{
-          // Headings - Figma: 16px bold #fafafa
+          // Headings - Figma: 16px bold neutral-50
           h1: ({ children }) => (
-            <h1 className="text-[16px] font-bold leading-[1.5] text-[#fafafa] mb-0">
+            <h1 className="text-[16px] font-bold leading-[1.5] text-neutral-50 mb-0">
               {children}
             </h1>
           ),
           h2: ({ children }) => (
-            <h2 className="text-[16px] font-bold leading-[1.5] text-[#fafafa] mb-0">
+            <h2 className="text-[16px] font-bold leading-[1.5] text-neutral-50 mb-0">
               {children}
             </h2>
           ),
           h3: ({ children }) => (
-            <h3 className="text-[16px] font-bold leading-[1.5] text-[#fafafa] mb-0">
+            <h3 className="text-[16px] font-bold leading-[1.5] text-neutral-50 mb-0">
               {children}
             </h3>
           ),
           h4: ({ children }) => (
-            <h4 className="text-[16px] font-bold leading-[1.5] text-[#fafafa] mb-0">
+            <h4 className="text-[16px] font-bold leading-[1.5] text-neutral-50 mb-0">
               {children}
             </h4>
           ),
           h5: ({ children }) => (
-            <h5 className="text-[16px] font-bold leading-[1.5] text-[#fafafa] mb-0">
+            <h5 className="text-[16px] font-bold leading-[1.5] text-neutral-50 mb-0">
               {children}
             </h5>
           ),
           h6: ({ children }) => (
-            <h6 className="text-[16px] font-bold leading-[1.5] text-[#fafafa] mb-0">
+            <h6 className="text-[16px] font-bold leading-[1.5] text-neutral-50 mb-0">
               {children}
             </h6>
           ),
 
-          // Paragraphs - Figma: 14px medium #d4d4d4
+          // Paragraphs - Figma: 14px medium neutral-300
           p: ({ children }) => (
-            <p className="text-[14px] font-medium leading-[1.5] text-[#d4d4d4] mb-0">
+            <p className="text-[14px] font-medium leading-[1.5] text-neutral-300 mb-0">
               {children}
             </p>
           ),
 
-          // Lists - Figma: 14px medium #d4d4d4
+          // Lists - Figma: 14px medium neutral-300
           ul: ({ children }) => (
-            <ul className="list-disc list-inside text-[14px] font-medium text-[#d4d4d4] mb-0">
+            <ul className="list-disc list-inside text-[14px] font-medium text-neutral-300 mb-0">
               {children}
             </ul>
           ),
           ol: ({ children }) => (
-            <ol className="list-decimal list-inside text-[14px] font-medium text-[#d4d4d4] mb-0">
+            <ol className="list-decimal list-inside text-[14px] font-medium text-neutral-300 mb-0">
               {children}
             </ol>
           ),
           li: ({ children }) => (
-            <li className="text-[14px] font-medium leading-[1.5] text-[#d4d4d4]">
+            <li className="text-[14px] font-medium leading-[1.5] text-neutral-300">
               {children}
             </li>
           ),
 
-          // Code - Figma: rgba(1,100,95,0.5) bg, cyan border, white text
+          // Code - Figma: rgba(1,100,95,0.5) bg, cyan border, neutral-50 text
           code: ({ className, children, ...props }) => {
             const isInline = !className;
             return isInline ? (
               <code
-                className="bg-[rgba(1,100,95,0.5)] border border-[var(--primary-cyan)] rounded px-1 text-[14px] font-medium text-white"
+                className="bg-[rgba(1,100,95,0.5)] border border-[var(--primary-cyan)] rounded px-1 text-[14px] font-medium text-neutral-50"
                 {...props}
               >
                 {children}
               </code>
             ) : (
               <code
-                className="text-[14px] font-medium leading-[1.5] text-white"
+                className="text-[14px] font-medium leading-[1.5] text-neutral-50"
                 {...props}
               >
                 {children}
@@ -152,10 +152,10 @@ export function MarkdownRenderer({
 
           // Emphasis - Figma colors
           strong: ({ children }) => (
-            <strong className="font-bold text-[#fafafa]">{children}</strong>
+            <strong className="font-bold text-neutral-50">{children}</strong>
           ),
           em: ({ children }) => (
-            <em className="italic text-[#d4d4d4]">{children}</em>
+            <em className="italic text-neutral-300">{children}</em>
           ),
 
           // Table
@@ -176,12 +176,14 @@ export function MarkdownRenderer({
             </tr>
           ),
           th: ({ children }) => (
-            <th className="px-4 py-2 text-left font-semibold text-[#fafafa] text-[14px]">
+            <th className="px-4 py-2 text-left font-semibold text-neutral-50 text-[14px]">
               {children}
             </th>
           ),
           td: ({ children }) => (
-            <td className="px-4 py-2 text-[#d4d4d4] text-[14px]">{children}</td>
+            <td className="px-4 py-2 text-neutral-300 text-[14px]">
+              {children}
+            </td>
           ),
         }}
       >

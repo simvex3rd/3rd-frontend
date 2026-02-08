@@ -62,18 +62,18 @@ export function PartPopup({
       style={style}
       {...props}
     >
-      {/* Question Text - 14px medium, center aligned, #e5e5e5 */}
-      <p className="font-medium text-[14px] leading-[1.5] text-[#e5e5e5] text-center w-full">
+      {/* Question Text - 14px medium, center aligned, neutral-200 */}
+      <p className="font-medium text-[14px] leading-[1.5] text-neutral-200 text-center w-full">
         {text}
       </p>
 
       {/* YES Button - 81x37px, body btn style */}
       <button
         onClick={onConfirm}
-        className="flex items-center justify-center w-[81px] h-[37px] bg-[rgba(115,115,115,0.3)] border-2 border-[var(--primary-cyan)] rounded-[16px] transition-all hover:bg-[rgba(115,115,115,0.5)] active:scale-95 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary-cyan)]"
+        className="flex items-center justify-center w-[81px] h-[37px] bg-neutral-500/30 border-2 border-primary rounded-[16px] transition-all hover:bg-neutral-500/50 active:scale-95 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
         aria-label="Confirm"
       >
-        <span className="font-semibold text-[14px] leading-[1.5] text-[#e5e5e5]">
+        <span className="font-semibold text-[14px] leading-[1.5] text-neutral-200">
           YES
         </span>
       </button>

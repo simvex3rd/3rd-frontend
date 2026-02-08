@@ -39,7 +39,6 @@ export default function SignInPage() {
         await setActive({ session: result.createdSessionId });
         router.push("/");
       } else {
-        console.log(result);
         setError("로그인에 실패했습니다. 다시 시도해주세요.");
       }
     } catch (err: unknown) {

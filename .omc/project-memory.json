@@ -173,6 +173,66 @@
   },
   "hotPaths": [
     {
+      "path": "src/components/ui/markdown-renderer.tsx",
+      "accessCount": 10,
+      "lastAccessed": 1770549730048,
+      "type": "file"
+    },
+    {
+      "path": "src/components/ui/model-card.tsx",
+      "accessCount": 9,
+      "lastAccessed": 1770546034201,
+      "type": "file"
+    },
+    {
+      "path": "src/components/ui/value-card.tsx",
+      "accessCount": 9,
+      "lastAccessed": 1770546065776,
+      "type": "file"
+    },
+    {
+      "path": "src/components/ui/cta-button.tsx",
+      "accessCount": 9,
+      "lastAccessed": 1770549491229,
+      "type": "file"
+    },
+    {
+      "path": "src/components/panels/footer.tsx",
+      "accessCount": 9,
+      "lastAccessed": 1770549493070,
+      "type": "file"
+    },
+    {
+      "path": "src/app/page.tsx",
+      "accessCount": 9,
+      "lastAccessed": 1770549498606,
+      "type": "file"
+    },
+    {
+      "path": "src/app/globals.css",
+      "accessCount": 8,
+      "lastAccessed": 1770549476225,
+      "type": "file"
+    },
+    {
+      "path": "src/components/ui/button.tsx",
+      "accessCount": 8,
+      "lastAccessed": 1770549665765,
+      "type": "file"
+    },
+    {
+      "path": "src/components/panels/chat-sidebar.tsx",
+      "accessCount": 8,
+      "lastAccessed": 1770549702935,
+      "type": "file"
+    },
+    {
+      "path": "src/components/panels/navigation.tsx",
+      "accessCount": 7,
+      "lastAccessed": 1770549492688,
+      "type": "file"
+    },
+    {
       "path": "src/components/panels/part-sidebar.tsx",
       "accessCount": 6,
       "lastAccessed": 1770488044295,
@@ -185,52 +245,58 @@
       "type": "file"
     },
     {
-      "path": "src/app/page.tsx",
+      "path": "src/components",
       "accessCount": 6,
-      "lastAccessed": 1770491352083,
+      "lastAccessed": 1770547274486,
+      "type": "directory"
+    },
+    {
+      "path": "src/components/ui/text-field.tsx",
+      "accessCount": 6,
+      "lastAccessed": 1770547319224,
       "type": "file"
     },
     {
-      "path": "src/components/ui/cta-button.tsx",
+      "path": "",
+      "accessCount": 6,
+      "lastAccessed": 1770549471738,
+      "type": "directory"
+    },
+    {
+      "path": "src/components/ui/input.tsx",
+      "accessCount": 6,
+      "lastAccessed": 1770549493480,
+      "type": "file"
+    },
+    {
+      "path": "src/components/ui/logo.tsx",
       "accessCount": 5,
-      "lastAccessed": 1770490059448,
+      "lastAccessed": 1770545822072,
       "type": "file"
     },
     {
-      "path": "src/components/panels/footer.tsx",
+      "path": "src/components/ui/label.tsx",
       "accessCount": 5,
-      "lastAccessed": 1770490094890,
+      "lastAccessed": 1770547319734,
       "type": "file"
     },
     {
-      "path": "src/components/ui/value-card.tsx",
+      "path": "src/components/ui/help-message.tsx",
       "accessCount": 5,
-      "lastAccessed": 1770490123031,
+      "lastAccessed": 1770547320178,
       "type": "file"
     },
     {
-      "path": "src/components/ui/model-card.tsx",
+      "path": "src/app/layout.tsx",
       "accessCount": 5,
-      "lastAccessed": 1770490157780,
-      "type": "file"
-    },
-    {
-      "path": "src/components/panels/chat-sidebar.tsx",
-      "accessCount": 4,
-      "lastAccessed": 1770488059723,
+      "lastAccessed": 1770547344953,
       "type": "file"
     },
     {
       "path": "src",
-      "accessCount": 4,
-      "lastAccessed": 1770489362033,
+      "accessCount": 5,
+      "lastAccessed": 1770547347012,
       "type": "directory"
-    },
-    {
-      "path": "src/components/ui/logo.tsx",
-      "accessCount": 4,
-      "lastAccessed": 1770490246276,
-      "type": "file"
     },
     {
       "path": "src/components/common/Icon.tsx",
@@ -239,9 +305,21 @@
       "type": "file"
     },
     {
-      "path": "src/app/layout.tsx",
+      "path": "package.json",
       "accessCount": 4,
-      "lastAccessed": 1770490698851,
+      "lastAccessed": 1770545029540,
+      "type": "file"
+    },
+    {
+      "path": "src/components/ui",
+      "accessCount": 4,
+      "lastAccessed": 1770545818243,
+      "type": "directory"
+    },
+    {
+      "path": "src/components/panels/login-header.tsx",
+      "accessCount": 4,
+      "lastAccessed": 1770545929279,
       "type": "file"
     },
     {
@@ -257,27 +335,33 @@
       "type": "file"
     },
     {
-      "path": "src/components/panels/login-header.tsx",
+      "path": "src/components/ui/link-button.tsx",
       "accessCount": 3,
-      "lastAccessed": 1770489349043,
+      "lastAccessed": 1770545838233,
       "type": "file"
     },
     {
-      "path": "src/app/globals.css",
+      "path": "src/app/sign-in/[[...sign-in]]/page.tsx",
       "accessCount": 3,
-      "lastAccessed": 1770489354485,
+      "lastAccessed": 1770549663407,
       "type": "file"
     },
     {
-      "path": "package.json",
+      "path": "src/components/ui/slide-bar.tsx",
       "accessCount": 3,
-      "lastAccessed": 1770489358776,
+      "lastAccessed": 1770549708000,
       "type": "file"
     },
     {
-      "path": "src/components/panels/navigation.tsx",
+      "path": "src/components/ui/icon-button.tsx",
       "accessCount": 3,
-      "lastAccessed": 1770489370484,
+      "lastAccessed": 1770549711025,
+      "type": "file"
+    },
+    {
+      "path": "src/components/ui/part-popup.tsx",
+      "accessCount": 3,
+      "lastAccessed": 1770549717787,
       "type": "file"
     },
     {
@@ -299,28 +383,10 @@
       "type": "file"
     },
     {
-      "path": "src/components",
-      "accessCount": 2,
-      "lastAccessed": 1770489234948,
-      "type": "directory"
-    },
-    {
-      "path": "src/components/ui/button.tsx",
-      "accessCount": 2,
-      "lastAccessed": 1770489238242,
-      "type": "file"
-    },
-    {
       "path": "src/components/ui/card.tsx",
       "accessCount": 2,
       "lastAccessed": 1770489238430,
       "type": "file"
-    },
-    {
-      "path": "src/components/ui",
-      "accessCount": 2,
-      "lastAccessed": 1770489238558,
-      "type": "directory"
     },
     {
       "path": "src/components/ui/value-card.stories.tsx",
@@ -329,22 +395,10 @@
       "type": "file"
     },
     {
-      "path": "src/components/ui/slide-bar.tsx",
-      "accessCount": 1,
-      "lastAccessed": 1770485152748,
-      "type": "file"
-    },
-    {
-      "path": "src/components/ui/markdown-renderer.tsx",
-      "accessCount": 1,
-      "lastAccessed": 1770485153223,
-      "type": "file"
-    },
-    {
-      "path": "src/components/ui/part-popup.tsx",
-      "accessCount": 1,
-      "lastAccessed": 1770485153732,
-      "type": "file"
+      "path": "src/app",
+      "accessCount": 2,
+      "lastAccessed": 1770546116351,
+      "type": "directory"
     },
     {
       "path": "public/icons/ai-assistant.svg",
@@ -377,45 +431,9 @@
       "type": "file"
     },
     {
-      "path": "src/app/sign-in/[[...sign-in]]/page.tsx",
-      "accessCount": 1,
-      "lastAccessed": 1770489220621,
-      "type": "file"
-    },
-    {
       "path": "src/app/sign-up/[[...sign-up]]/page.tsx",
       "accessCount": 1,
       "lastAccessed": 1770489220863,
-      "type": "file"
-    },
-    {
-      "path": "",
-      "accessCount": 1,
-      "lastAccessed": 1770489223921,
-      "type": "directory"
-    },
-    {
-      "path": "src/components/ui/link-button.tsx",
-      "accessCount": 1,
-      "lastAccessed": 1770489225563,
-      "type": "file"
-    },
-    {
-      "path": "src/components/ui/icon-button.tsx",
-      "accessCount": 1,
-      "lastAccessed": 1770489225781,
-      "type": "file"
-    },
-    {
-      "path": "src/app",
-      "accessCount": 1,
-      "lastAccessed": 1770489226759,
-      "type": "directory"
-    },
-    {
-      "path": "src/components/ui/text-field.tsx",
-      "accessCount": 1,
-      "lastAccessed": 1770489228222,
       "type": "file"
     },
     {
@@ -425,27 +443,9 @@
       "type": "file"
     },
     {
-      "path": "src/components/ui/input.tsx",
-      "accessCount": 1,
-      "lastAccessed": 1770489228378,
-      "type": "file"
-    },
-    {
       "path": "src/components/viewer/Model.tsx",
       "accessCount": 1,
       "lastAccessed": 1770489228729,
-      "type": "file"
-    },
-    {
-      "path": "src/components/ui/help-message.tsx",
-      "accessCount": 1,
-      "lastAccessed": 1770489230945,
-      "type": "file"
-    },
-    {
-      "path": "src/components/ui/label.tsx",
-      "accessCount": 1,
-      "lastAccessed": 1770489231180,
       "type": "file"
     },
     {

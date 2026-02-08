@@ -18,13 +18,13 @@ export function LandingHeader() {
       {/* Background with Glow Effect */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         {/* Subtle dark backdrop */}
-        <div className="absolute inset-0 bg-[#000000]/1 backdrop-blur-[2px]" />
+        <div className="absolute inset-0 bg-black/1 backdrop-blur-[2px]" />
         {/* Top Center Glow (Teal) */}
         <div
           className="absolute top-[-50%] left-1/2 -translate-x-1/2 w-[60%] h-[200%] rounded-full blur-[80px] opacity-40"
           style={{
             background:
-              "radial-gradient(circle, rgba(2,238,225,1) 0%, transparent 70%)",
+              "radial-gradient(circle, hsl(var(--primary)) 0%, transparent 70%)",
           }}
         />
       </div>
@@ -45,7 +45,7 @@ export function LandingHeader() {
               key={link.label}
               href={link.href}
               className={cn(
-                "text-[#FAFAFA]/60 text-[15px] font-medium hover:text-[#02eee1] transition-colors"
+                "text-neutral-50/60 text-[15px] font-medium hover:text-primary transition-colors"
               )}
             >
               {link.label}
@@ -58,14 +58,14 @@ export function LandingHeader() {
           <CTAButton
             variant="default"
             size="compact"
-            className="bg-white/5 border-white/10 text-[#FAFAFA] hover:bg-white/10 text-[14px] font-medium h-[40px] px-6 rounded-full"
+            className="bg-white/5 border-white/10 text-neutral-50 hover:bg-white/10 text-[14px] font-medium h-[40px] px-6 rounded-full"
           >
             로그인 / 가입
           </CTAButton>
           <CTAButton
             variant="primary"
             size="compact"
-            className="h-[40px] px-6 text-[14px] font-bold rounded-full shadow-[0_0_12px_rgba(2,238,225,0.25)] border border-[#02eee1]/30"
+            className="h-[40px] px-6 text-[14px] font-bold rounded-full shadow-[0_0_12px_hsl(var(--primary)/0.25)] border border-primary/30"
           >
             시작하기
           </CTAButton>

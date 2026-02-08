@@ -51,7 +51,7 @@ export function ChatSidebar({
   return (
     <div
       className={cn(
-        "flex flex-col w-[311px] h-[879px] bg-[#404040] p-6 gap-[160px]",
+        "flex flex-col w-[311px] h-[879px] bg-neutral-700 p-6 gap-[160px]",
         className
       )}
       {...props}
@@ -82,19 +82,19 @@ export function ChatSidebar({
             height={24}
             className="shrink-0"
           />
-          <p className="font-semibold text-[16px] leading-[1.5] text-[#e5e5e5]">
+          <p className="font-semibold text-[16px] leading-[1.5] text-neutral-200">
             New Chat
           </p>
         </button>
 
         {/* History Section */}
         <div className="flex flex-col gap-[7px]">
-          <p className="font-semibold text-[16px] leading-[1.5] text-[#e5e5e5] mb-1">
+          <p className="font-semibold text-[16px] leading-[1.5] text-neutral-200 mb-1">
             History
           </p>
 
           {conversations.length === 0 ? (
-            <p className="font-medium text-[14px] leading-[1.5] text-[#d4d4d4] opacity-60">
+            <p className="font-medium text-[14px] leading-[1.5] text-neutral-300 opacity-60">
               No conversations yet
             </p>
           ) : (
@@ -105,8 +105,8 @@ export function ChatSidebar({
                 className={cn(
                   "font-medium text-[14px] leading-[1.5] text-left transition-colors truncate",
                   conversation.isActive
-                    ? "text-[var(--primary-cyan)]"
-                    : "text-[#d4d4d4] hover:text-[#e5e5e5]"
+                    ? "text-primary"
+                    : "text-neutral-300 hover:text-neutral-200"
                 )}
                 title={conversation.title}
               >
