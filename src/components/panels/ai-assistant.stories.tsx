@@ -9,6 +9,9 @@ const meta = {
     backgrounds: {
       default: "dark",
     },
+    viewport: {
+      defaultViewport: "responsive",
+    },
   },
   tags: ["autodocs"],
 } satisfies Meta<typeof AiAssistant>;

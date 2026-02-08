@@ -13,7 +13,7 @@ const meta = {
     docs: {
       description: {
         component:
-          "Chat sidebar with history list and new chat button. Figma spec: 311x879px, #404040 background, 160px gap (node-236:1535).",
+          "Chat sidebar with history list and new chat button. Figma spec: 365px max width at 1920px viewport, #404040 background, 160px gap (node-236:1501).",
       },
     },
   },

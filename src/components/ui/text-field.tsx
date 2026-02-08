@@ -55,7 +55,9 @@ export function TextField({
   const messageText = error || success || helpText;
 
   return (
-    <div className={cn("flex flex-col gap-0.5", className)}>
+    <div
+      className={cn("flex flex-col gap-0.5 w-full max-w-[320px]", className)}
+    >
       {label && (
         <label
           htmlFor={inputId}

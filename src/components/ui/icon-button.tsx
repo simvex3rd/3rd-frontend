@@ -5,6 +5,8 @@ import type { ButtonHTMLAttributes } from "react";
 
 /**
  * Icon button component with 6 icon types and interactive states.
+ * Button size: 40×40px (Figma node: 375-1336)
+ * Icon size: 32px default (80% fill ratio for 1920px Figma design)
  *
  * @component
  * @example
@@ -15,7 +17,7 @@ import type { ButtonHTMLAttributes } from "react";
  *
  * @param {IconButtonProps} props - Component props
  * @param {string} props.iconName - Icon filename (without extension)
- * @param {number} [props.iconSize=24] - Icon size in pixels
+ * @param {number} [props.iconSize=32] - Icon size in pixels (default 32 for 1920px design)
  * @param {boolean} [props.disabled=false] - Disable button interaction
  *
  * @see {@link https://figma.com/file/Vz80RydxWcYHVnn2iuyV0m/SIMVEX} Figma Design
@@ -27,7 +29,7 @@ const iconButtonVariants = cva(
   {
     variants: {
       size: {
-        default: "h-[60px] w-[60px]",
+        default: "h-[40px] w-[40px]",
       },
     },
     defaultVariants: {
@@ -48,7 +50,7 @@ export function IconButton({
   className,
   size,
   iconName,
-  iconSize = 28,
+  iconSize = 32,
   disabled,
   ...props
 }: IconButtonProps) {

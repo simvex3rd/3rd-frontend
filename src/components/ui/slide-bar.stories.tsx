@@ -82,11 +82,54 @@ export const PartClickInteractive: Story = {
   },
 };
 
+export const Fullscreen: Story = {
+  args: {
+    value: 1,
+    label: "Fullscreen Zoom",
+    variant: "fullscreen",
+  },
+  parameters: {
+    design: {
+      type: "figma",
+      url: "https://www.figma.com/design/Vz80RydxWcYHVnn2iuyV0m?node-id=232-1062",
+    },
+  },
+};
+
+export const FullscreenInteractive: Story = {
+  args: {},
+  render: () => {
+    const [value, setValue] = useState(1);
+    return (
+      <div className="flex flex-col items-center gap-12">
+        <SlideBar
+          value={value}
+          onChange={setValue}
+          label="Fullscreen Zoom Level"
+          variant="fullscreen"
+        />
+        <div className="text-white">
+          <p className="text-center text-2xl font-bold">
+            ZOOM LEVEL: <span className="text-(--primary-cyan)">{value}</span>
+          </p>
+        </div>
+      </div>
+    );
+  },
+  parameters: {
+    design: {
+      type: "figma",
+      url: "https://www.figma.com/design/Vz80RydxWcYHVnn2iuyV0m?node-id=232-1062",
+    },
+  },
+};
+
 export const Comparison: Story = {
   args: {},
   render: () => {
     const [defaultValue, setDefaultValue] = useState(5);
     const [partClickValue, setPartClickValue] = useState(5);
+    const [fullscreenValue, setFullscreenValue] = useState(5);
     return (
       <div className="flex flex-col items-center gap-20">
         <div className="flex flex-col items-center gap-4">
@@ -105,6 +148,15 @@ export const Comparison: Story = {
             onChange={setPartClickValue}
             label="Part Click Zoom Level"
             variant="part-click"
+          />
+        </div>
+        <div className="flex flex-col items-center gap-4">
+          <p className="text-white text-sm font-medium">Fullscreen (1920px)</p>
+          <SlideBar
+            value={fullscreenValue}
+            onChange={setFullscreenValue}
+            label="Fullscreen Zoom Level"
+            variant="fullscreen"
           />
         </div>
       </div>

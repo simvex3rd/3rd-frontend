@@ -23,7 +23,7 @@ import { cva, type VariantProps } from "class-variance-authority";
  * @param {string} [props.label] - Accessible label
  * @param {number} [props.min=1] - Minimum value
  * @param {number} [props.max=10] - Maximum value
- * @param {"default" | "part-click"} [props.variant="default"] - Visual variant (1200px or 960px width)
+ * @param {"default" | "part-click" | "fullscreen"} [props.variant="default"] - Visual variant (1200px, 960px, or 1920px width)
  *
  * @see {@link https://figma.com/file/Vz80RydxWcYHVnn2iuyV0m/SIMVEX} Figma Design
  */
@@ -33,6 +33,7 @@ const slideBarVariants = cva("relative h-[57px] select-none", {
     variant: {
       default: "w-[1200px]",
       "part-click": "w-[960px]",
+      fullscreen: "w-[1920px]",
     },
   },
   defaultVariants: {
@@ -73,8 +74,9 @@ export function SlideBar({
     [min, max, onChange]
   );
 
-  // Track width varies by variant: 1200px (default) or 960px (part-click)
-  const trackWidth = variant === "part-click" ? 960 : 1200;
+  // Track width varies by variant: 1200px (default), 960px (part-click), or 1920px (fullscreen)
+  const trackWidth =
+    variant === "fullscreen" ? 1920 : variant === "part-click" ? 960 : 1200;
   const thumbWidth = 120;
 
   // Position calculation for the 120px wide thumb

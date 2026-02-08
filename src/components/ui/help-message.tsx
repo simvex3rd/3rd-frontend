@@ -22,16 +22,16 @@ import type { HTMLAttributes } from "react";
  */
 
 const helpMessageVariants = cva(
-  // Base classes - minimal styling, text only
-  "text-xs font-normal leading-normal h-[18px]",
+  // Base classes - Body/sm/regular (12px/1.5/400)
+  "text-xs font-normal leading-[1.5] h-[18px]",
   {
     variants: {
       variant: {
-        // Default - gray text
+        // Default - tertiary text (#d4d4d4)
         default: "text-neutral-300",
-        // Success - green text
+        // Success - green text (#00c950)
         success: "text-success",
-        // Error - red text
+        // Error - red text (#fb2c36)
         error: "text-error",
       },
     },

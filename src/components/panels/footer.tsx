@@ -60,36 +60,32 @@ export function Footer({
   return (
     <footer
       className={cn(
-        "w-full py-16 px-20 bg-background border-t border-neutral-800",
+        "w-[1920px] py-[40px] px-[160px] bg-background border-t border-neutral-800",
         className
       )}
       {...props}
     >
-      <div className="w-full max-w-[1760px] mx-auto flex items-end justify-between">
-        {/* Left Side: Logo & Copyright */}
-        <div className="flex flex-col gap-6 items-start">
+      <div className="w-full flex items-end justify-end py-[10px]">
+        {/* Left Side: Logo & Copyright - 163px width matches Figma */}
+        <div className="flex flex-col gap-[8px] items-start py-[75px] w-[163px] h-[239px]">
           <Logo size="small" />
-          <div className="flex flex-col gap-1">
-            <p className="text-sm text-neutral-400 leading-relaxed">
-              © 2026 SIMVEX
-            </p>
-            <p className="text-sm text-neutral-500 leading-relaxed">
-              All rights reserved.
-            </p>
-          </div>
+          <p className="text-base text-neutral-300 leading-[1.406]">© 2026</p>
+          <p className="text-base text-neutral-50 leading-normal">
+            All rights reserved.
+          </p>
         </div>
 
         {/* Right Side: Policy Links */}
-        <div className="flex gap-8 items-center pb-1">
+        <div className="flex flex-1 gap-[40px] items-end justify-end font-semibold">
           <LinkButton
             href="/privacy"
-            className="text-sm !text-neutral-500 !font-normal hover:!text-primary transition-colors no-underline"
+            className="text-[32px] !text-neutral-50 !font-semibold hover:!text-primary transition-colors no-underline leading-[1.25]"
           >
             Privacy Policy
           </LinkButton>
           <LinkButton
             href="/terms"
-            className="text-sm !text-neutral-500 !font-normal hover:!text-primary transition-colors no-underline"
+            className="text-[32px] !text-neutral-50 !font-semibold hover:!text-primary transition-colors no-underline leading-[1.25]"
           >
             Terms of Service
           </LinkButton>
