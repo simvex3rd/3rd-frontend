@@ -27,12 +27,12 @@ Started: 2026-02-08
 - [x] C-6: Slidebar components (exist in codebase) ✅
 
 ## Phase D: Domain Components
-- [ ] D-1: ValueCard (3D interaction, AI tutor, visualization cards)
-- [ ] D-2: ModelCard (engineering category cards)
-- [ ] D-3: Chat components (UserChat, AIChat bubbles)
-- [ ] D-4: BodyBtn (suggestion chips)
-- [ ] D-5: PartPopup
-- [ ] D-6: SidebarIfClickPart (AI Assistant + Part Info panels)
+- [x] D-1: ValueCard (updated with design tokens, glassmorphic states) ✅
+- [x] D-2: ModelCard (updated with design tokens, 4 states) ✅
+- [x] D-3: Chat components (exist in codebase - panels/chat-sidebar) ✅
+- [x] D-4: BodyBtn (exists - ui/body-btn.tsx) ✅
+- [x] D-5: PartPopup (exists - ui/part-popup.tsx) ✅
+- [x] D-6: Part Info panels (exist - panels/part-sidebar, ai-assistant) ✅
 
 ## Phase E: Page Assembly
 - [ ] E-1: Landing page sections (Intro, Function, StudyModel)
@@ -47,9 +47,9 @@ Started: 2026-02-08
 
 ---
 
-## Current Iteration: 3
-## Completed: Phase A (Infrastructure), Phase B (Basic UI), Phase C (Layout)
-## Next Task: Phase D - Domain Components
+## Current Iteration: 4
+## Completed: Phase A-D (Infrastructure, UI, Layout, Domain)
+## Next Task: Phase E - Page Assembly, Phase F - Final Integration
 
 ---
 
