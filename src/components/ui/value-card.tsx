@@ -5,7 +5,7 @@ import type { HTMLAttributes } from "react";
 
 /**
  * ValueCard component - displays value proposition with icon, title, and description.
- * Based on verified design specs from docs/phase2-domain.md
+ * Based on verified design specs from Figma (node-id=144-277)
  *
  * @component
  * @example
@@ -18,7 +18,7 @@ import type { HTMLAttributes } from "react";
  * />
  * ```
  *
- * Dimensions: 327.2×241px
+ * Dimensions: 562.67×358px (1920px design)
  * Border: 5px solid, 24px radius
  * States: Default (gray), Primary (cyan), Hover, Press
  *
@@ -26,7 +26,7 @@ import type { HTMLAttributes } from "react";
  */
 
 const valueCardVariants = cva(
-  "relative flex flex-col items-center justify-center text-center w-[327px] h-[241px] p-8 rounded-[24px] border-[5px] border-solid transition-all duration-300 backdrop-blur-sm shadow-card-glow",
+  "relative flex flex-col items-center justify-center text-center w-[562.67px] h-[358px] rounded-[24px] border-[5px] border-solid transition-all duration-300 backdrop-blur-sm shadow-card-glow",
   {
     variants: {
       variant: {
@@ -70,7 +70,7 @@ export function ValueCard({
 
   return (
     <div className={cn(valueCardVariants({ variant }), className)} {...props}>
-      <div className="flex flex-col items-center gap-6">
+      <div className="flex flex-col items-center gap-8">
         <div className="flex items-center justify-center shrink-0">
           <Icon
             name={iconName}
@@ -82,16 +82,16 @@ export function ValueCard({
             alt=""
           />
         </div>
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-0">
           <h3
             className={cn(
-              "text-[32px] font-semibold leading-tight",
+              "text-[40px] font-bold leading-tight",
               isPrimary ? "text-neutral-50" : "text-primary"
             )}
           >
             {title}
           </h3>
-          <p className="text-lg font-semibold text-neutral-300 leading-normal">
+          <p className="text-2xl font-semibold text-neutral-300 leading-normal">
             {description}
           </p>
         </div>

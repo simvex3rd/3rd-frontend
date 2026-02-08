@@ -33,6 +33,11 @@ const meta: Meta<typeof MarkdownRenderer> = {
       control: "boolean",
       description: "Use compact spacing for dense layouts",
     },
+    maxWidth: {
+      control: "select",
+      options: ["276px", "1920px", "full"],
+      description: "Maximum width constraint",
+    },
   },
 };
 
@@ -427,5 +432,32 @@ console.log("Hello, World!");
 const sum = (a, b) => a + b;
 console.log(sum(2, 3));
 \`\`\``,
+  },
+};
+
+/**
+ * Full width layout at 1920px (Figma node 337-1343 resized).
+ */
+export const FullWidth1920: Story = {
+  args: {
+    children: comprehensiveMarkdown,
+    maxWidth: "1920px",
+  },
+  decorators: [
+    (Story) => (
+      <div className="w-full">
+        <Story />
+      </div>
+    ),
+  ],
+};
+
+/**
+ * Original Figma design at 276px width.
+ */
+export const FigmaOriginal276: Story = {
+  args: {
+    children: basicMarkdown,
+    maxWidth: "276px",
   },
 };

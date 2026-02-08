@@ -24,7 +24,7 @@ import { type LucideIcon } from "lucide-react";
 
 const buttonVariants = cva(
   // Base classes - matches Figma specs exactly
-  "inline-flex items-center justify-center gap-2 rounded-lg font-medium text-base leading-normal transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 disabled:cursor-not-allowed",
+  "inline-flex items-center justify-center gap-2 rounded-lg font-medium text-base leading-[1.5] transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 disabled:cursor-not-allowed",
   {
     variants: {
       variant: {
@@ -35,7 +35,7 @@ const buttonVariants = cva(
           "border-2 border-primary text-primary bg-transparent hover:border-primary-hover hover:text-primary-hover active:border-primary-press active:text-primary-press disabled:border-neutral-300 disabled:text-neutral-300 disabled:bg-neutral-100",
       },
       size: {
-        default: "h-10 w-auto min-w-[145px] px-4",
+        default: "h-10 w-[145px] px-4 py-0",
         sm: "h-8 px-3 text-sm",
         lg: "h-12 px-6",
       },

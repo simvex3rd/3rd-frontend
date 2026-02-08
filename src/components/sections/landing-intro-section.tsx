@@ -4,6 +4,7 @@ import { useIntersectionObserver } from "@/hooks/use-intersection-observer";
 import { cn } from "@/lib/utils";
 import { CTAButton } from "@/components/ui/cta-button";
 import { landingContent } from "@/app/landing/content";
+import Image from "next/image";
 
 /**
  * Landing page intro/hero section with logo, heading, subtitle, and CTA buttons.
@@ -27,9 +28,9 @@ export function LandingIntroSection() {
     <section
       ref={ref}
       className={cn(
-        "relative w-full",
+        "relative w-full h-full",
         "flex items-center justify-center",
-        "px-20 pt-[298px] pb-32", // Exact Figma top spacing
+        "px-[80px] py-[80px]", // 1920px Figma spacing
         "bg-background",
         "transition-all duration-700 ease-out",
         isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"
@@ -46,30 +47,27 @@ export function LandingIntroSection() {
         }}
       />
 
-      {/* Two-column layout: Text (left) + Visual (right) */}
-      <div className="relative z-10 flex items-start justify-between w-full max-w-[1760px] gap-8">
+      <div className="relative z-10 w-full">
         {/* Left: Text Content */}
-        <div className="flex flex-col gap-8 max-w-[800px] pt-4">
+        <div className="flex flex-col gap-[40px] w-[792px] relative z-10">
           {/* Heading */}
           <h1
             className={cn(
-              "font-black text-foreground whitespace-pre-line", // font-black for thicker weight
-              "text-[80px]",
-              "leading-[1.1]",
-              "tracking-tight"
+              "font-extrabold text-foreground whitespace-pre-line",
+              "text-[96px]",
+              "leading-[1.25]"
             )}
           >
             {landingContent.intro.heading}
           </h1>
 
-          {/* Subtitle */}
-          <div className="flex flex-col gap-8 pl-1">
+          {/* Subtitle + CTA */}
+          <div className="flex flex-col gap-[40px]">
             <p
               className={cn(
-                "text-neutral-200 whitespace-pre-line font-medium",
-                "text-[24px]",
-                "leading-[1.5]",
-                "opacity-80"
+                "text-neutral-200 whitespace-pre-line font-bold",
+                "text-[40px]",
+                "leading-[1.25]"
               )}
             >
               {landingContent.intro.subtitle
@@ -79,11 +77,9 @@ export function LandingIntroSection() {
                     <span key={i}>{part}</span>
                   ) : (
                     <span key={i}>
-                      <span className="text-primary font-bold">
-                        3D 인터랙션
-                      </span>
+                      <span className="text-primary">3D 인터랙션</span>
                       {part.split("AI 튜터")[0]}
-                      <span className="text-primary font-bold">AI 튜터</span>
+                      <span className="text-primary">AI 튜터</span>
                       {part.split("AI 튜터")[1]}
                     </span>
                   )
@@ -91,29 +87,25 @@ export function LandingIntroSection() {
             </p>
 
             {/* CTA Button */}
-            <div className="flex items-center pt-6">
-              <CTAButton variant="primary" className="shadow-glow-md">
-                {landingContent.intro.ctaPrimary}
+            <div className="flex items-center">
+              <CTAButton variant="primary" className="shadow-glow-md w-[415px]">
+                지금 바로 학습 시작하기
               </CTAButton>
             </div>
           </div>
         </div>
+      </div>
 
-        {/* Right: Main Visual */}
-        <div className="flex-shrink-0 w-[800px] h-[500px] bg-neutral-900 border border-neutral-700 rounded-[24px] flex items-center justify-center overflow-hidden relative">
-          {/* Placeholder with clearer wireframe style */}
-          <div
-            className="absolute inset-0 opacity-100"
-            style={{
-              backgroundImage:
-                "linear-gradient(45deg, transparent 48%, rgb(55, 65, 81) 48%, rgb(55, 65, 81) 52%, transparent 52%), linear-gradient(-45deg, transparent 48%, rgb(55, 65, 81) 48%, rgb(55, 65, 81) 52%, transparent 52%)",
-              backgroundSize: "100% 100%",
-            }}
-          />
-          <span className="relative z-10 text-neutral-500 text-2xl font-semibold bg-neutral-900 px-4 py-2 rounded">
-            3D Simulation View
-          </span>
-        </div>
+      {/* Right: Main Visual - Absolute positioned to viewport edge */}
+      {/* Moved outside the padded container to stick to the right edge */}
+      <div className="absolute right-0 top-0 w-[1800px] h-full z-0 pointer-events-none mix-blend-lighten">
+        <Image
+          src="/3d.png"
+          alt="3D Simulation View"
+          fill
+          className="object-contain object-right"
+          priority
+        />
       </div>
     </section>
   );

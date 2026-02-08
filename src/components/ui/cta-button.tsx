@@ -26,7 +26,7 @@ import type { ButtonHTMLAttributes } from "react";
 
 const ctaButtonVariants = cva(
   // Base classes - glassmorphic effect with border and shadow
-  "inline-flex items-center justify-center gap-4 rounded-[24px] border-[5px] border-solid font-semibold text-xl leading-tight transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 backdrop-blur-sm shadow-card-glow",
+  "inline-flex items-center justify-center gap-0 rounded-[24px] border-[5px] border-solid font-semibold text-[32px] leading-[1.25] transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 backdrop-blur-sm shadow-card-glow",
   {
     variants: {
       variant: {
@@ -43,9 +43,9 @@ const ctaButtonVariants = cva(
       },
       size: {
         // Default size - landing page CTA
-        default: "h-[68px] w-[210px] px-6 py-4",
+        default: "w-[210px] px-[24px] py-[16px]",
         // Compact size - header CTA
-        compact: "h-[52px] w-[210px] px-6 py-3",
+        compact: "w-[210px] px-[24px] py-[12px]",
       },
     },
     defaultVariants: {

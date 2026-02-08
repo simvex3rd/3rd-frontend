@@ -19,7 +19,7 @@ const meta = {
     },
     iconSize: {
       control: "number",
-      description: "Icon size in pixels",
+      description: "Icon size in pixels (default 32 for 1920px design)",
     },
     disabled: {
       control: "boolean",
@@ -34,14 +34,14 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     iconName: "ai-fill",
-    iconSize: 24,
+    iconSize: 32,
   },
 };
 
 export const Disabled: Story = {
   args: {
     iconName: "ai-fill",
-    iconSize: 24,
+    iconSize: 32,
     disabled: true,
   },
 };

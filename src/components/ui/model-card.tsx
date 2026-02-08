@@ -17,7 +17,7 @@ import { Icon } from "@/components/common/Icon";
  * />
  * ```
  *
- * Dimensions: 327.2×241px
+ * Dimensions: 332.8×241px
  * Border: 5px solid, 24px radius
  * States: Default (gray), Primary (cyan), Hover, Press
  *
@@ -25,20 +25,22 @@ import { Icon } from "@/components/common/Icon";
  */
 
 const modelCardVariants = cva(
-  "relative flex flex-col items-center justify-center text-center w-[327px] h-[241px] p-6 rounded-[24px] border-[5px] border-solid transition-all duration-300 backdrop-blur-sm shadow-card-glow",
+  "relative flex flex-col items-center justify-center text-center w-[332.8px] h-[241px] p-6 rounded-[24px] border-[5px] border-solid transition-all duration-300 backdrop-blur-sm shadow-card-glow",
   {
     variants: {
       variant: {
         // Default - gray background, cyan text
         default:
-          "bg-gray-30 border-primary/20 text-primary hover:bg-hover-30 hover:text-neutral-50 active:bg-press-30 active:text-neutral-50",
+          "bg-[rgba(212,212,212,0.3)] border-[rgba(2,238,225,0.2)] text-primary hover:bg-[rgba(1,169,160,0.3)] hover:text-neutral-50 active:bg-[rgba(1,100,95,0.3)] active:text-neutral-50",
         // Primary - cyan background, white text
         primary:
-          "bg-primary-30 border-primary/20 text-neutral-50 hover:bg-hover-30 active:bg-press-30",
+          "bg-[rgba(2,238,225,0.3)] border-[rgba(2,238,225,0.2)] text-neutral-50 hover:bg-[rgba(1,169,160,0.3)] active:bg-[rgba(1,100,95,0.3)]",
         // Hover state (for demo)
-        hover: "bg-hover-30 border-primary/20 text-neutral-50",
+        hover:
+          "bg-[rgba(1,169,160,0.3)] border-[rgba(2,238,225,0.2)] text-neutral-50",
         // Press state (for demo)
-        press: "bg-press-30 border-primary/20 text-neutral-50",
+        press:
+          "bg-[rgba(1,100,95,0.3)] border-[rgba(2,238,225,0.2)] text-neutral-50",
       },
     },
     defaultVariants: {

@@ -25,7 +25,7 @@ import { Search, type LucideIcon } from "lucide-react";
 
 const inputVariants = cva(
   // Base classes - matches Figma specs exactly
-  "relative flex h-10 w-full items-center gap-1 rounded-lg border border-solid px-3 py-3 text-base font-normal leading-normal transition-colors duration-150 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 disabled:cursor-not-allowed",
+  "relative flex h-10 w-full items-center gap-1 rounded-[8px] border border-solid px-3 py-3 text-base font-normal leading-normal transition-colors duration-150 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 disabled:cursor-not-allowed",
   {
     variants: {
       variant: {

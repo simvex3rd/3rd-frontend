@@ -5,7 +5,7 @@ import type { HTMLAttributes } from "react";
 /**
  * Chat sidebar component with chat history list and conversation switching.
  * Displays a list of previous conversations with timestamps and a new chat button.
- * Styled according to Figma spec: 311x879px with #404040 background and 160px gap.
+ * Styled according to Figma spec: 365px max width with #404040 background and 160px gap.
  *
  * @component
  * @example
@@ -25,7 +25,7 @@ import type { HTMLAttributes } from "react";
  * @param {function} props.onConversationSelect - Callback when a conversation is selected
  * @param {function} props.onNewChat - Callback when new chat button is clicked
  *
- * @see {@link https://figma.com/file/Vz80RydxWcYHVnn2iuyV0m/SIMVEX} Figma Design - chat side (311x879, node-236:1535)
+ * @see {@link https://figma.com/file/Vz80RydxWcYHVnn2iuyV0m/SIMVEX} Figma Design - chat side (365px max width at 1920px, node-236:1501)
  */
 
 export interface Conversation {
@@ -51,7 +51,7 @@ export function ChatSidebar({
   return (
     <div
       className={cn(
-        "flex flex-col w-[311px] h-[879px] bg-neutral-700 p-6 gap-40",
+        "flex flex-col w-full max-w-[365px] h-[879px] bg-neutral-700 p-6 gap-40",
         className
       )}
       {...props}

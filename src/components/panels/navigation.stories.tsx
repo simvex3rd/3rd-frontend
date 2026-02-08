@@ -18,11 +18,10 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 const defaultLinks = [
-  { href: "/", label: "Home" },
-  { href: "/features", label: "Features" },
-  { href: "/pricing", label: "Pricing" },
-  { href: "/about", label: "About" },
-  { href: "/contact", label: "Contact" },
+  { href: "#intro", label: "소개" },
+  { href: "#functions", label: "기능" },
+  { href: "#models", label: "학습 모델" },
+  { href: "#footer", label: "문의" },
 ];
 
 export const Default: Story = {
@@ -31,26 +30,12 @@ export const Default: Story = {
   },
 };
 
-export const FewLinks: Story = {
+export const ThreeLinks: Story = {
   args: {
     links: [
-      { href: "/", label: "Home" },
-      { href: "/about", label: "About" },
-      { href: "/contact", label: "Contact" },
-    ],
-  },
-};
-
-export const ManyLinks: Story = {
-  args: {
-    links: [
-      { href: "/", label: "Home" },
-      { href: "/features", label: "Features" },
-      { href: "/solutions", label: "Solutions" },
-      { href: "/pricing", label: "Pricing" },
-      { href: "/resources", label: "Resources" },
-      { href: "/about", label: "About" },
-      { href: "/contact", label: "Contact" },
+      { href: "#intro", label: "소개" },
+      { href: "#functions", label: "기능" },
+      { href: "#models", label: "학습 모델" },
     ],
   },
 };

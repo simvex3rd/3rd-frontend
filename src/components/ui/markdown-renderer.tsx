@@ -20,26 +20,37 @@ import "highlight.js/styles/github-dark.css";
  * @param {MarkdownRendererProps} props - Component props
  * @param {string} props.children - Markdown content to render
  * @param {boolean} [props.compact=false] - Use compact spacing
+ * @param {"276px" | "1920px" | "full"} [props.maxWidth="full"] - Maximum width constraint
  *
- * @see {@link https://figma.com/file/Vz80RydxWcYHVnn2iuyV0m/SIMVEX} Figma Design - markdown (276x217)
+ * @see {@link https://figma.com/file/Vz80RydxWcYHVnn2iuyV0m/SIMVEX} Figma Design - markdown (node-337:1343)
  */
 
 export interface MarkdownRendererProps extends HTMLAttributes<HTMLDivElement> {
   children: string;
   compact?: boolean;
+  maxWidth?: "276px" | "1920px" | "full";
 }
 
 export function MarkdownRenderer({
   className,
   children,
   compact = false,
+  maxWidth = "full",
   ...props
 }: MarkdownRendererProps) {
+  const widthClass =
+    maxWidth === "276px"
+      ? "max-w-[276px]"
+      : maxWidth === "1920px"
+        ? "max-w-[1920px]"
+        : "w-full";
+
   return (
     <div
       className={cn(
         "markdown-renderer flex flex-col gap-4",
         compact && "gap-2",
+        widthClass,
         className
       )}
       {...props}

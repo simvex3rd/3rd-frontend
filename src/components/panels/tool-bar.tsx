@@ -26,12 +26,12 @@ import type { HTMLAttributes } from "react";
  */
 
 const toolBarVariants = cva(
-  "flex items-center justify-center p-2 border-2 border-primary/20 rounded-[24px] bg-white/10 backdrop-blur-md shadow-card-glow transition-all",
+  "flex items-center justify-center border-3 border-primary rounded-2xl bg-white/10 backdrop-blur-md shadow-primary-glow transition-all",
   {
     variants: {
       variant: {
-        horizontal: "flex-row w-[656px] h-[64px] gap-8",
-        vertical: "flex-col w-[64px] h-[472px] gap-8",
+        horizontal: "flex-row w-[500px] h-[50px] gap-12 px-40 py-4",
+        vertical: "flex-col w-[50px] h-[300px] gap-4 px-4 py-16",
       },
     },
     defaultVariants: {

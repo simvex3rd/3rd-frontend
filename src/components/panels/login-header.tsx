@@ -69,19 +69,19 @@ export function LoginHeader({
     <header
       className={cn(
         loginHeaderVariants({ variant }),
-        "flex items-center px-20 py-8 bg-transparent", // Transparent fixed height header
+        "flex items-center px-[80px] py-[32px] bg-transparent w-[1920px]",
         className
       )}
       {...props}
     >
-      <div className="flex w-full items-center gap-12">
-        <Logo size="large" className="shrink-0" />
+      <div className="flex w-full items-center gap-[48px]">
+        <Logo size="large" className="shrink-0 w-[325px]" />
 
-        <div className="flex-1 flex justify-center">
+        <div className="flex-1 flex">
           <Navigation links={navLinks} />
         </div>
 
-        <div className="flex items-center gap-4 shrink-0">
+        <div className="flex items-center gap-[16px] shrink-0">
           {user ? (
             <CTAButton
               variant="default"

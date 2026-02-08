@@ -14,7 +14,7 @@ const navLinks = [
 
 export function LandingHeader() {
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 px-20 py-8 transition-all duration-300">
+    <header className="fixed top-0 left-0 right-0 z-50 px-20 h-[102px] flex items-center transition-all duration-300">
       {/* Background with Glow Effect */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         {/* Subtle dark backdrop */}
@@ -29,34 +29,44 @@ export function LandingHeader() {
         />
       </div>
 
-      {/* Content Container */}
-      <div className="relative z-10 w-full flex items-center gap-12">
-        {/* Left: Logo */}
-        <div className="flex-shrink-0 w-[325px]">
+      {/* Content Container - 1920px Figma Design */}
+      <div className="relative z-10 w-full flex items-center gap-[150px]">
+        {/* Left: Logo - 325px width matches Figma */}
+        <div className="flex-shrink-0">
           <Link href="/" aria-label="SIMVEX Home">
-            <Logo size="small" />
+            <Logo size="medium" />
           </Link>
         </div>
 
-        {/* Center: Navigation */}
-        <nav className="flex-1 flex items-center gap-20">
+        {/* Center: Navigation - MainNavigation at 1920px (Scaled 0.75x) */}
+        <nav className="flex-1 flex items-center justify-start gap-[60px]">
           {navLinks.map((link) => (
             <Link
               key={link.label}
               href={link.href}
-              className="h-12 w-[70px] flex items-center justify-center text-neutral-50 text-[40px] font-bold leading-[1.25] hover:text-primary transition-colors"
+              className="block h-[36px] w-auto px-2 relative cursor-pointer"
             >
-              {link.label}
+              <p className="relative w-full h-full text-neutral-50 text-[30px] font-bold leading-[1.25] text-center hover:text-primary transition-colors flex items-center justify-center whitespace-nowrap px-2">
+                {link.label}
+              </p>
             </Link>
           ))}
         </nav>
 
-        {/* Right: Auth Buttons */}
-        <div className="flex-shrink-0 flex items-center gap-4">
-          <CTAButton variant="default" size="default" className="w-[210px]">
+        {/* Right: Auth Buttons (Scaled 0.75x) */}
+        <div className="flex-shrink-0 flex items-center gap-[12px]">
+          <CTAButton
+            variant="default"
+            size="default"
+            className="!w-[157.5px] !text-[24px] !rounded-[18px] !border-[3.75px] whitespace-nowrap !px-2"
+          >
             로그인/가입
           </CTAButton>
-          <CTAButton variant="primary" size="default" className="w-[210px]">
+          <CTAButton
+            variant="primary"
+            size="default"
+            className="!w-[157.5px] !text-[24px] !rounded-[18px] !border-[3.75px] whitespace-nowrap !px-2"
+          >
             시작하기
           </CTAButton>
         </div>

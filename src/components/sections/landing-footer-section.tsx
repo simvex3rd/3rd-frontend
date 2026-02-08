@@ -26,14 +26,14 @@ export function LandingFooterSection() {
     <section
       ref={ref}
       className={cn(
-        "w-full",
+        "w-full h-auto",
         "flex items-end justify-center",
         "transition-all duration-700 ease-out",
         isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"
       )}
       aria-label="Footer section"
     >
-      <Footer sections={[]} className="w-full" />
+      <Footer sections={[]} />
     </section>
   );
 }

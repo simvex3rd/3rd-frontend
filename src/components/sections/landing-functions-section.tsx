@@ -27,9 +27,9 @@ export function LandingFunctionsSection() {
     <section
       ref={ref}
       className={cn(
-        "w-full",
+        "w-full h-full",
         "flex flex-col items-center justify-center",
-        "px-20 py-24", // Reduced padding
+        "px-[80px] py-[80px]", // 1920px Figma spacing
         "bg-background",
         "transition-all duration-700 ease-out",
         isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"
@@ -39,9 +39,9 @@ export function LandingFunctionsSection() {
       {/* Section Heading */}
       <h2
         className={cn(
-          "text-center font-extrabold text-foreground mb-20",
-          "text-[64px]", // Reduced from 96px to match Figma scale better
-          "leading-[1.2]"
+          "text-center font-extrabold text-foreground mb-[80px]",
+          "text-[96px]", // 1920px Figma design
+          "leading-[1.25]"
         )}
       >
         {landingContent.functions.heading
@@ -60,13 +60,8 @@ export function LandingFunctionsSection() {
           )}
       </h2>
 
-      {/* Feature Cards - Horizontal Row */}
-      <div
-        className={cn(
-          "grid grid-cols-3 gap-8", // Changed to grid for equal spacing
-          "w-full max-w-[1400px]"
-        )}
-      >
+      {/* Feature Cards - Horizontal Row - 1920px Figma Design */}
+      <div className={cn("flex gap-[36px] items-center justify-center w-full")}>
         {landingContent.functions.features.map((feature, index) => (
           <ValueCard
             key={index}
@@ -75,7 +70,7 @@ export function LandingFunctionsSection() {
             title={feature.title}
             description={feature.description}
             className={cn(
-              "w-full h-auto min-h-[320px]", // Fixed height
+              "w-[562.67px] h-[358px]", // Exact Figma dimensions
               "transition-all duration-300",
               "hover:translate-y-[-8px]"
             )}
