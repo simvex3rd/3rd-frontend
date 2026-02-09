@@ -36,7 +36,7 @@ const mockData = {
     {
       id: 2,
       name: "Robot Arm",
-      thumbnail_url: "/models/robotArm/thumbnail.jpg",
+      thumbnail_url: "/models/robot-arm/thumbnail.jpg",
     },
     {
       id: 3,
@@ -50,7 +50,7 @@ const mockData = {
       id: 1,
       name: "V4 Engine",
       thumbnail_url: "/models/v4-engine/thumbnail.jpg",
-      file_url: "/models/v4-engine/v4Engine_81341.obj",
+      file_url: "/models/v4-engine/v4-engine.obj",
       parts: [
         {
           id: 101,
@@ -133,8 +133,8 @@ const mockData = {
     2: {
       id: 2,
       name: "Robot Arm",
-      thumbnail_url: "/models/robotArm/thumbnail.jpg",
-      file_url: "/models/robotArm/robotArm.obj",
+      thumbnail_url: "/models/robot-arm/thumbnail.jpg",
+      file_url: "/models/robot-arm/robot-arm.obj",
       parts: [
         {
           id: 201,
