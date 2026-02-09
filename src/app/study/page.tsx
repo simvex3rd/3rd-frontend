@@ -16,7 +16,7 @@ import { LucideSparkles, LucideSquarePen } from "lucide-react";
  */
 export default function StudyPage() {
   return (
-    <div className="relative w-full h-screen bg-neutral-900 overflow-hidden">
+    <div className="relative w-full max-[1919px]:h-[133.33vh] h-screen bg-neutral-900 overflow-hidden">
       {/* Skip to main content link */}
       <a
         href="#main-content"
