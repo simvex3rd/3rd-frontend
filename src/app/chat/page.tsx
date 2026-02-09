@@ -1,12 +1,15 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 
 import { ViewerHeader } from "@/components/viewer/ViewerHeader";
 import { ChatSidebar } from "@/components/panels/ChatSidebar";
 import { ChatMessage } from "@/components/panels/ChatMessage";
 import { ChatInput } from "@/components/panels/ChatInput";
 import { LucideSparkles } from "lucide-react";
+import { useChatStream } from "@/hooks/use-chat-stream";
+import { api } from "@/lib/api";
+import type { ChatMessageResponse } from "@/types/api";
 
 /**
  * Chat Page - Full-screen AI chat interface
@@ -26,6 +29,16 @@ import { LucideSparkles } from "lucide-react";
  */
 export default function ChatPage() {
   const [aiAvatar, setAiAvatar] = useState<string>("");
+  const [sessionId, setSessionId] = useState<string | null>(null);
+  const [sessionCreating, setSessionCreating] = useState(false);
+
+  const {
+    messages,
+    isStreaming,
+    sendMessage: streamSendMessage,
+    clearMessages,
+    setMessages,
+  } = useChatStream(sessionId);
 
   useEffect(() => {
     const AVATARS = ["/chat/character1.png", "/chat/character2.png"];
@@ -33,18 +46,74 @@ export default function ChatPage() {
     setAiAvatar(randomAvatar);
   }, []);
 
-  // Mock chat data - replace with real data later
-  const messages = [
-    { type: "ai" as const, content: "ai chat", showAvatar: true },
-    { type: "user" as const, content: "user chat", showAvatar: false },
-    { type: "user" as const, content: "user chat", showAvatar: false },
-    { type: "ai" as const, content: "ai chat", showAvatar: true },
-  ];
+  const handleSendMessage = useCallback(
+    async (message: string) => {
+      if (!message.trim() || isStreaming || sessionCreating) return;
 
-  const handleSendMessage = (message: string) => {
-    console.log("Send message:", message);
-    // TODO: Implement actual message sending logic
-  };
+      let currentSessionId = sessionId;
+
+      // Create session if it doesn't exist
+      if (!currentSessionId) {
+        setSessionCreating(true);
+        try {
+          const session = await api.chat.createSession("1"); // Default model ID
+          currentSessionId = String(session.id);
+          setSessionId(currentSessionId);
+        } catch (err) {
+          console.error("Failed to create session:", err);
+          setSessionCreating(false);
+          return;
+        } finally {
+          setSessionCreating(false);
+        }
+      }
+
+      // Send message
+      await streamSendMessage(message, currentSessionId);
+    },
+    [sessionId, isStreaming, sessionCreating, streamSendMessage]
+  );
+
+  const handleNewChat = useCallback(async () => {
+    if (sessionCreating) return;
+
+    setSessionCreating(true);
+    try {
+      const session = await api.chat.createSession("1"); // Default model ID
+      setSessionId(String(session.id));
+      clearMessages();
+    } catch (err) {
+      console.error("Failed to create new chat:", err);
+    } finally {
+      setSessionCreating(false);
+    }
+  }, [sessionCreating, clearMessages]);
+
+  const handleSelectSession = useCallback(
+    async (id: string) => {
+      if (id === sessionId) return;
+
+      setSessionId(id);
+      clearMessages();
+
+      // Load existing messages from API
+      try {
+        const apiMessages: ChatMessageResponse[] =
+          await api.chat.getMessages(id);
+        // API returns newest-first, so reverse for display
+        const formattedMessages = apiMessages.reverse().map((msg) => ({
+          id: String(msg.id),
+          role: msg.role as "user" | "assistant",
+          content: msg.content,
+          timestamp: new Date(msg.created_at),
+        }));
+        setMessages(formattedMessages);
+      } catch (err) {
+        console.error("Failed to load messages:", err);
+      }
+    },
+    [sessionId, clearMessages, setMessages]
+  );
 
   return (
     <div className="relative w-full max-[1919px]:h-[133.33vh] h-screen bg-neutral-900 overflow-hidden">
@@ -65,7 +134,11 @@ export default function ChatPage() {
         className="flex absolute inset-x-0 top-[102px] bottom-0"
       >
         {/* Left Sidebar */}
-        <ChatSidebar />
+        <ChatSidebar
+          onNewChat={handleNewChat}
+          onSelectSession={handleSelectSession}
+          currentSessionId={sessionId || undefined}
+        />
 
         {/* Main Chat Area */}
         <div className="flex-1 flex flex-col relative">
@@ -82,15 +155,47 @@ export default function ChatPage() {
 
           {/* Messages Area */}
           <div className="flex-1 px-[80px] py-[40px] overflow-y-auto space-y-[32px]">
-            {messages.map((message, index) => (
-              <ChatMessage
-                key={index}
-                type={message.type}
-                content={message.content}
-                showAvatar={message.showAvatar}
-                avatar={message.type === "ai" ? aiAvatar : undefined}
-              />
-            ))}
+            {messages.length === 0 ? (
+              <div className="flex items-center justify-center h-full">
+                <p className="text-neutral-500 text-[18px]">
+                  {sessionCreating
+                    ? "Creating new chat..."
+                    : "Start a conversation"}
+                </p>
+              </div>
+            ) : (
+              messages.map((message) => {
+                // Skip system messages or show as info text
+                if (message.role === "system") {
+                  return (
+                    <div
+                      key={message.id}
+                      className="flex items-center justify-center"
+                    >
+                      <p className="text-neutral-500 text-[14px] italic">
+                        {message.content}
+                      </p>
+                    </div>
+                  );
+                }
+
+                return (
+                  <ChatMessage
+                    key={message.id}
+                    type={message.role === "user" ? "user" : "ai"}
+                    content={message.content}
+                    showAvatar={message.role === "assistant"}
+                    avatar={message.role === "assistant" ? aiAvatar : undefined}
+                  />
+                );
+              })
+            )}
+            {isStreaming && (
+              <div className="flex items-center gap-[8px] text-neutral-500 text-[14px]">
+                <span className="animate-pulse">●</span>
+                <span>AI is typing...</span>
+              </div>
+            )}
           </div>
 
           {/* Chat Input - Fixed at bottom */}
