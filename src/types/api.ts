@@ -161,79 +161,289 @@ export interface ApiRequestOptions {
 }
 
 /**
- * Backend API Types (from Railway backend)
+ * Backend API Types - Auto-generated from OpenAPI spec
+ * Source: https://3rd-backend-production.up.railway.app/api/openapi.json
+ * Generated: 2026-02-09
  */
+
+// ============================================================================
+// Health API
+// ============================================================================
+
+/**
+ * Health check response (GET /api/v1/health)
+ */
+export interface HealthCheck {
+  /** Service status */
+  status: string;
+}
+
+// ============================================================================
+// Auth API
+// ============================================================================
+
+/**
+ * Clerk login request payload (POST /api/v1/auth/clerk/login)
+ */
+export interface ClerkLoginRequest {
+  /** User email */
+  email?: string | null;
+  /** User display name */
+  username: string;
+}
+
+/**
+ * User response (GET /api/v1/auth/me)
+ */
+export interface UserResponse {
+  /** Clerk user ID */
+  id: string;
+  /** User email */
+  email?: string | null;
+  /** User display name */
+  username: string;
+}
+
+// ============================================================================
+// Models API
+// ============================================================================
 
 /**
  * Model list item (GET /api/v1/models)
  */
 export interface ModelListItem {
-  id: string;
-  name: string;
-  thumbnail_url: string;
+  /** Model ID */
+  id: number;
+  /** Model name */
+  name?: string | null;
+  /** Thumbnail image URL */
+  thumbnail_url?: string | null;
 }
 
 /**
- * Part geometry information
+ * Part geometry (3D transform data)
  */
-export interface PartGeometry {
-  initial_position: [number, number, number];
-  initial_rotation: [number, number, number];
-  initial_scale: [number, number, number];
-  exploded_position: [number, number, number];
+export interface PartGeometryResponse {
+  /** Geometry ID */
+  id: number;
+  /** Part ID */
+  part_id: number;
+  /** Initial position {x, y, z} */
+  initial_pos?: Record<string, unknown> | null;
+  /** Initial rotation {x, y, z} */
+  initial_rot?: Record<string, unknown> | null;
+  /** Initial scale {x, y, z} */
+  initial_scale?: Record<string, unknown> | null;
+  /** Exploded view position {x, y, z} */
+  exploded_pos?: Record<string, unknown> | null;
 }
 
 /**
- * Part detail (nested in ModelDetail)
+ * Part with geometry information (nested in ModelDetail)
  */
-export interface Part {
-  id: string;
-  name: string;
-  description: string;
-  material: string;
-  metadata?: Record<string, unknown>;
-  geometry: PartGeometry;
+export interface PartWithGeometry {
+  /** Part ID */
+  id: number;
+  /** Model ID */
+  model_id: number;
+  /** Part name */
+  name?: string | null;
+  /** Part description */
+  description?: string | null;
+  /** Part material */
+  material?: string | null;
+  /** Part metadata (JSON) */
+  metadata?: Record<string, unknown> | null;
+  /** 3D geometry information */
+  geometry?: PartGeometryResponse | null;
 }
 
 /**
  * Model detail (GET /api/v1/models/:id)
  */
 export interface ModelDetail {
-  id: string;
-  name: string;
-  thumbnail_url: string;
-  parts: Part[];
+  /** Model ID */
+  id: number;
+  /** Model name */
+  name?: string | null;
+  /** Model description */
+  description?: string | null;
+  /** Thumbnail image URL */
+  thumbnail_url?: string | null;
+  /** Model file URL (GLB/GLTF) */
+  file_url?: string | null;
+  /** Parts list with geometry */
+  parts: PartWithGeometry[];
+}
+
+// ============================================================================
+// Notes API
+// ============================================================================
+
+/**
+ * Study note upsert payload (PUT /api/v1/notes)
+ */
+export interface StudyNoteUpsert {
+  /** Model ID */
+  model_id: number;
+  /** Part ID (optional - if null, note is for the entire model) */
+  part_id?: number | null;
+  /** Note content */
+  content?: string | null;
 }
 
 /**
- * Chat session (GET /api/v1/chat/sessions)
+ * Study note response (GET /api/v1/notes)
  */
-export interface ChatSession {
-  id: string;
-  model_id: string;
-  title?: string;
-  created_at: string;
-}
-
-/**
- * Chat message (GET /api/v1/chat/sessions/:id/messages)
- */
-export interface ChatMessage {
-  id: string;
-  session_id: string;
-  role: "user" | "assistant";
-  content: string;
-  created_at: string;
-}
-
-/**
- * Study note (GET /api/v1/notes)
- */
-export interface StudyNote {
-  id: string;
+export interface StudyNoteResponse {
+  /** Note ID */
+  id: number;
+  /** User ID */
   user_id: string;
-  model_id: string;
-  part_id?: string;
-  content: string;
-  updated_at: string;
+  /** Model ID */
+  model_id: number;
+  /** Part ID (optional) */
+  part_id?: number | null;
+  /** Note content */
+  content?: string | null;
+  /** Last updated timestamp */
+  updated_at?: string | null;
 }
+
+// ============================================================================
+// Chat API
+// ============================================================================
+
+/**
+ * Chat session creation payload (POST /api/v1/chat/sessions)
+ */
+export interface ChatSessionCreate {
+  /** Model ID for context */
+  model_id: number;
+  /** Session title */
+  title?: string | null;
+}
+
+/**
+ * Chat session response (GET /api/v1/chat/sessions)
+ */
+export interface ChatSessionResponse {
+  /** Session ID */
+  id: number;
+  /** User ID */
+  user_id: string;
+  /** Model ID */
+  model_id: number;
+  /** Session title */
+  title?: string | null;
+  /** Last response ID */
+  last_response_id?: string | null;
+  /** Creation timestamp */
+  created_at: string;
+}
+
+/**
+ * Chat message creation payload (POST /api/v1/chat/sessions/:id/messages/stream)
+ */
+export interface ChatMessageCreate {
+  /** Message content */
+  content: string;
+}
+
+/**
+ * Chat message response (GET /api/v1/chat/sessions/:id/messages)
+ */
+export interface ChatMessageResponse {
+  /** Message ID */
+  id: number;
+  /** Session ID */
+  session_id: number;
+  /** Role (user or assistant) */
+  role: string;
+  /** Message content */
+  content: string;
+  /** Creation timestamp */
+  created_at: string;
+}
+
+// ============================================================================
+// Error Handling
+// ============================================================================
+
+/**
+ * Validation error item
+ */
+export interface ValidationError {
+  /** Error location (path) */
+  loc: (string | number)[];
+  /** Error message */
+  msg: string;
+  /** Error type */
+  type: string;
+}
+
+/**
+ * HTTP validation error response (422)
+ */
+export interface HTTPValidationError {
+  /** List of validation errors */
+  detail?: ValidationError[];
+}
+
+// ============================================================================
+// Type Guards
+// ============================================================================
+
+/**
+ * Check if response is a validation error
+ */
+export function isValidationError(
+  error: unknown
+): error is HTTPValidationError {
+  return (
+    typeof error === "object" &&
+    error !== null &&
+    "detail" in error &&
+    Array.isArray((error as HTTPValidationError).detail)
+  );
+}
+
+/**
+ * Check if geometry has exploded position
+ */
+export function hasExplodedPosition(
+  geometry: PartGeometryResponse | null | undefined
+): geometry is PartGeometryResponse & {
+  exploded_pos: Record<string, unknown>;
+} {
+  return geometry?.exploded_pos != null;
+}
+
+// ============================================================================
+// Legacy Type Aliases (for backward compatibility)
+// ============================================================================
+
+/**
+ * @deprecated Use PartWithGeometry instead
+ */
+export type Part = PartWithGeometry;
+
+/**
+ * @deprecated Use PartGeometryResponse instead
+ */
+export type PartGeometry = PartGeometryResponse;
+
+/**
+ * @deprecated Use ChatSessionResponse instead
+ */
+export type ChatSession = ChatSessionResponse;
+
+/**
+ * @deprecated Use ChatMessageResponse instead
+ */
+export type ChatMessage = ChatMessageResponse;
+
+/**
+ * @deprecated Use StudyNoteResponse instead
+ */
+export type StudyNote = StudyNoteResponse;

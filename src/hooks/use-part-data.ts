@@ -35,7 +35,42 @@ export function usePartData(
         const part = model.parts.find(
           (p) => p.id === partId || p.name === partId
         );
-        setState({ partData: part || null, loading: false, error: null });
+        // Convert to PartWithGeometry type (number IDs and proper geometry)
+        const partWithModelId = part
+          ? {
+              id: Number(part.id),
+              model_id: Number(model.id),
+              name: part.name,
+              description: part.description,
+              material: part.material,
+              metadata: part.metadata,
+              geometry: {
+                id: 0, // Placeholder - not provided by API
+                part_id: Number(part.id),
+                initial_pos: {
+                  x: part.geometry.initial_position[0],
+                  y: part.geometry.initial_position[1],
+                  z: part.geometry.initial_position[2],
+                },
+                initial_rot: {
+                  x: part.geometry.initial_rotation[0],
+                  y: part.geometry.initial_rotation[1],
+                  z: part.geometry.initial_rotation[2],
+                },
+                initial_scale: {
+                  x: part.geometry.initial_scale[0],
+                  y: part.geometry.initial_scale[1],
+                  z: part.geometry.initial_scale[2],
+                },
+                exploded_pos: {
+                  x: part.geometry.exploded_position[0],
+                  y: part.geometry.exploded_position[1],
+                  z: part.geometry.exploded_position[2],
+                },
+              },
+            }
+          : null;
+        setState({ partData: partWithModelId, loading: false, error: null });
       })
       .catch((err) => {
         if (cancelled) return;
