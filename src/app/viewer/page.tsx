@@ -85,10 +85,10 @@ export default function ViewerPage() {
           <ViewerZoomSlider compact={hasPartSelected} />
         </div>
 
-        {/* Chat Interface - Right side, always visible */}
-        <div className="absolute right-0 top-0 h-full pointer-events-auto z-30">
+        {/* Chat Interface - Temporarily removed */}
+        {/* <div className="absolute right-0 top-0 h-full pointer-events-auto z-30">
           <ChatInterface />
-        </div>
+        </div> */}
 
         {/* Part Info Panel - Side Overlay, left of chat when part selected */}
         {showPartInfo && (
