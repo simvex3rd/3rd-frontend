@@ -71,9 +71,12 @@ export interface SimvexApi {
 const USE_MOCK_API = process.env.NEXT_PUBLIC_USE_MOCK_API === "true";
 
 /**
- * Export the appropriate API based on environment
+ * Export the appropriate API based on environment.
+ * Models always use mock data (loaded from public/models/).
  */
-export const api: SimvexApi = USE_MOCK_API ? mockApi : realApi;
+export const api: SimvexApi = USE_MOCK_API
+  ? mockApi
+  : { ...realApi, models: mockApi.models };
 
 /**
  * Export individual API modules for convenience
