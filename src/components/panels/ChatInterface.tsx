@@ -45,7 +45,7 @@ export interface ChatInterfaceProps extends HTMLAttributes<HTMLDivElement> {
 
 export function ChatInterface({
   className,
-  _defaultOpen = true,
+  defaultOpen = true,
   onSend,
   initialMessages = [],
   ...props
