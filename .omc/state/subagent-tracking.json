@@ -602,10 +602,17 @@
       "status": "completed",
       "completed_at": "2026-02-09T00:12:27.175Z",
       "duration_ms": 162067
+    },
+    {
+      "agent_id": "a3a726c",
+      "agent_type": "oh-my-claudecode:architect",
+      "started_at": "2026-02-09T00:17:29.270Z",
+      "parent_mode": "none",
+      "status": "running"
     }
   ],
-  "total_spawned": 67,
+  "total_spawned": 68,
   "total_completed": 67,
   "total_failed": 0,
-  "last_updated": "2026-02-09T00:15:13.828Z"
+  "last_updated": "2026-02-09T00:24:04.936Z"
 }

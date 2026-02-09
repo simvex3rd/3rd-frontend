@@ -188,38 +188,38 @@
   "hotPaths": [
     {
       "path": "src/app/viewer/page.tsx",
-      "accessCount": 60,
-      "lastAccessed": 1770595844790,
+      "accessCount": 63,
+      "lastAccessed": 1770596937463,
       "type": "file"
     },
     {
       "path": "src/components/panels/ChatInterface.tsx",
-      "accessCount": 58,
-      "lastAccessed": 1770596162122,
+      "accessCount": 61,
+      "lastAccessed": 1770596925285,
       "type": "file"
     },
     {
       "path": "src/components/viewer/ViewerToolbar.tsx",
-      "accessCount": 46,
-      "lastAccessed": 1770595801499,
+      "accessCount": 47,
+      "lastAccessed": 1770596376214,
       "type": "file"
     },
     {
       "path": "src",
-      "accessCount": 44,
-      "lastAccessed": 1770595526141,
+      "accessCount": 46,
+      "lastAccessed": 1770596380767,
       "type": "directory"
     },
     {
       "path": "src/components/viewer/ViewerSideToolbar.tsx",
-      "accessCount": 41,
-      "lastAccessed": 1770595801909,
+      "accessCount": 42,
+      "lastAccessed": 1770596376677,
       "type": "file"
     },
     {
       "path": "",
-      "accessCount": 37,
-      "lastAccessed": 1770595794075,
+      "accessCount": 38,
+      "lastAccessed": 1770596338720,
       "type": "directory"
     },
     {
@@ -254,26 +254,26 @@
     },
     {
       "path": "src/components/panels/QuizPanel.tsx",
-      "accessCount": 21,
-      "lastAccessed": 1770595842518,
+      "accessCount": 22,
+      "lastAccessed": 1770596396592,
       "type": "file"
     },
     {
       "path": "src/components/panels/NotesPanel.tsx",
-      "accessCount": 19,
-      "lastAccessed": 1770595842844,
+      "accessCount": 20,
+      "lastAccessed": 1770596397250,
       "type": "file"
     },
     {
       "path": "src/components/viewer/Model.tsx",
-      "accessCount": 17,
-      "lastAccessed": 1770593143490,
+      "accessCount": 18,
+      "lastAccessed": 1770596692207,
       "type": "file"
     },
     {
       "path": "src/components/ui/MessageBubble.tsx",
-      "accessCount": 15,
-      "lastAccessed": 1770595421918,
+      "accessCount": 17,
+      "lastAccessed": 1770596407153,
       "type": "file"
     },
     {
@@ -313,6 +313,12 @@
       "type": "file"
     },
     {
+      "path": "src/lib/api/client.ts",
+      "accessCount": 8,
+      "lastAccessed": 1770596703227,
+      "type": "file"
+    },
+    {
       "path": "src/types/api.ts",
       "accessCount": 7,
       "lastAccessed": 1770585553767,
@@ -331,15 +337,21 @@
       "type": "file"
     },
     {
-      "path": "src/lib/api/client.ts",
-      "accessCount": 6,
-      "lastAccessed": 1770584925950,
-      "type": "file"
-    },
-    {
       "path": "src/components/panels/chat-sidebar.tsx",
       "accessCount": 6,
       "lastAccessed": 1770593472526,
+      "type": "file"
+    },
+    {
+      "path": "src/app",
+      "accessCount": 5,
+      "lastAccessed": 1770596355684,
+      "type": "directory"
+    },
+    {
+      "path": "src/proxy.ts",
+      "accessCount": 5,
+      "lastAccessed": 1770597085724,
       "type": "file"
     },
     {
@@ -415,12 +427,6 @@
       "type": "file"
     },
     {
-      "path": "src/proxy.ts",
-      "accessCount": 2,
-      "lastAccessed": 1770584951638,
-      "type": "file"
-    },
-    {
       "path": "src/components/viewer/CameraSync.tsx",
       "accessCount": 2,
       "lastAccessed": 1770585520049,
@@ -437,12 +443,6 @@
       "accessCount": 2,
       "lastAccessed": 1770594550513,
       "type": "file"
-    },
-    {
-      "path": "src/app",
-      "accessCount": 2,
-      "lastAccessed": 1770595848530,
-      "type": "directory"
     },
     {
       "path": "src/components/viewer/Stats.tsx",
