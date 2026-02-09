@@ -41,7 +41,7 @@ export function ChatInput({
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter" && !e.shiftKey) {
+    if (e.key === "Enter" && !e.shiftKey && !e.nativeEvent.isComposing) {
       e.preventDefault();
       handleSend();
     }
@@ -49,40 +49,52 @@ export function ChatInput({
 
   return (
     <div
-      className={`flex flex-col gap-[10px] w-[1164px] bg-[rgba(64,64,64,0.3)] border-[3px] border-primary rounded-[32px] p-[24px] ${className || ""}`}
+      className={`relative flex flex-col justify-between w-full h-[127px] bg-[rgba(64,64,64,0.3)] rounded-[32px] p-[24px] gap-[10px] ${className || ""}`}
     >
+      {/* Gradient Border Overlay */}
+      <div
+        className="absolute inset-0 rounded-[32px] pointer-events-none"
+        style={{
+          padding: "3px",
+          background: "linear-gradient(to right, #02EEE1, transparent)",
+          mask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+          maskComposite: "exclude",
+          WebkitMaskComposite: "xor",
+        }}
+      />
+
       {/* Input Area */}
-      <div className="flex items-center gap-[4px] w-full">
+      <div className="flex items-center w-full h-[24px] gap-[4px] z-10">
         <input
           type="text"
           value={message}
           onChange={(e) => setMessage(e.target.value)}
-          onKeyPress={handleKeyPress}
+          onKeyDown={handleKeyPress}
           placeholder={placeholder}
-          className="flex-1 bg-transparent font-normal text-[16px] leading-[1.5] text-white placeholder:text-white/60 outline-none"
+          className="flex-1 bg-transparent font-normal text-[16px] leading-[1.5] text-[#E5E5E5] placeholder:text-neutral-400 outline-none h-full"
         />
         <button
           onClick={handleSend}
-          className="w-[24px] h-[24px] flex items-center justify-center text-primary hover:text-primary/80 transition-colors shrink-0"
+          className="w-[24px] h-[24px] flex items-center justify-center text-[#D4D4D4] hover:text-white transition-colors shrink-0"
           aria-label="Send message"
         >
           <LucideSend className="w-[24px] h-[24px]" strokeWidth={2} />
         </button>
       </div>
 
-      {/* Action Buttons */}
-      <div className="flex items-center gap-[24px] p-[10px]">
+      {/* Action Buttons (Bottom Left) */}
+      <div className="flex items-center gap-[16px] mt-auto z-10">
         <button
-          className="w-[25px] h-[25px] flex items-center justify-center text-primary hover:text-primary/80 transition-colors"
+          className="w-[24px] h-[24px] flex items-center justify-center text-[#02EEE1] hover:text-[#02EEE1]/80 transition-colors"
           aria-label="Attach file"
         >
-          <LucidePlus className="w-[25px] h-[25px]" strokeWidth={2} />
+          <LucidePlus className="w-[24px] h-[24px]" strokeWidth={2} />
         </button>
         <button
-          className="w-[25px] h-[25px] flex items-center justify-center text-primary hover:text-primary/80 transition-colors"
+          className="w-[24px] h-[24px] flex items-center justify-center text-[#02EEE1] hover:text-[#02EEE1]/80 transition-colors"
           aria-label="Settings"
         >
-          <LucideSettings2 className="w-[25px] h-[25px]" strokeWidth={2} />
+          <LucideSettings2 className="w-[24px] h-[24px]" strokeWidth={2} />
         </button>
       </div>
     </div>

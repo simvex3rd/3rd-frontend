@@ -122,7 +122,7 @@ export function ViewerHeader({
             const isActive =
               item.href === "/viewer"
                 ? pathname === "/viewer"
-                : pathname === item.href;
+                : pathname.startsWith(item.href);
 
             return (
               <Link
