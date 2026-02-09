@@ -94,65 +94,63 @@ export default function StudyPage() {
             </div>
 
             {/* Content Box with Sticky Notes - fills remaining space */}
-            <div className="bg-gray-30 border-[3px] border-primary rounded-[24px] flex-1 flex items-center justify-center relative overflow-hidden">
-              {/* Sticky Notes Container - absolute positioning for overflow */}
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="flex gap-[16px] items-center">
-                  {/* Sticky Note 1 */}
-                  <div className="bg-[rgba(2,238,225,0.3)] rounded-[24px] h-[240px] w-[280px] flex flex-col items-start justify-between p-[24px] shrink-0">
-                    <div className="space-y-[8px] w-full">
-                      <h3 className="font-bold text-[18px] leading-[1.5] text-white">
-                        크랭크샤프트
-                      </h3>
-                      <p className="font-medium text-[14px] leading-[1.5] text-white/80">
-                        - 엔진의 핵심 동력 전달 장치
-                        <br />
-                        - 피스톤의 왕복운동 → 회전운동 변환
-                        <br />- 고강도 합금강 재질
-                      </p>
-                    </div>
-                    <p className="font-medium text-[12px] text-white/60">
-                      2025.02.09
+            <div className="bg-gray-30 border-[3px] border-primary rounded-[24px] flex-1 flex items-start justify-center p-[32px] relative overflow-hidden">
+              {/* Sticky Notes Container - positioned at top */}
+              <div className="flex gap-[20px] items-start justify-center w-full">
+                {/* Sticky Note 1 */}
+                <div className="bg-[rgba(2,238,225,0.3)] rounded-[24px] flex-1 min-h-[320px] max-w-[380px] flex flex-col items-start justify-between p-[28px]">
+                  <div className="space-y-[12px] w-full">
+                    <h3 className="font-bold text-[20px] leading-[1.5] text-white">
+                      크랭크샤프트
+                    </h3>
+                    <p className="font-medium text-[15px] leading-[1.6] text-white/90">
+                      - 엔진의 핵심 동력 전달 장치
+                      <br />
+                      - 피스톤의 왕복운동 → 회전운동 변환
+                      <br />- 고강도 합금강 재질
                     </p>
                   </div>
+                  <p className="font-medium text-[13px] text-white/70">
+                    2025.02.09
+                  </p>
+                </div>
 
-                  {/* Sticky Note 2 */}
-                  <div className="bg-[rgba(2,238,225,0.3)] rounded-[24px] h-[240px] w-[280px] flex flex-col items-start justify-between p-[24px] shrink-0">
-                    <div className="space-y-[8px] w-full">
-                      <h3 className="font-bold text-[18px] leading-[1.5] text-white">
-                        학습 포인트
-                      </h3>
-                      <p className="font-medium text-[14px] leading-[1.5] text-white/80">
-                        - 베어링 구조 복습 필요
-                        <br />
-                        - 4행정 엔진 사이클 이해
-                        <br />- 열팽창 계수 개념 정리
-                      </p>
-                    </div>
-                    <p className="font-medium text-[12px] text-white/60">
-                      2025.02.09
+                {/* Sticky Note 2 */}
+                <div className="bg-[rgba(2,238,225,0.3)] rounded-[24px] flex-1 min-h-[320px] max-w-[380px] flex flex-col items-start justify-between p-[28px]">
+                  <div className="space-y-[12px] w-full">
+                    <h3 className="font-bold text-[20px] leading-[1.5] text-white">
+                      학습 포인트
+                    </h3>
+                    <p className="font-medium text-[15px] leading-[1.6] text-white/90">
+                      - 베어링 구조 복습 필요
+                      <br />
+                      - 4행정 엔진 사이클 이해
+                      <br />- 열팽창 계수 개념 정리
                     </p>
                   </div>
+                  <p className="font-medium text-[13px] text-white/70">
+                    2025.02.09
+                  </p>
+                </div>
 
-                  {/* Sticky Note 3 */}
-                  <div className="bg-[rgba(2,238,225,0.3)] rounded-[24px] h-[240px] w-[280px] flex flex-col items-start justify-between p-[24px] shrink-0">
-                    <div className="space-y-[8px] w-full">
-                      <h3 className="font-bold text-[18px] leading-[1.5] text-white">
-                        퀴즈 오답
-                      </h3>
-                      <p className="font-medium text-[14px] leading-[1.5] text-white/80">
-                        Q. 크랭크샤프트의 주요 기능은?
-                        <br />
-                        <br />
-                        틀린 답: 연료 분사
-                        <br />
-                        정답: 동력 전달 및 변환
-                      </p>
-                    </div>
-                    <p className="font-medium text-[12px] text-white/60">
-                      2025.02.08
+                {/* Sticky Note 3 */}
+                <div className="bg-[rgba(2,238,225,0.3)] rounded-[24px] flex-1 min-h-[320px] max-w-[380px] flex flex-col items-start justify-between p-[28px]">
+                  <div className="space-y-[12px] w-full">
+                    <h3 className="font-bold text-[20px] leading-[1.5] text-white">
+                      퀴즈 오답
+                    </h3>
+                    <p className="font-medium text-[15px] leading-[1.6] text-white/90">
+                      Q. 크랭크샤프트의 주요 기능은?
+                      <br />
+                      <br />
+                      틀린 답: 연료 분사
+                      <br />
+                      정답: 동력 전달 및 변환
                     </p>
                   </div>
+                  <p className="font-medium text-[13px] text-white/70">
+                    2025.02.08
+                  </p>
                 </div>
               </div>
             </div>
