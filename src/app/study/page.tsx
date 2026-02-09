@@ -105,7 +105,8 @@ export default function StudyPage() {
                 className="absolute inset-0 rounded-[24px] pointer-events-none"
                 style={{
                   padding: "3px",
-                  background: "linear-gradient(to right, #02EEE1, transparent)",
+                  background:
+                    "linear-gradient(to right, var(--color-primary), transparent)",
                   mask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
                   maskComposite: "exclude",
                   WebkitMaskComposite: "xor",
@@ -122,7 +123,7 @@ export default function StudyPage() {
                     className="object-contain"
                   />
                 </div>
-                <div className="bg-[rgba(1,169,160,0.3)] rounded-tl-[24px] rounded-tr-[24px] rounded-br-[24px] px-[24px] py-[16px]">
+                <div className="bg-hover-30 rounded-tl-[24px] rounded-tr-[24px] rounded-br-[24px] px-[24px] py-[16px]">
                   <p className="font-semibold text-[20px] leading-[1.25] text-white">
                     Jun님, 안녕하세요
                   </p>
@@ -143,7 +144,7 @@ export default function StudyPage() {
                   <button
                     key={item.action}
                     onClick={() => handleQuickAction(item.action)}
-                    className="px-[16px] py-[8px] rounded-[100px] border border-[#00C7BB] bg-[#2E2E2E] text-neutral-200 text-[14px] font-medium leading-[1.5] hover:bg-[#00C7BB]/20 transition-colors whitespace-nowrap"
+                    className="px-[16px] py-[8px] rounded-[100px] border border-primary bg-neutral-800 text-neutral-200 text-[14px] font-medium leading-[1.5] hover:bg-primary/20 transition-colors whitespace-nowrap"
                   >
                     {item.label}
                   </button>

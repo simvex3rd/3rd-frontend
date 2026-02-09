@@ -1,22 +1,11 @@
 /**
  * XSS sanitization utilities
  *
- * Uses DOMPurify to sanitize user-generated content (HTML, markdown).
- * Falls back to passthrough during SSR/build when jsdom is unavailable
- * (client components will re-sanitize on hydration).
+ * Uses DOMPurify (isomorphic-dompurify) to sanitize user-generated content.
+ * Works in both SSR and client environments.
  */
 
-let DOMPurify: {
-  sanitize: (dirty: string, cfg?: Record<string, unknown>) => string;
-};
-try {
-  // eslint-disable-next-line @typescript-eslint/no-require-imports
-  DOMPurify =
-    require("isomorphic-dompurify").default || require("isomorphic-dompurify");
-} catch {
-  // SSR/build fallback — client "use client" components will sanitize after hydration
-  DOMPurify = { sanitize: (dirty: string) => dirty };
-}
+import DOMPurify from "isomorphic-dompurify";
 
 /**
  * Sanitize HTML content to prevent XSS attacks

@@ -10,9 +10,8 @@ export interface Message {
   timestamp: Date;
 }
 
-let _msgCounter = 0;
 function nextId(prefix: string) {
-  return `${prefix}-${++_msgCounter}-${Math.random().toString(36).slice(2, 8)}`;
+  return `${prefix}-${crypto.randomUUID()}`;
 }
 
 export function useChatStream(sessionId: string | null) {
