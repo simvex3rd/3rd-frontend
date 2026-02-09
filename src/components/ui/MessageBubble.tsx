@@ -35,19 +35,19 @@ export function MessageBubble({ message }: MessageBubbleProps) {
 
               if (isBlock) {
                 return (
-                  <code className="block bg-gray-800 p-[12px] rounded my-[8px] overflow-x-auto text-[14px]">
+                  <code className="block bg-neutral-800 p-[12px] rounded my-[8px] overflow-x-auto text-[14px]">
                     {children}
                   </code>
                 );
               }
               return (
-                <code className="bg-gray-700 px-[4px] py-[2px] rounded text-[14px]">
+                <code className="bg-neutral-700 px-[4px] py-[2px] rounded text-[14px]">
                   {children}
                 </code>
               );
             },
             pre: (props) => (
-              <pre className="bg-gray-800 p-[12px] rounded my-[8px] overflow-x-auto">
+              <pre className="bg-neutral-800 p-[12px] rounded my-[8px] overflow-x-auto">
                 {props.children}
               </pre>
             ),

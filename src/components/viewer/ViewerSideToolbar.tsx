@@ -45,7 +45,11 @@ export function ViewerSideToolbar({ className }: ViewerSideToolbarProps) {
           openChat();
         }}
         className={cn(
-          "w-[30px] h-[30px] flex items-center justify-center -rotate-90 text-primary hover:text-primary-light transition-colors",
+          "w-[44px] h-[44px] flex items-center justify-center -rotate-90 text-primary transition-colors",
+          "hover:bg-primary/20 hover:text-primary",
+          "active:scale-95 active:bg-primary/40",
+          "focus-visible:ring-[2px] focus-visible:ring-primary focus-visible:ring-offset-[2px]",
+          "disabled:opacity-50 disabled:cursor-not-allowed",
           activeSideTool === "ai" && "bg-primary/30 ring-[2px] ring-primary"
         )}
         aria-label="Open AI Assistant"
@@ -68,7 +72,11 @@ export function ViewerSideToolbar({ className }: ViewerSideToolbarProps) {
           setSideTool(activeSideTool === "search" ? null : "search")
         }
         className={cn(
-          "w-[30px] h-[30px] flex items-center justify-center -rotate-90 text-primary hover:text-primary-light transition-colors",
+          "w-[44px] h-[44px] flex items-center justify-center -rotate-90 text-primary transition-colors",
+          "hover:bg-primary/20 hover:text-primary",
+          "active:scale-95 active:bg-primary/40",
+          "focus-visible:ring-[2px] focus-visible:ring-primary focus-visible:ring-offset-[2px]",
+          "disabled:opacity-50 disabled:cursor-not-allowed",
           activeSideTool === "search" && "bg-primary/30 ring-[2px] ring-primary"
         )}
         aria-label="Search parts"
@@ -103,7 +111,11 @@ export function ViewerSideToolbar({ className }: ViewerSideToolbarProps) {
       <button
         onClick={() => setSideTool(activeSideTool === "edit" ? null : "edit")}
         className={cn(
-          "w-[30px] h-[30px] flex items-center justify-center -rotate-90 text-primary hover:text-primary-light transition-colors",
+          "w-[44px] h-[44px] flex items-center justify-center -rotate-90 text-primary transition-colors",
+          "hover:bg-primary/20 hover:text-primary",
+          "active:scale-95 active:bg-primary/40",
+          "focus-visible:ring-[2px] focus-visible:ring-primary focus-visible:ring-offset-[2px]",
+          "disabled:opacity-50 disabled:cursor-not-allowed",
           activeSideTool === "edit" && "bg-primary/30 ring-[2px] ring-primary"
         )}
         aria-label="Edit annotations"

@@ -82,29 +82,27 @@ export const mockParts: Record<string, Part> = {
 };
 
 /**
- * 메시 이름으로 Part 정보 가져오기
+ * @deprecated Use usePartData hook instead. This function is kept for backward compatibility only.
  *
- * TODO: 백엔드 준비되면 API 호출로 교체
- * 예제 구현:
+ * 메시 이름으로 Part 정보 가져오기 (LEGACY)
+ *
+ * Migration guide:
  * ```
- * export async function getPartByMeshName(meshName: string): Promise<Part | undefined> {
- *   try {
- *     const response = await fetch(`/api/parts?meshName=${encodeURIComponent(meshName)}`);
- *     if (!response.ok) return undefined;
- *     return await response.json();
- *   } catch (error) {
- *     console.error('Failed to fetch part:', error);
- *     return undefined;
- *   }
- * }
+ * // Old (deprecated):
+ * const partInfo = getPartByMeshName(selectedObject);
+ *
+ * // New (recommended):
+ * import { usePartData } from '@/hooks/use-part-data';
+ * const { partData, loading, error } = usePartData(selectedObject);
  * ```
  *
  * @param meshName - Three.js 메시 이름
  * @returns Part 데이터 또는 undefined
  */
 export function getPartByMeshName(meshName: string): Part | undefined {
-  // TODO: API 호출로 교체
-  // return await fetchPartByMeshName(meshName);
+  console.warn(
+    "getPartByMeshName is deprecated. Use usePartData hook instead."
+  );
 
   // 먼저 정확히 일치하는 것 찾기
   if (mockParts[meshName]) {

@@ -23,7 +23,7 @@ import type { HTMLAttributes, ReactNode } from "react";
  */
 
 const chatBubbleVariants = cva(
-  "flex gap-[12px] w-full transition-all duration-200",
+  "flex gap-[12px] w-full transition-all duration-300",
   {
     variants: {
       variant: {

@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "lastScanned": 1770485025174,
+  "lastScanned": 1770575722733,
   "projectRoot": "/Users/justn/Projects/3rd-frontend",
   "techStack": {
     "languages": [
@@ -48,8 +48,8 @@
     "lintCommand": "pnpm lint",
     "devCommand": "pnpm dev",
     "scripts": {
-      "dev": "next dev",
-      "build": "next build",
+      "dev": "next dev --webpack",
+      "build": "next build --webpack",
       "start": "next start",
       "lint": "eslint",
       "lint:fix": "eslint --fix",
@@ -81,8 +81,8 @@
     "docs": {
       "path": "docs",
       "purpose": "Documentation",
-      "fileCount": 5,
-      "lastAccessed": 1770485025145,
+      "fileCount": 19,
+      "lastAccessed": 1770575722675,
       "keyFiles": [
         "ARCHITECTURE.md",
         "DESIGN_TOKENS.md",
@@ -94,35 +94,35 @@
     "public": {
       "path": "public",
       "purpose": "Public files",
-      "fileCount": 8,
-      "lastAccessed": 1770485025149,
+      "fileCount": 7,
+      "lastAccessed": 1770575722685,
       "keyFiles": [
-        "favicon-16x16.png",
-        "favicon-32x32.png",
-        "favicon.ico",
-        "grid.svg",
-        "icon-192.png"
+        "3d.png",
+        "cutie.png",
+        "favicon.png",
+        "logo.png",
+        "manifest.json"
       ]
     },
     "scripts": {
       "path": "scripts",
       "purpose": "Build/utility scripts",
       "fileCount": 2,
-      "lastAccessed": 1770485025150,
+      "lastAccessed": 1770575722686,
       "keyFiles": ["generate-favicons.mjs", "svg-to-png.mjs"]
     },
     "src": {
       "path": "src",
       "purpose": "Source code",
       "fileCount": 1,
-      "lastAccessed": 1770485025150,
-      "keyFiles": ["middleware.ts"]
+      "lastAccessed": 1770575722687,
+      "keyFiles": ["proxy.ts"]
     },
     "storybook-static": {
       "path": "storybook-static",
       "purpose": null,
-      "fileCount": 19,
-      "lastAccessed": 1770485025151,
+      "fileCount": 20,
+      "lastAccessed": 1770575722688,
       "keyFiles": [
         "favicon-16x16.png",
         "favicon-32x32.png",
@@ -131,345 +131,359 @@
         "favicon.svg"
       ]
     },
+    "docs/assets": {
+      "path": "docs/assets",
+      "purpose": "Static assets",
+      "fileCount": 0,
+      "lastAccessed": 1770575722689,
+      "keyFiles": []
+    },
+    "public/models": {
+      "path": "public/models",
+      "purpose": "Data models",
+      "fileCount": 0,
+      "lastAccessed": 1770575722689,
+      "keyFiles": []
+    },
     "src/app": {
       "path": "src/app",
       "purpose": "Application code",
       "fileCount": 8,
-      "lastAccessed": 1770485025151,
+      "lastAccessed": 1770575722690,
       "keyFiles": ["apple-icon.png", "favicon.ico", "globals.css"]
     },
     "src/components": {
       "path": "src/components",
       "purpose": "UI components",
       "fileCount": 0,
-      "lastAccessed": 1770485025151,
+      "lastAccessed": 1770575722690,
       "keyFiles": []
     },
     "src/lib": {
       "path": "src/lib",
       "purpose": "Library code",
       "fileCount": 4,
-      "lastAccessed": 1770485025152,
+      "lastAccessed": 1770575722690,
       "keyFiles": ["env.ts", "mock-data.ts", "sanitize.ts"]
     },
     "src/types": {
       "path": "src/types",
       "purpose": "Type definitions",
       "fileCount": 6,
-      "lastAccessed": 1770485025152,
+      "lastAccessed": 1770575722691,
       "keyFiles": ["api.ts", "chat.ts", "model.ts"]
     },
     "storybook-static/assets": {
       "path": "storybook-static/assets",
       "purpose": "Static assets",
-      "fileCount": 64,
-      "lastAccessed": 1770485025152,
+      "fileCount": 138,
+      "lastAccessed": 1770575722693,
       "keyFiles": [
-        "Button.stories-Dcxp5gXN.js",
-        "Color-6BZIO3FS-BfG1qIrT.js",
-        "DocsRenderer-LL677BLK-B9SHUUA9.js"
+        "Button.stories-CX5nBn9-.js",
+        "Button.stories-ZyVRidxs.js",
+        "Color-6BZIO3FS-KoHMdlws.js"
       ]
     }
   },
   "hotPaths": [
     {
+      "path": "src/app/viewer/page.tsx",
+      "accessCount": 59,
+      "lastAccessed": 1770595433123,
+      "type": "file"
+    },
+    {
+      "path": "src/components/panels/ChatInterface.tsx",
+      "accessCount": 54,
+      "lastAccessed": 1770595578537,
+      "type": "file"
+    },
+    {
+      "path": "src/components/viewer/ViewerToolbar.tsx",
+      "accessCount": 45,
+      "lastAccessed": 1770595351130,
+      "type": "file"
+    },
+    {
       "path": "src",
-      "accessCount": 70,
-      "lastAccessed": 1770552636503,
+      "accessCount": 44,
+      "lastAccessed": 1770595526141,
       "type": "directory"
     },
     {
-      "path": "src/app/sign-up/[[...sign-up]]/page.tsx",
-      "accessCount": 41,
-      "lastAccessed": 1770552789709,
-      "type": "file"
-    },
-    {
-      "path": "src/app/sign-in/[[...sign-in]]/page.tsx",
-      "accessCount": 35,
-      "lastAccessed": 1770552777994,
-      "type": "file"
-    },
-    {
-      "path": "src/components/ui/markdown-renderer.tsx",
-      "accessCount": 23,
-      "lastAccessed": 1770551062438,
-      "type": "file"
-    },
-    {
-      "path": "src/components/panels/part-sidebar.tsx",
-      "accessCount": 19,
-      "lastAccessed": 1770550819868,
-      "type": "file"
-    },
-    {
-      "path": "src/components/panels/PartInfoPanel.tsx",
-      "accessCount": 18,
-      "lastAccessed": 1770551168875,
-      "type": "file"
-    },
-    {
-      "path": "src/app/globals.css",
-      "accessCount": 16,
-      "lastAccessed": 1770551149728,
-      "type": "file"
-    },
-    {
-      "path": "src/components/ui/cta-button.tsx",
-      "accessCount": 15,
-      "lastAccessed": 1770553722750,
-      "type": "file"
-    },
-    {
-      "path": "src/components/ui/part-popup.tsx",
-      "accessCount": 14,
-      "lastAccessed": 1770551169685,
+      "path": "src/components/viewer/ViewerSideToolbar.tsx",
+      "accessCount": 40,
+      "lastAccessed": 1770595369421,
       "type": "file"
     },
     {
       "path": "",
-      "accessCount": 13,
-      "lastAccessed": 1770550651757,
+      "accessCount": 33,
+      "lastAccessed": 1770595527692,
       "type": "directory"
     },
     {
-      "path": "src/components/panels/chat-sidebar.tsx",
-      "accessCount": 13,
-      "lastAccessed": 1770552726238,
+      "path": "src/components/viewer/ViewerHeader.tsx",
+      "accessCount": 32,
+      "lastAccessed": 1770595301850,
       "type": "file"
     },
     {
-      "path": "src/components/ui/model-card.tsx",
-      "accessCount": 11,
-      "lastAccessed": 1770550627180,
+      "path": "src/components/viewer/ViewerZoomSlider.tsx",
+      "accessCount": 32,
+      "lastAccessed": 1770595425934,
       "type": "file"
     },
     {
-      "path": "src/components/ui/value-card.tsx",
-      "accessCount": 11,
-      "lastAccessed": 1770550627682,
+      "path": "src/components/panels/PartInfoPanel.tsx",
+      "accessCount": 28,
+      "lastAccessed": 1770593462234,
       "type": "file"
-    },
-    {
-      "path": "src/app/page.tsx",
-      "accessCount": 10,
-      "lastAccessed": 1770550169412,
-      "type": "file"
-    },
-    {
-      "path": "src/components/ui/slide-bar.tsx",
-      "accessCount": 10,
-      "lastAccessed": 1770551063213,
-      "type": "file"
-    },
-    {
-      "path": "src/app/layout.tsx",
-      "accessCount": 10,
-      "lastAccessed": 1770551302228,
-      "type": "file"
-    },
-    {
-      "path": "src/components/panels/footer.tsx",
-      "accessCount": 9,
-      "lastAccessed": 1770549493070,
-      "type": "file"
-    },
-    {
-      "path": "src/components/ui/input.tsx",
-      "accessCount": 9,
-      "lastAccessed": 1770551078007,
-      "type": "file"
-    },
-    {
-      "path": "package.json",
-      "accessCount": 9,
-      "lastAccessed": 1770553579521,
-      "type": "file"
-    },
-    {
-      "path": "src/components/ui/button.tsx",
-      "accessCount": 8,
-      "lastAccessed": 1770549665765,
-      "type": "file"
-    },
-    {
-      "path": "src/components/ui/markdown-renderer.stories.tsx",
-      "accessCount": 8,
-      "lastAccessed": 1770549993300,
-      "type": "file"
-    },
-    {
-      "path": "src/components/ui/icon-button.tsx",
-      "accessCount": 8,
-      "lastAccessed": 1770550635116,
-      "type": "file"
-    },
-    {
-      "path": "src/components/common/Icon.tsx",
-      "accessCount": 8,
-      "lastAccessed": 1770550745078,
-      "type": "file"
-    },
-    {
-      "path": "src/components/panels/navigation.tsx",
-      "accessCount": 7,
-      "lastAccessed": 1770549492688,
-      "type": "file"
-    },
-    {
-      "path": "src/components/panels/part-sidebar.stories.tsx",
-      "accessCount": 7,
-      "lastAccessed": 1770550016494,
-      "type": "file"
-    },
-    {
-      "path": "src/components",
-      "accessCount": 6,
-      "lastAccessed": 1770547274486,
-      "type": "directory"
-    },
-    {
-      "path": "src/components/ui/text-field.tsx",
-      "accessCount": 6,
-      "lastAccessed": 1770547319224,
-      "type": "file"
-    },
-    {
-      "path": "src/components/ui/logo.tsx",
-      "accessCount": 5,
-      "lastAccessed": 1770545822072,
-      "type": "file"
-    },
-    {
-      "path": "src/components/ui/label.tsx",
-      "accessCount": 5,
-      "lastAccessed": 1770547319734,
-      "type": "file"
-    },
-    {
-      "path": "src/components/ui/help-message.tsx",
-      "accessCount": 5,
-      "lastAccessed": 1770547320178,
-      "type": "file"
-    },
-    {
-      "path": "src/components/ui",
-      "accessCount": 4,
-      "lastAccessed": 1770545818243,
-      "type": "directory"
-    },
-    {
-      "path": "src/components/panels/login-header.tsx",
-      "accessCount": 4,
-      "lastAccessed": 1770545929279,
-      "type": "file"
-    },
-    {
-      "path": "src/components/ui/part-popup.stories.tsx",
-      "accessCount": 3,
-      "lastAccessed": 1770488256635,
-      "type": "file"
-    },
-    {
-      "path": "src/components/layouts/main-layout.tsx",
-      "accessCount": 3,
-      "lastAccessed": 1770489348580,
-      "type": "file"
-    },
-    {
-      "path": "src/components/ui/link-button.tsx",
-      "accessCount": 3,
-      "lastAccessed": 1770545838233,
-      "type": "file"
-    },
-    {
-      "path": "src/components/panels/chat-sidebar.stories.tsx",
-      "accessCount": 2,
-      "lastAccessed": 1770488311665,
-      "type": "file"
-    },
-    {
-      "path": ".storybook/preview.ts",
-      "accessCount": 2,
-      "lastAccessed": 1770488447917,
-      "type": "file"
-    },
-    {
-      "path": "src/components/ui/card.tsx",
-      "accessCount": 2,
-      "lastAccessed": 1770489238430,
-      "type": "file"
-    },
-    {
-      "path": "src/components/ui/value-card.stories.tsx",
-      "accessCount": 2,
-      "lastAccessed": 1770489369882,
-      "type": "file"
-    },
-    {
-      "path": "src/app",
-      "accessCount": 2,
-      "lastAccessed": 1770546116351,
-      "type": "directory"
     },
     {
       "path": "src/components/viewer/SceneCanvas.tsx",
-      "accessCount": 2,
-      "lastAccessed": 1770550644224,
+      "accessCount": 25,
+      "lastAccessed": 1770593142877,
       "type": "file"
     },
     {
-      "path": "public/icons/ai-assistant.svg",
-      "accessCount": 1,
-      "lastAccessed": 1770487958409,
+      "path": "src/app/globals.css",
+      "accessCount": 23,
+      "lastAccessed": 1770595438396,
       "type": "file"
     },
     {
-      "path": "public/icons/part-info.svg",
-      "accessCount": 1,
-      "lastAccessed": 1770488002513,
+      "path": "src/components/panels/QuizPanel.tsx",
+      "accessCount": 20,
+      "lastAccessed": 1770595416573,
       "type": "file"
     },
     {
-      "path": "public/icons/hamburger.svg",
-      "accessCount": 1,
-      "lastAccessed": 1770488004259,
-      "type": "file"
-    },
-    {
-      "path": "public/icons/chat.svg",
-      "accessCount": 1,
-      "lastAccessed": 1770488026629,
-      "type": "file"
-    },
-    {
-      "path": "src/components/ui/slide-bar.stories.tsx",
-      "accessCount": 1,
-      "lastAccessed": 1770488160109,
+      "path": "src/components/panels/NotesPanel.tsx",
+      "accessCount": 18,
+      "lastAccessed": 1770595411526,
       "type": "file"
     },
     {
       "path": "src/components/viewer/Model.tsx",
+      "accessCount": 17,
+      "lastAccessed": 1770593143490,
+      "type": "file"
+    },
+    {
+      "path": "src/components/ui/MessageBubble.tsx",
+      "accessCount": 15,
+      "lastAccessed": 1770595421918,
+      "type": "file"
+    },
+    {
+      "path": "src/components/layout/landing-header.tsx",
+      "accessCount": 13,
+      "lastAccessed": 1770593462670,
+      "type": "file"
+    },
+    {
+      "path": "src/stores/scene-store.ts",
+      "accessCount": 13,
+      "lastAccessed": 1770594819383,
+      "type": "file"
+    },
+    {
+      "path": "src/components/ui/chat-bubble.tsx",
+      "accessCount": 12,
+      "lastAccessed": 1770595540281,
+      "type": "file"
+    },
+    {
+      "path": "src/components/ui/markdown-renderer.tsx",
+      "accessCount": 11,
+      "lastAccessed": 1770595285731,
+      "type": "file"
+    },
+    {
+      "path": "src/components/ui/chat-history.tsx",
+      "accessCount": 10,
+      "lastAccessed": 1770593958707,
+      "type": "file"
+    },
+    {
+      "path": "src/components/ui/chat-input.tsx",
+      "accessCount": 10,
+      "lastAccessed": 1770595391559,
+      "type": "file"
+    },
+    {
+      "path": "src/types/api.ts",
+      "accessCount": 7,
+      "lastAccessed": 1770585553767,
+      "type": "file"
+    },
+    {
+      "path": "src/components/panels/ai-assistant.tsx",
+      "accessCount": 7,
+      "lastAccessed": 1770593443096,
+      "type": "file"
+    },
+    {
+      "path": "package.json",
+      "accessCount": 7,
+      "lastAccessed": 1770594824802,
+      "type": "file"
+    },
+    {
+      "path": "src/lib/api/client.ts",
+      "accessCount": 6,
+      "lastAccessed": 1770584925950,
+      "type": "file"
+    },
+    {
+      "path": "src/components/panels/chat-sidebar.tsx",
+      "accessCount": 6,
+      "lastAccessed": 1770593472526,
+      "type": "file"
+    },
+    {
+      "path": "src/app/page.tsx",
+      "accessCount": 4,
+      "lastAccessed": 1770585537452,
+      "type": "file"
+    },
+    {
+      "path": "CLAUDE.md",
+      "accessCount": 3,
+      "lastAccessed": 1770581964162,
+      "type": "file"
+    },
+    {
+      "path": "src/lib/mock-data.ts",
+      "accessCount": 3,
+      "lastAccessed": 1770584382349,
+      "type": "file"
+    },
+    {
+      "path": "src/types/model.ts",
+      "accessCount": 3,
+      "lastAccessed": 1770584928022,
+      "type": "file"
+    },
+    {
+      "path": "src/components/ui/slide-bar.tsx",
+      "accessCount": 3,
+      "lastAccessed": 1770586934498,
+      "type": "file"
+    },
+    {
+      "path": "src/app/layout.tsx",
+      "accessCount": 2,
+      "lastAccessed": 1770579126407,
+      "type": "file"
+    },
+    {
+      "path": "GEMINI.md",
+      "accessCount": 2,
+      "lastAccessed": 1770581995255,
+      "type": "file"
+    },
+    {
+      "path": ".env.local",
+      "accessCount": 2,
+      "lastAccessed": 1770584293777,
+      "type": "file"
+    },
+    {
+      "path": "src/lib/api/error-handler.ts",
+      "accessCount": 2,
+      "lastAccessed": 1770584926751,
+      "type": "file"
+    },
+    {
+      "path": "src/types/chat.ts",
+      "accessCount": 2,
+      "lastAccessed": 1770584927690,
+      "type": "file"
+    },
+    {
+      "path": "src/types/note.ts",
+      "accessCount": 2,
+      "lastAccessed": 1770584928470,
+      "type": "file"
+    },
+    {
+      "path": "src/lib/pdf-export.ts",
+      "accessCount": 2,
+      "lastAccessed": 1770584949303,
+      "type": "file"
+    },
+    {
+      "path": "src/proxy.ts",
+      "accessCount": 2,
+      "lastAccessed": 1770584951638,
+      "type": "file"
+    },
+    {
+      "path": "src/components/viewer/CameraSync.tsx",
+      "accessCount": 2,
+      "lastAccessed": 1770585520049,
+      "type": "file"
+    },
+    {
+      "path": "VIEWER_PAGE_ANALYSIS_REPORT.md",
+      "accessCount": 2,
+      "lastAccessed": 1770585555849,
+      "type": "file"
+    },
+    {
+      "path": "src/lib/utils.ts",
+      "accessCount": 2,
+      "lastAccessed": 1770594550513,
+      "type": "file"
+    },
+    {
+      "path": "src/components/viewer/Stats.tsx",
       "accessCount": 1,
-      "lastAccessed": 1770489228729,
+      "lastAccessed": 1770576350440,
       "type": "file"
     },
     {
       "path": "src/hooks/use-store-hydration.ts",
       "accessCount": 1,
-      "lastAccessed": 1770489236991,
+      "lastAccessed": 1770576357233,
       "type": "file"
     },
     {
-      "path": "src/stores/scene-store.ts",
+      "path": ".env.example",
       "accessCount": 1,
-      "lastAccessed": 1770489238838,
+      "lastAccessed": 1770576365129,
       "type": "file"
     },
     {
-      "path": "src/components/ui/card.stories.tsx",
+      "path": "src/lib/env.ts",
       "accessCount": 1,
-      "lastAccessed": 1770489241118,
+      "lastAccessed": 1770576366047,
+      "type": "file"
+    },
+    {
+      "path": "next.config.ts",
+      "accessCount": 1,
+      "lastAccessed": 1770576368762,
+      "type": "file"
+    },
+    {
+      "path": "LAYOUT_ANALYSIS.md",
+      "accessCount": 1,
+      "lastAccessed": 1770578354970,
+      "type": "file"
+    },
+    {
+      "path": "src/app",
+      "accessCount": 1,
+      "lastAccessed": 1770579004967,
+      "type": "directory"
+    },
+    {
+      "path": ".claude/CANVAS_ZOOM_TROUBLESHOOTING.md",
+      "accessCount": 1,
+      "lastAccessed": 1770581890328,
       "type": "file"
     }
   ],

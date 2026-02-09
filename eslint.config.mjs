@@ -51,6 +51,8 @@ globalIgnores([
     "react-hooks/exhaustive-deps": ["warn", {
       additionalHooks: "(useFrame|useThree)"
     }],
+    // Allow setState in effects for data-fetching hooks
+    "react-hooks/set-state-in-effect": "off",
 
     // Accessibility rules
     "jsx-a11y/alt-text": "warn",

@@ -34,7 +34,7 @@ export function QuizPanel({ quiz, onComplete }: QuizPanelProps) {
   };
 
   return (
-    <div className="bg-[rgba(64,64,64,0.7)] rounded-[24px] p-[24px] max-w-[500px]">
+    <div className="bg-[rgba(64,64,64,0.7)] backdrop-blur-sm rounded-[24px] p-[24px] max-w-[500px]">
       <h3 className="text-[24px] font-semibold text-primary mb-[16px]">
         {quiz.question}
       </h3>
@@ -47,17 +47,19 @@ export function QuizPanel({ quiz, onComplete }: QuizPanelProps) {
             disabled={isSubmitted}
             className={cn(
               "w-full p-[16px] rounded-[16px] border-[2px] text-left transition-all",
+              "focus-visible:ring-[2px] focus-visible:ring-primary focus-visible:ring-offset-[2px]",
               selectedAnswer === option.id
                 ? "bg-primary/30 border-primary"
-                : "bg-transparent border-gray-600 hover:border-gray-400",
+                : "bg-transparent border-neutral-600 hover:border-neutral-400",
               isSubmitted &&
                 option.id === quiz.correctAnswer &&
-                "border-green-500 bg-green-500/20",
+                "border-success bg-success/20",
               isSubmitted &&
                 option.id === selectedAnswer &&
                 option.id !== quiz.correctAnswer &&
-                "border-red-500 bg-red-500/20"
+                "border-error bg-error/20"
             )}
+            aria-label={option.text}
           >
             <span className="text-white">{option.text}</span>
           </button>
@@ -76,9 +78,7 @@ export function QuizPanel({ quiz, onComplete }: QuizPanelProps) {
         <div
           className={cn(
             "p-[16px] rounded-[16px] text-center font-semibold",
-            isCorrect
-              ? "bg-green-500/30 text-green-400"
-              : "bg-red-500/30 text-red-400"
+            isCorrect ? "bg-success/30 text-success" : "bg-error/30 text-error"
           )}
         >
           {isCorrect ? "✓ 정답입니다!" : "✗ 오답입니다. 다시 시도해보세요."}

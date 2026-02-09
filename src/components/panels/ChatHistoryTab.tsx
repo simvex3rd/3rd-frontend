@@ -56,14 +56,14 @@ export function ChatHistoryTab({
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
         placeholder="검색..."
-        className="w-full mb-[16px] px-[12px] py-[8px] bg-gray-700 text-white rounded-[8px] outline-none"
+        className="w-full mb-[16px] px-[12px] py-[8px] bg-neutral-700 text-white rounded-[8px] outline-none"
       />
 
       {/* Sessions list */}
       {loading ? (
-        <p className="text-gray-400">로딩 중...</p>
+        <p className="text-neutral-400">로딩 중...</p>
       ) : filteredSessions.length === 0 ? (
-        <p className="text-gray-400">대화 내역이 없습니다.</p>
+        <p className="text-neutral-400">대화 내역이 없습니다.</p>
       ) : (
         <div className="space-y-2">
           {filteredSessions.map((session) => (
@@ -74,13 +74,13 @@ export function ChatHistoryTab({
                 "w-full p-[12px] text-left rounded-[8px] transition-colors",
                 session.id === currentSessionId
                   ? "bg-primary/30 border-2 border-primary"
-                  : "bg-gray-700 hover:bg-gray-600"
+                  : "bg-neutral-700 hover:bg-neutral-600"
               )}
             >
               <p className="text-white font-medium truncate">
                 {session.title || "제목 없음"}
               </p>
-              <p className="text-[12px] text-gray-400 mt-[4px]">
+              <p className="text-[12px] text-neutral-400 mt-[4px]">
                 {new Date(session.created_at).toLocaleString("ko-KR")}
               </p>
             </button>

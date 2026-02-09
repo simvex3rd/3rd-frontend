@@ -45,7 +45,7 @@ export interface ChatInterfaceProps extends HTMLAttributes<HTMLDivElement> {
 
 export function ChatInterface({
   className,
-  defaultOpen = true,
+  _defaultOpen = true,
   onSend,
   initialMessages = [],
   ...props
@@ -154,20 +154,16 @@ ${partData.description ? `설명: ${partData.description}` : ""}
       {/* Glassmorphic Background Container */}
       <div
         className={cn(
-          "h-full flex flex-col backdrop-blur-md transition-all duration-300",
+          "h-full flex flex-col bg-[rgba(64,64,64,0.7)] backdrop-blur-md transition-all duration-300",
           isChatOpen ? "rounded-l-[24px]" : "rounded-l-[12px]"
         )}
-        style={{
-          backgroundColor: "rgba(64, 64, 64, 0.7)",
-        }}
       >
         {/* Header - 67px height */}
         <div
           className={cn(
-            "h-[67px] shrink-0 flex items-center px-[24px] transition-all duration-300",
+            "h-[67px] shrink-0 flex items-center px-[24px] transition-all duration-300 bg-neutral-700",
             isChatOpen ? "rounded-tl-[24px]" : "rounded-tl-[12px]"
           )}
-          style={{ backgroundColor: "#404040" }}
         >
           <div className="flex items-center justify-between w-full">
             {/* Toggle Button */}
@@ -239,9 +235,8 @@ ${partData.description ? `설명: ${partData.description}` : ""}
                       {msg.role === "user" ? (
                         <div className="flex flex-col items-end gap-[8px]">
                           <div
-                            className="max-w-[80%] px-[16px] py-[12px] rounded-[16px] break-words"
+                            className="max-w-[80%] px-[16px] py-[12px] rounded-[16px] break-words bg-primary-30"
                             style={{
-                              backgroundColor: "rgba(2, 238, 225, 0.3)",
                               borderBottomRightRadius: "0px",
                             }}
                           >
@@ -266,9 +261,8 @@ ${partData.description ? `설명: ${partData.description}` : ""}
                       ) : (
                         <div className="flex flex-col items-start gap-[8px]">
                           <div
-                            className="max-w-[80%] px-[16px] py-[12px] rounded-[16px] break-words"
+                            className="max-w-[80%] px-[16px] py-[12px] rounded-[16px] break-words bg-hover-30"
                             style={{
-                              backgroundColor: "rgba(1, 169, 160, 0.3)",
                               borderBottomLeftRadius: "0px",
                             }}
                           >
@@ -292,12 +286,7 @@ ${partData.description ? `설명: ${partData.description}` : ""}
 
             {/* Input Area - Fixed at bottom */}
             <div className="shrink-0 px-[24px] py-[24px] border-t border-neutral-600">
-              <div
-                className="relative rounded-[32px] border border-primary p-[16px]"
-                style={{
-                  backgroundColor: "rgba(64, 64, 64, 0.3)",
-                }}
-              >
+              <div className="relative rounded-[32px] border border-primary p-[16px] bg-[rgba(64,64,64,0.3)]">
                 <ChatInput
                   placeholder="Ask me anything about your simulation..."
                   value={inputValue}

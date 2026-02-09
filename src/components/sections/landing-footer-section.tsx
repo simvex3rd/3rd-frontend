@@ -28,7 +28,7 @@ export function LandingFooterSection() {
       className={cn(
         "w-full h-auto",
         "flex items-end justify-center",
-        "transition-all duration-700 ease-out",
+        "transition-all duration-500 ease-out",
         isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"
       )}
       aria-label="Footer section"

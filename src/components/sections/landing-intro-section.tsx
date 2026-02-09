@@ -32,7 +32,7 @@ export function LandingIntroSection() {
         "flex items-center justify-center",
         "px-[80px] py-[80px]", // 1920px Figma spacing
         "bg-background",
-        "transition-all duration-700 ease-out",
+        "transition-all duration-500 ease-out",
         isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"
       )}
       aria-label="Hero section"

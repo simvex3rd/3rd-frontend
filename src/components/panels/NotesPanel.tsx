@@ -46,12 +46,13 @@ export function NotesPanel() {
         value={note}
         onChange={(e) => setNote(e.target.value)}
         onBlur={handleSave}
-        className="flex-1 w-full bg-transparent text-white resize-none outline-none placeholder:text-gray-300"
+        className="flex-1 w-full bg-transparent text-white resize-none outline-none placeholder:text-neutral-300 focus-visible:ring-[2px] focus-visible:ring-primary focus-visible:ring-offset-[2px] rounded-[8px]"
         placeholder="메모를 입력하세요..."
+        aria-label="Part notes"
       />
 
       {lastSaved && (
-        <p className="text-[12px] text-gray-300 mt-[8px]">
+        <p className="text-[12px] text-neutral-300 mt-[8px]">
           저장됨: {lastSaved.toLocaleTimeString()}
         </p>
       )}

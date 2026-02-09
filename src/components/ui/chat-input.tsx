@@ -107,7 +107,7 @@ export const ChatInput = forwardRef<HTMLTextAreaElement, ChatInputProps>(
         >
           <textarea
             ref={ref}
-            className="min-h-[40px] max-h-[120px] flex-1 resize-none bg-transparent py-[6px] text-[16px] leading-[1.5] outline-none placeholder:text-inherit"
+            className="min-h-[40px] max-h-[120px] flex-1 resize-none bg-transparent py-[6px] text-[16px] leading-[1.5] outline-none placeholder:text-inherit focus-visible:ring-[2px] focus-visible:ring-primary focus-visible:ring-offset-[2px] rounded-[4px]"
             disabled={disabled}
             maxLength={maxLength}
             value={value}

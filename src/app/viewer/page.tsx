@@ -32,6 +32,14 @@ export default function ViewerPage() {
 
   return (
     <div className="relative w-full max-[1919px]:h-[133.33vh] h-screen bg-neutral-900 overflow-hidden">
+      {/* Skip to main content link */}
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:absolute focus:top-[16px] focus:left-[16px] focus:z-[9999] focus:px-[16px] focus:py-[8px] focus:bg-primary focus:text-background focus:rounded-[8px] focus:font-semibold"
+      >
+        Skip to main content
+      </a>
+
       {/* Header - Always visible on top */}
       <ViewerHeader />
 
@@ -42,50 +50,53 @@ export default function ViewerPage() {
         </div>
       )}
 
-      {/* 3D Canvas Background (z-0) - Full viewport with scale compensation */}
-      {isHydrated && (
-        <div
-          className="absolute left-1/2 top-1/2 z-0"
-          style={{
-            width: "100vw",
-            height: "100vh",
-            transform: "translate(-50%, -50%) scale(1.3333)",
-          }}
-        >
-          <SceneCanvas>
-            <Model url="/models/V4_Engine/Crankshaft-draco.glb" />
-          </SceneCanvas>
+      {/* Main content area */}
+      <main id="main-content">
+        {/* 3D Canvas Background (z-0) - Full viewport with scale compensation */}
+        {isHydrated && (
+          <div
+            className="absolute left-1/2 top-1/2 z-0"
+            style={{
+              width: "100vw",
+              height: "100vh",
+              transform: "translate(-50%, -50%) scale(1.3333)",
+            }}
+          >
+            <SceneCanvas>
+              <Model url="/models/V4_Engine/Crankshaft-draco.glb" />
+            </SceneCanvas>
+          </div>
+        )}
+
+        {/* Top Toolbar - 가로 중앙, 헤더 아래 40px */}
+        <div className="absolute top-[142px] left-1/2 -translate-x-1/2 pointer-events-auto z-10">
+          <ViewerToolbar />
         </div>
-      )}
 
-      {/* Top Toolbar - 가로 중앙, 헤더 아래 40px */}
-      <div className="absolute top-[142px] left-1/2 -translate-x-1/2 pointer-events-auto z-10">
-        <ViewerToolbar />
-      </div>
-
-      {/* Side Toolbar - 오른쪽 40px, 수직 중앙 */}
-      <div className="absolute right-[40px] top-1/2 -translate-y-1/2 pointer-events-auto z-10">
-        <div className="rotate-90">
-          <ViewerSideToolbar />
+        {/* Side Toolbar - 오른쪽 40px, 수직 중앙 */}
+        <div className="absolute right-[40px] top-1/2 -translate-y-1/2 pointer-events-auto z-10">
+          <div className="rotate-90">
+            <ViewerSideToolbar />
+          </div>
         </div>
-      </div>
 
-      {/* Zoom Slider - 하단 중앙, 바닥에서 40px */}
-      <div className="absolute bottom-[40px] left-1/2 -translate-x-1/2 pointer-events-auto z-10">
-        <ViewerZoomSlider compact={hasPartSelected} />
-      </div>
-
-      {/* Chat Interface - Right side, always visible */}
-      <div className="absolute right-0 top-0 h-full pointer-events-auto z-30">
-        <ChatInterface />
-      </div>
-
-      {/* Part Info Panel - Side Overlay, left of chat when part selected */}
-      {showPartInfo && (
-        <div className="absolute right-[442px] top-0 h-full pointer-events-auto z-20">
-          <PartInfoPanel />
+        {/* Zoom Slider - 하단 중앙, 바닥에서 40px */}
+        <div className="absolute bottom-[40px] left-1/2 -translate-x-1/2 pointer-events-auto z-10">
+          <ViewerZoomSlider compact={hasPartSelected} />
         </div>
-      )}
+
+        {/* Chat Interface - Right side, always visible */}
+        <div className="absolute right-0 top-0 h-full pointer-events-auto z-30">
+          <ChatInterface />
+        </div>
+
+        {/* Part Info Panel - Side Overlay, left of chat when part selected */}
+        {showPartInfo && (
+          <div className="absolute right-[442px] top-0 h-full pointer-events-auto z-20">
+            <PartInfoPanel />
+          </div>
+        )}
+      </main>
     </div>
   );
 }

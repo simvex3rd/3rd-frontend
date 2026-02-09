@@ -1,0 +1,24 @@
+{
+  "created_at": "2026-02-08T21:24:35.774Z",
+  "trigger": "auto",
+  "active_modes": {
+    "ralph": {
+      "iteration": 16,
+      "prompt": ""
+    },
+    "ultrawork": {
+      "original_prompt": "전체 점검 ㄱㄱ. 피그마에는 있는데 여기엔 없는 거라던지. 뭐 호버나 선택 상태 같은 거 구현 안됐다던지. 그런 거들 다 하나하나 존나 개쫀나 씨발 개 세세하게 분석해. ralph loop로 20번 돌고, 계속 분석해. ㅈㄴ 많은 에이전트를 가지고. ㅇㅋ?"
+    }
+  },
+  "todo_summary": {
+    "pending": 0,
+    "in_progress": 0,
+    "completed": 0
+  },
+  "wisdom_exported": false,
+  "background_jobs": {
+    "active": [],
+    "recent": [],
+    "stats": null
+  }
+}

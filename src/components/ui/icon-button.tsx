@@ -25,7 +25,7 @@ import type { ButtonHTMLAttributes } from "react";
 
 const iconButtonVariants = cva(
   // Base classes - square button that changes to rounded on hover
-  "inline-flex items-center justify-center transition-all duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary",
+  "inline-flex items-center justify-center transition-all duration-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary",
   {
     variants: {
       size: {

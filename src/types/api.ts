@@ -159,3 +159,81 @@ export interface ApiRequestOptions {
    */
   timeout?: number;
 }
+
+/**
+ * Backend API Types (from Railway backend)
+ */
+
+/**
+ * Model list item (GET /api/v1/models)
+ */
+export interface ModelListItem {
+  id: string;
+  name: string;
+  thumbnail_url: string;
+}
+
+/**
+ * Part geometry information
+ */
+export interface PartGeometry {
+  initial_position: [number, number, number];
+  initial_rotation: [number, number, number];
+  initial_scale: [number, number, number];
+  exploded_position: [number, number, number];
+}
+
+/**
+ * Part detail (nested in ModelDetail)
+ */
+export interface Part {
+  id: string;
+  name: string;
+  description: string;
+  material: string;
+  metadata?: Record<string, unknown>;
+  geometry: PartGeometry;
+}
+
+/**
+ * Model detail (GET /api/v1/models/:id)
+ */
+export interface ModelDetail {
+  id: string;
+  name: string;
+  thumbnail_url: string;
+  parts: Part[];
+}
+
+/**
+ * Chat session (GET /api/v1/chat/sessions)
+ */
+export interface ChatSession {
+  id: string;
+  model_id: string;
+  title?: string;
+  created_at: string;
+}
+
+/**
+ * Chat message (GET /api/v1/chat/sessions/:id/messages)
+ */
+export interface ChatMessage {
+  id: string;
+  session_id: string;
+  role: "user" | "assistant";
+  content: string;
+  created_at: string;
+}
+
+/**
+ * Study note (GET /api/v1/notes)
+ */
+export interface StudyNote {
+  id: string;
+  user_id: string;
+  model_id: string;
+  part_id?: string;
+  content: string;
+  updated_at: string;
+}

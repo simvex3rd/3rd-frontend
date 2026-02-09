@@ -52,7 +52,11 @@ export function ViewerToolbar({ className }: ViewerToolbarProps) {
           setViewerTool(activeViewerTool === "focus" ? null : "focus")
         }
         className={cn(
-          "w-[30px] h-[30px] flex items-center justify-center text-primary hover:text-primary-light transition-colors",
+          "w-[44px] h-[44px] flex items-center justify-center text-primary transition-colors",
+          "hover:bg-primary/20 hover:text-primary",
+          "active:scale-95 active:bg-primary/40",
+          "focus-visible:ring-[2px] focus-visible:ring-primary focus-visible:ring-offset-[2px]",
+          "disabled:opacity-50 disabled:cursor-not-allowed",
           activeViewerTool === "focus" &&
             "bg-primary/30 ring-[2px] ring-primary"
         )}
@@ -74,7 +78,11 @@ export function ViewerToolbar({ className }: ViewerToolbarProps) {
       <button
         onClick={toggleWireframe}
         className={cn(
-          "w-[30px] h-[30px] flex items-center justify-center text-primary hover:text-primary-light transition-colors",
+          "w-[44px] h-[44px] flex items-center justify-center text-primary transition-colors",
+          "hover:bg-primary/20 hover:text-primary",
+          "active:scale-95 active:bg-primary/40",
+          "focus-visible:ring-[2px] focus-visible:ring-primary focus-visible:ring-offset-[2px]",
+          "disabled:opacity-50 disabled:cursor-not-allowed",
           isWireframeMode && "bg-primary/30 ring-[2px] ring-primary"
         )}
         aria-label="Toggle wireframe view"
@@ -95,7 +103,11 @@ export function ViewerToolbar({ className }: ViewerToolbarProps) {
       <button
         onClick={toggleCameraLock}
         className={cn(
-          "w-[30px] h-[30px] flex items-center justify-center text-primary hover:text-primary-light transition-colors",
+          "w-[44px] h-[44px] flex items-center justify-center text-primary transition-colors",
+          "hover:bg-primary/20 hover:text-primary",
+          "active:scale-95 active:bg-primary/40",
+          "focus-visible:ring-[2px] focus-visible:ring-primary focus-visible:ring-offset-[2px]",
+          "disabled:opacity-50 disabled:cursor-not-allowed",
           isCameraLocked && "bg-primary/30 ring-[2px] ring-primary"
         )}
         aria-label="Lock camera position"
@@ -123,7 +135,11 @@ export function ViewerToolbar({ className }: ViewerToolbarProps) {
           setViewerTool(activeViewerTool === "measure" ? null : "measure")
         }
         className={cn(
-          "w-[30px] h-[30px] flex items-center justify-center text-primary hover:text-primary-light transition-colors",
+          "w-[44px] h-[44px] flex items-center justify-center text-primary transition-colors",
+          "hover:bg-primary/20 hover:text-primary",
+          "active:scale-95 active:bg-primary/40",
+          "focus-visible:ring-[2px] focus-visible:ring-primary focus-visible:ring-offset-[2px]",
+          "disabled:opacity-50 disabled:cursor-not-allowed",
           activeViewerTool === "measure" &&
             "bg-primary/30 ring-[2px] ring-primary"
         )}
