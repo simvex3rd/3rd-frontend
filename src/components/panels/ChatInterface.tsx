@@ -9,6 +9,7 @@ import { useSceneStore } from "@/stores/scene-store";
 import { usePartData } from "@/hooks/use-part-data";
 import { api } from "@/lib/api";
 import { useChatStream } from "@/hooks/use-chat-stream";
+import { sanitizeMarkdown } from "@/lib/sanitize";
 
 /**
  * ChatInterface component - Fixed right panel with collapsible chat interface.
@@ -247,7 +248,7 @@ export function ChatInterface({
                       }}
                     >
                       <MarkdownRenderer compact maxWidth="full">
-                        {msg.content}
+                        {sanitizeMarkdown(msg.content)}
                       </MarkdownRenderer>
                     </div>
                     {msg.timestamp && (

@@ -1,5 +1,13 @@
 import { cn } from "@/lib/utils";
 import type { HTMLAttributes } from "react";
+
+/** Lightweight URL sanitizer — blocks javascript: and other dangerous protocols */
+function safeHref(url: string): string {
+  const trimmed = url.trim();
+  if (/^(https?|mailto):/i.test(trimmed)) return trimmed;
+  if (!trimmed.includes(":")) return trimmed; // relative URL
+  return "";
+}
 import ReactMarkdown from "react-markdown";
 import remarkMath from "remark-math";
 import rehypeKatex from "rehype-katex";
@@ -153,7 +161,7 @@ export function MarkdownRenderer({
           // Links - cyan with hover
           a: ({ href, children }) => (
             <a
-              href={href}
+              href={safeHref(href || "")}
               className="text-primary hover:underline transition-colors"
               target="_blank"
               rel="noopener noreferrer"

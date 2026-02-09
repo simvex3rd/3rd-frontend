@@ -35,8 +35,8 @@ const mockData = {
     },
     {
       id: 2,
-      name: "Electric Motor",
-      thumbnail_url: "/models/electric-motor/thumbnail.jpg",
+      name: "Robot Arm",
+      thumbnail_url: "/models/robotArm/thumbnail.jpg",
     },
     {
       id: 3,
@@ -50,6 +50,7 @@ const mockData = {
       id: 1,
       name: "V4 Engine",
       thumbnail_url: "/models/v4-engine/thumbnail.jpg",
+      file_url: "/models/v4-engine/v4Engine_81341.obj",
       parts: [
         {
           id: 101,
@@ -131,39 +132,40 @@ const mockData = {
 
     2: {
       id: 2,
-      name: "Electric Motor",
-      thumbnail_url: "/models/electric-motor/thumbnail.jpg",
+      name: "Robot Arm",
+      thumbnail_url: "/models/robotArm/thumbnail.jpg",
+      file_url: "/models/robotArm/robotArm.obj",
       parts: [
         {
           id: 201,
           model_id: 2,
-          name: "Stator",
-          description: "Stationary electromagnetic component",
-          material: "Laminated Steel",
-          metadata: { weight_kg: 15.3, winding_type: "three-phase" },
+          name: "Base",
+          description: "Stationary base platform with mounting holes",
+          material: "Cast Aluminum",
+          metadata: { weight_kg: 12.0, mounting_bolts: 6 },
           geometry: {
             id: 2001,
             part_id: 201,
             initial_pos: { x: 0, y: 0, z: 0 },
             initial_rot: { x: 0, y: 0, z: 0 },
             initial_scale: { x: 1, y: 1, z: 1 },
-            exploded_pos: { x: 0, y: 0, z: -2 },
+            exploded_pos: { x: 0, y: -2, z: 0 },
           },
         },
         {
           id: 202,
           model_id: 2,
-          name: "Rotor",
-          description: "Rotating magnetic core",
-          material: "Laminated Steel",
-          metadata: { weight_kg: 8.7, max_rpm: 15000 },
+          name: "Shoulder Joint",
+          description: "Primary rotation joint with servo motor",
+          material: "Hardened Steel",
+          metadata: { weight_kg: 5.4, max_torque_nm: 120 },
           geometry: {
             id: 2002,
             part_id: 202,
-            initial_pos: { x: 0, y: 0, z: 0 },
+            initial_pos: { x: 0, y: 1, z: 0 },
             initial_rot: { x: 0, y: 0, z: 0 },
             initial_scale: { x: 1, y: 1, z: 1 },
-            exploded_pos: { x: 0, y: 0, z: 2 },
+            exploded_pos: { x: 0, y: 3, z: 0 },
           },
         },
       ],
@@ -292,6 +294,8 @@ const mockData = {
 let sessionIdCounter = 100;
 let messageIdCounter = 1000;
 let noteIdCounter = 100;
+// Maps "modelId:partName" → noteId for string-based part lookups (mesh names)
+const _partNameToNoteId = new Map<string, number>();
 
 /**
  * Mock Models API
@@ -481,12 +485,21 @@ export const mockNotesApi = {
     await delay();
 
     const numericModelId = Number(modelId);
-    const numericPartId = partId != null ? Number(partId) : null;
+    const isStringPart = partId != null && isNaN(Number(partId));
 
+    if (isStringPart) {
+      // Look up by string part name (mesh name like "Crankshaft")
+      const key = `${numericModelId}:${partId}`;
+      const noteId = _partNameToNoteId.get(key);
+      if (noteId == null) return null;
+      const note = mockData.notes.find((n) => n.id === noteId);
+      return note ? { ...note } : null;
+    }
+
+    const numericPartId = partId != null ? Number(partId) : null;
     const note = mockData.notes.find(
       (n) => n.model_id === numericModelId && n.part_id === numericPartId
     );
-
     return note ? { ...note } : null;
   },
 
@@ -498,18 +511,29 @@ export const mockNotesApi = {
     await delay();
 
     const numericModelId = Number(modelId);
-    const numericPartId = partId != null ? Number(partId) : null;
+    const isStringPart = partId != null && isNaN(Number(partId));
 
-    const existingIndex = mockData.notes.findIndex(
-      (n) => n.model_id === numericModelId && n.part_id === numericPartId
-    );
+    let existingIndex: number;
+    if (isStringPart) {
+      const key = `${numericModelId}:${partId}`;
+      const noteId = _partNameToNoteId.get(key);
+      existingIndex =
+        noteId != null ? mockData.notes.findIndex((n) => n.id === noteId) : -1;
+    } else {
+      const numericPartId = partId != null ? Number(partId) : null;
+      existingIndex = mockData.notes.findIndex(
+        (n) => n.model_id === numericModelId && n.part_id === numericPartId
+      );
+    }
+
+    const noteId =
+      existingIndex >= 0 ? mockData.notes[existingIndex].id : ++noteIdCounter;
 
     const note: StudyNoteResponse = {
-      id:
-        existingIndex >= 0 ? mockData.notes[existingIndex].id : ++noteIdCounter,
+      id: noteId,
       user_id: "user-1",
       model_id: numericModelId,
-      part_id: numericPartId,
+      part_id: isStringPart ? null : partId != null ? Number(partId) : null,
       content,
       updated_at: new Date().toISOString(),
     };
@@ -520,6 +544,11 @@ export const mockNotesApi = {
       mockData.notes.push(note);
     }
 
+    // Track string part name → note id mapping
+    if (isStringPart) {
+      _partNameToNoteId.set(`${numericModelId}:${partId}`, noteId);
+    }
+
     return { ...note };
   },
 };
@@ -528,6 +557,21 @@ export const mockNotesApi = {
  * Unified Mock API (matches client.ts interface)
  */
 export const mockApi = {
+  health: {
+    check: async () => ({ status: "ok" as const, version: "mock" }),
+  },
+  auth: {
+    login: async (_data: import("@/types/api").ClerkLoginRequest) => ({
+      id: "mock-1",
+      email: "mock@test.com",
+      username: "Mock User",
+    }),
+    me: async () => ({
+      id: "mock-1",
+      email: "mock@test.com",
+      username: "Mock User",
+    }),
+  },
   models: mockModelsApi,
   chat: mockChatApi,
   notes: mockNotesApi,

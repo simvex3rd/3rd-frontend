@@ -10,6 +10,11 @@ export interface Message {
   timestamp: Date;
 }
 
+let _msgCounter = 0;
+function nextId(prefix: string) {
+  return `${prefix}-${++_msgCounter}-${Math.random().toString(36).slice(2, 8)}`;
+}
+
 export function useChatStream(sessionId: string | null) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [isStreaming, setIsStreaming] = useState(false);
@@ -23,7 +28,7 @@ export function useChatStream(sessionId: string | null) {
 
       // Add user message
       const userMessage: Message = {
-        id: `user-${Date.now()}`,
+        id: nextId("user"),
         role: "user",
         content,
         timestamp: new Date(),
@@ -35,13 +40,16 @@ export function useChatStream(sessionId: string | null) {
       setError(null);
 
       try {
+        // Fresh decoder per stream to avoid partial byte carryover
+        decoderRef.current = new TextDecoder();
+
         const reader = await api.chat.streamMessage(
           effectiveSessionId,
           content
         );
 
         let aiContent = "";
-        const aiMessageId = `ai-${Date.now()}`;
+        const aiMessageId = nextId("ai");
 
         // Add empty AI message placeholder
         setMessages((prev) => [
@@ -123,7 +131,7 @@ export function useChatStream(sessionId: string | null) {
 
   const addSystemMessage = useCallback((content: string) => {
     const systemMessage: Message = {
-      id: `system-${Date.now()}`,
+      id: nextId("system"),
       role: "system",
       content,
       timestamp: new Date(),

@@ -3,6 +3,11 @@
 import { useGLTF } from "@react-three/drei";
 import { useEffect } from "react";
 import { Mesh, MeshStandardMaterial, Color, Box3, Vector3 } from "three";
+
+// Pre-allocated objects to avoid GC pressure
+const _lerpTarget = new Vector3();
+const _selectColor = new Color(0x4444ff);
+const _defaultColor = new Color(0x000000);
 import { ThreeEvent, useFrame } from "@react-three/fiber";
 import { useSceneStore } from "@/stores/scene-store";
 import { api } from "@/lib/api";
@@ -56,10 +61,13 @@ export function Model({ url }: ModelProps) {
     });
 
     // API에서 부품 geometry 데이터 가져오기
+    let cancelled = false;
     const loadPartGeometry = async () => {
       try {
         const effectiveModelId = modelId || "1";
         const modelData = await api.models.getDetail(effectiveModelId);
+
+        if (cancelled) return;
 
         scene.traverse((child) => {
           if (child instanceof Mesh) {
@@ -76,11 +84,15 @@ export function Model({ url }: ModelProps) {
           }
         });
       } catch (error) {
-        console.error("Failed to load part geometry data:", error);
+        if (!cancelled)
+          console.error("Failed to load part geometry data:", error);
       }
     };
 
     loadPartGeometry();
+    return () => {
+      cancelled = true;
+    };
   }, [scene, modelId]);
 
   // 선택된 부품에 하이라이트 효과 적용
@@ -95,13 +107,14 @@ export function Model({ url }: ModelProps) {
 
         if (isSelected) {
           // 선택된 부품을 emissive 색상으로 하이라이트
-          child.material.emissive = new Color(0x4444ff);
+          child.material.emissive.copy(_selectColor);
           child.material.emissiveIntensity = 0.5;
         } else {
           // 원본 emissive 복원
-          child.material.emissive =
-            child.userData.originalEmissive || new Color(0x000000);
-          child.material.emissiveIntensity = 1;
+          child.material.emissive.copy(
+            child.userData.originalEmissive || _defaultColor
+          );
+          child.material.emissiveIntensity = 0;
         }
       }
     });
@@ -126,8 +139,9 @@ export function Model({ url }: ModelProps) {
             initialPos.z +
             (geo.exploded_pos.z - geo.initial_pos.z) * explodeLevel;
 
-          // Smooth transition with lerp
-          child.position.lerp(new Vector3(targetX, targetY, targetZ), 0.1);
+          // Smooth transition with lerp (reuse pre-allocated vector)
+          _lerpTarget.set(targetX, targetY, targetZ);
+          child.position.lerp(_lerpTarget, 0.1);
         }
       }
     });

@@ -14,14 +14,23 @@ export function NotesPanel() {
   useEffect(() => {
     if (!selectedPart || !modelId) return;
 
+    // Reset immediately to prevent stale content from previous part
+    setNote("");
+    setLastSaved(null);
+
+    let cancelled = false;
     api.notes
       .get(modelId, selectedPart)
       .then((data) => {
-        setNote(data?.content || "");
+        if (!cancelled) setNote(data?.content || "");
       })
       .catch((err) => {
         console.error("Failed to load note:", err);
       });
+
+    return () => {
+      cancelled = true;
+    };
   }, [selectedPart, modelId]);
 
   const handleSave = async () => {
