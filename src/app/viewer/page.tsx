@@ -86,14 +86,7 @@ function ViewerContent() {
       <main id="main-content">
         {/* 3D Canvas Background (z-0) - Full viewport with scale compensation */}
         {isHydrated && (
-          <div
-            className="absolute left-1/2 top-1/2 z-0"
-            style={{
-              width: "100vw",
-              height: "100vh",
-              transform: "translate(-50%, -50%) scale(1.3333)",
-            }}
-          >
+          <div className="absolute left-1/2 top-1/2 z-0 w-screen h-screen -translate-x-1/2 -translate-y-1/2 max-[1919px]:scale-[1.3333]">
             <SceneCanvas>{modelUrl && <ModelOBJ url={modelUrl} />}</SceneCanvas>
             {modelError && (
               <div className="absolute inset-0 flex items-center justify-center pointer-events-none">

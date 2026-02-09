@@ -116,14 +116,7 @@ React Three Fiber Canvas는 CSS zoom 영향을 받아 예상과 다르게 렌더
 
 ```tsx
 // ✅ 올바른 패턴 (src/app/viewer/page.tsx 참고)
-<div
-  className="absolute left-1/2 top-1/2 z-0"
-  style={{
-    width: "100vw",
-    height: "100vh",
-    transform: "translate(-50%, -50%) scale(1.3333)",
-  }}
->
+<div className="absolute left-1/2 top-1/2 z-0 w-screen h-screen -translate-x-1/2 -translate-y-1/2 max-[1919px]:scale-[1.3333]">
   <SceneCanvas>
     <Model url="/model.glb" />
   </SceneCanvas>
@@ -132,22 +125,32 @@ React Three Fiber Canvas는 CSS zoom 영향을 받아 예상과 다르게 렌더
 
 **핵심 포인트:**
 
-1. **중앙 정렬**: `left: 50%, top: 50%` + `translate(-50%, -50%)`
+1. **중앙 정렬**: `-translate-x-1/2 -translate-y-1/2` (left-1/2 top-1/2와 조합)
    - Container 중심 = Viewport 중심을 유지
    - 카메라가 보는 중심이 화면 중앙이 됨
 
-2. **Zoom 보정**: `scale(1.3333)`
-   - Body zoom: 0.75의 역수 (1 / 0.75 = 1.3333)
-   - 최종 크기: 100vw × 1.3333 × 0.75 = 100vw (viewport와 일치)
+2. **조건부 Zoom 보정**: `max-[1919px]:scale-[1.3333]`
+   - `<1920px`에서만 scale 적용 (zoom: 0.75가 적용될 때만)
+   - `≥1920px`에서는 scale 없음 (zoom: 1이므로 보정 불필요)
+   - ⚠️ **무조건 scale(1.3333)을 적용하면 1920px+ 뷰포트에서 Canvas가 133% 크기로 렌더링되어 잘림**
 
 3. **좌표계 일치**:
-   - Container: 100vw × 100vh (내부 좌표계)
-   - Viewport: 100vw × 100vh (실제 화면)
-   - 3D 모델이 정확히 화면 중앙에 렌더링됨
+   - `<1920px`: 100vw × 1.3333 × 0.75 = 100vw (viewport와 일치)
+   - `≥1920px`: 100vw × 1.0 × 1.0 = 100vw (보정 불필요)
 
 **❌ 하지 말 것:**
 
 ```tsx
+// ❌ 무조건 scale 적용 (1920px+ 뷰포트에서 Canvas 133% 크기로 잘림)
+<div
+  className="absolute left-1/2 top-1/2 z-0 w-screen h-screen -translate-x-1/2 -translate-y-1/2 scale-[1.3333]"
+>
+
+// ❌ inline style로 scale 적용 (미디어 쿼리 조건 불가)
+<div
+  style={{ transform: 'translate(-50%, -50%) scale(1.3333)' }}
+>
+
 // ❌ inset-0 + transformOrigin 사용 (작동 안 함)
 <div
   className="absolute inset-0"
