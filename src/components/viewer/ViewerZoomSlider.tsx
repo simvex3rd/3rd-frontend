@@ -131,7 +131,7 @@ export function ViewerZoomSlider({
       {/* Zoom out button */}
       <button
         onClick={handleZoomOut}
-        className="w-[44px] h-[44px] flex items-center justify-center rounded-full bg-background border-[2px] border-primary text-primary hover:bg-primary hover:text-background transition-all duration-150 focus-visible:ring-[2px] focus-visible:ring-primary focus-visible:ring-offset-[2px]"
+        className="w-[44px] h-[44px] flex items-center justify-center rounded-full bg-background border-[2px] border-primary text-primary hover:bg-primary hover:text-background transition-all duration-150 focus-visible:ring-[2px] focus-visible:ring-primary focus-visible:ring-offset-[2px] disabled:opacity-30 disabled:cursor-not-allowed"
         aria-label="Zoom out"
         disabled={explodeLevel === 0}
       >
@@ -178,7 +178,7 @@ export function ViewerZoomSlider({
       {/* Zoom in button */}
       <button
         onClick={handleZoomIn}
-        className="w-[44px] h-[44px] flex items-center justify-center rounded-full bg-background border-[2px] border-primary text-primary hover:bg-primary hover:text-background transition-all duration-150 focus-visible:ring-[2px] focus-visible:ring-primary focus-visible:ring-offset-[2px]"
+        className="w-[44px] h-[44px] flex items-center justify-center rounded-full bg-background border-[2px] border-primary text-primary hover:bg-primary hover:text-background transition-all duration-150 focus-visible:ring-[2px] focus-visible:ring-primary focus-visible:ring-offset-[2px] disabled:opacity-30 disabled:cursor-not-allowed"
         aria-label="Zoom in"
         disabled={explodeLevel === 1}
       >

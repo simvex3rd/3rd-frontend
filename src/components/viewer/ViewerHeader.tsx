@@ -20,30 +20,30 @@ import { ChevronDown, Check } from "lucide-react";
 const ClerkAuth = dynamic(
   () =>
     import("@clerk/nextjs").then((mod) => {
-      const { SignedOut, SignedIn, UserButton } = mod;
+      const { SignedOut, SignedIn, UserButton, useUser } = mod;
       return {
         default: function ClerkAuthButtons() {
+          const { user } = useUser();
           return (
             <>
               <SignedOut>
                 <Link href="/sign-in">
-                  <button
-                    className="w-[210px] h-[72px] flex items-center justify-center rounded-[24px] px-[24px] py-[16px] text-[32px] font-semibold leading-[1.25] text-neutral-50 shadow-[4px_4px_20px_rgba(2,238,225,0.1)] hover:brightness-125 transition-all"
-                    style={{
-                      background:
-                        "radial-gradient(50% 50% at 50% 50%, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0.3) 100%)",
-                    }}
-                  >
+                  <button className="h-[48px] flex items-center justify-center rounded-[12px] px-[20px] text-[16px] font-semibold text-neutral-50 bg-white/10 hover:bg-white/20 transition-all">
                     로그인/가입
                   </button>
                 </Link>
               </SignedOut>
               <SignedIn>
-                <UserButton
-                  appearance={{
-                    elements: { avatarBox: "w-[48px] h-[48px]" },
-                  }}
-                />
+                <div className="flex items-center gap-[12px]">
+                  <span className="font-[Pretendard] text-[16px] font-medium text-neutral-200 hidden min-[1200px]:block">
+                    {user?.fullName || user?.firstName || "User"}
+                  </span>
+                  <UserButton
+                    appearance={{
+                      elements: { avatarBox: "w-[40px] h-[40px]" },
+                    }}
+                  />
+                </div>
               </SignedIn>
             </>
           );
@@ -72,7 +72,15 @@ export function ViewerHeader({
   }, []);
 
   const currentModel = models.find((m) => String(m.id) === String(modelId));
-  const currentModelName = currentModel?.name ?? "Select Model";
+  const currentModelName =
+    currentModel?.name ?? models[0]?.name ?? "Select Model";
+
+  // Auto-select first model if current modelId is invalid
+  useEffect(() => {
+    if (models.length > 0 && !currentModel && modelId) {
+      router.replace(`/viewer?modelId=${models[0].id}`);
+    }
+  }, [models, currentModel, modelId, router]);
 
   const navItems = [
     { label: "STUDY", href: "/study" },
@@ -116,7 +124,7 @@ export function ViewerHeader({
             <DropdownMenuTrigger asChild>
               <button
                 className={cn(
-                  "flex items-center gap-[8px] font-bold text-[30px] leading-[1.25] transition-colors",
+                  "flex items-center gap-[8px] font-bold text-[30px] leading-[1.25] transition-colors cursor-pointer",
                   "text-primary focus-visible:ring-[2px] focus-visible:ring-primary focus-visible:ring-offset-[2px] focus-visible:outline-none"
                 )}
               >

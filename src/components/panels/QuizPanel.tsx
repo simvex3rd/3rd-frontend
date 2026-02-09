@@ -48,6 +48,7 @@ export function QuizPanel({ quiz, onComplete }: QuizPanelProps) {
             className={cn(
               "w-full p-[16px] rounded-[16px] border-[2px] text-left transition-all",
               "focus-visible:ring-[2px] focus-visible:ring-primary focus-visible:ring-offset-[2px]",
+              "disabled:cursor-not-allowed disabled:opacity-60",
               selectedAnswer === option.id
                 ? "bg-primary/30 border-primary"
                 : "bg-transparent border-neutral-600 hover:border-neutral-400",
