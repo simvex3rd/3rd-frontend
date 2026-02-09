@@ -84,6 +84,32 @@ export interface ChatMessage {
 }
 
 /**
+ * UI Message type (used in chat components and hooks)
+ * Lightweight version of ChatMessage for client-side rendering
+ */
+export interface Message {
+  /**
+   * Message ID (string for client-generated IDs)
+   */
+  id: string;
+
+  /**
+   * Message role
+   */
+  role: "user" | "assistant" | "system";
+
+  /**
+   * Message content
+   */
+  content: string;
+
+  /**
+   * Message timestamp
+   */
+  timestamp: Date;
+}
+
+/**
  * 세션 생성 페이로드 (POST /api/chat/sessions)
  */
 export interface CreateSessionPayload {

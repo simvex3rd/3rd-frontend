@@ -72,20 +72,12 @@ function Controls() {
   const isCameraLocked = useUIStore((state) => state.isCameraLocked);
 
   return (
-    <>
-      <OrbitControls
-        makeDefault
-        enablePan={!isCameraLocked}
-        enableZoom={!isCameraLocked}
-        enableRotate={!isCameraLocked}
-      />
-      <GizmoHelper alignment="bottom-right" margin={[80, 80]}>
-        <GizmoViewport
-          axisColors={["#ff4444", "#44ff44", "#4444ff"]}
-          labelColor="white"
-        />
-      </GizmoHelper>
-    </>
+    <OrbitControls
+      makeDefault
+      enablePan={!isCameraLocked}
+      enableZoom={!isCameraLocked}
+      enableRotate={!isCameraLocked}
+    />
   );
 }
 
@@ -94,6 +86,16 @@ export function SceneCanvas({
   enableControls = true,
 }: SceneCanvasProps) {
   const cameraPosition = useSceneStore((state) => state.cameraPosition);
+
+  // Force react-use-measure to re-measure after CSS zoom is fully applied.
+  // Without this, the initial getBoundingClientRect() may return stale values
+  // before body zoom: 0.75 + transform: scale(1.3333) settle.
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      window.dispatchEvent(new Event("resize"));
+    }, 50);
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
     <Canvas
@@ -111,6 +113,12 @@ export function SceneCanvas({
         {enableControls && <Controls />}
         <Stats />
       </Suspense>
+      <GizmoHelper alignment="bottom-right" margin={[80, 80]}>
+        <GizmoViewport
+          axisColors={["#ff4444", "#44ff44", "#4444ff"]}
+          labelColor="white"
+        />
+      </GizmoHelper>
     </Canvas>
   );
 }

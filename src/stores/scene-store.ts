@@ -93,7 +93,8 @@ export const useSceneStore = create<SceneState>()(
 
         // 분해 상태
         explodeLevel: 0,
-        setExplodeLevel: (level) => set({ explodeLevel: level }),
+        setExplodeLevel: (level) =>
+          set({ explodeLevel: Math.max(0, Math.min(1, level)) }),
       }),
       {
         name: "simvex-scene-storage",

@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { MarkdownRenderer } from "@/components/ui/markdown-renderer";
+import { sanitizeMarkdown } from "@/lib/sanitize";
 
 /**
  * ChatMessage - Chat message bubble component
@@ -70,7 +71,7 @@ export function ChatMessage({
           </p>
         ) : (
           <MarkdownRenderer compact maxWidth="full">
-            {content}
+            {sanitizeMarkdown(content)}
           </MarkdownRenderer>
         )}
       </div>

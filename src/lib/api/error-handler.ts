@@ -158,3 +158,26 @@ export function createNotFoundError(resource: string): Response {
     { status: 404 }
   );
 }
+
+/**
+ * Create service unavailable error response
+ *
+ * Used when external services (e.g., Clerk) are down.
+ *
+ * @param message - Error message (default: "Service temporarily unavailable")
+ * @returns Response object
+ */
+export function createServiceUnavailableError(
+  message: string = "Service temporarily unavailable. Please try again later."
+): Response {
+  return Response.json(
+    {
+      success: false,
+      error: {
+        code: "SERVICE_UNAVAILABLE",
+        message,
+      },
+    },
+    { status: 503 }
+  );
+}

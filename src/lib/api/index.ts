@@ -11,6 +11,9 @@ import type {
   ChatSessionResponse,
   ChatMessageResponse,
   StudyNoteResponse,
+  HealthCheck,
+  UserResponse,
+  ClerkLoginRequest,
 } from "@/types/api";
 import { api as realApi } from "./client";
 import { mockApi } from "./mock";
@@ -19,6 +22,13 @@ import { mockApi } from "./mock";
  * Shared API interface that both real and mock clients conform to.
  */
 export interface SimvexApi {
+  health: {
+    check: () => Promise<HealthCheck>;
+  };
+  auth: {
+    login: (data: ClerkLoginRequest) => Promise<UserResponse>;
+    me: () => Promise<UserResponse>;
+  };
   models: {
     list: () => Promise<ModelListItem[]>;
     getDetail: (id: number | string) => Promise<ModelDetail>;
@@ -31,7 +41,7 @@ export interface SimvexApi {
     streamMessage: (
       sessionId: number | string,
       content: string,
-      n?: number
+      options?: { n?: number; signal?: AbortSignal }
     ) => Promise<ReadableStreamDefaultReader<Uint8Array>>;
     listSessions: (modelId?: number | string) => Promise<ChatSessionResponse[]>;
     getMessages: (
@@ -68,6 +78,8 @@ export const api: SimvexApi = USE_MOCK_API ? mockApi : realApi;
 /**
  * Export individual API modules for convenience
  */
+export const healthApi = api.health;
+export const authApi = api.auth;
 export const modelsApi = api.models;
 export const chatApi = api.chat;
 export const notesApi = api.notes;

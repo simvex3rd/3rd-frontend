@@ -2,12 +2,10 @@
 
 import { useState, useCallback, useRef } from "react";
 import { api } from "@/lib/api";
+import type { Message } from "@/types/chat";
 
-export interface Message {
-  id: string;
-  role: "user" | "assistant" | "system";
-  content: string;
-  timestamp: Date;
+function nextId(prefix: string) {
+  return `${prefix}-${crypto.randomUUID()}`;
 }
 
 export function useChatStream(sessionId: string | null) {
@@ -15,6 +13,7 @@ export function useChatStream(sessionId: string | null) {
   const [isStreaming, setIsStreaming] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const decoderRef = useRef(new TextDecoder());
+  const abortControllerRef = useRef<AbortController | null>(null);
 
   const sendMessage = useCallback(
     async (content: string, sessionIdOverride?: string) => {
@@ -23,7 +22,7 @@ export function useChatStream(sessionId: string | null) {
 
       // Add user message
       const userMessage: Message = {
-        id: `user-${Date.now()}`,
+        id: nextId("user"),
         role: "user",
         content,
         timestamp: new Date(),
@@ -34,14 +33,31 @@ export function useChatStream(sessionId: string | null) {
       setIsStreaming(true);
       setError(null);
 
+      // Abort previous stream if exists
+      if (abortControllerRef.current) {
+        abortControllerRef.current.abort();
+      }
+
+      // Create new AbortController with 30s timeout
+      const abortController = new AbortController();
+      abortControllerRef.current = abortController;
+
+      const timeoutId = setTimeout(() => {
+        abortController.abort();
+      }, 30000);
+
       try {
+        // Fresh decoder per stream to avoid partial byte carryover
+        decoderRef.current = new TextDecoder();
+
         const reader = await api.chat.streamMessage(
           effectiveSessionId,
-          content
+          content,
+          { signal: abortController.signal }
         );
 
         let aiContent = "";
-        const aiMessageId = `ai-${Date.now()}`;
+        const aiMessageId = nextId("ai");
 
         // Add empty AI message placeholder
         setMessages((prev) => [
@@ -59,6 +75,9 @@ export function useChatStream(sessionId: string | null) {
         while (true) {
           const { done, value } = await reader.read();
           if (done) break;
+
+          // Reset timeout on each data chunk
+          clearTimeout(timeoutId);
 
           // Decode stream chunk and append to buffer for partial line handling
           buffer += decoderRef.current.decode(value, { stream: true });
@@ -107,11 +126,20 @@ export function useChatStream(sessionId: string | null) {
             }
           }
         }
+
+        clearTimeout(timeoutId);
       } catch (err) {
+        clearTimeout(timeoutId);
         console.error("Streaming error:", err);
-        setError("Failed to get AI response");
+
+        if (err instanceof Error && err.name === "AbortError") {
+          setError("Request timed out after 30 seconds");
+        } else {
+          setError("Failed to get AI response");
+        }
       } finally {
         setIsStreaming(false);
+        abortControllerRef.current = null;
       }
     },
     [sessionId]
@@ -123,7 +151,7 @@ export function useChatStream(sessionId: string | null) {
 
   const addSystemMessage = useCallback((content: string) => {
     const systemMessage: Message = {
-      id: `system-${Date.now()}`,
+      id: nextId("system"),
       role: "system",
       content,
       timestamp: new Date(),

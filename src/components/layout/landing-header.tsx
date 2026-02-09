@@ -7,17 +7,32 @@ import dynamic from "next/dynamic";
 const ClerkAuthButton = dynamic(
   () =>
     import("@clerk/nextjs").then((mod) => {
-      const { SignedOut } = mod;
+      const { SignedOut, SignedIn, UserButton } = mod;
       return {
         default: function ClerkAuth() {
           return (
-            <SignedOut>
-              <Link href="/sign-in">
-                <button className="w-[157.5px] text-[24px] rounded-[18px] border-[3.75px] border-primary bg-transparent text-primary font-semibold px-[8px] py-[8px] whitespace-nowrap hover:bg-primary/10 transition-colors">
-                  로그인/가입
-                </button>
-              </Link>
-            </SignedOut>
+            <>
+              <SignedOut>
+                <Link href="/sign-in">
+                  <button
+                    className="w-[210px] h-[72px] flex items-center justify-center rounded-[24px] px-[24px] py-[16px] text-[32px] font-semibold leading-[1.25] text-neutral-50 shadow-[4px_4px_20px_rgba(2,238,225,0.1)] hover:brightness-125 transition-all"
+                    style={{
+                      background:
+                        "radial-gradient(50% 50% at 50% 50%, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0.3) 100%)",
+                    }}
+                  >
+                    로그인/가입
+                  </button>
+                </Link>
+              </SignedOut>
+              <SignedIn>
+                <UserButton
+                  appearance={{
+                    elements: { avatarBox: "w-[48px] h-[48px]" },
+                  }}
+                />
+              </SignedIn>
+            </>
           );
         },
       };
@@ -115,10 +130,15 @@ export function LandingHeader() {
 
         {/* Right: Auth Buttons (Scaled 0.75x) */}
         <div className="flex-shrink-0 flex items-center gap-[12px]">
-          {process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY &&
-            !process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY.includes(
-              "your_"
-            ) && <ClerkAuthButton />}
+          <Link href="/sign-in">
+            <CTAButton
+              variant="default"
+              size="default"
+              className="!w-[157.5px] !text-[24px] !rounded-[18px] !border-[3.75px] whitespace-nowrap !px-[8px]"
+            >
+              로그인/가입
+            </CTAButton>
+          </Link>
           <Link href="/viewer">
             <CTAButton
               variant="primary"

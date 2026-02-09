@@ -1,15 +1,13 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 
 import { ViewerHeader } from "@/components/viewer/ViewerHeader";
 import { ChatSidebar } from "@/components/panels/ChatSidebar";
 import { ChatMessage } from "@/components/panels/ChatMessage";
 import { ChatInput } from "@/components/panels/ChatInput";
 import { LucideSparkles } from "lucide-react";
-import { useChatStream } from "@/hooks/use-chat-stream";
-import { api } from "@/lib/api";
-import type { ChatMessageResponse } from "@/types/api";
+import { useChatSession } from "@/hooks/use-chat-session";
 
 /**
  * Chat Page - Full-screen AI chat interface
@@ -29,91 +27,22 @@ import type { ChatMessageResponse } from "@/types/api";
  */
 export default function ChatPage() {
   const [aiAvatar, setAiAvatar] = useState<string>("");
-  const [sessionId, setSessionId] = useState<string | null>(null);
-  const [sessionCreating, setSessionCreating] = useState(false);
 
   const {
+    sessionId,
+    sessionCreating,
     messages,
     isStreaming,
-    sendMessage: streamSendMessage,
-    clearMessages,
-    setMessages,
-  } = useChatStream(sessionId);
+    sendMessage,
+    createNewChat,
+    selectSession,
+  } = useChatSession();
 
   useEffect(() => {
     const AVATARS = ["/chat/character1.png", "/chat/character2.png"];
     const randomAvatar = AVATARS[Math.floor(Math.random() * AVATARS.length)];
     setAiAvatar(randomAvatar);
   }, []);
-
-  const handleSendMessage = useCallback(
-    async (message: string) => {
-      if (!message.trim() || isStreaming || sessionCreating) return;
-
-      let currentSessionId = sessionId;
-
-      // Create session if it doesn't exist
-      if (!currentSessionId) {
-        setSessionCreating(true);
-        try {
-          const session = await api.chat.createSession("1"); // Default model ID
-          currentSessionId = String(session.id);
-          setSessionId(currentSessionId);
-        } catch (err) {
-          console.error("Failed to create session:", err);
-          setSessionCreating(false);
-          return;
-        } finally {
-          setSessionCreating(false);
-        }
-      }
-
-      // Send message
-      await streamSendMessage(message, currentSessionId);
-    },
-    [sessionId, isStreaming, sessionCreating, streamSendMessage]
-  );
-
-  const handleNewChat = useCallback(async () => {
-    if (sessionCreating) return;
-
-    setSessionCreating(true);
-    try {
-      const session = await api.chat.createSession("1"); // Default model ID
-      setSessionId(String(session.id));
-      clearMessages();
-    } catch (err) {
-      console.error("Failed to create new chat:", err);
-    } finally {
-      setSessionCreating(false);
-    }
-  }, [sessionCreating, clearMessages]);
-
-  const handleSelectSession = useCallback(
-    async (id: string) => {
-      if (id === sessionId) return;
-
-      setSessionId(id);
-      clearMessages();
-
-      // Load existing messages from API
-      try {
-        const apiMessages: ChatMessageResponse[] =
-          await api.chat.getMessages(id);
-        // API returns newest-first, so reverse for display
-        const formattedMessages = apiMessages.reverse().map((msg) => ({
-          id: String(msg.id),
-          role: msg.role as "user" | "assistant",
-          content: msg.content,
-          timestamp: new Date(msg.created_at),
-        }));
-        setMessages(formattedMessages);
-      } catch (err) {
-        console.error("Failed to load messages:", err);
-      }
-    },
-    [sessionId, clearMessages, setMessages]
-  );
 
   return (
     <div className="relative w-full max-[1919px]:h-[133.33vh] h-screen bg-neutral-900 overflow-hidden">
@@ -135,8 +64,8 @@ export default function ChatPage() {
       >
         {/* Left Sidebar */}
         <ChatSidebar
-          onNewChat={handleNewChat}
-          onSelectSession={handleSelectSession}
+          onNewChat={createNewChat}
+          onSelectSession={selectSession}
           currentSessionId={sessionId || undefined}
         />
 
@@ -200,7 +129,7 @@ export default function ChatPage() {
 
           {/* Chat Input - Fixed at bottom */}
           <div className="flex justify-center pb-[40px] px-[80px]">
-            <ChatInput onSend={handleSendMessage} />
+            <ChatInput onSend={sendMessage} />
           </div>
         </div>
       </main>

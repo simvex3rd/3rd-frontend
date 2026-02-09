@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, Suspense } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { AnimatePresence } from "motion/react";
 import { SceneCanvas } from "@/components/viewer/SceneCanvas";
@@ -16,18 +16,49 @@ import { useStoreHydration } from "@/hooks/use-store-hydration";
 import { useSceneStore } from "@/stores/scene-store";
 import { useUIStore } from "@/stores/ui-store";
 import { ViewerHeader } from "@/components/viewer/ViewerHeader";
+import { api } from "@/lib/api";
 
 function ViewerContent() {
   const isHydrated = useStoreHydration();
   const activeSideTool = useUIStore((state) => state.activeSideTool);
   const setSideTool = useUIStore((state) => state.setSideTool);
   const searchParams = useSearchParams();
+  const modelId = useSceneStore((state) => state.modelId);
+  const [modelUrl, setModelUrl] = useState<string | null>(null);
+  const [modelError, setModelError] = useState<string | null>(null);
 
   // Set modelId from URL params (e.g., /viewer?modelId=2)
   useEffect(() => {
     const paramModelId = searchParams.get("modelId");
     useSceneStore.getState().setModelId(paramModelId || "1");
   }, [searchParams]);
+
+  // Fetch model file_url from API when modelId changes
+  useEffect(() => {
+    if (!modelId) return;
+    let cancelled = false;
+    setModelUrl(null);
+    setModelError(null);
+
+    api.models
+      .getDetail(modelId)
+      .then((detail) => {
+        if (cancelled) return;
+        if (detail.file_url) {
+          setModelUrl(detail.file_url);
+        } else {
+          setModelError("3D model file not available");
+        }
+      })
+      .catch((err) => {
+        if (!cancelled) setModelError("Failed to load model");
+        console.error("Failed to load model detail:", err);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [modelId]);
 
   const closePanel = () => setSideTool(null);
 
@@ -55,17 +86,13 @@ function ViewerContent() {
       <main id="main-content">
         {/* 3D Canvas Background (z-0) - Full viewport with scale compensation */}
         {isHydrated && (
-          <div
-            className="absolute left-1/2 top-1/2 z-0"
-            style={{
-              width: "100vw",
-              height: "100vh",
-              transform: "translate(-50%, -50%) scale(1.3333)",
-            }}
-          >
-            <SceneCanvas>
-              <ModelOBJ url="/models/v4-engine/v4Engine_81341.obj" />
-            </SceneCanvas>
+          <div className="absolute left-1/2 top-1/2 z-0 w-screen h-screen -translate-x-1/2 -translate-y-1/2 max-[1919px]:scale-[1.3333]">
+            <SceneCanvas>{modelUrl && <ModelOBJ url={modelUrl} />}</SceneCanvas>
+            {modelError && (
+              <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                <p className="text-neutral-400 text-[16px]">{modelError}</p>
+              </div>
+            )}
           </div>
         )}
 

@@ -1,186 +1,200 @@
 "use client";
 
+import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useUser } from "@clerk/nextjs";
+import Image from "next/image";
+import {
+  LucideSparkles,
+  LucideSquarePen,
+  LucideChevronRight,
+} from "lucide-react";
 import { ViewerHeader } from "@/components/viewer/ViewerHeader";
-import { LucideSparkles, LucideSquarePen } from "lucide-react";
+import { ChatInput } from "@/components/panels/ChatInput";
+import { GradientBorder } from "@/components/ui/GradientBorder";
+import { api } from "@/lib/api";
+
+const QUICK_ACTIONS = [
+  { label: "학습에 관한 도움받기", action: "help" },
+  { label: "학습 내용 바탕의 퀴즈", action: "quiz" },
+  { label: "부품 정보 불러오기", action: "parts" },
+  { label: "PDF 리포트 출력", action: "pdf" },
+] as const;
 
 /**
- * Study Page - AI-powered learning interface
+ * Study Dashboard Page
  *
- * Layout (1920px baseline with 75% zoom at ≤1919px):
- * - Header: ViewerHeader component (102px height: 67px + 35px margin)
- * - Content: Two-column layout (848px height)
- *   - Left: AI Assistant section (250px content box)
- *   - Right: Memo (386px) + AI Quiz (250px) sections
+ * 2-column layout:
+ * - Left (~55%): AI Chat card (character + welcome + input + chips)
+ * - Right (~45%): Memo card (top) + AI Quiz card (bottom)
  *
- * Design specs:
- * - Container: px-[80px] py-[40px], gap-[32px]
- * - Section headers: 32px semibold, cyan, with 37×37px icon
- * - Content boxes: bg-gray-30, 3px cyan border, 24px border-radius
- * - Sticky notes: 360×300px, rgba(2,238,225,0.3), 24px border-radius
- *
- * @see {@link https://www.figma.com/design/Vz80RydxWcYHVnn2iuyV0m?node-id=376-2442} Figma Design
+ * @see {@link https://www.figma.com/design/Vz80RydxWcYHVnn2iuyV0m?node-id=474-1663} Figma Design
  */
 export default function StudyPage() {
   const router = useRouter();
+  const { user } = useUser();
+  const [aiAvatar, setAiAvatar] = useState("/chat/character1.png");
+
+  useEffect(() => {
+    const AVATARS = ["/chat/character1.png", "/chat/character2.png"];
+    setAiAvatar(AVATARS[Math.floor(Math.random() * AVATARS.length)]);
+  }, []);
+
+  const handleSendMessage = useCallback(
+    async (message: string) => {
+      if (!message.trim()) return;
+      try {
+        const session = await api.chat.createSession("1");
+        router.push(
+          `/study/chat?sessionId=${session.id}&q=${encodeURIComponent(message)}`
+        );
+      } catch {
+        router.push(`/study/chat?q=${encodeURIComponent(message)}`);
+      }
+    },
+    [router]
+  );
+
+  const handleQuickAction = useCallback(
+    (action: string) => {
+      const messages: Record<string, string> = {
+        help: "학습에 관한 도움을 받고 싶어요",
+        quiz: "현재 학습 내용을 바탕으로 퀴즈를 만들어주세요",
+        parts: "현재 모델의 부품 정보를 알려주세요",
+        pdf: "학습 리포트를 PDF로 출력하고 싶어요",
+      };
+      const msg = messages[action];
+      if (msg) handleSendMessage(msg);
+    },
+    [handleSendMessage]
+  );
 
   return (
     <div className="relative w-full max-[1919px]:h-[133.33vh] h-screen bg-neutral-900 overflow-hidden">
-      {/* Skip to main content link */}
-      <a
-        href="#main-content"
-        className="sr-only focus:not-sr-only focus:absolute focus:top-[16px] focus:left-[16px] focus:z-[9999] focus:px-[16px] focus:py-[8px] focus:bg-primary focus:text-background focus:rounded-[8px] focus:font-semibold"
-      >
-        Skip to main content
-      </a>
-
-      {/* Header - Always visible on top */}
       <ViewerHeader />
 
-      {/* Main content area - fills remaining viewport */}
-      <main
-        id="main-content"
-        className="flex gap-[32px] items-stretch px-[80px] py-[40px] absolute inset-x-0 top-[102px] bottom-0"
-      >
-        {/* Left Column - AI Assistant (1:1 width ratio) */}
-        <div className="flex-1 flex flex-col gap-[16px] min-w-0">
-          {/* Section Header - Icon + Title */}
-          <div className="flex gap-[16px] items-center shrink-0">
-            <LucideSparkles
-              className="w-[37px] h-[37px] text-primary shrink-0"
-              strokeWidth={2}
-            />
-            <h2 className="font-semibold text-[32px] leading-[1.25] text-primary">
-              AI Assistant
-            </h2>
-          </div>
-
-          {/* Content Box - fills remaining space - Clickable */}
-          <button
-            onClick={() => router.push("/chat")}
-            className="bg-gray-30 border-[3px] border-primary rounded-[24px] flex-1 flex flex-col items-start justify-start p-[24px] overflow-y-auto cursor-pointer hover:border-primary/80 hover:bg-gray-30/80 transition-all w-full text-left"
-          >
-            <div className="space-y-[12px] w-full">
-              <div className="flex items-start gap-[12px]">
-                <div className="w-[8px] h-[8px] rounded-full bg-primary shrink-0 mt-[6px]" />
-                <p className="font-medium text-[14px] leading-[1.5] text-white">
-                  선택한 부품의 재질, 기능, 설계 의도 등을 AI가 분석하여
-                  설명합니다.
-                </p>
+      <main className="absolute inset-x-0 top-[102px] bottom-0 px-[80px] py-[40px]">
+        <div className="flex gap-[32px] h-full">
+          {/* ===== Left: AI Chat ===== */}
+          <section className="flex-[55] flex flex-col gap-[16px] min-w-0">
+            {/* Header */}
+            <div className="flex items-center justify-between shrink-0">
+              <div className="flex items-center gap-[16px]">
+                <LucideSparkles
+                  className="w-[32px] h-[32px] text-primary"
+                  strokeWidth={2}
+                />
+                <h2 className="font-semibold text-[32px] leading-[1.25] text-primary">
+                  AI Chat
+                </h2>
               </div>
-              <div className="flex items-start gap-[12px]">
-                <div className="w-[8px] h-[8px] rounded-full bg-primary shrink-0 mt-[6px]" />
-                <p className="font-medium text-[14px] leading-[1.5] text-white">
-                  3D 모델과 연계된 상세한 엔지니어링 데이터를 제공받습니다.
-                </p>
-              </div>
-              <div className="flex items-start gap-[12px]">
-                <div className="w-[8px] h-[8px] rounded-full bg-primary shrink-0 mt-[6px]" />
-                <p className="font-medium text-[14px] leading-[1.5] text-white">
-                  궁금한 점을 자유롭게 질문하고 즉시 답변을 받을 수 있습니다.
-                </p>
-              </div>
-            </div>
-          </button>
-        </div>
-
-        {/* Right Column - Memo + AI Quiz (1:1 width ratio) */}
-        <div className="flex-1 flex flex-col gap-[24px] min-w-0">
-          {/* Memo Section - takes ~60% of right column */}
-          <div className="flex-[3] flex flex-col gap-[16px] min-h-0">
-            {/* Section Header - Icon + Title */}
-            <div className="flex gap-[16px] items-center shrink-0">
-              <LucideSquarePen
-                className="w-[37px] h-[37px] text-primary shrink-0"
-                strokeWidth={2}
-              />
-              <h2 className="font-semibold text-[32px] leading-[1.25] text-primary">
-                Memo
-              </h2>
+              <button
+                onClick={() => router.push("/study/chat")}
+                className="text-neutral-400 hover:text-primary transition-colors"
+                aria-label="Go to full chat"
+              >
+                <LucideChevronRight
+                  className="w-[24px] h-[24px]"
+                  strokeWidth={2}
+                />
+              </button>
             </div>
 
-            {/* Content Box with Sticky Notes */}
-            <div className="bg-gray-30 border-[3px] border-primary rounded-[24px] flex-1 p-[24px] overflow-y-auto">
-              {/* Sticky Notes Grid */}
-              <div className="grid grid-cols-3 gap-[16px] h-full">
-                {/* Sticky Note 1 */}
-                <div className="bg-primary-30 rounded-[20px] flex flex-col justify-between p-[24px]">
-                  <div className="space-y-[10px]">
-                    <h3 className="font-bold text-[18px] leading-[1.4] text-white">
-                      크랭크샤프트
-                    </h3>
-                    <p className="font-medium text-[14px] leading-[1.6] text-white/90">
-                      - 엔진의 핵심 동력 전달 장치
-                      <br />
-                      - 피스톤의 왕복운동 → 회전운동 변환
-                      <br />- 고강도 합금강 재질
-                    </p>
-                  </div>
-                  <p className="font-medium text-[12px] text-white/50 mt-[16px]">
-                    2026.02.09
-                  </p>
-                </div>
+            {/* Card */}
+            {/* Card */}
+            <div className="flex-1 relative flex flex-col items-center justify-end gap-[24px] rounded-[24px] bg-gray-30 p-[40px] overflow-hidden">
+              <GradientBorder />
 
-                {/* Sticky Note 2 */}
-                <div className="bg-primary-30 rounded-[20px] flex flex-col justify-between p-[24px]">
-                  <div className="space-y-[10px]">
-                    <h3 className="font-bold text-[18px] leading-[1.4] text-white">
-                      학습 포인트
-                    </h3>
-                    <p className="font-medium text-[14px] leading-[1.6] text-white/90">
-                      - 베어링 구조 복습 필요
-                      <br />
-                      - 4행정 엔진 사이클 이해
-                      <br />- 열팽창 계수 개념 정리
-                    </p>
-                  </div>
-                  <p className="font-medium text-[12px] text-white/50 mt-[16px]">
-                    2026.02.09
-                  </p>
+              {/* Character + Welcome Bubble */}
+              <div className="flex items-end gap-[24px] z-10">
+                <div className="relative w-[200px] h-[174px] shrink-0">
+                  <Image
+                    src={aiAvatar}
+                    alt="AI Assistant"
+                    fill
+                    className="object-contain"
+                  />
                 </div>
-
-                {/* Sticky Note 3 */}
-                <div className="bg-primary-30 rounded-[20px] flex flex-col justify-between p-[24px]">
-                  <div className="space-y-[10px]">
-                    <h3 className="font-bold text-[18px] leading-[1.4] text-white">
-                      퀴즈 오답
-                    </h3>
-                    <p className="font-medium text-[14px] leading-[1.6] text-white/90">
-                      Q. 크랭크샤프트의 주요 기능은?
-                      <br />
-                      <br />
-                      틀린 답: 연료 분사
-                      <br />
-                      정답: 동력 전달 및 변환
-                    </p>
-                  </div>
-                  <p className="font-medium text-[12px] text-white/50 mt-[16px]">
-                    2026.02.08
+                <div className="bg-hover-30 rounded-tl-[24px] rounded-tr-[24px] rounded-br-[24px] px-[24px] py-[16px]">
+                  <p className="font-semibold text-[20px] leading-[1.25] text-white">
+                    {user?.firstName ?? "사용자"}님, 안녕하세요
+                  </p>
+                  <p className="font-bold text-[28px] leading-[1.25] text-white">
+                    무엇을 도와드릴까요?
                   </p>
                 </div>
               </div>
-            </div>
-          </div>
 
-          {/* AI Quiz Section - takes ~40% of right column */}
-          <div className="flex-[2] flex flex-col gap-[16px] min-h-0">
-            {/* Section Header - Icon + Title */}
-            <div className="flex gap-[16px] items-center shrink-0">
-              <LucideSparkles
-                className="w-[37px] h-[37px] text-primary shrink-0"
-                strokeWidth={2}
-              />
-              <h2 className="font-semibold text-[32px] leading-[1.25] text-primary">
-                AI Quiz
-              </h2>
-            </div>
+              {/* Chat Input */}
+              <div className="w-full z-10">
+                <ChatInput onSend={handleSendMessage} />
+              </div>
 
-            {/* Content Box - fills remaining space */}
-            <div className="bg-gray-30 border-[3px] border-primary rounded-[24px] flex-1 flex items-center justify-center p-[24px]">
-              <p className="font-semibold text-[24px] leading-[1.5] text-white/80">
-                AI QUIZ는 준비 중이에요!
-              </p>
+              {/* Quick Action Chips */}
+              <div className="flex flex-wrap gap-[16px] items-center justify-center z-10">
+                {QUICK_ACTIONS.map((item) => (
+                  <button
+                    key={item.action}
+                    onClick={() => handleQuickAction(item.action)}
+                    className="px-[16px] py-[8px] rounded-[100px] border border-primary bg-neutral-800 text-neutral-200 text-[14px] font-medium leading-[1.5] hover:bg-primary/20 transition-colors whitespace-nowrap"
+                  >
+                    {item.label}
+                  </button>
+                ))}
+              </div>
             </div>
+          </section>
+
+          {/* ===== Right Column ===== */}
+          <div className="flex-[45] flex flex-col gap-[24px] min-w-0">
+            {/* Memo */}
+            <section className="flex-1 flex flex-col gap-[16px] min-h-0">
+              <div className="flex items-center gap-[16px] shrink-0">
+                <LucideSquarePen
+                  className="w-[32px] h-[32px] text-primary"
+                  strokeWidth={2}
+                />
+                <h2 className="font-semibold text-[32px] leading-[1.25] text-primary">
+                  Memo
+                </h2>
+              </div>
+
+              <div className="flex-1 relative flex items-center justify-center rounded-[24px] bg-gray-30 p-[32px] overflow-hidden">
+                <GradientBorder />
+
+                <div className="flex gap-[16px] z-10">
+                  {[1, 2, 3].map((i) => (
+                    <button
+                      key={i}
+                      className="w-[140px] h-[140px] rounded-[24px] bg-primary/30 flex items-center justify-center text-white font-semibold text-[16px] hover:bg-primary/40 transition-colors"
+                    >
+                      메모
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </section>
+
+            {/* AI Quiz */}
+            <section className="flex-1 flex flex-col gap-[16px] min-h-0">
+              <div className="flex items-center gap-[16px] shrink-0">
+                <LucideSparkles
+                  className="w-[32px] h-[32px] text-primary"
+                  strokeWidth={2}
+                />
+                <h2 className="font-semibold text-[32px] leading-[1.25] text-primary">
+                  AI Quiz
+                </h2>
+              </div>
+
+              <div className="flex-1 relative flex items-center justify-center rounded-[24px] bg-gray-30">
+                <GradientBorder />
+
+                <p className="font-medium text-[16px] leading-[1.5] text-white z-10">
+                  ai quiz
+                </p>
+              </div>
+            </section>
           </div>
         </div>
       </main>

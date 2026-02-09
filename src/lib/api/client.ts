@@ -55,6 +55,8 @@ async function getAuthHeaders(): Promise<Record<string, string>> {
 // Fetch wrapper
 // ---------------------------------------------------------------------------
 
+const DEFAULT_TIMEOUT_MS = 15000;
+
 export class ApiClientError extends Error {
   constructor(
     message: string,
@@ -68,16 +70,18 @@ export class ApiClientError extends Error {
 
 async function apiFetch<T>(
   endpoint: string,
-  options?: RequestInit & { auth?: boolean }
+  options?: RequestInit & { auth?: boolean; timeout?: number }
 ): Promise<T> {
   const url = `${API_URL}${endpoint}`;
   const needsAuth = options?.auth !== false;
+  const timeoutMs = options?.timeout ?? DEFAULT_TIMEOUT_MS;
 
   const authHeaders = needsAuth ? await getAuthHeaders() : {};
 
   try {
     const response = await fetch(url, {
       ...options,
+      signal: AbortSignal.timeout(timeoutMs),
       headers: {
         "Content-Type": "application/json",
         ...authHeaders,
@@ -87,6 +91,32 @@ async function apiFetch<T>(
 
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({}));
+      const status = response.status;
+
+      // Handle 401: Unauthorized (expired/invalid token)
+      if (status === 401) {
+        // Clear auth token
+        _getToken = null;
+        // Redirect to sign-in
+        if (typeof window !== "undefined") {
+          window.location.href = "/sign-in";
+        }
+        throw new ApiClientError(
+          "Authentication required. Redirecting to sign in...",
+          401,
+          errorData.code
+        );
+      }
+
+      // Handle 503: Service unavailable (Clerk verification service down)
+      if (status === 503) {
+        throw new ApiClientError(
+          "Service temporarily unavailable. Please try again later.",
+          503,
+          errorData.code || "SERVICE_UNAVAILABLE"
+        );
+      }
+
       throw new ApiClientError(
         errorData.detail?.[0]?.msg ||
           errorData.message ||
@@ -104,6 +134,16 @@ async function apiFetch<T>(
     return response.json();
   } catch (error) {
     if (error instanceof ApiClientError) throw error;
+
+    // Handle timeout error
+    if (error instanceof Error && error.name === "AbortError") {
+      throw new ApiClientError(
+        `Request timeout after ${timeoutMs}ms`,
+        undefined,
+        "TIMEOUT"
+      );
+    }
+
     throw new ApiClientError(
       error instanceof Error ? error.message : "Network error occurred"
     );
@@ -185,33 +225,71 @@ export const chatApi = {
   streamMessage: async (
     sessionId: number | string,
     content: string,
-    n?: number
+    options?: { n?: number; signal?: AbortSignal }
   ): Promise<ReadableStreamDefaultReader<Uint8Array>> => {
-    const params = n != null ? `?n=${n}` : "";
+    const params = options?.n != null ? `?n=${options.n}` : "";
     const url = `${API_URL}/chat/sessions/${sessionId}/messages/stream${params}`;
 
     const authHeaders = await getAuthHeaders();
-    const response = await fetch(url, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        ...authHeaders,
-      },
-      body: JSON.stringify({ content } satisfies ChatMessageCreate),
-    });
 
-    if (!response.ok) {
+    try {
+      const response = await fetch(url, {
+        method: "POST",
+        signal: options?.signal,
+        headers: {
+          "Content-Type": "application/json",
+          ...authHeaders,
+        },
+        body: JSON.stringify({ content } satisfies ChatMessageCreate),
+      });
+
+      if (!response.ok) {
+        const status = response.status;
+
+        // Handle 401: Unauthorized
+        if (status === 401) {
+          _getToken = null;
+          if (typeof window !== "undefined") {
+            window.location.href = "/sign-in";
+          }
+          throw new ApiClientError(
+            "Authentication required. Redirecting to sign in...",
+            401
+          );
+        }
+
+        // Handle 503: Service unavailable
+        if (status === 503) {
+          throw new ApiClientError(
+            "Service temporarily unavailable. Please try again later.",
+            503,
+            "SERVICE_UNAVAILABLE"
+          );
+        }
+
+        throw new ApiClientError(
+          `Failed to stream message: ${response.statusText}`,
+          response.status
+        );
+      }
+
+      if (!response.body) {
+        throw new ApiClientError("Response body is null");
+      }
+
+      return response.body.getReader();
+    } catch (error) {
+      if (error instanceof ApiClientError) throw error;
+
+      // Handle timeout error
+      if (error instanceof Error && error.name === "AbortError") {
+        throw new ApiClientError("Request timed out", undefined, "TIMEOUT");
+      }
+
       throw new ApiClientError(
-        `Failed to stream message: ${response.statusText}`,
-        response.status
+        error instanceof Error ? error.message : "Network error occurred"
       );
     }
-
-    if (!response.body) {
-      throw new ApiClientError("Response body is null");
-    }
-
-    return response.body.getReader();
   },
 
   /**
@@ -263,7 +341,10 @@ export const notesApi = {
     const params = new URLSearchParams({
       model_id: String(Number(modelId)),
     });
-    if (partId != null) params.append("part_id", String(Number(partId)));
+    // Only append part_id if it's a valid number (mesh names like "Crankshaft" → NaN)
+    if (partId != null && !isNaN(Number(partId))) {
+      params.append("part_id", String(Number(partId)));
+    }
     return apiFetch<StudyNoteResponse | null>(`/notes?${params}`);
   },
 
@@ -277,7 +358,8 @@ export const notesApi = {
   ): Promise<StudyNoteResponse> => {
     const body: StudyNoteUpsert = {
       model_id: Number(modelId),
-      part_id: partId != null ? Number(partId) : null,
+      // Only send part_id if it's a valid number (mesh names produce NaN)
+      part_id: partId != null && !isNaN(Number(partId)) ? Number(partId) : null,
       content,
     };
     return apiFetch<StudyNoteResponse>("/notes", {
