@@ -31,7 +31,7 @@ export function SceneCanvas({
 
   return (
     <Canvas
-      camera={{ position: cameraPosition, fov: 50 }}
+      camera={{ position: cameraPosition, fov: 35 }}
       dpr={[1, 2]}
       gl={{ antialias: true }}
       style={{ width: "100%", height: "100%", display: "block" }}
@@ -41,7 +41,7 @@ export function SceneCanvas({
         <ambientLight intensity={0.5} />
         <directionalLight position={[5, 5, 5]} intensity={1} />
         {shouldFit ? (
-          <Bounds fit clip observe={false} margin={1.2}>
+          <Bounds fit clip observe={false} margin={1.0}>
             {children}
           </Bounds>
         ) : (

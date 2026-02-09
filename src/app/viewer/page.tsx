@@ -2,6 +2,7 @@
 
 import { SceneCanvas } from "@/components/viewer/SceneCanvas";
 import { Model } from "@/components/viewer/Model";
+import { ModelOBJ } from "@/components/viewer/ModelOBJ";
 import { ViewerToolbar } from "@/components/viewer/ViewerToolbar";
 import { ViewerSideToolbar } from "@/components/viewer/ViewerSideToolbar";
 import { ViewerZoomSlider } from "@/components/viewer/ViewerZoomSlider";
@@ -63,7 +64,7 @@ export default function ViewerPage() {
             }}
           >
             <SceneCanvas>
-              <Model url="/models/V4_Engine/Crankshaft-draco.glb" />
+              <ModelOBJ url="/models/v4-engine/v4Engine_81341.obj" />
             </SceneCanvas>
           </div>
         )}
