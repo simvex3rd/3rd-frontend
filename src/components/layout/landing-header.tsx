@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { useUser } from "@clerk/nextjs";
 import { Logo } from "@/components/ui/logo";
 import { CTAButton } from "@/components/ui/cta-button";
 
@@ -14,6 +15,7 @@ const navLinks = [
 ];
 
 export function LandingHeader() {
+  const { isSignedIn } = useUser();
   const [activeSection, setActiveSection] = useState("intro");
 
   useEffect(() => {
@@ -44,9 +46,19 @@ export function LandingHeader() {
       <div className="relative z-10 w-full flex items-center gap-[150px]">
         {/* Left: Logo - 325px width matches Figma */}
         <div className="flex-shrink-0">
-          <Link href="/" aria-label="SIMVEX Home">
+          <a
+            href="#intro"
+            aria-label="SIMVEX Home"
+            className="transition-opacity duration-300 hover:opacity-70"
+            onClick={(e) => {
+              e.preventDefault();
+              window.dispatchEvent(
+                new CustomEvent("navigate-to-section", { detail: "intro" })
+              );
+            }}
+          >
             <Logo size="medium" />
-          </Link>
+          </a>
         </div>
 
         {/* Center: Navigation - MainNavigation at 1920px (Scaled 0.75x) */}
@@ -83,20 +95,26 @@ export function LandingHeader() {
 
         {/* Right: Auth Buttons (Scaled 0.75x) */}
         <div className="flex-shrink-0 flex items-center gap-[12px]">
-          <CTAButton
-            variant="default"
-            size="default"
-            className="!w-[157.5px] !text-[24px] !rounded-[18px] !border-[3.75px] whitespace-nowrap !px-[8px]"
-          >
-            로그인/가입
-          </CTAButton>
-          <CTAButton
-            variant="primary"
-            size="default"
-            className="!w-[157.5px] !text-[24px] !rounded-[18px] !border-[3.75px] whitespace-nowrap !px-[8px]"
-          >
-            시작하기
-          </CTAButton>
+          {!isSignedIn && (
+            <Link href="/sign-in">
+              <CTAButton
+                variant="default"
+                size="default"
+                className="!w-[157.5px] !text-[24px] !rounded-[18px] !border-[3.75px] whitespace-nowrap !px-[8px]"
+              >
+                로그인/가입
+              </CTAButton>
+            </Link>
+          )}
+          <Link href="/viewer">
+            <CTAButton
+              variant="primary"
+              size="default"
+              className="!w-[157.5px] !text-[24px] !rounded-[18px] !border-[3.75px] whitespace-nowrap !px-[8px]"
+            >
+              시작하기
+            </CTAButton>
+          </Link>
         </div>
       </div>
     </header>
