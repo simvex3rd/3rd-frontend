@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { LucidePlus, LucideSend, LucideSettings2 } from "lucide-react";
+import { GradientBorder } from "@/components/ui/GradientBorder";
 
 /**
  * ChatInput - Chat input area at bottom
@@ -51,17 +52,7 @@ export function ChatInput({
     <div
       className={`relative flex flex-col justify-between w-full h-[127px] bg-[rgba(64,64,64,0.3)] rounded-[32px] p-[24px] gap-[10px] ${className || ""}`}
     >
-      {/* Gradient Border Overlay */}
-      <div
-        className="absolute inset-0 rounded-[32px] pointer-events-none"
-        style={{
-          padding: "3px",
-          background: "linear-gradient(to right, #02EEE1, transparent)",
-          mask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
-          maskComposite: "exclude",
-          WebkitMaskComposite: "xor",
-        }}
-      />
+      <GradientBorder className="rounded-[32px]" />
 
       {/* Input Area */}
       <div className="flex items-center w-full h-[24px] gap-[4px] z-10">

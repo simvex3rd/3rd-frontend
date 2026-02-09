@@ -1,15 +1,13 @@
 "use client";
 
-import { useState, useEffect, useCallback, Suspense } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { ViewerHeader } from "@/components/viewer/ViewerHeader";
 import { ChatSidebar } from "@/components/panels/ChatSidebar";
 import { ChatMessage } from "@/components/panels/ChatMessage";
 import { ChatInput } from "@/components/panels/ChatInput";
 import { LucideSparkles } from "lucide-react";
-import { useChatStream } from "@/hooks/use-chat-stream";
-import { api } from "@/lib/api";
-import type { ChatMessageResponse } from "@/types/api";
+import { useChatSession } from "@/hooks/use-chat-session";
 
 /**
  * Study Chat Page - Full-screen AI chat interface under /study
@@ -23,129 +21,24 @@ import type { ChatMessageResponse } from "@/types/api";
 function StudyChatContent() {
   const searchParams = useSearchParams();
   const [aiAvatar, setAiAvatar] = useState("");
-  const [sessionId, setSessionId] = useState<string | null>(null);
-  const [sessionCreating, setSessionCreating] = useState(false);
-  const [initialMessageSent, setInitialMessageSent] = useState(false);
 
   const {
+    sessionId,
+    sessionCreating,
     messages,
     isStreaming,
-    sendMessage: streamSendMessage,
-    clearMessages,
-    setMessages,
-  } = useChatStream(sessionId);
+    sendMessage,
+    createNewChat,
+    selectSession,
+  } = useChatSession({
+    initialSessionId: searchParams.get("sessionId"),
+    initialMessage: searchParams.get("q"),
+  });
 
   useEffect(() => {
     const AVATARS = ["/chat/character1.png", "/chat/character2.png"];
     setAiAvatar(AVATARS[Math.floor(Math.random() * AVATARS.length)]);
   }, []);
-
-  // Handle initial session from URL params
-  useEffect(() => {
-    const paramSessionId = searchParams.get("sessionId");
-    if (paramSessionId) {
-      setSessionId(paramSessionId);
-    }
-  }, [searchParams]);
-
-  // Send initial message from query param (from dashboard quick actions)
-  useEffect(() => {
-    if (initialMessageSent) return;
-
-    const initialMessage = searchParams.get("q");
-    if (!initialMessage) return;
-
-    const sendInitial = async () => {
-      setInitialMessageSent(true);
-
-      let currentSessionId = sessionId;
-
-      if (!currentSessionId) {
-        setSessionCreating(true);
-        try {
-          const session = await api.chat.createSession("1");
-          currentSessionId = String(session.id);
-          setSessionId(currentSessionId);
-        } catch (err) {
-          console.error("Failed to create session:", err);
-          setSessionCreating(false);
-          return;
-        } finally {
-          setSessionCreating(false);
-        }
-      }
-
-      await streamSendMessage(initialMessage, currentSessionId);
-    };
-
-    const timer = setTimeout(sendInitial, 100);
-    return () => clearTimeout(timer);
-  }, [searchParams, sessionId, initialMessageSent, streamSendMessage]);
-
-  const handleSendMessage = useCallback(
-    async (message: string) => {
-      if (!message.trim() || isStreaming || sessionCreating) return;
-
-      let currentSessionId = sessionId;
-
-      if (!currentSessionId) {
-        setSessionCreating(true);
-        try {
-          const session = await api.chat.createSession("1");
-          currentSessionId = String(session.id);
-          setSessionId(currentSessionId);
-        } catch (err) {
-          console.error("Failed to create session:", err);
-          setSessionCreating(false);
-          return;
-        } finally {
-          setSessionCreating(false);
-        }
-      }
-
-      await streamSendMessage(message, currentSessionId);
-    },
-    [sessionId, isStreaming, sessionCreating, streamSendMessage]
-  );
-
-  const handleNewChat = useCallback(async () => {
-    if (sessionCreating) return;
-
-    setSessionCreating(true);
-    try {
-      const session = await api.chat.createSession("1");
-      setSessionId(String(session.id));
-      clearMessages();
-    } catch (err) {
-      console.error("Failed to create new chat:", err);
-    } finally {
-      setSessionCreating(false);
-    }
-  }, [sessionCreating, clearMessages]);
-
-  const handleSelectSession = useCallback(
-    async (id: string) => {
-      if (id === sessionId) return;
-
-      setSessionId(id);
-      clearMessages();
-
-      try {
-        const apiMessages: ChatMessageResponse[] =
-          await api.chat.getMessages(id);
-        const formattedMessages = apiMessages.reverse().map((msg) => ({
-          id: String(msg.id),
-          role: msg.role as "user" | "assistant",
-          content: msg.content,
-          timestamp: new Date(msg.created_at),
-        }));
-        setMessages(formattedMessages);
-      } catch (err) {
-        console.error("Failed to load messages:", err);
-      }
-    },
-    [sessionId, clearMessages, setMessages]
-  );
 
   return (
     <div className="relative w-full max-[1919px]:h-[133.33vh] h-screen bg-neutral-900 overflow-hidden">
@@ -154,8 +47,8 @@ function StudyChatContent() {
       <main className="flex absolute inset-x-0 top-[102px] bottom-0">
         {/* Left Sidebar */}
         <ChatSidebar
-          onNewChat={handleNewChat}
-          onSelectSession={handleSelectSession}
+          onNewChat={createNewChat}
+          onSelectSession={selectSession}
           currentSessionId={sessionId || undefined}
         />
 
@@ -218,7 +111,7 @@ function StudyChatContent() {
 
           {/* Chat Input */}
           <div className="flex justify-center pb-[40px] px-[80px]">
-            <ChatInput onSend={handleSendMessage} />
+            <ChatInput onSend={sendMessage} />
           </div>
         </div>
       </main>

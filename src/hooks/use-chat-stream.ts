@@ -2,13 +2,7 @@
 
 import { useState, useCallback, useRef } from "react";
 import { api } from "@/lib/api";
-
-export interface Message {
-  id: string;
-  role: "user" | "assistant" | "system";
-  content: string;
-  timestamp: Date;
-}
+import type { Message } from "@/types/chat";
 
 function nextId(prefix: string) {
   return `${prefix}-${crypto.randomUUID()}`;

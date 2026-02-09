@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import { ViewerHeader } from "@/components/viewer/ViewerHeader";
 import { ChatInput } from "@/components/panels/ChatInput";
+import { GradientBorder } from "@/components/ui/GradientBorder";
 import { api } from "@/lib/api";
 
 const QUICK_ACTIONS = [
@@ -100,18 +101,7 @@ export default function StudyPage() {
             {/* Card */}
             {/* Card */}
             <div className="flex-1 relative flex flex-col items-center justify-end gap-[24px] rounded-[24px] bg-gray-30 p-[40px] overflow-hidden">
-              {/* Gradient Border Overlay */}
-              <div
-                className="absolute inset-0 rounded-[24px] pointer-events-none"
-                style={{
-                  padding: "3px",
-                  background:
-                    "linear-gradient(to right, var(--color-primary), transparent)",
-                  mask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
-                  maskComposite: "exclude",
-                  WebkitMaskComposite: "xor",
-                }}
-              />
+              <GradientBorder />
 
               {/* Character + Welcome Bubble */}
               <div className="flex items-end gap-[24px] z-10">
@@ -168,18 +158,7 @@ export default function StudyPage() {
               </div>
 
               <div className="flex-1 relative flex items-center justify-center rounded-[24px] bg-gray-30 p-[32px] overflow-hidden">
-                {/* Gradient Border Overlay */}
-                <div
-                  className="absolute inset-0 rounded-[24px] pointer-events-none"
-                  style={{
-                    padding: "3px",
-                    background:
-                      "linear-gradient(to right, #02EEE1, transparent)",
-                    mask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
-                    maskComposite: "exclude",
-                    WebkitMaskComposite: "xor",
-                  }}
-                />
+                <GradientBorder />
 
                 <div className="flex gap-[16px] z-10">
                   {[1, 2, 3].map((i) => (
@@ -207,18 +186,7 @@ export default function StudyPage() {
               </div>
 
               <div className="flex-1 relative flex items-center justify-center rounded-[24px] bg-gray-30">
-                {/* Gradient Border Overlay */}
-                <div
-                  className="absolute inset-0 rounded-[24px] pointer-events-none"
-                  style={{
-                    padding: "3px",
-                    background:
-                      "linear-gradient(to right, #02EEE1, transparent)",
-                    mask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
-                    maskComposite: "exclude",
-                    WebkitMaskComposite: "xor",
-                  }}
-                />
+                <GradientBorder />
 
                 <p className="font-medium text-[16px] leading-[1.5] text-white z-10">
                   ai quiz

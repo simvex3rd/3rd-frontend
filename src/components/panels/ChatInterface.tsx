@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect, useCallback } from "react";
 import { cn } from "@/lib/utils";
-import { ChatInput } from "@/components/ui/chat-input";
+import { ChatInput } from "@/components/panels/ChatInput";
 import { MarkdownRenderer } from "@/components/ui/markdown-renderer";
 import type { HTMLAttributes } from "react";
 import { useSceneStore } from "@/stores/scene-store";
@@ -51,7 +51,6 @@ export function ChatInterface({
   initialMessages = [],
   ...props
 }: ChatInterfaceProps) {
-  const [inputValue, setInputValue] = useState("");
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const messagesContainerRef = useRef<HTMLDivElement>(null);
 
@@ -134,26 +133,24 @@ export function ChatInterface({
     }
   }, [sessionId, modelId]);
 
-  const handleSend = async () => {
-    if (!inputValue.trim() || isStreaming) return;
+  const handleSend = async (message: string) => {
+    if (!message.trim() || isStreaming) return;
 
     // Ensure we have a session before sending
     const currentSessionId = await ensureSession();
     if (!currentSessionId) return;
 
     // Build context-enriched message for the API
-    let contextualMessage = inputValue.trim();
+    let contextualMessage = message.trim();
     const sceneState = useSceneStore.getState();
     const currentModelId = sceneState.modelId;
     const currentSelectedObject = sceneState.selectedObject;
 
     if (currentSelectedObject && partData) {
-      contextualMessage = `[Context: Model=${currentModelId || "unknown"}, Part=${partData.name}] ${inputValue.trim()}`;
+      contextualMessage = `[Context: Model=${currentModelId || "unknown"}, Part=${partData.name}] ${message.trim()}`;
     } else if (currentModelId) {
-      contextualMessage = `[Context: Model=${currentModelId}] ${inputValue.trim()}`;
+      contextualMessage = `[Context: Model=${currentModelId}] ${message.trim()}`;
     }
-
-    setInputValue("");
 
     // Call external onSend handler
     onSend?.(contextualMessage);
@@ -266,18 +263,12 @@ export function ChatInterface({
       </div>
 
       {/* Input Area - Fixed at bottom */}
-      <div className="shrink-0 px-[20px] py-[16px] border-t border-neutral-600">
-        <div className="relative rounded-[32px] border border-primary p-[12px] bg-[rgba(64,64,64,0.3)]">
-          <ChatInput
-            placeholder="Ask me anything about your simulation..."
-            value={inputValue}
-            onChange={(e) => setInputValue(e.target.value)}
-            onSend={handleSend}
-            variant="default"
-            maxLength={2000}
-            className="border-0 bg-transparent text-neutral-50 placeholder:text-neutral-400"
-          />
-        </div>
+      <div className="shrink-0 px-[20px] py-[16px]">
+        <ChatInput
+          placeholder="Ask me anything about your simulation..."
+          onSend={handleSend}
+          className="w-full"
+        />
       </div>
     </div>
   );
