@@ -30,83 +30,88 @@ interface ChatSidebarProps {
 export function ChatSidebar({
   className,
   defaultOpen = true,
-}: ChatSidebarProps) {
+  onNewChat,
+}: ChatSidebarProps & { onNewChat?: () => void }) {
   const [isOpen, setIsOpen] = useState(defaultOpen);
 
   // Mock history data - replace with real data later
   const historyItems = [
-    "history chat",
-    "history chat",
-    "history chat",
-    "history chat",
-    "history chat",
-    "history chat",
-    "history chat",
+    "Previous Chat 1",
+    "Design Discussion",
+    "React Components",
+    "Tailwind Config",
+    "Three.js Setup",
   ];
 
   return (
     <aside
-      className={`flex flex-col gap-[48px] h-full p-[24px] transition-all duration-300 relative ${
+      className={`relative flex flex-col h-full transition-all duration-300 ease-in-out ${
         isOpen ? "w-[311px]" : "w-[80px]"
       } ${className || ""}`}
     >
-      {/* Glass Effect Background - Same as ViewerHeader */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden -z-10">
+      {/* Glass Background Layer - Identical to ViewerHeader */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
         <div className="absolute inset-0 bg-white/5 backdrop-blur-[2px]" />
       </div>
 
-      {/* Hamburger Menu - Toggle Button */}
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        className="w-[40px] h-[40px] flex items-center justify-center text-[#e5e5e5] hover:text-primary transition-colors shrink-0 relative z-10"
-        aria-label={isOpen ? "Collapse sidebar" : "Expand sidebar"}
-      >
-        <LucideMenu className="w-[40px] h-[40px]" strokeWidth={2} />
-      </button>
-
-      {/* Main Content - Only visible when open */}
-      {isOpen && (
-        <div className="flex flex-col gap-[48px] flex-1 overflow-hidden relative z-10">
-          {/* New Chat Button */}
-          <button className="flex items-center gap-[8px] p-[7px] rounded-[8px] hover:bg-white/10 transition-colors">
-            <LucideMessageSquarePlus
-              className="w-[24px] h-[24px] text-[#e5e5e5] shrink-0"
-              strokeWidth={2}
-            />
-            <span className="font-semibold text-[16px] leading-[1.5] text-[#e5e5e5] whitespace-nowrap">
-              New Chat
-            </span>
-          </button>
-
-          {/* History Section */}
-          <div className="flex flex-col gap-[7px] overflow-y-auto">
-            <h3 className="font-semibold text-[16px] leading-[1.5] text-[#e5e5e5] mb-[7px]">
-              History
-            </h3>
-            {historyItems.map((item, index) => (
-              <button
-                key={index}
-                className="font-medium text-[14px] leading-[1.5] text-[#d4d4d4] hover:text-[#e5e5e5] text-left transition-colors"
-              >
-                {item}
-              </button>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/* Collapsed State - Only show icon */}
-      {!isOpen && (
+      {/* Toggle Button Area */}
+      <div className="p-[24px] pb-0 flex justify-end z-10 relative">
         <button
-          className="flex items-center justify-center p-[7px] rounded-[8px] hover:bg-white/10 transition-colors shrink-0 relative z-10"
-          aria-label="New Chat"
+          onClick={() => setIsOpen(!isOpen)}
+          className="w-[32px] h-[32px] flex items-center justify-center rounded-lg text-neutral-400 hover:text-primary hover:bg-white/5 transition-all"
+          aria-label={isOpen ? "Collapse sidebar" : "Expand sidebar"}
+        >
+          <LucideMenu className="w-[20px] h-[20px]" strokeWidth={2} />
+        </button>
+      </div>
+
+      {/* Main Content */}
+      <div className="flex-1 flex flex-col gap-[32px] p-[24px] overflow-hidden z-10 relative">
+        {/* New Chat Button - Simplified */}
+        <button
+          onClick={onNewChat}
+          className={`group flex items-center gap-[12px] p-[12px] rounded-xl transition-all duration-200 ${
+            isOpen ? "hover:bg-white/5" : "justify-center hover:bg-white/5"
+          }`}
         >
           <LucideMessageSquarePlus
-            className="w-[24px] h-[24px] text-[#e5e5e5]"
+            className={`w-[20px] h-[20px] transition-colors ${
+              isOpen
+                ? "text-neutral-400 group-hover:text-primary"
+                : "text-neutral-400 group-hover:text-primary"
+            }`}
             strokeWidth={2}
           />
+          {isOpen && (
+            <span className="font-semibold text-[15px] text-neutral-400 group-hover:text-primary whitespace-nowrap transition-colors">
+              New Chat
+            </span>
+          )}
         </button>
-      )}
+
+        {/* History Section */}
+        {isOpen && (
+          <div className="flex flex-col gap-[8px] overflow-y-auto min-h-0 animate-in fade-in slide-in-from-left-4 duration-300">
+            <h3 className="px-[8px] text-[12px] font-bold text-neutral-500 uppercase tracking-wider mb-[4px]">
+              History
+            </h3>
+            <div className="flex flex-col gap-[2px]">
+              {historyItems.map((item, index) => (
+                <button
+                  key={index}
+                  className="group flex w-full items-center px-[12px] py-[10px] rounded-lg hover:bg-white/5 text-left transition-colors"
+                >
+                  <span className="text-[14px] text-neutral-400 group-hover:text-neutral-50 truncate transition-colors">
+                    {item}
+                  </span>
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Footer / User Profile could go here */}
     </aside>
   );
 }

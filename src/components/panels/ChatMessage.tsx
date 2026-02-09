@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { cn } from "@/lib/utils";
 
 /**
@@ -20,6 +21,7 @@ interface ChatMessageProps {
   type: "user" | "ai";
   content: string;
   showAvatar?: boolean;
+  avatar?: string;
   className?: string;
 }
 
@@ -27,8 +29,9 @@ export function ChatMessage({
   type,
   content,
   showAvatar = false,
+  avatar,
   className,
-}: ChatMessageProps) {
+}: ChatMessageProps & { avatar?: string }) {
   const isUser = type === "user";
 
   return (
@@ -41,9 +44,13 @@ export function ChatMessage({
     >
       {/* AI Avatar - left side */}
       {!isUser && showAvatar && (
-        <div className="w-[79px] h-[69px] shrink-0 bg-gray-30 rounded-[12px] flex items-center justify-center">
-          {/* Placeholder for penguin avatar */}
-          <div className="w-[50px] h-[50px] rounded-full bg-primary/20" />
+        <div className="relative w-[79px] h-[69px] shrink-0 bg-transparent rounded-[12px] flex items-center justify-center overflow-hidden">
+          {avatar ? (
+            <Image src={avatar} alt="AI Avatar" fill className="object-cover" />
+          ) : (
+            /* Placeholder for penguin avatar */
+            <div className="w-[50px] h-[50px] rounded-full bg-primary/20" />
+          )}
         </div>
       )}
 

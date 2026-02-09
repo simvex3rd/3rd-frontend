@@ -7,9 +7,13 @@ import { usePathname } from "next/navigation";
 
 interface ViewerHeaderProps {
   className?: string;
+  variant?: "glass" | "solid";
 }
 
-export function ViewerHeader({ className }: ViewerHeaderProps) {
+export function ViewerHeader({
+  className,
+  variant = "glass",
+}: ViewerHeaderProps) {
   const pathname = usePathname();
 
   const navItems = [
@@ -23,13 +27,16 @@ export function ViewerHeader({ className }: ViewerHeaderProps) {
     <header
       className={cn(
         "w-full h-[102px] px-[80px] flex items-center justify-between z-50 fixed top-0 left-0 right-0",
+        variant === "solid" ? "bg-neutral-900" : "",
         className
       )}
     >
       {/* Glass Effect Background */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute inset-0 bg-white/5 backdrop-blur-[2px]" />
-      </div>
+      {variant === "glass" && (
+        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+          <div className="absolute inset-0 bg-white/5 backdrop-blur-[2px]" />
+        </div>
+      )}
 
       {/* Content */}
       <div className="relative z-10 w-full flex items-center justify-between">

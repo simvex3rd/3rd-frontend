@@ -1,5 +1,7 @@
 "use client";
 
+import { useState, useEffect } from "react";
+
 import { ViewerHeader } from "@/components/viewer/ViewerHeader";
 import { ChatSidebar } from "@/components/panels/ChatSidebar";
 import { ChatMessage } from "@/components/panels/ChatMessage";
@@ -23,6 +25,14 @@ import { LucideSparkles } from "lucide-react";
  * @see {@link https://www.figma.com/design/Vz80RydxWcYHVnn2iuyV0m?node-id=376-1358} Figma Design
  */
 export default function ChatPage() {
+  const [aiAvatar, setAiAvatar] = useState<string>("");
+
+  useEffect(() => {
+    const AVATARS = ["/chat/character1.png", "/chat/character2.png"];
+    const randomAvatar = AVATARS[Math.floor(Math.random() * AVATARS.length)];
+    setAiAvatar(randomAvatar);
+  }, []);
+
   // Mock chat data - replace with real data later
   const messages = [
     { type: "ai" as const, content: "ai chat", showAvatar: true },
@@ -78,6 +88,7 @@ export default function ChatPage() {
                 type={message.type}
                 content={message.content}
                 showAvatar={message.showAvatar}
+                avatar={message.type === "ai" ? aiAvatar : undefined}
               />
             ))}
           </div>
