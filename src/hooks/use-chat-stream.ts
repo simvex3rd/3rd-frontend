@@ -1,23 +1,25 @@
 "use client";
 
-import { useState, useCallback } from "react";
-import { api } from "@/lib/api/client";
+import { useState, useCallback, useRef } from "react";
+import { api } from "@/lib/api";
 
-interface Message {
+export interface Message {
   id: string;
   role: "user" | "assistant" | "system";
   content: string;
   timestamp: Date;
 }
 
-export function useChatStream(sessionId: string) {
+export function useChatStream(sessionId: string | null) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [isStreaming, setIsStreaming] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const decoderRef = useRef(new TextDecoder());
 
   const sendMessage = useCallback(
-    async (content: string) => {
-      if (!content.trim()) return;
+    async (content: string, sessionIdOverride?: string) => {
+      const effectiveSessionId = sessionIdOverride || sessionId;
+      if (!content.trim() || !effectiveSessionId) return;
 
       // Add user message
       const userMessage: Message = {
@@ -33,9 +35,12 @@ export function useChatStream(sessionId: string) {
       setError(null);
 
       try {
-        const reader = await api.chat.streamMessage(sessionId, content);
+        const reader = await api.chat.streamMessage(
+          effectiveSessionId,
+          content
+        );
 
-        let aiMessage = "";
+        let aiContent = "";
         const aiMessageId = `ai-${Date.now()}`;
 
         // Add empty AI message placeholder
@@ -49,29 +54,51 @@ export function useChatStream(sessionId: string) {
           },
         ]);
 
+        let buffer = "";
+
         while (true) {
           const { done, value } = await reader.read();
           if (done) break;
 
-          // Decode stream chunk
-          const text = new TextDecoder().decode(value);
-          const lines = text.split("\n\n");
+          // Decode stream chunk and append to buffer for partial line handling
+          buffer += decoderRef.current.decode(value, { stream: true });
+          const parts = buffer.split("\n\n");
+          // Keep the last incomplete part in the buffer
+          buffer = parts.pop() || "";
 
-          for (const line of lines) {
-            if (line.startsWith("data: ")) {
-              const data = line.slice(6).trim();
-              if (data) {
-                aiMessage += data;
+          for (const part of parts) {
+            const line = part.trim();
+            if (!line.startsWith("data: ")) continue;
 
-                // Update AI message in real-time
+            const rawData = line.slice(6).trim();
+            if (!rawData || rawData === "[DONE]") continue;
+
+            try {
+              const parsed = JSON.parse(rawData);
+              if (parsed.type === "done") continue;
+              // Extract text content from the JSON payload
+              const chunk =
+                typeof parsed === "string"
+                  ? parsed
+                  : parsed.data || parsed.text || parsed.content || "";
+              if (chunk) {
+                aiContent += chunk;
                 setMessages((prev) =>
                   prev.map((msg) =>
                     msg.id === aiMessageId
-                      ? { ...msg, content: aiMessage }
+                      ? { ...msg, content: aiContent }
                       : msg
                   )
                 );
               }
+            } catch {
+              // If not JSON, treat as plain text
+              aiContent += rawData;
+              setMessages((prev) =>
+                prev.map((msg) =>
+                  msg.id === aiMessageId ? { ...msg, content: aiContent } : msg
+                )
+              );
             }
           }
         }
@@ -106,5 +133,6 @@ export function useChatStream(sessionId: string) {
     sendMessage,
     clearMessages,
     addSystemMessage,
+    setMessages,
   };
 }

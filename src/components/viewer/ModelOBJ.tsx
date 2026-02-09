@@ -1,10 +1,22 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { useFrame } from "@react-three/fiber";
+import { useEffect, useRef, useState, useCallback } from "react";
+import { useFrame, useThree } from "@react-three/fiber";
 import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader.js";
-import { Mesh, MeshStandardMaterial, Color, Box3, Vector3, Group } from "three";
+import {
+  Mesh,
+  MeshStandardMaterial,
+  Color,
+  Box3,
+  Vector3,
+  Group,
+  Sphere,
+  MathUtils,
+  PerspectiveCamera,
+} from "three";
+import type { OrbitControls as OrbitControlsImpl } from "three-stdlib";
 import { useSceneStore } from "@/stores/scene-store";
+import { useUIStore } from "@/stores/ui-store";
 
 interface ModelOBJProps {
   url: string;
@@ -13,17 +25,24 @@ interface ModelOBJProps {
 /**
  * OBJ Model Loader Component
  *
- * Loads .obj files and provides same interactions as GLTF models:
- * - Click to select parts
+ * Loads .obj files and provides interactions:
+ * - Click to select parts (auto-shows PartInfoPanel)
+ * - Click background to deselect
  * - Hover effect
- * - Explode animation
+ * - Explode animation (center-based direction)
+ * - Wireframe mode toggle
+ * - Focus on selected part
  */
 export function ModelOBJ({ url }: ModelOBJProps) {
   const groupRef = useRef<Group>(null);
   const [isLoaded, setIsLoaded] = useState(false);
+  const modelCenterRef = useRef<Vector3>(new Vector3());
+  // eslint-disable-next-line react-hooks/exhaustive-deps -- useThree is not a standard hook
+  const { camera, controls } = useThree();
   const setSelectedObject = useSceneStore((state) => state.setSelectedObject);
   const selectedObject = useSceneStore((state) => state.selectedObject);
   const explodeLevel = useSceneStore((state) => state.explodeLevel);
+  const isWireframeMode = useUIStore((state) => state.isWireframeMode);
 
   // Load OBJ file
   useEffect(() => {
@@ -41,7 +60,12 @@ export function ModelOBJ({ url }: ModelOBJProps) {
           // Add loaded model
           groupRef.current.add(object);
 
+          // Compute model bounding box center for explode
+          const modelBox = new Box3().setFromObject(object);
+          modelCenterRef.current = modelBox.getCenter(new Vector3());
+
           // Initialize meshes
+          let meshIndex = 0;
           object.traverse((child) => {
             if (child instanceof Mesh) {
               // Set name
@@ -74,6 +98,9 @@ export function ModelOBJ({ url }: ModelOBJProps) {
               if (!child.userData.initialPosition) {
                 child.userData.initialPosition = child.position.clone();
               }
+
+              // Store mesh index for fallback explode direction
+              child.userData.meshIndex = meshIndex++;
             }
           });
 
@@ -88,10 +115,48 @@ export function ModelOBJ({ url }: ModelOBJProps) {
           object.scale.setScalar(scale);
 
           // Then center by moving the object
-          // Multiply center by scale to get the correct offset
           object.position.x = -center.x * scale;
           object.position.y = -center.y * scale;
           object.position.z = -center.z * scale;
+
+          // Recompute model center after centering/scaling (should be ~origin now)
+          groupRef.current.updateMatrixWorld(true);
+          const finalBox = new Box3().setFromObject(groupRef.current);
+          modelCenterRef.current = finalBox.getCenter(new Vector3());
+
+          // Auto-fit camera if no saved camera from previous session
+          if (!useSceneStore.getState().hasSavedCamera) {
+            const sphere = new Sphere();
+            finalBox.getBoundingSphere(sphere);
+            const { center: modelCenter, radius } = sphere;
+
+            if (radius > 0.001) {
+              const perspCam = camera as PerspectiveCamera;
+              const fovRad = MathUtils.degToRad(perspCam.fov);
+              const fitDistance = radius / Math.tan(fovRad / 2);
+              const distance = fitDistance * 1.8; // ~55% viewport fill
+
+              // Gentle 3/4 view: 20° elevation, 15° azimuth
+              const elevation = MathUtils.degToRad(20);
+              const azimuth = MathUtils.degToRad(15);
+
+              camera.position.set(
+                modelCenter.x +
+                  distance * Math.cos(elevation) * Math.sin(azimuth),
+                modelCenter.y + distance * Math.sin(elevation),
+                modelCenter.z +
+                  distance * Math.cos(elevation) * Math.cos(azimuth)
+              );
+              camera.lookAt(modelCenter);
+              camera.updateProjectionMatrix();
+
+              if (controls) {
+                const orbit = controls as OrbitControlsImpl;
+                orbit.target.copy(modelCenter);
+                orbit.update();
+              }
+            }
+          }
 
           setIsLoaded(true);
         }
@@ -105,7 +170,21 @@ export function ModelOBJ({ url }: ModelOBJProps) {
         console.error("Error loading OBJ:", error);
       }
     );
-  }, [url]);
+  }, [url, camera, controls]);
+
+  // Apply wireframe mode
+  useEffect(() => {
+    if (!groupRef.current || !isLoaded) return;
+
+    groupRef.current.traverse((child) => {
+      if (
+        child instanceof Mesh &&
+        child.material instanceof MeshStandardMaterial
+      ) {
+        child.material.wireframe = isWireframeMode;
+      }
+    });
+  }, [isWireframeMode, isLoaded]);
 
   // Handle selection highlight
   useFrame(() => {
@@ -132,14 +211,43 @@ export function ModelOBJ({ url }: ModelOBJProps) {
     });
   });
 
-  // Handle explode animation
+  // Handle explode animation - center-based direction
   useFrame(() => {
     if (!groupRef.current || !isLoaded) return;
+
+    const modelCenter = modelCenterRef.current;
 
     groupRef.current.traverse((child) => {
       if (child instanceof Mesh && child.userData.initialPosition) {
         const initial = child.userData.initialPosition as Vector3;
-        const target = initial.clone().multiplyScalar(1 + explodeLevel * 0.5);
+
+        if (explodeLevel === 0) {
+          // Smooth lerp back to initial position
+          child.position.lerp(initial, 0.1);
+          return;
+        }
+
+        // Calculate direction from model center to part position
+        const direction = new Vector3().subVectors(initial, modelCenter);
+        const distance = direction.length();
+
+        if (distance > 0.001) {
+          // Normal case: part is not at center
+          direction.normalize();
+        } else {
+          // Fallback for parts at/near center: use mesh index to create a direction
+          const index = child.userData.meshIndex ?? 0;
+          const angle = (index / 6) * Math.PI * 2; // Distribute around a circle
+          const elevation = ((index % 3) - 1) * 0.5; // Spread vertically
+          direction
+            .set(Math.cos(angle), elevation, Math.sin(angle))
+            .normalize();
+        }
+
+        const explodeDistance = explodeLevel * 2.0;
+        const target = initial
+          .clone()
+          .add(direction.multiplyScalar(explodeDistance));
 
         // Smooth lerp to target position
         child.position.lerp(target, 0.1);
@@ -147,19 +255,34 @@ export function ModelOBJ({ url }: ModelOBJProps) {
     });
   });
 
-  // Handle click
-  const handleClick = (event: any) => {
-    event.stopPropagation();
-    const mesh = event.object as Mesh;
+  // Handle click on a part
+  const handleClick = useCallback(
+    (event: { stopPropagation: () => void; object: Mesh }) => {
+      event.stopPropagation();
+      const mesh = event.object as Mesh;
 
-    if (mesh.userData.selectable) {
-      const name = mesh.userData.name || mesh.name || mesh.uuid;
-      setSelectedObject(name);
-    }
-  };
+      if (mesh.userData.selectable) {
+        const name = mesh.userData.name || mesh.name || mesh.uuid;
+        setSelectedObject(name);
+        // Auto-show PartInfoPanel
+        useUIStore.setState({ isPartInfoVisible: true });
+      }
+    },
+    [setSelectedObject]
+  );
+
+  // Handle click on empty space (missed) to deselect
+  const handlePointerMissed = useCallback(() => {
+    setSelectedObject(null);
+    useUIStore.setState({ isPartInfoVisible: false });
+  }, [setSelectedObject]);
 
   return (
-    <group ref={groupRef} onClick={handleClick}>
+    <group
+      ref={groupRef}
+      onClick={handleClick}
+      onPointerMissed={handlePointerMissed}
+    >
       {/* Model will be added here via loader */}
     </group>
   );

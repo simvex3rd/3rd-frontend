@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { LucideMenu, LucideMessageSquarePlus } from "lucide-react";
+import { api } from "@/lib/api";
 
 /**
  * ChatSidebar - Left sidebar for chat page with collapsible functionality
@@ -9,7 +10,7 @@ import { LucideMenu, LucideMessageSquarePlus } from "lucide-react";
  * Features:
  * - Hamburger menu icon (toggles sidebar)
  * - New Chat button
- * - History section with list of previous chats
+ * - History section with list of previous chats (from API)
  * - Collapsible: 311px (open) ↔ 80px (collapsed)
  *
  * Design specs:
@@ -22,26 +23,48 @@ import { LucideMenu, LucideMessageSquarePlus } from "lucide-react";
  * @see {@link https://www.figma.com/design/Vz80RydxWcYHVnn2iuyV0m?node-id=236-1536} Figma - Collapsed
  */
 
+interface ChatSession {
+  id: number | string;
+  title?: string | null;
+  created_at: string;
+}
+
 interface ChatSidebarProps {
   className?: string;
   defaultOpen?: boolean;
+  onSelectSession?: (sessionId: string) => void;
+  currentSessionId?: string;
 }
 
 export function ChatSidebar({
   className,
   defaultOpen = true,
   onNewChat,
+  onSelectSession,
+  currentSessionId,
 }: ChatSidebarProps & { onNewChat?: () => void }) {
   const [isOpen, setIsOpen] = useState(defaultOpen);
+  const [sessions, setSessions] = useState<ChatSession[]>([]);
+  const [loading, setLoading] = useState(false);
 
-  // Mock history data - replace with real data later
-  const historyItems = [
-    "Previous Chat 1",
-    "Design Discussion",
-    "React Components",
-    "Tailwind Config",
-    "Three.js Setup",
-  ];
+  const loadSessions = useCallback(async () => {
+    setLoading(true);
+    try {
+      const data = await api.chat.listSessions();
+      setSessions(data);
+    } catch (err) {
+      console.error("Failed to load chat sessions:", err);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  // Load sessions on mount and when sidebar opens
+  useEffect(() => {
+    if (isOpen) {
+      loadSessions();
+    }
+  }, [isOpen, loadSessions]);
 
   return (
     <aside
@@ -70,15 +93,15 @@ export function ChatSidebar({
         {/* New Chat Button - Simplified */}
         <button
           onClick={onNewChat}
-          className={`group flex items-center gap-[12px] p-[12px] rounded-xl transition-all duration-200 ${
-            isOpen ? "hover:bg-white/5" : "justify-center hover:bg-white/5"
+          className={`group flex items-center rounded-lg transition-all duration-200 ${
+            isOpen
+              ? "gap-[12px] p-[12px] hover:bg-white/5"
+              : "justify-center w-[32px] h-[32px] mx-auto hover:bg-white/5"
           }`}
         >
           <LucideMessageSquarePlus
-            className={`w-[20px] h-[20px] transition-colors ${
-              isOpen
-                ? "text-neutral-400 group-hover:text-primary"
-                : "text-neutral-400 group-hover:text-primary"
+            className={`transition-colors text-neutral-400 group-hover:text-primary ${
+              isOpen ? "w-[20px] h-[20px]" : "w-[20px] h-[20px]"
             }`}
             strokeWidth={2}
           />
@@ -96,16 +119,31 @@ export function ChatSidebar({
               History
             </h3>
             <div className="flex flex-col gap-[2px]">
-              {historyItems.map((item, index) => (
-                <button
-                  key={index}
-                  className="group flex w-full items-center px-[12px] py-[10px] rounded-lg hover:bg-white/5 text-left transition-colors"
-                >
-                  <span className="text-[14px] text-neutral-400 group-hover:text-neutral-50 truncate transition-colors">
-                    {item}
-                  </span>
-                </button>
-              ))}
+              {loading ? (
+                <p className="px-[12px] py-[10px] text-[14px] text-neutral-500">
+                  Loading...
+                </p>
+              ) : sessions.length === 0 ? (
+                <p className="px-[12px] py-[10px] text-[14px] text-neutral-500">
+                  No chat history
+                </p>
+              ) : (
+                sessions.map((session) => (
+                  <button
+                    key={session.id}
+                    onClick={() => onSelectSession?.(String(session.id))}
+                    className={`group flex w-full items-center px-[12px] py-[10px] rounded-lg hover:bg-white/5 text-left transition-colors ${
+                      String(session.id) === currentSessionId
+                        ? "bg-white/10"
+                        : ""
+                    }`}
+                  >
+                    <span className="text-[14px] text-neutral-400 group-hover:text-neutral-50 truncate transition-colors">
+                      {session.title || "Untitled Chat"}
+                    </span>
+                  </button>
+                ))
+              )}
             </div>
           </div>
         )}

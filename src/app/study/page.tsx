@@ -86,8 +86,8 @@ export default function StudyPage() {
 
         {/* Right Column - Memo + AI Quiz (1:1 width ratio) */}
         <div className="flex-1 flex flex-col gap-[24px] min-w-0">
-          {/* Memo Section - 1:1 height ratio with AI Quiz */}
-          <div className="flex-1 flex flex-col gap-[16px] min-h-0 basis-0">
+          {/* Memo Section - takes ~60% of right column */}
+          <div className="flex-[3] flex flex-col gap-[16px] min-h-0">
             {/* Section Header - Icon + Title */}
             <div className="flex gap-[16px] items-center shrink-0">
               <LucideSquarePen
@@ -99,53 +99,53 @@ export default function StudyPage() {
               </h2>
             </div>
 
-            {/* Content Box with Sticky Notes - fills remaining space */}
-            <div className="bg-gray-30 border-[3px] border-primary rounded-[24px] flex-1 flex items-start justify-center p-[32px] relative overflow-hidden">
-              {/* Sticky Notes Container - positioned at top */}
-              <div className="flex gap-[20px] items-start justify-center w-full">
+            {/* Content Box with Sticky Notes */}
+            <div className="bg-gray-30 border-[3px] border-primary rounded-[24px] flex-1 p-[24px] overflow-y-auto">
+              {/* Sticky Notes Grid */}
+              <div className="grid grid-cols-3 gap-[16px] h-full">
                 {/* Sticky Note 1 */}
-                <div className="bg-[rgba(2,238,225,0.3)] rounded-[24px] flex-1 min-h-[320px] max-w-[380px] flex flex-col items-start justify-between p-[28px]">
-                  <div className="space-y-[12px] w-full">
-                    <h3 className="font-bold text-[20px] leading-[1.5] text-white">
+                <div className="bg-primary-30 rounded-[20px] flex flex-col justify-between p-[24px]">
+                  <div className="space-y-[10px]">
+                    <h3 className="font-bold text-[18px] leading-[1.4] text-white">
                       크랭크샤프트
                     </h3>
-                    <p className="font-medium text-[15px] leading-[1.6] text-white/90">
+                    <p className="font-medium text-[14px] leading-[1.6] text-white/90">
                       - 엔진의 핵심 동력 전달 장치
                       <br />
                       - 피스톤의 왕복운동 → 회전운동 변환
                       <br />- 고강도 합금강 재질
                     </p>
                   </div>
-                  <p className="font-medium text-[13px] text-white/70">
-                    2025.02.09
+                  <p className="font-medium text-[12px] text-white/50 mt-[16px]">
+                    2026.02.09
                   </p>
                 </div>
 
                 {/* Sticky Note 2 */}
-                <div className="bg-[rgba(2,238,225,0.3)] rounded-[24px] flex-1 min-h-[320px] max-w-[380px] flex flex-col items-start justify-between p-[28px]">
-                  <div className="space-y-[12px] w-full">
-                    <h3 className="font-bold text-[20px] leading-[1.5] text-white">
+                <div className="bg-primary-30 rounded-[20px] flex flex-col justify-between p-[24px]">
+                  <div className="space-y-[10px]">
+                    <h3 className="font-bold text-[18px] leading-[1.4] text-white">
                       학습 포인트
                     </h3>
-                    <p className="font-medium text-[15px] leading-[1.6] text-white/90">
+                    <p className="font-medium text-[14px] leading-[1.6] text-white/90">
                       - 베어링 구조 복습 필요
                       <br />
                       - 4행정 엔진 사이클 이해
                       <br />- 열팽창 계수 개념 정리
                     </p>
                   </div>
-                  <p className="font-medium text-[13px] text-white/70">
-                    2025.02.09
+                  <p className="font-medium text-[12px] text-white/50 mt-[16px]">
+                    2026.02.09
                   </p>
                 </div>
 
                 {/* Sticky Note 3 */}
-                <div className="bg-[rgba(2,238,225,0.3)] rounded-[24px] flex-1 min-h-[320px] max-w-[380px] flex flex-col items-start justify-between p-[28px]">
-                  <div className="space-y-[12px] w-full">
-                    <h3 className="font-bold text-[20px] leading-[1.5] text-white">
+                <div className="bg-primary-30 rounded-[20px] flex flex-col justify-between p-[24px]">
+                  <div className="space-y-[10px]">
+                    <h3 className="font-bold text-[18px] leading-[1.4] text-white">
                       퀴즈 오답
                     </h3>
-                    <p className="font-medium text-[15px] leading-[1.6] text-white/90">
+                    <p className="font-medium text-[14px] leading-[1.6] text-white/90">
                       Q. 크랭크샤프트의 주요 기능은?
                       <br />
                       <br />
@@ -154,16 +154,16 @@ export default function StudyPage() {
                       정답: 동력 전달 및 변환
                     </p>
                   </div>
-                  <p className="font-medium text-[13px] text-white/70">
-                    2025.02.08
+                  <p className="font-medium text-[12px] text-white/50 mt-[16px]">
+                    2026.02.08
                   </p>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* AI Quiz Section - 1:1 height ratio with Memo */}
-          <div className="flex-1 flex flex-col gap-[16px] min-h-0 basis-0">
+          {/* AI Quiz Section - takes ~40% of right column */}
+          <div className="flex-[2] flex flex-col gap-[16px] min-h-0">
             {/* Section Header - Icon + Title */}
             <div className="flex gap-[16px] items-center shrink-0">
               <LucideSparkles

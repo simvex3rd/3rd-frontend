@@ -88,7 +88,10 @@ export const useUIStore = create<UIState>()(
         openChat: () => set({ isChatOpen: true }),
         closeChat: () => set({ isChatOpen: false }),
         setViewerTool: (tool) => set({ activeViewerTool: tool }),
-        setSideTool: (tool) => set({ activeSideTool: tool }),
+        setSideTool: (tool) =>
+          set((state) => ({
+            activeSideTool: state.activeSideTool === tool ? null : tool,
+          })),
         toggleWireframe: () =>
           set((state) => ({ isWireframeMode: !state.isWireframeMode })),
         toggleCameraLock: () =>

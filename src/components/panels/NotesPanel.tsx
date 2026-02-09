@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useSceneStore } from "@/stores/scene-store";
-import { api } from "@/lib/api/client";
+import { api } from "@/lib/api";
 
 export function NotesPanel() {
   const selectedPart = useSceneStore((state) => state.selectedObject);

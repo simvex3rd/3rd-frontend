@@ -2,7 +2,6 @@
 
 import { useSceneStore } from "@/stores/scene-store";
 import { usePartData } from "@/hooks/use-part-data";
-import Image from "next/image";
 
 /**
  * Part Info Panel Component
@@ -17,107 +16,103 @@ import Image from "next/image";
  * - Glassmorphism design with rgba(212,212,212,0.3) background
  * - 3px cyan border, 24px border radius, 48px padding
  * - Real-time API integration with loading/error states
+ * - Expanded metadata display (rpm, diameter, stroke, etc.)
  *
  * @component
  * @see {@link https://figma.com/file/Vz80RydxWcYHVnn2iuyV0m/SIMVEX} Figma Design (node-232:967)
  */
 
+/**
+ * Format a metadata key for display (snake_case -> Title Case with units)
+ */
+function formatMetaKey(key: string): string {
+  return key.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
+}
+
+/**
+ * Format a metadata value for display
+ */
+function formatMetaValue(value: unknown): string {
+  if (typeof value === "number") {
+    return value.toLocaleString();
+  }
+  if (typeof value === "boolean") {
+    return value ? "Yes" : "No";
+  }
+  return String(value);
+}
+
 export function PartInfoPanel() {
   const selectedObject = useSceneStore((state) => state.selectedObject);
   const { partData, loading, error } = usePartData(selectedObject);
 
+  // Extract metadata entries for display
+  const metadataEntries = partData?.metadata
+    ? Object.entries(partData.metadata).filter(
+        ([, value]) => value !== null && value !== undefined
+      )
+    : [];
+
   if (!selectedObject) {
-    return null;
+    return (
+      <div className="flex flex-col items-center justify-center h-full px-[24px] text-center">
+        <p className="font-medium text-[14px] leading-[1.5] text-neutral-400">
+          3D 뷰어에서 파트를 클릭하여
+          <br />
+          정보를 확인하세요.
+        </p>
+      </div>
+    );
   }
 
   return (
-    <aside
-      className="flex flex-col items-center justify-center w-[400px] h-[750px] border-[3px] border-solid border-primary bg-gray-30 rounded-[24px] p-[48px] gap-[32px] backdrop-blur-sm transition-all duration-300 shrink-0 z-10"
-      role="complementary"
-      aria-label="Part information sidebar"
-    >
-      {/* AI Assistant Section */}
-      <div className="flex flex-col gap-[16px] items-start w-full">
-        {/* Header with Icon */}
-        <div className="flex gap-[16px] items-center">
-          <Image
-            src="/icons/ai-assistant.svg"
-            alt="AI Assistant"
-            width={40}
-            height={40}
-            className="shrink-0"
-          />
-          <h2 className="font-semibold text-[32px] leading-[1.25] text-primary">
-            AI Assistant
-          </h2>
-        </div>
+    <div className="flex flex-col gap-[16px] p-[20px] overflow-y-auto h-full">
+      {/* Part Name */}
+      <p className="font-bold text-[16px] leading-[1.4] text-primary">
+        {partData?.name || selectedObject}
+      </p>
 
-        {/* Content Box */}
-        <div className="w-full h-[250px] bg-gray-30 border-[3px] border-primary rounded-[24px] flex items-center justify-center px-[40px] py-[48px]">
-          {loading ? (
-            <p className="font-medium text-[16px] leading-[1.5] text-neutral-400 text-center">
-              Loading...
-            </p>
-          ) : error ? (
-            <p className="font-medium text-[16px] leading-[1.5] text-red-400 text-center">
-              {error}
-            </p>
-          ) : (
-            <p className="font-medium text-[16px] leading-[1.5] text-neutral-50 text-center">
-              {partData?.description ||
-                `${selectedObject}에 대해 궁금한 점이 있으신가요?`}
-            </p>
-          )}
-        </div>
-      </div>
+      {/* Description */}
+      {partData?.description && (
+        <p className="font-medium text-[13px] leading-[1.5] text-neutral-300">
+          {partData.description}
+        </p>
+      )}
 
-      {/* Part Info Section */}
-      <div className="flex flex-col gap-[16px] items-start w-full">
-        {/* Header with Icon */}
-        <div className="flex gap-[16px] items-start">
-          <Image
-            src="/icons/part-info.svg"
-            alt="Part Info"
-            width={40}
-            height={40}
-            className="shrink-0"
-          />
-          <h2 className="font-semibold text-[32px] leading-[1.25] text-primary">
-            Part Info
-          </h2>
-        </div>
-
-        {/* Content Box */}
-        <div className="w-full h-[250px] bg-gray-30 border-[3px] border-primary rounded-[24px] flex items-center justify-center px-[40px] py-[48px]">
-          {loading ? (
-            <p className="font-medium text-[16px] leading-[1.5] text-neutral-400 text-center">
-              Loading...
-            </p>
-          ) : error ? (
-            <p className="font-medium text-[16px] leading-[1.5] text-red-400 text-center">
-              {error}
-            </p>
-          ) : partData ? (
-            <div className="flex flex-col gap-[8px] text-center">
-              <p className="font-bold text-[18px] leading-[1.4] text-primary">
-                {partData.name || selectedObject}
-              </p>
-              <p className="font-medium text-[14px] leading-[1.5] text-neutral-50">
-                Material: {partData.material || "N/A"}
-              </p>
-              <p className="font-medium text-[14px] leading-[1.5] text-neutral-50">
-                {partData.metadata?.weight
-                  ? `Weight: ${partData.metadata.weight}`
-                  : ""}
-              </p>
+      {/* Metadata */}
+      {loading ? (
+        <p className="font-medium text-[14px] text-neutral-400">Loading...</p>
+      ) : error ? (
+        <p className="font-medium text-[14px] text-red-400">{error}</p>
+      ) : (
+        <div className="flex flex-col gap-[8px]">
+          {partData?.material && (
+            <div className="flex justify-between">
+              <span className="font-medium text-[13px] text-neutral-400">
+                Material
+              </span>
+              <span className="font-medium text-[13px] text-neutral-50">
+                {partData.material}
+              </span>
             </div>
-          ) : (
-            <p className="font-medium text-[16px] leading-[1.5] text-neutral-50 text-center">
-              {selectedObject}
+          )}
+          {metadataEntries.map(([key, value]) => (
+            <div key={key} className="flex justify-between">
+              <span className="font-medium text-[13px] text-neutral-400">
+                {formatMetaKey(key)}
+              </span>
+              <span className="font-medium text-[13px] text-neutral-50">
+                {formatMetaValue(value)}
+              </span>
+            </div>
+          ))}
+          {!partData?.material && metadataEntries.length === 0 && (
+            <p className="font-medium text-[13px] text-neutral-400">
+              No additional details available
             </p>
           )}
         </div>
-      </div>
-    </aside>
+      )}
+    </div>
   );
 }
