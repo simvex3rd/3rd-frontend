@@ -71,7 +71,7 @@ export const useUIStore = create<UIState>()(
     persist(
       (set) => ({
         // Panel toggles
-        isChatOpen: true,
+        isChatOpen: false,
         isPartInfoVisible: false,
         isNotesVisible: false,
 
