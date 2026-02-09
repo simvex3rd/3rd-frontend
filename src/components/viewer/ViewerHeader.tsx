@@ -105,13 +105,6 @@ export function ViewerHeader({
                         : "text-neutral-200 hover:text-neutral-50"
                     )}
                   >
-                    {model.thumbnail_url && (
-                      <img
-                        src={model.thumbnail_url}
-                        alt=""
-                        className="w-[36px] h-[36px] rounded-[6px] object-cover bg-neutral-700"
-                      />
-                    )}
                     <span className="text-[16px] font-medium">
                       {model.name}
                     </span>
