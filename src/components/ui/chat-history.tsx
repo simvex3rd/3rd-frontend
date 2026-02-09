@@ -270,7 +270,7 @@ function ConversationCard({
         <button
           onClick={handleDelete}
           className={cn(
-            "shrink-0 p-[6px] rounded-md transition-all opacity-0 group-hover:opacity-100",
+            "shrink-0 p-[6px] rounded-[6px] transition-all opacity-0 group-hover:opacity-100",
             "hover:bg-error/10 text-neutral-500 hover:text-error"
           )}
           aria-label="Delete conversation"

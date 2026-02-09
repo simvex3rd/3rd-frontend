@@ -72,7 +72,7 @@ interface TooltipProviderProps {
 
 export function TooltipProvider({
   children,
-  _delayDuration = 300,
+  delayDuration = 300,
 }: TooltipProviderProps) {
   return <div>{children}</div>;
 }

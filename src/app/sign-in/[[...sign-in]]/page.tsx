@@ -131,7 +131,7 @@ export default function SignInPage() {
           </form>
 
           {error && (
-            <div className="flex w-full items-center gap-[8px] rounded-lg bg-error/10 p-[12px] text-[14px] text-error border-[1px] border-error/20">
+            <div className="flex w-full items-center gap-[8px] rounded-[8px] bg-error/10 p-[12px] text-[14px] text-error border-[1px] border-error/20">
               <AlertCircle className="h-[16px] w-[16px] shrink-0" />
               <p>{error}</p>
             </div>

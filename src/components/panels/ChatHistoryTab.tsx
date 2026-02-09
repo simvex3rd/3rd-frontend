@@ -65,7 +65,7 @@ export function ChatHistoryTab({
       ) : filteredSessions.length === 0 ? (
         <p className="text-neutral-400">대화 내역이 없습니다.</p>
       ) : (
-        <div className="space-y-2">
+        <div className="space-y-[8px]">
           {filteredSessions.map((session) => (
             <button
               key={session.id}

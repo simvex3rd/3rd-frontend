@@ -154,7 +154,7 @@ ${partData.description ? `설명: ${partData.description}` : ""}
       {/* Glassmorphic Background Container */}
       <div
         className={cn(
-          "h-full flex flex-col bg-[rgba(64,64,64,0.7)] backdrop-blur-md transition-all duration-300",
+          "h-full flex flex-col bg-gray-30 backdrop-blur-md transition-all duration-300",
           isChatOpen ? "rounded-l-[24px]" : "rounded-l-[12px]"
         )}
       >

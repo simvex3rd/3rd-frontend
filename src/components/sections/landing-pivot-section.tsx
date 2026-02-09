@@ -46,7 +46,7 @@ export function LandingPivotSection() {
       </div>
 
       {/* Bottom Part: Feature Cards */}
-      <div className="flex items-center justify-between w-[1773px] relative shrink-0 gap-6 mt-[-70px]">
+      <div className="flex items-center justify-between w-[1773px] relative shrink-0 gap-[24px] mt-[-70px]">
         <FeatureCard
           icon={<MessageSquare className="w-[118px] h-[118px] text-primary" />}
           title="실시간 설계 지능, AI 텍스트 쿼리"
@@ -103,11 +103,11 @@ function FeatureCard({
       <div className="absolute inset-0 shadow-[4px_4px_20px_0px_rgba(2,238,225,0.1)] rounded-[24px] pointer-events-none" />
 
       {/* Content */}
-      <div className="absolute inset-0 flex flex-col items-center justify-center gap-[32px] p-8 text-center text-balance">
+      <div className="absolute inset-0 flex flex-col items-center justify-center gap-[32px] p-[32px] text-center text-balance">
         <div className="shrink-0 drop-shadow-[0_0_15px_rgba(2,238,225,0.5)]">
           {icon}
         </div>
-        <div className="flex flex-col gap-2 items-center">
+        <div className="flex flex-col gap-[8px] items-center">
           <h3 className="font-bold text-[36px] leading-[1.25] text-primary drop-shadow-md">
             {title}
           </h3>
