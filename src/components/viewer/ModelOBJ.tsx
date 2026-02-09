@@ -64,6 +64,7 @@ export function ModelOBJ({ url }: ModelOBJProps) {
   const groupRef = useRef<Group>(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const modelCenterRef = useRef<Vector3>(new Vector3());
+  const meshesRef = useRef<Mesh[]>([]);
   const needsCameraFitRef = useRef(false);
   const setSelectedObject = useSceneStore((state) => state.setSelectedObject);
   const selectedObject = useSceneStore((state) => state.selectedObject);
@@ -94,10 +95,13 @@ export function ModelOBJ({ url }: ModelOBJProps) {
         const modelBox = new Box3().setFromObject(object);
         modelCenterRef.current = modelBox.getCenter(new Vector3());
 
-        // Initialize meshes
+        // Initialize meshes and cache refs for useFrame (avoid traverse at 60fps)
+        const cachedMeshes: Mesh[] = [];
         let meshIndex = 0;
         object.traverse((child) => {
           if (child instanceof Mesh) {
+            cachedMeshes.push(child);
+
             // Set name
             if (!child.userData.name) {
               child.userData.name = child.name || child.uuid;
@@ -132,6 +136,7 @@ export function ModelOBJ({ url }: ModelOBJProps) {
             child.userData.meshIndex = meshIndex++;
           }
         });
+        meshesRef.current = cachedMeshes;
 
         // Center and scale model
         const box = new Box3().setFromObject(object);
@@ -177,18 +182,15 @@ export function ModelOBJ({ url }: ModelOBJProps) {
     };
   }, [url]);
 
-  // Apply wireframe mode
+  // Apply wireframe mode (uses cached meshes)
   useEffect(() => {
-    if (!groupRef.current || !isLoaded) return;
+    if (!isLoaded) return;
 
-    groupRef.current.traverse((child) => {
-      if (
-        child instanceof Mesh &&
-        child.material instanceof MeshStandardMaterial
-      ) {
+    for (const child of meshesRef.current) {
+      if (child.material instanceof MeshStandardMaterial) {
         child.material.wireframe = isWireframeMode;
       }
-    });
+    }
   }, [isWireframeMode, isLoaded]);
 
   // Combined: camera fit (once) + selection highlight + explode animation
@@ -233,9 +235,8 @@ export function ModelOBJ({ url }: ModelOBJProps) {
 
     const modelCenter = modelCenterRef.current;
 
-    groupRef.current.traverse((child) => {
-      if (!(child instanceof Mesh)) return;
-
+    // Iterate cached meshes instead of traversing scene graph at 60fps
+    for (const child of meshesRef.current) {
       // --- Selection highlight (no allocations) ---
       if (child.material instanceof MeshStandardMaterial) {
         const isSelected = selectedObject === child.userData.name;
@@ -251,12 +252,12 @@ export function ModelOBJ({ url }: ModelOBJProps) {
       }
 
       // --- Explode animation (reuse pre-allocated vectors) ---
-      if (!child.userData.initialPosition) return;
+      if (!child.userData.initialPosition) continue;
       const initial = child.userData.initialPosition as Vector3;
 
       if (explodeLevel === 0) {
         child.position.lerp(initial, 0.1);
-        return;
+        continue;
       }
 
       _tempDirection.subVectors(initial, modelCenter);
@@ -278,7 +279,7 @@ export function ModelOBJ({ url }: ModelOBJProps) {
         .copy(initial)
         .addScaledVector(_tempDirection, explodeDistance);
       child.position.lerp(_tempTarget, 0.1);
-    });
+    }
   });
 
   // Handle click on a part

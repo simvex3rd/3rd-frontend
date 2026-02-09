@@ -1,7 +1,7 @@
 "use client";
 
 import { useGLTF } from "@react-three/drei";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { Mesh, MeshStandardMaterial, Color, Box3, Vector3 } from "three";
 
 // Pre-allocated objects to avoid GC pressure
@@ -32,11 +32,16 @@ export function Model({ url }: ModelProps) {
   const selectedObject = useSceneStore((state) => state.selectedObject);
   const explodeLevel = useSceneStore((state) => state.explodeLevel);
   const modelId = useSceneStore((state) => state.modelId);
+  const allMeshesRef = useRef<Mesh[]>([]);
+  const animatedMeshesRef = useRef<Mesh[]>([]);
 
   // 메시에 userData 초기화 + API 데이터 로드
   useEffect(() => {
+    const meshes: Mesh[] = [];
     scene.traverse((child) => {
       if (child instanceof Mesh) {
+        meshes.push(child);
+
         // 원본 이름 저장 또는 생성
         if (!child.userData.name) {
           child.userData.name = child.name || child.uuid;
@@ -59,6 +64,7 @@ export function Model({ url }: ModelProps) {
         }
       }
     });
+    allMeshesRef.current = meshes;
 
     // API에서 부품 geometry 데이터 가져오기
     let cancelled = false;
@@ -69,20 +75,21 @@ export function Model({ url }: ModelProps) {
 
         if (cancelled) return;
 
-        scene.traverse((child) => {
-          if (child instanceof Mesh) {
-            const partName = child.userData.name || child.name;
-            const partData = modelData.parts.find(
-              (p) => p.name === partName || p.id === partName
-            );
+        const animated: Mesh[] = [];
+        for (const child of meshes) {
+          const partName = child.userData.name || child.name;
+          const partData = modelData.parts.find(
+            (p) => p.name === partName || p.id === partName
+          );
 
-            if (partData?.geometry) {
-              child.userData.partGeometry = normalizeGeometry(
-                partData.geometry as unknown as Record<string, unknown>
-              );
-            }
+          if (partData?.geometry) {
+            child.userData.partGeometry = normalizeGeometry(
+              partData.geometry as unknown as Record<string, unknown>
+            );
+            animated.push(child);
           }
-        });
+        }
+        animatedMeshesRef.current = animated;
       } catch (error) {
         if (!cancelled)
           console.error("Failed to load part geometry data:", error);
@@ -106,11 +113,9 @@ export function Model({ url }: ModelProps) {
         const isSelected = selectedObject === partName;
 
         if (isSelected) {
-          // 선택된 부품을 emissive 색상으로 하이라이트
           child.material.emissive.copy(_selectColor);
           child.material.emissiveIntensity = 0.5;
         } else {
-          // 원본 emissive 복원
           child.material.emissive.copy(
             child.userData.originalEmissive || _defaultColor
           );
@@ -120,31 +125,27 @@ export function Model({ url }: ModelProps) {
     });
   }, [scene, selectedObject]);
 
-  // Animate parts based on explode level
+  // Animate parts based on explode level (cached meshes — no traverse at 60fps)
   useFrame(() => {
-    scene.traverse((child) => {
-      if (child instanceof Mesh && child.userData.partGeometry) {
-        const geo = child.userData.partGeometry as NormalizedGeometry;
-        const initialPos = child.userData.initialPosition;
+    for (const child of animatedMeshesRef.current) {
+      const geo = child.userData.partGeometry as NormalizedGeometry;
+      const initialPos = child.userData.initialPosition;
 
-        if (geo.initial_pos && geo.exploded_pos && initialPos) {
-          // Lerp between initial and exploded positions
-          const targetX =
-            initialPos.x +
-            (geo.exploded_pos.x - geo.initial_pos.x) * explodeLevel;
-          const targetY =
-            initialPos.y +
-            (geo.exploded_pos.y - geo.initial_pos.y) * explodeLevel;
-          const targetZ =
-            initialPos.z +
-            (geo.exploded_pos.z - geo.initial_pos.z) * explodeLevel;
+      if (geo.initial_pos && geo.exploded_pos && initialPos) {
+        const targetX =
+          initialPos.x +
+          (geo.exploded_pos.x - geo.initial_pos.x) * explodeLevel;
+        const targetY =
+          initialPos.y +
+          (geo.exploded_pos.y - geo.initial_pos.y) * explodeLevel;
+        const targetZ =
+          initialPos.z +
+          (geo.exploded_pos.z - geo.initial_pos.z) * explodeLevel;
 
-          // Smooth transition with lerp (reuse pre-allocated vector)
-          _lerpTarget.set(targetX, targetY, targetZ);
-          child.position.lerp(_lerpTarget, 0.1);
-        }
+        _lerpTarget.set(targetX, targetY, targetZ);
+        child.position.lerp(_lerpTarget, 0.1);
       }
-    });
+    }
   });
 
   // Auto-scale model to fit viewport
