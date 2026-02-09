@@ -347,7 +347,7 @@ export const mockChatApi = {
   streamMessage: async (
     sessionId: number | string,
     content: string,
-    _n?: number
+    _options?: { n?: number; signal?: AbortSignal }
   ): Promise<ReadableStreamDefaultReader<Uint8Array>> => {
     await delay(100);
 

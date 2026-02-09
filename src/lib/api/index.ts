@@ -41,7 +41,7 @@ export interface SimvexApi {
     streamMessage: (
       sessionId: number | string,
       content: string,
-      n?: number
+      options?: { n?: number; signal?: AbortSignal }
     ) => Promise<ReadableStreamDefaultReader<Uint8Array>>;
     listSessions: (modelId?: number | string) => Promise<ChatSessionResponse[]>;
     getMessages: (

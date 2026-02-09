@@ -15,8 +15,24 @@ interface UseChatSessionOptions {
 export function useChatSession(options: UseChatSessionOptions = {}) {
   const { initialSessionId, initialMessage, onSessionCreated } = options;
 
+  // Validate initialSessionId (must be valid integer string)
+  const validatedSessionId =
+    initialSessionId &&
+    /^\d+$/.test(initialSessionId) &&
+    !isNaN(parseInt(initialSessionId, 10))
+      ? initialSessionId
+      : null;
+
+  // Validate initialMessage (trim, check length)
+  const validatedInitialMessage =
+    initialMessage &&
+    initialMessage.trim() &&
+    initialMessage.trim().length <= 5000
+      ? initialMessage.trim()
+      : null;
+
   const [sessionId, setSessionId] = useState<string | null>(
-    initialSessionId || null
+    validatedSessionId || null
   );
   const [sessionCreating, setSessionCreating] = useState(false);
   const [initialMessageSent, setInitialMessageSent] = useState(false);
@@ -30,13 +46,13 @@ export function useChatSession(options: UseChatSessionOptions = {}) {
   } = useChatStream(sessionId);
 
   useEffect(() => {
-    if (initialSessionId) {
-      setSessionId(initialSessionId);
+    if (validatedSessionId) {
+      setSessionId(validatedSessionId);
     }
-  }, [initialSessionId]);
+  }, [validatedSessionId]);
 
   useEffect(() => {
-    if (initialMessageSent || !initialMessage) return;
+    if (initialMessageSent || !validatedInitialMessage) return;
 
     const sendInitial = async () => {
       setInitialMessageSent(true);
@@ -59,13 +75,13 @@ export function useChatSession(options: UseChatSessionOptions = {}) {
         }
       }
 
-      await streamSendMessage(initialMessage, currentSessionId);
+      await streamSendMessage(validatedInitialMessage, currentSessionId);
     };
 
     const timer = setTimeout(sendInitial, 100);
     return () => clearTimeout(timer);
   }, [
-    initialMessage,
+    validatedInitialMessage,
     sessionId,
     initialMessageSent,
     streamSendMessage,

@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useUser } from "@clerk/nextjs";
 import Image from "next/image";
 import {
   LucideSparkles,
@@ -31,6 +32,7 @@ const QUICK_ACTIONS = [
  */
 export default function StudyPage() {
   const router = useRouter();
+  const { user } = useUser();
   const [aiAvatar, setAiAvatar] = useState("/chat/character1.png");
 
   useEffect(() => {
@@ -115,7 +117,7 @@ export default function StudyPage() {
                 </div>
                 <div className="bg-hover-30 rounded-tl-[24px] rounded-tr-[24px] rounded-br-[24px] px-[24px] py-[16px]">
                   <p className="font-semibold text-[20px] leading-[1.25] text-white">
-                    Jun님, 안녕하세요
+                    {user?.firstName ?? "사용자"}님, 안녕하세요
                   </p>
                   <p className="font-bold text-[28px] leading-[1.25] text-white">
                     무엇을 도와드릴까요?
