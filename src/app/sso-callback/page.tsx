@@ -1,7 +1,11 @@
 "use client";
 
-import { AuthenticateWithRedirectCallback } from "@clerk/nextjs";
+import dynamic from "next/dynamic";
+
+const SSOCallbackClient = dynamic(() => import("./SSOCallbackClient"), {
+  ssr: false,
+});
 
 export default function SSOCallbackPage() {
-  return <AuthenticateWithRedirectCallback />;
+  return <SSOCallbackClient />;
 }
