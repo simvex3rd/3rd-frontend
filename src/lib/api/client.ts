@@ -263,7 +263,10 @@ export const notesApi = {
     const params = new URLSearchParams({
       model_id: String(Number(modelId)),
     });
-    if (partId != null) params.append("part_id", String(Number(partId)));
+    // Only append part_id if it's a valid number (mesh names like "Crankshaft" → NaN)
+    if (partId != null && !isNaN(Number(partId))) {
+      params.append("part_id", String(Number(partId)));
+    }
     return apiFetch<StudyNoteResponse | null>(`/notes?${params}`);
   },
 
@@ -277,7 +280,8 @@ export const notesApi = {
   ): Promise<StudyNoteResponse> => {
     const body: StudyNoteUpsert = {
       model_id: Number(modelId),
-      part_id: partId != null ? Number(partId) : null,
+      // Only send part_id if it's a valid number (mesh names produce NaN)
+      part_id: partId != null && !isNaN(Number(partId)) ? Number(partId) : null,
       content,
     };
     return apiFetch<StudyNoteResponse>("/notes", {
