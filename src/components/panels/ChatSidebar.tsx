@@ -50,9 +50,9 @@ export function ChatSidebar({
         isOpen ? "w-[311px]" : "w-[80px]"
       } ${className || ""}`}
     >
-      {/* Glass Effect Background */}
+      {/* Glass Effect Background - Same as ViewerHeader */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden -z-10">
-        <div className="absolute inset-0 bg-gray-800/90 backdrop-blur-[2px]" />
+        <div className="absolute inset-0 bg-white/5 backdrop-blur-[2px]" />
       </div>
 
       {/* Hamburger Menu - Toggle Button */}
