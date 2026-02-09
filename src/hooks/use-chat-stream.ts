@@ -67,10 +67,15 @@ export function useChatStream(sessionId: string | null) {
           buffer = parts.pop() || "";
 
           for (const part of parts) {
-            const line = part.trim();
-            if (!line.startsWith("data: ")) continue;
+            if (!part.trim()) continue;
 
-            const rawData = line.slice(6).trim();
+            // Handle multi-line SSE data events (each line prefixed with data:)
+            const lines = part.split("\n").filter((l) => l.startsWith("data:"));
+            if (lines.length === 0) continue;
+
+            const rawData = lines
+              .map((l) => (l.startsWith("data: ") ? l.slice(6) : l.slice(5)))
+              .join("\n");
             if (!rawData || rawData === "[DONE]") continue;
 
             try {

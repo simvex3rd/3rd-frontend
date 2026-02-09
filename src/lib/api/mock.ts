@@ -365,14 +365,19 @@ export const mockChatApi = {
 
     // Generate assistant response chunks (plain text, matching backend format)
     const chunks = [
-      "That's a great question about the engine components. ",
-      "Let me explain how this works. ",
-      "The mechanism involves several interconnected parts. ",
-      "First, consider the primary motion of the crankshaft. ",
-      "This rotational force is transmitted through the connecting rods. ",
-      "The pistons move in a reciprocating pattern. ",
-      "Timing is crucial for proper valve operation. ",
-      "The entire system operates in a synchronized manner.",
+      "Great question! Here's how it works:\n\n",
+      "## Key Components\n\n",
+      "The engine has **four main parts**:\n\n",
+      "1. **Crankshaft** — converts linear to rotational motion\n",
+      "2. **Pistons** — reciprocating compression cycle\n",
+      "3. **Cylinder Head** — houses valves and camshafts\n",
+      "4. **Connecting Rods** — link pistons to crankshaft\n\n",
+      "### How They Work Together\n\n",
+      "The pistons move in a `reciprocating pattern` driven by combustion. ",
+      "Each piston fires in sequence:\n\n",
+      "```\nIntake → Compression → Power → Exhaust\n```\n\n",
+      "> **Pro tip:** The timing belt synchronizes the crankshaft and camshaft rotation.\n\n",
+      "This ensures *optimal valve timing* for maximum efficiency.",
     ];
 
     const encoder = new TextEncoder();
@@ -383,9 +388,10 @@ export const mockChatApi = {
         for (const chunk of chunks) {
           await delay(150);
           assistantContent.push(chunk);
-          // Backend SSE format: data: {plain text}\n\n
-          const data = `data: ${chunk}\n\n`;
-          controller.enqueue(encoder.encode(data));
+          // SSE multi-line format: each line gets its own data: prefix
+          const lines = chunk.split("\n");
+          const sseData = lines.map((l) => `data: ${l}`).join("\n") + "\n\n";
+          controller.enqueue(encoder.encode(sseData));
         }
 
         // Store complete assistant message
