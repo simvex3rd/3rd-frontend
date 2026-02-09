@@ -1,13 +1,16 @@
 "use client";
 
+import { useEffect } from "react";
+import { AnimatePresence } from "motion/react";
 import { SceneCanvas } from "@/components/viewer/SceneCanvas";
-import { Model } from "@/components/viewer/Model";
 import { ModelOBJ } from "@/components/viewer/ModelOBJ";
 import { ViewerToolbar } from "@/components/viewer/ViewerToolbar";
 import { ViewerSideToolbar } from "@/components/viewer/ViewerSideToolbar";
 import { ViewerZoomSlider } from "@/components/viewer/ViewerZoomSlider";
-import { PartInfoPanel } from "@/components/panels/PartInfoPanel";
+import { DraggablePanel } from "@/components/viewer/DraggablePanel";
+import { MemoPanel } from "@/components/viewer/MemoPanel";
 import { ChatInterface } from "@/components/panels/ChatInterface";
+import { PartInfoPanel } from "@/components/panels/PartInfoPanel";
 import { useStoreHydration } from "@/hooks/use-store-hydration";
 import { useSceneStore } from "@/stores/scene-store";
 import { useUIStore } from "@/stores/ui-store";
@@ -21,15 +24,21 @@ import { ViewerHeader } from "@/components/viewer/ViewerHeader";
  * - Header with Logo and Nav
  * - 3D Canvas in background
  * - Floating UI overlays (Toolbar, Side Toolbar, Slider)
+ * - Draggable popup panels (AI Assistant, Part Info, Memo)
  *
  * @see {@link https://www.figma.com/design/Vz80RydxWcYHVnn2iuyV0m?node-id=160-774} Figma Design
  */
 export default function ViewerPage() {
   const isHydrated = useStoreHydration();
-  const selectedObject = useSceneStore((state) => state.selectedObject);
-  const hasPartSelected = !!selectedObject;
-  const { isPartInfoVisible } = useUIStore();
-  const showPartInfo = hasPartSelected && isPartInfoVisible;
+  const activeSideTool = useUIStore((state) => state.activeSideTool);
+  const setSideTool = useUIStore((state) => state.setSideTool);
+
+  // Set modelId on mount (hardcoded "1" for now)
+  useEffect(() => {
+    useSceneStore.getState().setModelId("1");
+  }, []);
+
+  const closePanel = () => setSideTool(null);
 
   return (
     <div className="relative w-full max-[1919px]:h-[133.33vh] h-screen bg-neutral-900 overflow-hidden">
@@ -69,34 +78,64 @@ export default function ViewerPage() {
           </div>
         )}
 
-        {/* Top Toolbar - 가로 중앙, 헤더 아래 40px */}
+        {/* Top Toolbar */}
         <div className="absolute top-[142px] left-1/2 -translate-x-1/2 pointer-events-auto z-10">
           <ViewerToolbar />
         </div>
 
-        {/* Side Toolbar - 오른쪽 40px, 수직 중앙 */}
+        {/* Side Toolbar */}
         <div className="absolute right-[40px] top-1/2 -translate-y-1/2 pointer-events-auto z-10">
           <div className="rotate-90">
             <ViewerSideToolbar />
           </div>
         </div>
 
-        {/* Zoom Slider - 하단 중앙, 바닥에서 40px */}
+        {/* Zoom Slider */}
         <div className="absolute bottom-[40px] left-1/2 -translate-x-1/2 pointer-events-auto z-10">
-          <ViewerZoomSlider compact={hasPartSelected} />
+          <ViewerZoomSlider />
         </div>
 
-        {/* Chat Interface */}
-        <div className="absolute right-0 top-0 h-full pointer-events-auto z-30">
-          <ChatInterface />
-        </div>
+        {/* Draggable Popup Panels — right-aligned, vertically centered */}
+        <AnimatePresence>
+          {activeSideTool === "ai" && (
+            <DraggablePanel
+              key="ai-panel"
+              title="AI Assistant"
+              onClose={closePanel}
+              width={400}
+              height={600}
+              className="right-[120px] top-[240px]"
+            >
+              <ChatInterface />
+            </DraggablePanel>
+          )}
 
-        {/* Part Info Panel - Side Overlay, left of chat when part selected */}
-        {showPartInfo && (
-          <div className="absolute right-[442px] top-0 h-full pointer-events-auto z-20">
-            <PartInfoPanel />
-          </div>
-        )}
+          {activeSideTool === "search" && (
+            <DraggablePanel
+              key="partinfo-panel"
+              title="Part Info"
+              onClose={closePanel}
+              width={380}
+              height={500}
+              className="right-[120px] top-[290px]"
+            >
+              <PartInfoPanel />
+            </DraggablePanel>
+          )}
+
+          {activeSideTool === "edit" && (
+            <DraggablePanel
+              key="memo-panel"
+              title="Memo"
+              onClose={closePanel}
+              width={360}
+              height={300}
+              className="right-[120px] top-[390px]"
+            >
+              <MemoPanel />
+            </DraggablePanel>
+          )}
+        </AnimatePresence>
       </main>
     </div>
   );

@@ -2,7 +2,28 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { useUser } from "@clerk/nextjs";
+import dynamic from "next/dynamic";
+
+const ClerkAuthButton = dynamic(
+  () =>
+    import("@clerk/nextjs").then((mod) => {
+      const { SignedOut } = mod;
+      return {
+        default: function ClerkAuth() {
+          return (
+            <SignedOut>
+              <Link href="/sign-in">
+                <button className="w-[157.5px] text-[24px] rounded-[18px] border-[3.75px] border-primary bg-transparent text-primary font-semibold px-[8px] py-[8px] whitespace-nowrap hover:bg-primary/10 transition-colors">
+                  로그인/가입
+                </button>
+              </Link>
+            </SignedOut>
+          );
+        },
+      };
+    }),
+  { ssr: false }
+);
 import { Logo } from "@/components/ui/logo";
 import { CTAButton } from "@/components/ui/cta-button";
 
@@ -15,7 +36,6 @@ const navLinks = [
 ];
 
 export function LandingHeader() {
-  const { isSignedIn } = useUser();
   const [activeSection, setActiveSection] = useState("intro");
 
   useEffect(() => {
@@ -95,17 +115,10 @@ export function LandingHeader() {
 
         {/* Right: Auth Buttons (Scaled 0.75x) */}
         <div className="flex-shrink-0 flex items-center gap-[12px]">
-          {!isSignedIn && (
-            <Link href="/sign-in">
-              <CTAButton
-                variant="default"
-                size="default"
-                className="!w-[157.5px] !text-[24px] !rounded-[18px] !border-[3.75px] whitespace-nowrap !px-[8px]"
-              >
-                로그인/가입
-              </CTAButton>
-            </Link>
-          )}
+          {process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY &&
+            !process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY.includes(
+              "your_"
+            ) && <ClerkAuthButton />}
           <Link href="/viewer">
             <CTAButton
               variant="primary"

@@ -1,12 +1,12 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { api } from "@/lib/api/client";
+import { api } from "@/lib/api";
 import { cn } from "@/lib/utils";
 
 interface ChatSession {
-  id: string;
-  title?: string;
+  id: number | string;
+  title?: string | null;
   created_at: string;
 }
 
@@ -69,10 +69,10 @@ export function ChatHistoryTab({
           {filteredSessions.map((session) => (
             <button
               key={session.id}
-              onClick={() => onSelectSession(session.id)}
+              onClick={() => onSelectSession(String(session.id))}
               className={cn(
                 "w-full p-[12px] text-left rounded-[8px] transition-colors",
-                session.id === currentSessionId
+                String(session.id) === currentSessionId
                   ? "bg-primary/30 border-2 border-primary"
                   : "bg-neutral-700 hover:bg-neutral-600"
               )}
