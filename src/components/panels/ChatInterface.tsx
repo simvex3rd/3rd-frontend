@@ -1,10 +1,15 @@
 "use client";
 
 import { useState, useRef, useEffect, useCallback } from "react";
+import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { ChatInput } from "@/components/ui/chat-input";
 import { MarkdownRenderer } from "@/components/ui/markdown-renderer";
-import { LucideChevronDown, LucideChevronUp } from "lucide-react";
+import {
+  LucideChevronDown,
+  LucideChevronUp,
+  LucideMaximize2,
+} from "lucide-react";
 import type { HTMLAttributes } from "react";
 import { useSceneStore } from "@/stores/scene-store";
 import { useUIStore } from "@/stores/ui-store";
@@ -50,6 +55,7 @@ export function ChatInterface({
   initialMessages = [],
   ...props
 }: ChatInterfaceProps) {
+  const router = useRouter();
   const { isChatOpen, toggleChat } = useUIStore();
   const [messages, setMessages] = useState<Message[]>(initialMessages);
   const [inputValue, setInputValue] = useState("");
@@ -179,12 +185,20 @@ ${partData.description ? `설명: ${partData.description}` : ""}
               )}
             </button>
 
-            {/* Title */}
+            {/* Title and Expand Button */}
             {isChatOpen && (
-              <div className="flex items-center gap-[8px]">
+              <div className="flex items-center gap-[12px]">
                 <h2 className="font-semibold text-[18px] leading-[1.5] text-primary">
                   SIMVEX Assistant
                 </h2>
+                <button
+                  onClick={() => router.push("/chat")}
+                  className="text-neutral-400 hover:text-primary transition-colors p-[4px]"
+                  aria-label="Open full chat view"
+                  title="전체보기"
+                >
+                  <LucideMaximize2 className="w-[18px] h-[18px]" />
+                </button>
               </div>
             )}
           </div>

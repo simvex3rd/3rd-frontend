@@ -11,6 +11,7 @@ const hasClerkKeys =
  * - Landing page: / (scroll-snap landing page)
  * - 3D viewer: /viewer (no auth required)
  * - Study page: /study (AI learning interface)
+ * - Chat page: /chat (AI chat interface)
  * - Toast demo: /toast-demo (demo page)
  * - Sign in/up pages
  * - Model API: /api/models, /api/parts (read-only)
@@ -24,6 +25,7 @@ const isPublicRoute = createRouteMatcher([
   "/",
   "/viewer(.*)",
   "/study(.*)",
+  "/chat(.*)",
   "/toast-demo(.*)",
   "/sign-in(.*)",
   "/sign-up(.*)",

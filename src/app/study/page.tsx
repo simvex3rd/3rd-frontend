@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { ViewerHeader } from "@/components/viewer/ViewerHeader";
 import { LucideSparkles, LucideSquarePen } from "lucide-react";
 
@@ -21,6 +22,8 @@ import { LucideSparkles, LucideSquarePen } from "lucide-react";
  * @see {@link https://www.figma.com/design/Vz80RydxWcYHVnn2iuyV0m?node-id=376-2442} Figma Design
  */
 export default function StudyPage() {
+  const router = useRouter();
+
   return (
     <div className="relative w-full max-[1919px]:h-[133.33vh] h-screen bg-neutral-900 overflow-hidden">
       {/* Skip to main content link */}
@@ -52,8 +55,11 @@ export default function StudyPage() {
             </h2>
           </div>
 
-          {/* Content Box - fills remaining space */}
-          <div className="bg-gray-30 border-[3px] border-primary rounded-[24px] flex-1 flex flex-col items-start justify-start p-[24px] overflow-y-auto">
+          {/* Content Box - fills remaining space - Clickable */}
+          <button
+            onClick={() => router.push("/chat")}
+            className="bg-gray-30 border-[3px] border-primary rounded-[24px] flex-1 flex flex-col items-start justify-start p-[24px] overflow-y-auto cursor-pointer hover:border-primary/80 hover:bg-gray-30/80 transition-all w-full text-left"
+          >
             <div className="space-y-[12px] w-full">
               <div className="flex items-start gap-[12px]">
                 <div className="w-[8px] h-[8px] rounded-full bg-primary shrink-0 mt-[6px]" />
@@ -75,7 +81,7 @@ export default function StudyPage() {
                 </p>
               </div>
             </div>
-          </div>
+          </button>
         </div>
 
         {/* Right Column - Memo + AI Quiz (1:1 width ratio) */}
@@ -170,27 +176,10 @@ export default function StudyPage() {
             </div>
 
             {/* Content Box - fills remaining space */}
-            <div className="bg-gray-30 border-[3px] border-primary rounded-[24px] flex-1 flex flex-col items-start justify-start p-[24px] overflow-y-auto">
-              <div className="space-y-[16px] w-full">
-                <div className="flex items-start gap-[12px]">
-                  <div className="w-[8px] h-[8px] rounded-full bg-primary shrink-0 mt-[6px]" />
-                  <p className="font-medium text-[14px] leading-[1.5] text-white">
-                    학습한 내용을 바탕으로 AI가 맞춤형 퀴즈를 자동 생성합니다.
-                  </p>
-                </div>
-                <div className="flex items-start gap-[12px]">
-                  <div className="w-[8px] h-[8px] rounded-full bg-primary shrink-0 mt-[6px]" />
-                  <p className="font-medium text-[14px] leading-[1.5] text-white">
-                    난이도는 학습 진도에 따라 자동으로 조정됩니다.
-                  </p>
-                </div>
-                <div className="flex items-start gap-[12px]">
-                  <div className="w-[8px] h-[8px] rounded-full bg-primary shrink-0 mt-[6px]" />
-                  <p className="font-medium text-[14px] leading-[1.5] text-white">
-                    오답에 대한 상세한 해설을 제공받을 수 있습니다.
-                  </p>
-                </div>
-              </div>
+            <div className="bg-gray-30 border-[3px] border-primary rounded-[24px] flex-1 flex items-center justify-center p-[24px]">
+              <p className="font-semibold text-[24px] leading-[1.5] text-white/80">
+                AI QUIZ는 준비 중이에요!
+              </p>
             </div>
           </div>
         </div>
