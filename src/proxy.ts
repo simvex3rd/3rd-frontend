@@ -29,6 +29,7 @@ const isPublicRoute = createRouteMatcher([
   "/toast-demo(.*)",
   "/sign-in(.*)",
   "/sign-up(.*)",
+  "/sso-callback(.*)",
   "/api/models(.*)",
   "/api/parts(.*)",
 ]);
