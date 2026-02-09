@@ -49,7 +49,7 @@ export function ChatInput({
 
   return (
     <div
-      className={`flex flex-col gap-[10px] w-[1164px] h-[96px] bg-[rgba(64,64,64,0.3)] border-[3px] border-primary rounded-[32px] p-[24px] ${className || ""}`}
+      className={`flex flex-col gap-[10px] w-[1164px] bg-[rgba(64,64,64,0.3)] border-[3px] border-primary rounded-[32px] p-[24px] ${className || ""}`}
     >
       {/* Input Area */}
       <div className="flex items-center gap-[4px] w-full">
@@ -63,10 +63,10 @@ export function ChatInput({
         />
         <button
           onClick={handleSend}
-          className="w-[160px] h-[160px] flex items-center justify-center text-primary hover:text-primary/80 transition-colors"
+          className="w-[24px] h-[24px] flex items-center justify-center text-primary hover:text-primary/80 transition-colors shrink-0"
           aria-label="Send message"
         >
-          <LucideSend className="w-[40px] h-[40px]" strokeWidth={2} />
+          <LucideSend className="w-[24px] h-[24px]" strokeWidth={2} />
         </button>
       </div>
 
