@@ -53,7 +53,7 @@ export function ChatSidebar({
       {/* Hamburger Menu - Toggle Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="w-[40px] h-[40px] flex items-center justify-center text-white hover:text-primary transition-colors shrink-0"
+        className="w-[40px] h-[40px] flex items-center justify-center text-[#e5e5e5] hover:text-primary transition-colors shrink-0"
         aria-label={isOpen ? "Collapse sidebar" : "Expand sidebar"}
       >
         <LucideMenu className="w-[40px] h-[40px]" strokeWidth={2} />
@@ -65,23 +65,23 @@ export function ChatSidebar({
           {/* New Chat Button */}
           <button className="flex items-center gap-[8px] p-[7px] rounded-[8px] hover:bg-gray-30 transition-colors">
             <LucideMessageSquarePlus
-              className="w-[24px] h-[24px] text-white shrink-0"
+              className="w-[24px] h-[24px] text-[#e5e5e5] shrink-0"
               strokeWidth={2}
             />
-            <span className="font-semibold text-[16px] leading-[1.5] text-white whitespace-nowrap">
+            <span className="font-semibold text-[16px] leading-[1.5] text-[#e5e5e5] whitespace-nowrap">
               New Chat
             </span>
           </button>
 
           {/* History Section */}
           <div className="flex flex-col gap-[7px] overflow-y-auto">
-            <h3 className="font-semibold text-[16px] leading-[1.5] text-white mb-[7px]">
+            <h3 className="font-semibold text-[16px] leading-[1.5] text-[#e5e5e5] mb-[7px]">
               History
             </h3>
             {historyItems.map((item, index) => (
               <button
                 key={index}
-                className="font-medium text-[14px] leading-[1.5] text-white/80 hover:text-white text-left transition-colors"
+                className="font-medium text-[14px] leading-[1.5] text-[#d4d4d4] hover:text-[#e5e5e5] text-left transition-colors"
               >
                 {item}
               </button>
@@ -97,7 +97,7 @@ export function ChatSidebar({
           aria-label="New Chat"
         >
           <LucideMessageSquarePlus
-            className="w-[24px] h-[24px] text-white"
+            className="w-[24px] h-[24px] text-[#e5e5e5]"
             strokeWidth={2}
           />
         </button>
