@@ -1,11 +1,22 @@
 /**
  * XSS sanitization utilities
  *
- * Uses DOMPurify (isomorphic-dompurify) to sanitize user-generated content.
- * Works in both SSR and client environments.
+ * Uses DOMPurify to sanitize user-generated content.
+ * Lazy-loaded on client only — SSR returns input as-is since
+ * all consumers are 'use client' components that re-render on hydration.
  */
 
-import DOMPurify from "isomorphic-dompurify";
+import type DOMPurifyModule from "dompurify";
+
+let _purify: typeof DOMPurifyModule | null = null;
+
+function getPurify(): typeof DOMPurifyModule | null {
+  if (typeof window !== "undefined" && !_purify) {
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    _purify = require("dompurify") as typeof DOMPurifyModule;
+  }
+  return _purify;
+}
 
 /**
  * Sanitize HTML content to prevent XSS attacks
@@ -24,7 +35,9 @@ import DOMPurify from "isomorphic-dompurify";
  * ```
  */
 export function sanitizeHtml(dirty: string): string {
-  return DOMPurify.sanitize(dirty, {
+  const purify = getPurify();
+  if (!purify) return dirty;
+  return purify.sanitize(dirty, {
     ALLOWED_TAGS: [
       "p",
       "br",
@@ -67,7 +80,9 @@ export function sanitizeHtml(dirty: string): string {
  * ```
  */
 export function sanitizeMarkdown(markdown: string): string {
-  return DOMPurify.sanitize(markdown, {
+  const purify = getPurify();
+  if (!purify) return markdown;
+  return purify.sanitize(markdown, {
     ALLOWED_TAGS: [
       "p",
       "br",
@@ -117,7 +132,9 @@ export function sanitizeMarkdown(markdown: string): string {
  * ```
  */
 export function stripHtml(html: string): string {
-  return DOMPurify.sanitize(html, {
+  const purify = getPurify();
+  if (!purify) return html;
+  return purify.sanitize(html, {
     ALLOWED_TAGS: [],
     ALLOWED_ATTR: [],
   });
