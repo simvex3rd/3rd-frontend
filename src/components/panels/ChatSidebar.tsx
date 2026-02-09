@@ -93,15 +93,15 @@ export function ChatSidebar({
         {/* New Chat Button - Simplified */}
         <button
           onClick={onNewChat}
-          className={`group flex items-center gap-[12px] p-[12px] rounded-xl transition-all duration-200 ${
-            isOpen ? "hover:bg-white/5" : "justify-center hover:bg-white/5"
+          className={`group flex items-center rounded-lg transition-all duration-200 ${
+            isOpen
+              ? "gap-[12px] p-[12px] hover:bg-white/5"
+              : "justify-center w-[32px] h-[32px] mx-auto hover:bg-white/5"
           }`}
         >
           <LucideMessageSquarePlus
-            className={`w-[20px] h-[20px] transition-colors ${
-              isOpen
-                ? "text-neutral-400 group-hover:text-primary"
-                : "text-neutral-400 group-hover:text-primary"
+            className={`transition-colors text-neutral-400 group-hover:text-primary ${
+              isOpen ? "w-[20px] h-[20px]" : "w-[20px] h-[20px]"
             }`}
             strokeWidth={2}
           />

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { api } from "@/lib/api/client";
+import { api } from "@/lib/api";
 import { useSceneStore } from "@/stores/scene-store";
 import { normalizePart, type NormalizedPart } from "@/lib/api/normalize";
 
