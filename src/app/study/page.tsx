@@ -34,13 +34,13 @@ export default function StudyPage() {
       {/* Header - Always visible on top */}
       <ViewerHeader />
 
-      {/* Main content area - 848px height total */}
+      {/* Main content area - fills remaining viewport */}
       <main
         id="main-content"
-        className="flex gap-[32px] h-[848px] items-start px-[80px] py-[40px] mt-[102px]"
+        className="flex gap-[32px] items-stretch px-[80px] py-[40px] absolute inset-x-0 top-[102px] bottom-0"
       >
-        {/* Left Column - AI Assistant */}
-        <div className="flex-1 flex flex-col gap-[16px] h-full min-w-0">
+        {/* Left Column - AI Assistant (1:1 width ratio) */}
+        <div className="flex-1 flex flex-col gap-[16px] min-w-0">
           {/* Section Header - Icon + Title */}
           <div className="flex gap-[16px] items-center shrink-0">
             <LucideSparkles
@@ -52,8 +52,8 @@ export default function StudyPage() {
             </h2>
           </div>
 
-          {/* Content Box - 250px height */}
-          <div className="bg-gray-30 border-[3px] border-primary rounded-[24px] h-[250px] flex flex-col items-start justify-start p-[24px] shrink-0 overflow-y-auto">
+          {/* Content Box - fills remaining space */}
+          <div className="bg-gray-30 border-[3px] border-primary rounded-[24px] flex-1 flex flex-col items-start justify-start p-[24px] overflow-y-auto">
             <div className="space-y-[12px] w-full">
               <div className="flex items-start gap-[12px]">
                 <div className="w-[8px] h-[8px] rounded-full bg-primary shrink-0 mt-[6px]" />
@@ -78,10 +78,10 @@ export default function StudyPage() {
           </div>
         </div>
 
-        {/* Right Column - Memo + AI Quiz */}
-        <div className="flex-1 flex flex-col gap-[24px] h-full min-w-0">
-          {/* Memo Section - flex-1 (386px calculated) */}
-          <div className="flex-1 flex flex-col gap-[16px] min-h-0">
+        {/* Right Column - Memo + AI Quiz (1:1 width ratio) */}
+        <div className="flex-1 flex flex-col gap-[24px] min-w-0">
+          {/* Memo Section - 1:1 height ratio with AI Quiz */}
+          <div className="flex-1 flex flex-col gap-[16px] min-h-0 basis-0">
             {/* Section Header - Icon + Title */}
             <div className="flex gap-[16px] items-center shrink-0">
               <LucideSquarePen
@@ -99,7 +99,7 @@ export default function StudyPage() {
               <div className="absolute inset-0 flex items-center justify-center">
                 <div className="flex gap-[16px] items-center">
                   {/* Sticky Note 1 */}
-                  <div className="bg-[rgba(2,238,225,0.3)] rounded-[24px] h-[300px] w-[360px] flex flex-col items-start justify-between p-[32px] shrink-0">
+                  <div className="bg-[rgba(2,238,225,0.3)] rounded-[24px] h-[240px] w-[280px] flex flex-col items-start justify-between p-[24px] shrink-0">
                     <div className="space-y-[8px] w-full">
                       <h3 className="font-bold text-[18px] leading-[1.5] text-white">
                         크랭크샤프트
@@ -117,7 +117,7 @@ export default function StudyPage() {
                   </div>
 
                   {/* Sticky Note 2 */}
-                  <div className="bg-[rgba(2,238,225,0.3)] rounded-[24px] h-[300px] w-[360px] flex flex-col items-start justify-between p-[32px] shrink-0">
+                  <div className="bg-[rgba(2,238,225,0.3)] rounded-[24px] h-[240px] w-[280px] flex flex-col items-start justify-between p-[24px] shrink-0">
                     <div className="space-y-[8px] w-full">
                       <h3 className="font-bold text-[18px] leading-[1.5] text-white">
                         학습 포인트
@@ -135,7 +135,7 @@ export default function StudyPage() {
                   </div>
 
                   {/* Sticky Note 3 */}
-                  <div className="bg-[rgba(2,238,225,0.3)] rounded-[24px] h-[300px] w-[360px] flex flex-col items-start justify-between p-[32px] shrink-0">
+                  <div className="bg-[rgba(2,238,225,0.3)] rounded-[24px] h-[240px] w-[280px] flex flex-col items-start justify-between p-[24px] shrink-0">
                     <div className="space-y-[8px] w-full">
                       <h3 className="font-bold text-[18px] leading-[1.5] text-white">
                         퀴즈 오답
@@ -158,8 +158,8 @@ export default function StudyPage() {
             </div>
           </div>
 
-          {/* AI Quiz Section - flex-1 (250px calculated) */}
-          <div className="flex-1 flex flex-col gap-[16px] min-h-0">
+          {/* AI Quiz Section - 1:1 height ratio with Memo */}
+          <div className="flex-1 flex flex-col gap-[16px] min-h-0 basis-0">
             {/* Section Header - Icon + Title */}
             <div className="flex gap-[16px] items-center shrink-0">
               <LucideSparkles
