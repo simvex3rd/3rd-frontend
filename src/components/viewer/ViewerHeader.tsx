@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import { Logo } from "@/components/ui/logo";
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import { usePathname, useRouter } from "next/navigation";
 import { useSceneStore } from "@/stores/scene-store";
 import { api } from "@/lib/api";
@@ -15,6 +16,42 @@ import {
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
 import { ChevronDown, Check } from "lucide-react";
+
+const ClerkAuth = dynamic(
+  () =>
+    import("@clerk/nextjs").then((mod) => {
+      const { SignedOut, SignedIn, UserButton } = mod;
+      return {
+        default: function ClerkAuthButtons() {
+          return (
+            <>
+              <SignedOut>
+                <Link href="/sign-in">
+                  <button
+                    className="w-[210px] h-[72px] flex items-center justify-center rounded-[24px] px-[24px] py-[16px] text-[32px] font-semibold leading-[1.25] text-neutral-50 shadow-[4px_4px_20px_rgba(2,238,225,0.1)] hover:brightness-125 transition-all"
+                    style={{
+                      background:
+                        "radial-gradient(50% 50% at 50% 50%, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0.3) 100%)",
+                    }}
+                  >
+                    로그인/가입
+                  </button>
+                </Link>
+              </SignedOut>
+              <SignedIn>
+                <UserButton
+                  appearance={{
+                    elements: { avatarBox: "w-[48px] h-[48px]" },
+                  }}
+                />
+              </SignedIn>
+            </>
+          );
+        },
+      };
+    }),
+  { ssr: false }
+);
 
 interface ViewerHeaderProps {
   className?: string;
@@ -148,6 +185,12 @@ export function ViewerHeader({
               </Link>
             );
           })}
+
+          {/* Auth Button */}
+          {process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY &&
+            !process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY.includes(
+              "your_"
+            ) && <ClerkAuth />}
         </nav>
       </div>
     </header>
