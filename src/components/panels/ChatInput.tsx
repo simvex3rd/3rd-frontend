@@ -49,7 +49,7 @@ export function ChatInput({
 
   return (
     <div
-      className={`flex flex-col gap-[10px] w-[1164px] bg-[rgba(64,64,64,0.3)] border-[3px] border-primary rounded-[32px] p-[24px] ${className || ""}`}
+      className={`flex flex-col gap-[10px] w-[1164px] h-[96px] bg-[rgba(64,64,64,0.3)] border-[3px] border-primary rounded-[32px] p-[24px] ${className || ""}`}
     >
       {/* Input Area */}
       <div className="flex items-center gap-[4px] w-full">
