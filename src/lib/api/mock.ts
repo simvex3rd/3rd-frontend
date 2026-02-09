@@ -365,19 +365,20 @@ export const mockChatApi = {
 
     // Generate assistant response chunks (plain text, matching backend format)
     const chunks = [
-      "Great question! Here's how it works:\n\n",
-      "## Key Components\n\n",
-      "The engine has **four main parts**:\n\n",
-      "1. **Crankshaft** — converts linear to rotational motion\n",
-      "2. **Pistons** — reciprocating compression cycle\n",
-      "3. **Cylinder Head** — houses valves and camshafts\n",
-      "4. **Connecting Rods** — link pistons to crankshaft\n\n",
-      "### How They Work Together\n\n",
-      "The pistons move in a `reciprocating pattern` driven by combustion. ",
-      "Each piston fires in sequence:\n\n",
-      "```\nIntake → Compression → Power → Exhaust\n```\n\n",
-      "> **Pro tip:** The timing belt synchronizes the crankshaft and camshaft rotation.\n\n",
-      "This ensures *optimal valve timing* for maximum efficiency.",
+      "좋은 질문이에요! 이 부품의 작동 원리를 설명해 드릴게요.\n\n",
+      "## 핵심 구성 요소\n\n",
+      "엔진은 **네 가지 주요 부품**으로 구성됩니다:\n\n",
+      "1. **크랭크샤프트** — 직선 운동을 회전 운동으로 변환\n",
+      "2. **피스톤** — 왕복 압축 사이클 수행\n",
+      "3. **실린더 헤드** — 밸브와 캠샤프트 수용\n",
+      "4. **커넥팅 로드** — 피스톤과 크랭크샤프트 연결\n\n",
+      "### 운동 방정식\n\n",
+      "피스톤의 왕복 운동은 뉴턴의 제2법칙을 따릅니다:\n\n",
+      "$$F = ma = m \\cdot \\frac{d^2x}{dt^2}$$\n\n",
+      "여기서 토크는 다음과 같이 계산됩니다:\n\n",
+      "$$\\tau = r \\times F = rF\\sin\\theta$$\n\n",
+      "> 타이밍 벨트가 크랭크샤프트와 캠샤프트의 회전을 동기화합니다.\n\n",
+      "이를 통해 *최적의 밸브 타이밍*으로 효율을 극대화합니다.",
     ];
 
     const encoder = new TextEncoder();

@@ -319,3 +319,23 @@
     line-height: 1.33;
   }
 }
+
+/* KaTeX math - Figma formula block (node-337:1339) */
+.markdown-renderer .katex-display {
+  margin: 0;
+  padding: 16px;
+  background: var(--color-formula-bg);
+  border: 2px solid var(--color-primary);
+  border-radius: 16px;
+  text-align: center;
+}
+
+.markdown-renderer .katex-display > .katex {
+  color: var(--color-neutral-50);
+  font-size: 14px;
+}
+
+.markdown-renderer .katex-inline .katex {
+  color: var(--color-neutral-50);
+  font-size: 14px;
+}
