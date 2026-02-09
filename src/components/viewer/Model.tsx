@@ -6,6 +6,10 @@ import { Mesh, MeshStandardMaterial, Color, Box3, Vector3 } from "three";
 import { ThreeEvent, useFrame } from "@react-three/fiber";
 import { useSceneStore } from "@/stores/scene-store";
 import { api } from "@/lib/api";
+import {
+  normalizeGeometry,
+  type NormalizedGeometry,
+} from "@/lib/api/normalize";
 
 interface ModelProps {
   url: string;
@@ -22,6 +26,7 @@ export function Model({ url }: ModelProps) {
   const setSelectedObject = useSceneStore((state) => state.setSelectedObject);
   const selectedObject = useSceneStore((state) => state.selectedObject);
   const explodeLevel = useSceneStore((state) => state.explodeLevel);
+  const modelId = useSceneStore((state) => state.modelId);
 
   // 메시에 userData 초기화 + API 데이터 로드
   useEffect(() => {
@@ -53,8 +58,8 @@ export function Model({ url }: ModelProps) {
     // API에서 부품 geometry 데이터 가져오기
     const loadPartGeometry = async () => {
       try {
-        const modelId = "default-model"; // TODO: 실제 modelId 사용
-        const modelData = await api.models.getDetail(modelId);
+        const effectiveModelId = modelId || "1";
+        const modelData = await api.models.getDetail(effectiveModelId);
 
         scene.traverse((child) => {
           if (child instanceof Mesh) {
@@ -64,7 +69,9 @@ export function Model({ url }: ModelProps) {
             );
 
             if (partData?.geometry) {
-              child.userData.partGeometry = partData.geometry;
+              child.userData.partGeometry = normalizeGeometry(
+                partData.geometry as unknown as Record<string, unknown>
+              );
             }
           }
         });
@@ -74,7 +81,7 @@ export function Model({ url }: ModelProps) {
     };
 
     loadPartGeometry();
-  }, [scene]);
+  }, [scene, modelId]);
 
   // 선택된 부품에 하이라이트 효과 적용
   useEffect(() => {
@@ -104,21 +111,20 @@ export function Model({ url }: ModelProps) {
   useFrame(() => {
     scene.traverse((child) => {
       if (child instanceof Mesh && child.userData.partGeometry) {
-        const { initial_position, exploded_position } =
-          child.userData.partGeometry;
+        const geo = child.userData.partGeometry as NormalizedGeometry;
         const initialPos = child.userData.initialPosition;
 
-        if (initial_position && exploded_position && initialPos) {
+        if (geo.initial_pos && geo.exploded_pos && initialPos) {
           // Lerp between initial and exploded positions
           const targetX =
             initialPos.x +
-            (exploded_position[0] - initial_position[0]) * explodeLevel;
+            (geo.exploded_pos.x - geo.initial_pos.x) * explodeLevel;
           const targetY =
             initialPos.y +
-            (exploded_position[1] - initial_position[1]) * explodeLevel;
+            (geo.exploded_pos.y - geo.initial_pos.y) * explodeLevel;
           const targetZ =
             initialPos.z +
-            (exploded_position[2] - initial_position[2]) * explodeLevel;
+            (geo.exploded_pos.z - geo.initial_pos.z) * explodeLevel;
 
           // Smooth transition with lerp
           child.position.lerp(new Vector3(targetX, targetY, targetZ), 0.1);

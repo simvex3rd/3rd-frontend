@@ -92,7 +92,7 @@ export const WithMessages: Story = {
         id: "2",
         role: "assistant",
         content:
-          "이 시뮬레이션 모델에는 **뉴턴의 운동 법칙**과 **중력**이 적용됩니다.\n\n주요 물리 법칙:\n- F = ma (힘 = 질량 × 가속도)\n- 중력 가속도: 9.8 m/s²\n- 마찰력: μN (마찰계수 × 수직항력)",
+          "이 시뮬레이션 모델에는 **뉴턴의 운동 법칙**과 **중력**이 적용됩니다.\n\n주요 물리 법칙:\n- 뉴턴 제2법칙: $F = ma$\n- 중력 가속도: $g = 9.8 \\, \\text{m/s}^2$\n- 마찰력: $f = \\mu N$\n\n운동 에너지 공식:\n\n$$E_k = \\frac{1}{2}mv^2$$",
         timestamp: new Date(Date.now() - 9 * 60 * 1000),
       },
       {
@@ -203,38 +203,39 @@ export const MarkdownExample: Story = {
       {
         id: "2",
         role: "assistant",
-        content: `# 시뮬레이션 예제 코드
+        content: `# 시뮬레이션 물리 엔진
 
-다음은 **기본 설정** 예제입니다:
+다음은 **핵심 물리 공식**입니다:
 
-\`\`\`python
-import simvex
+## 뉴턴의 운동 법칙
 
-# 시뮬레이션 초기화
-sim = simvex.Simulation()
-sim.set_gravity(9.8)
-sim.set_friction(0.3)
+물체에 작용하는 합력은 질량과 가속도의 곱입니다:
 
-# 객체 추가
-ball = sim.add_sphere(radius=1.0, mass=5.0)
-ball.set_position(0, 10, 0)
-ball.set_velocity(5, 0, 0)
+$$F_{net} = m \\cdot a = m \\frac{d^2x}{dt^2}$$
 
-# 시뮬레이션 실행
-sim.run(duration=10.0)
-\`\`\`
+## 에너지 보존
+
+운동 에너지와 위치 에너지의 합은 보존됩니다:
+
+$$E_{total} = \\frac{1}{2}mv^2 + mgh = \\text{const}$$
 
 ## 주요 파라미터
 
-| 파라미터 | 타입 | 설명 |
+| 파라미터 | 기호 | 단위 |
 |---------|------|------|
-| gravity | float | 중력 가속도 (m/s²) |
-| friction | float | 마찰계수 (0.0-1.0) |
-| duration | float | 시뮬레이션 시간 (초) |
+| 중력 가속도 | $g$ | $\\text{m/s}^2$ |
+| 마찰계수 | $\\mu$ | 무차원 |
+| 탄성계수 | $k$ | $\\text{N/m}$ |
 
-> **참고**: 모든 단위는 SI 단위계를 사용합니다.
+> 모든 단위는 SI 단위계를 사용합니다.
 
-더 자세한 내용은 [문서](https://docs.simvex.com)를 참고하세요!`,
+\`\`\`python
+# 시뮬레이션 설정 예제
+sim = simvex.Simulation()
+sim.set_gravity(9.8)
+sim.set_friction(0.3)
+sim.run(duration=10.0)
+\`\`\``,
         timestamp: new Date(Date.now() - 4 * 60 * 1000),
       },
     ],

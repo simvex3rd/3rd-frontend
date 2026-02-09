@@ -75,7 +75,7 @@ export const useSceneStore = create<SceneState>()(
         setSelectedObject: (id) => set({ selectedObject: id }),
 
         // 카메라 상태
-        cameraPosition: [0, 0, 5],
+        cameraPosition: [0, 3, 12],
         cameraRotation: [0, 0, 0],
         cameraTarget: [0, 0, 0],
         hasSavedCamera: false,
@@ -85,7 +85,7 @@ export const useSceneStore = create<SceneState>()(
         setCameraTarget: (target) => set({ cameraTarget: target }),
         resetCamera: () =>
           set({
-            cameraPosition: [0, 0, 5],
+            cameraPosition: [0, 3, 12],
             cameraRotation: [0, 0, 0],
             cameraTarget: [0, 0, 0],
             hasSavedCamera: false,

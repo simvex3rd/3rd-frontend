@@ -1,15 +1,15 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { api } from "@/lib/api/client";
-import type { Part } from "@/types/api";
+import { api } from "@/lib/api";
+import { useSceneStore } from "@/stores/scene-store";
+import { normalizePart, type NormalizedPart } from "@/lib/api/normalize";
 
-export function usePartData(
-  partId: string | null,
-  modelId: string = "default-model"
-) {
+export function usePartData(partId: string | null) {
+  const modelId = useSceneStore((state) => state.modelId);
+
   const [state, setState] = useState<{
-    partData: Part | null;
+    partData: NormalizedPart | null;
     loading: boolean;
     error: string | null;
   }>({
@@ -19,7 +19,7 @@ export function usePartData(
   });
 
   useEffect(() => {
-    if (!partId) {
+    if (!partId || !modelId) {
       setState({ partData: null, loading: false, error: null });
       return;
     }
@@ -32,45 +32,13 @@ export function usePartData(
       .getDetail(modelId)
       .then((model) => {
         if (cancelled) return;
-        const part = model.parts.find(
-          (p) => p.id === partId || p.name === partId
+        const rawPart = model.parts.find(
+          (p) => String(p.id) === partId || p.name === partId
         );
-        // Convert to PartWithGeometry type (number IDs and proper geometry)
-        const partWithModelId = part
-          ? {
-              id: Number(part.id),
-              model_id: Number(model.id),
-              name: part.name,
-              description: part.description,
-              material: part.material,
-              metadata: part.metadata,
-              geometry: {
-                id: 0, // Placeholder - not provided by API
-                part_id: Number(part.id),
-                initial_pos: {
-                  x: part.geometry.initial_position[0],
-                  y: part.geometry.initial_position[1],
-                  z: part.geometry.initial_position[2],
-                },
-                initial_rot: {
-                  x: part.geometry.initial_rotation[0],
-                  y: part.geometry.initial_rotation[1],
-                  z: part.geometry.initial_rotation[2],
-                },
-                initial_scale: {
-                  x: part.geometry.initial_scale[0],
-                  y: part.geometry.initial_scale[1],
-                  z: part.geometry.initial_scale[2],
-                },
-                exploded_pos: {
-                  x: part.geometry.exploded_position[0],
-                  y: part.geometry.exploded_position[1],
-                  z: part.geometry.exploded_position[2],
-                },
-              },
-            }
+        const normalized = rawPart
+          ? normalizePart(rawPart as unknown as Record<string, unknown>)
           : null;
-        setState({ partData: partWithModelId, loading: false, error: null });
+        setState({ partData: normalized, loading: false, error: null });
       })
       .catch((err) => {
         if (cancelled) return;
