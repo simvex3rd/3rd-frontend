@@ -3,6 +3,7 @@ import { Geist_Mono } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
 import { dark } from "@clerk/themes";
 import { Analytics } from "@vercel/analytics/react";
+import { AuthInit } from "@/components/common/AuthInit";
 import "./globals.css";
 
 const geistMono = Geist_Mono({
@@ -11,6 +12,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://simvex-3rd.vercel.app"),
   title: "SIMVEX - 시뮬레이션으로 미래를 설계하다",
   description:
     "SIMVEX는 3D 시뮬레이션 기반 학습 플랫폼입니다. 실시간 3D 환경에서 직관적인 학습 경험을 제공합니다.",
@@ -58,9 +60,6 @@ export const metadata: Metadata = {
       "max-image-preview": "large",
       "max-snippet": -1,
     },
-  },
-  verification: {
-    google: "google-site-verification-placeholder",
   },
 };
 
@@ -118,6 +117,7 @@ export default function RootLayout({
         },
       }}
     >
+      <AuthInit />
       {content}
     </ClerkProvider>
   );

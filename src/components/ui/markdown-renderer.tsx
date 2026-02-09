@@ -1,7 +1,18 @@
 import { cn } from "@/lib/utils";
 import type { HTMLAttributes } from "react";
+
+/** Lightweight URL sanitizer — blocks javascript: and other dangerous protocols */
+function safeHref(url: string): string {
+  const trimmed = url.trim();
+  if (/^(https?|mailto):/i.test(trimmed)) return trimmed;
+  if (!trimmed.includes(":")) return trimmed; // relative URL
+  return "";
+}
 import ReactMarkdown from "react-markdown";
+import remarkMath from "remark-math";
+import rehypeKatex from "rehype-katex";
 import rehypeHighlight from "rehype-highlight";
+import "katex/dist/katex.min.css";
 import "highlight.js/styles/github-dark.css";
 
 /**
@@ -56,7 +67,8 @@ export function MarkdownRenderer({
       {...props}
     >
       <ReactMarkdown
-        rehypePlugins={[rehypeHighlight]}
+        remarkPlugins={[remarkMath]}
+        rehypePlugins={[rehypeKatex, rehypeHighlight]}
         components={{
           // Headings - Figma: 16px bold neutral-50
           h1: ({ children }) => (
@@ -139,9 +151,9 @@ export function MarkdownRenderer({
             </pre>
           ),
 
-          // Blockquote - Figma: cyan color
+          // Blockquote - Figma: plain cyan text, no left border (node-337:1341)
           blockquote: ({ children }) => (
-            <blockquote className="border-l-[4px] border-primary pl-[16px] text-[14px] font-medium leading-[1.5] text-primary mb-0">
+            <blockquote className="text-[14px] font-medium leading-[1.5] text-primary mb-0">
               {children}
             </blockquote>
           ),
@@ -149,7 +161,7 @@ export function MarkdownRenderer({
           // Links - cyan with hover
           a: ({ href, children }) => (
             <a
-              href={href}
+              href={safeHref(href || "")}
               className="text-primary hover:underline transition-colors"
               target="_blank"
               rel="noopener noreferrer"

@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
-
+import { useState, useEffect, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 import { ViewerHeader } from "@/components/viewer/ViewerHeader";
 import { ChatSidebar } from "@/components/panels/ChatSidebar";
 import { ChatMessage } from "@/components/panels/ChatMessage";
@@ -10,23 +10,17 @@ import { LucideSparkles } from "lucide-react";
 import { useChatSession } from "@/hooks/use-chat-session";
 
 /**
- * Chat Page - Full-screen AI chat interface
+ * Study Chat Page - Full-screen AI chat interface under /study
  *
- * Layout (1920px baseline with 75% zoom at ≤1919px):
- * - Header: ViewerHeader component (102px height: 67px + 35px margin)
- * - Sidebar: 311px width, fixed left
- * - Main: Flex-1, chat area with messages and input
- *
- * Design specs:
- * - Background: neutral-900
- * - Sidebar: gray-40
- * - Messages: User (cyan), AI (teal)
- * - Input: Bottom fixed, 1164px width
+ * Supports query params:
+ * - ?sessionId=X - Resume existing session
+ * - ?q=message - Send initial message
  *
  * @see {@link https://www.figma.com/design/Vz80RydxWcYHVnn2iuyV0m?node-id=376-1358} Figma Design
  */
-export default function ChatPage() {
-  const [aiAvatar, setAiAvatar] = useState<string>("");
+function StudyChatContent() {
+  const searchParams = useSearchParams();
+  const [aiAvatar, setAiAvatar] = useState("");
 
   const {
     sessionId,
@@ -36,32 +30,21 @@ export default function ChatPage() {
     sendMessage,
     createNewChat,
     selectSession,
-  } = useChatSession();
+  } = useChatSession({
+    initialSessionId: searchParams.get("sessionId"),
+    initialMessage: searchParams.get("q"),
+  });
 
   useEffect(() => {
     const AVATARS = ["/chat/character1.png", "/chat/character2.png"];
-    const randomAvatar = AVATARS[Math.floor(Math.random() * AVATARS.length)];
-    setAiAvatar(randomAvatar);
+    setAiAvatar(AVATARS[Math.floor(Math.random() * AVATARS.length)]);
   }, []);
 
   return (
     <div className="relative w-full max-[1919px]:h-[133.33vh] h-screen bg-neutral-900 overflow-hidden">
-      {/* Skip to main content link */}
-      <a
-        href="#main-content"
-        className="sr-only focus:not-sr-only focus:absolute focus:top-[16px] focus:left-[16px] focus:z-[9999] focus:px-[16px] focus:py-[8px] focus:bg-primary focus:text-background focus:rounded-[8px] focus:font-semibold"
-      >
-        Skip to main content
-      </a>
-
-      {/* Header - Always visible on top */}
       <ViewerHeader />
 
-      {/* Main content area - fills remaining viewport */}
-      <main
-        id="main-content"
-        className="flex absolute inset-x-0 top-[102px] bottom-0"
-      >
+      <main className="flex absolute inset-x-0 top-[102px] bottom-0">
         {/* Left Sidebar */}
         <ChatSidebar
           onNewChat={createNewChat}
@@ -94,7 +77,6 @@ export default function ChatPage() {
               </div>
             ) : (
               messages.map((message) => {
-                // Skip system messages or show as info text
                 if (message.role === "system") {
                   return (
                     <div
@@ -127,12 +109,26 @@ export default function ChatPage() {
             )}
           </div>
 
-          {/* Chat Input - Fixed at bottom */}
+          {/* Chat Input */}
           <div className="flex justify-center pb-[40px] px-[80px]">
             <ChatInput onSend={sendMessage} />
           </div>
         </div>
       </main>
     </div>
+  );
+}
+
+export default function StudyChatPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="w-full h-screen bg-neutral-900 flex items-center justify-center">
+          <p className="text-neutral-400">Loading...</p>
+        </div>
+      }
+    >
+      <StudyChatContent />
+    </Suspense>
   );
 }

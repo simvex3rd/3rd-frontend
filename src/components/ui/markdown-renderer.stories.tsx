@@ -270,6 +270,39 @@ export function Scene() {
 2. Implement instancing for repeated objects
 3. Use \`useMemo\` for expensive calculations`;
 
+const formulaMarkdown = `# 공학 수식 렌더링
+
+## 인라인 수식
+
+뉴턴의 제2법칙 $F = ma$ 는 힘, 질량, 가속도의 관계를 나타냅니다.
+에너지는 $E = mc^2$ 으로 표현됩니다.
+
+## 블록 수식
+
+### 운동 에너지
+
+$$E_k = \\frac{1}{2}mv^2$$
+
+### 만유인력 법칙
+
+$$F = G\\frac{m_1 m_2}{r^2}$$
+
+### 오일러 공식
+
+$$e^{i\\pi} + 1 = 0$$
+
+### 열역학 제1법칙
+
+$$\\Delta U = Q - W$$
+
+## 리스트와 수식
+
+- 운동량 보존: $p = mv$
+- 각운동량: $L = I\\omega$
+- 탄성력: $F = -kx$
+
+> 모든 계산은 SI 단위계 기준입니다.`;
+
 /**
  * Basic markdown with headings, bold, italic, and inline code.
  */
@@ -432,6 +465,15 @@ console.log("Hello, World!");
 const sum = (a, b) => a + b;
 console.log(sum(2, 3));
 \`\`\``,
+  },
+};
+
+/**
+ * Engineering formulas with KaTeX rendering (Figma node 337:1339).
+ */
+export const Formula: Story = {
+  args: {
+    children: formulaMarkdown,
   },
 };
 

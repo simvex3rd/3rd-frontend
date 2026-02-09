@@ -2,16 +2,61 @@
  * SIMVEX API Client
  *
  * Centralized API client for backend communication.
- * Handles authentication, error handling, and request formatting.
+ * Aligned with OpenAPI spec: https://3rd-backend-production.up.railway.app/api/openapi.json
  */
+
+import type {
+  ModelListItem,
+  ModelDetail,
+  ChatSessionResponse,
+  ChatMessageCreate,
+  ChatMessageResponse,
+  StudyNoteUpsert,
+  StudyNoteResponse,
+  HealthCheck,
+  ClerkLoginRequest,
+  UserResponse,
+} from "@/types/api";
 
 const API_URL =
   process.env.NEXT_PUBLIC_API_URL ||
   "https://3rd-backend-production.up.railway.app/api/v1";
 
+// ---------------------------------------------------------------------------
+// Auth token management
+// ---------------------------------------------------------------------------
+
+let _getToken: (() => Promise<string | null>) | null = null;
+
 /**
- * API client error class
+ * Configure the auth token getter (call once from a Clerk-aware component).
+ *
+ * @example
+ * ```tsx
+ * const { getToken } = useAuth();
+ * useEffect(() => { configureAuth(getToken); }, [getToken]);
+ * ```
  */
+export function configureAuth(getToken: () => Promise<string | null>) {
+  _getToken = getToken;
+}
+
+async function getAuthHeaders(): Promise<Record<string, string>> {
+  if (!_getToken) return {};
+  try {
+    const token = await _getToken();
+    return token ? { Authorization: `Bearer ${token}` } : {};
+  } catch {
+    return {};
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Fetch wrapper
+// ---------------------------------------------------------------------------
+
+const DEFAULT_TIMEOUT_MS = 15000;
+
 export class ApiClientError extends Error {
   constructor(
     message: string,
@@ -23,225 +68,314 @@ export class ApiClientError extends Error {
   }
 }
 
-/**
- * Generic fetch wrapper with error handling
- */
 async function apiFetch<T>(
   endpoint: string,
-  options?: RequestInit
+  options?: RequestInit & { auth?: boolean; timeout?: number }
 ): Promise<T> {
   const url = `${API_URL}${endpoint}`;
+  const needsAuth = options?.auth !== false;
+  const timeoutMs = options?.timeout ?? DEFAULT_TIMEOUT_MS;
+
+  const authHeaders = needsAuth ? await getAuthHeaders() : {};
 
   try {
     const response = await fetch(url, {
       ...options,
+      signal: AbortSignal.timeout(timeoutMs),
       headers: {
         "Content-Type": "application/json",
+        ...authHeaders,
         ...options?.headers,
       },
     });
 
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({}));
+      const status = response.status;
+
+      // Handle 401: Unauthorized (expired/invalid token)
+      if (status === 401) {
+        // Clear auth token
+        _getToken = null;
+        // Redirect to sign-in
+        if (typeof window !== "undefined") {
+          window.location.href = "/sign-in";
+        }
+        throw new ApiClientError(
+          "Authentication required. Redirecting to sign in...",
+          401,
+          errorData.code
+        );
+      }
+
+      // Handle 503: Service unavailable (Clerk verification service down)
+      if (status === 503) {
+        throw new ApiClientError(
+          "Service temporarily unavailable. Please try again later.",
+          503,
+          errorData.code || "SERVICE_UNAVAILABLE"
+        );
+      }
+
       throw new ApiClientError(
-        errorData.message || `HTTP ${response.status}: ${response.statusText}`,
+        errorData.detail?.[0]?.msg ||
+          errorData.message ||
+          `HTTP ${response.status}: ${response.statusText}`,
         response.status,
         errorData.code
       );
     }
 
+    // 204 No Content
+    if (response.status === 204) {
+      return undefined as unknown as T;
+    }
+
     return response.json();
   } catch (error) {
-    if (error instanceof ApiClientError) {
-      throw error;
+    if (error instanceof ApiClientError) throw error;
+
+    // Handle timeout error
+    if (error instanceof Error && error.name === "AbortError") {
+      throw new ApiClientError(
+        `Request timeout after ${timeoutMs}ms`,
+        undefined,
+        "TIMEOUT"
+      );
     }
+
     throw new ApiClientError(
       error instanceof Error ? error.message : "Network error occurred"
     );
   }
 }
 
-/**
- * Models API
- */
-export const modelsApi = {
-  /**
-   * List all models
-   */
-  list: async () => {
-    return apiFetch<
-      {
-        id: string;
-        name: string;
-        thumbnail_url: string;
-      }[]
-    >("/models");
-  },
+// ---------------------------------------------------------------------------
+// Health API
+// ---------------------------------------------------------------------------
 
-  /**
-   * Get model detail with parts
-   */
-  getDetail: async (id: string) => {
-    return apiFetch<{
-      id: string;
-      name: string;
-      thumbnail_url: string;
-      parts: Array<{
-        id: string;
-        name: string;
-        description: string;
-        material: string;
-        metadata?: Record<string, unknown>;
-        geometry: {
-          initial_position: [number, number, number];
-          initial_rotation: [number, number, number];
-          initial_scale: [number, number, number];
-          exploded_position: [number, number, number];
-        };
-      }>;
-    }>(`/models/${id}`);
+export const healthApi = {
+  check: async (): Promise<HealthCheck> => {
+    return apiFetch<HealthCheck>("/health", { auth: false });
   },
 };
 
-/**
- * Chat API
- */
+// ---------------------------------------------------------------------------
+// Auth API
+// ---------------------------------------------------------------------------
+
+export const authApi = {
+  login: async (data: ClerkLoginRequest): Promise<UserResponse> => {
+    return apiFetch<UserResponse>("/auth/clerk/login", {
+      method: "POST",
+      body: JSON.stringify(data),
+    });
+  },
+
+  me: async (): Promise<UserResponse> => {
+    return apiFetch<UserResponse>("/auth/me");
+  },
+};
+
+// ---------------------------------------------------------------------------
+// Models API
+// ---------------------------------------------------------------------------
+
+export const modelsApi = {
+  /**
+   * List all models (no auth required)
+   */
+  list: async (): Promise<ModelListItem[]> => {
+    return apiFetch<ModelListItem[]>("/models", { auth: false });
+  },
+
+  /**
+   * Get model detail with parts (auth required)
+   */
+  getDetail: async (id: number | string): Promise<ModelDetail> => {
+    return apiFetch<ModelDetail>(`/models/${id}`);
+  },
+};
+
+// ---------------------------------------------------------------------------
+// Chat API
+// ---------------------------------------------------------------------------
+
 export const chatApi = {
   /**
    * Create new chat session
    */
-  createSession: async (modelId: string, title?: string) => {
-    return apiFetch<{
-      id: string;
-      model_id: string;
-      title?: string;
-      created_at: string;
-    }>("/chat/sessions", {
+  createSession: async (
+    modelId: number | string,
+    title?: string
+  ): Promise<ChatSessionResponse> => {
+    return apiFetch<ChatSessionResponse>("/chat/sessions", {
       method: "POST",
-      body: JSON.stringify({ model_id: modelId, title }),
+      body: JSON.stringify({
+        model_id: Number(modelId),
+        title: title ?? null,
+      }),
     });
   },
 
   /**
    * Stream chat message (SSE)
+   * Backend format: `data: {text}\n\n`
    */
-  streamMessage: async (sessionId: string, content: string) => {
-    const url = `${API_URL}/chat/sessions/${sessionId}/messages/stream`;
-    const response = await fetch(url, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ content }),
-    });
+  streamMessage: async (
+    sessionId: number | string,
+    content: string,
+    options?: { n?: number; signal?: AbortSignal }
+  ): Promise<ReadableStreamDefaultReader<Uint8Array>> => {
+    const params = options?.n != null ? `?n=${options.n}` : "";
+    const url = `${API_URL}/chat/sessions/${sessionId}/messages/stream${params}`;
 
-    if (!response.ok) {
+    const authHeaders = await getAuthHeaders();
+
+    try {
+      const response = await fetch(url, {
+        method: "POST",
+        signal: options?.signal,
+        headers: {
+          "Content-Type": "application/json",
+          ...authHeaders,
+        },
+        body: JSON.stringify({ content } satisfies ChatMessageCreate),
+      });
+
+      if (!response.ok) {
+        const status = response.status;
+
+        // Handle 401: Unauthorized
+        if (status === 401) {
+          _getToken = null;
+          if (typeof window !== "undefined") {
+            window.location.href = "/sign-in";
+          }
+          throw new ApiClientError(
+            "Authentication required. Redirecting to sign in...",
+            401
+          );
+        }
+
+        // Handle 503: Service unavailable
+        if (status === 503) {
+          throw new ApiClientError(
+            "Service temporarily unavailable. Please try again later.",
+            503,
+            "SERVICE_UNAVAILABLE"
+          );
+        }
+
+        throw new ApiClientError(
+          `Failed to stream message: ${response.statusText}`,
+          response.status
+        );
+      }
+
+      if (!response.body) {
+        throw new ApiClientError("Response body is null");
+      }
+
+      return response.body.getReader();
+    } catch (error) {
+      if (error instanceof ApiClientError) throw error;
+
+      // Handle timeout error
+      if (error instanceof Error && error.name === "AbortError") {
+        throw new ApiClientError("Request timed out", undefined, "TIMEOUT");
+      }
+
       throw new ApiClientError(
-        `Failed to stream message: ${response.statusText}`,
-        response.status
+        error instanceof Error ? error.message : "Network error occurred"
       );
     }
-
-    if (!response.body) {
-      throw new ApiClientError("Response body is null");
-    }
-
-    return response.body.getReader();
   },
 
   /**
-   * List chat sessions
+   * List chat sessions (optionally filtered by model)
    */
-  listSessions: async (modelId?: string) => {
-    const params = modelId ? `?model_id=${modelId}` : "";
-    return apiFetch<
-      Array<{
-        id: string;
-        model_id: string;
-        title?: string;
-        created_at: string;
-      }>
-    >(`/chat/sessions${params}`);
+  listSessions: async (
+    modelId?: number | string
+  ): Promise<ChatSessionResponse[]> => {
+    const params = modelId != null ? `?model_id=${Number(modelId)}` : "";
+    return apiFetch<ChatSessionResponse[]>(`/chat/sessions${params}`);
   },
 
   /**
-   * Get messages for a session
+   * Get messages for a session (newest first, paginated)
    */
-  getMessages: async (sessionId: string, limit = 50, skip = 0) => {
-    return apiFetch<
-      Array<{
-        id: string;
-        session_id: string;
-        role: "user" | "assistant";
-        content: string;
-        created_at: string;
-      }>
-    >(`/chat/sessions/${sessionId}/messages?limit=${limit}&skip=${skip}`);
+  getMessages: async (
+    sessionId: number | string,
+    limit = 20,
+    skip = 0
+  ): Promise<ChatMessageResponse[]> => {
+    return apiFetch<ChatMessageResponse[]>(
+      `/chat/sessions/${sessionId}/messages?limit=${limit}&skip=${skip}`
+    );
   },
 
   /**
-   * Delete a chat session
+   * Delete a chat session (returns 204 No Content)
    */
-  deleteSession: async (sessionId: string) => {
-    return apiFetch<{ message: string }>(`/chat/sessions/${sessionId}`, {
+  deleteSession: async (sessionId: number | string): Promise<void> => {
+    await apiFetch<void>(`/chat/sessions/${sessionId}`, {
       method: "DELETE",
     });
   },
 };
 
-/**
- * Notes API
- */
+// ---------------------------------------------------------------------------
+// Notes API (no DELETE endpoint on backend)
+// ---------------------------------------------------------------------------
+
 export const notesApi = {
   /**
-   * Get note for model or part
+   * Get note for model or part.
+   * Returns null if no note exists (backend returns null, not 404).
    */
-  get: async (modelId: string, partId?: string) => {
-    const params = new URLSearchParams({ model_id: modelId });
-    if (partId) params.append("part_id", partId);
-
-    return apiFetch<{
-      id: string;
-      user_id: string;
-      model_id: string;
-      part_id?: string;
-      content: string;
-      updated_at: string;
-    }>(`/notes?${params}`);
-  },
-
-  /**
-   * Save note (create or update)
-   */
-  save: async (modelId: string, content: string, partId?: string) => {
-    return apiFetch<{
-      id: string;
-      user_id: string;
-      model_id: string;
-      part_id?: string;
-      content: string;
-      updated_at: string;
-    }>("/notes", {
-      method: "PUT",
-      body: JSON.stringify({ model_id: modelId, part_id: partId, content }),
+  get: async (
+    modelId: number | string,
+    partId?: number | string
+  ): Promise<StudyNoteResponse | null> => {
+    const params = new URLSearchParams({
+      model_id: String(Number(modelId)),
     });
+    // Only append part_id if it's a valid number (mesh names like "Crankshaft" → NaN)
+    if (partId != null && !isNaN(Number(partId))) {
+      params.append("part_id", String(Number(partId)));
+    }
+    return apiFetch<StudyNoteResponse | null>(`/notes?${params}`);
   },
 
   /**
-   * Delete a note
+   * Upsert note (create or update)
    */
-  delete: async (modelId: string, partId?: string) => {
-    const params = new URLSearchParams({ model_id: modelId });
-    if (partId) params.append("part_id", partId);
-
-    return apiFetch<{ message: string }>(`/notes?${params}`, {
-      method: "DELETE",
+  save: async (
+    modelId: number | string,
+    content: string,
+    partId?: number | string
+  ): Promise<StudyNoteResponse> => {
+    const body: StudyNoteUpsert = {
+      model_id: Number(modelId),
+      // Only send part_id if it's a valid number (mesh names produce NaN)
+      part_id: partId != null && !isNaN(Number(partId)) ? Number(partId) : null,
+      content,
+    };
+    return apiFetch<StudyNoteResponse>("/notes", {
+      method: "PUT",
+      body: JSON.stringify(body),
     });
   },
 };
 
-/**
- * Unified API client
- */
+// ---------------------------------------------------------------------------
+// Unified API client
+// ---------------------------------------------------------------------------
+
 export const api = {
+  health: healthApi,
+  auth: authApi,
   models: modelsApi,
   chat: chatApi,
   notes: notesApi,

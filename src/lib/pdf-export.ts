@@ -1,8 +1,8 @@
-import jsPDF from "jspdf";
-import html2canvas from "html2canvas";
-
 export async function generatePDF(notes?: string) {
   try {
+    const { default: jsPDF } = await import("jspdf");
+    const { default: html2canvas } = await import("html2canvas");
+
     // Capture canvas screenshot
     const canvas = document.querySelector("canvas");
     if (!canvas) throw new Error("Canvas not found");

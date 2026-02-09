@@ -1,5 +1,5 @@
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
-import { NextResponse } from "next/server";
+import { NextResponse, type NextRequest } from "next/server";
 
 // Check if Clerk is configured
 const hasClerkKeys =
@@ -39,13 +39,28 @@ const isPublicRoute = createRouteMatcher([
  * - Notes: /api/notes/*
  * - User profile: /api/users/*
  */
+if (!hasClerkKeys && process.env.NODE_ENV !== "production") {
+  console.warn(
+    "[security] Clerk keys not configured - auth middleware disabled in dev mode"
+  );
+}
+
 const middleware = hasClerkKeys
   ? clerkMiddleware(async (auth, request) => {
       if (!isPublicRoute(request)) {
         await auth.protect();
       }
     })
-  : () => NextResponse.next();
+  : (request: NextRequest) => {
+      // In production without Clerk, block protected routes
+      if (process.env.NODE_ENV === "production" && !isPublicRoute(request)) {
+        return NextResponse.json(
+          { error: "Authentication not configured" },
+          { status: 503 }
+        );
+      }
+      return NextResponse.next();
+    };
 
 export default middleware;
 

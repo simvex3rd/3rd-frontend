@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 
 /**
  * Toast notification hook with queue management
@@ -84,11 +84,10 @@ export function useToast() {
     };
   }, []);
 
-  // Re-subscribe on mount
-  useState(() => {
-    const unsubscribe = subscribe();
-    return unsubscribe;
-  });
+  // Subscribe on mount, cleanup on unmount
+  useEffect(() => {
+    return subscribe();
+  }, [subscribe]);
 
   const toast = {
     success: useCallback(

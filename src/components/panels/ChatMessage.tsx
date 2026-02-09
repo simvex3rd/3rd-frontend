@@ -2,6 +2,8 @@
 
 import Image from "next/image";
 import { cn } from "@/lib/utils";
+import { MarkdownRenderer } from "@/components/ui/markdown-renderer";
+import { sanitizeMarkdown } from "@/lib/sanitize";
 
 /**
  * ChatMessage - Chat message bubble component
@@ -63,9 +65,15 @@ export function ChatMessage({
             : "bg-[rgba(1,169,160,0.3)] rounded-br-[16px] rounded-tl-[16px] rounded-tr-[16px]"
         )}
       >
-        <p className="font-normal text-[16px] leading-[1.5] text-white whitespace-pre-wrap">
-          {content}
-        </p>
+        {isUser ? (
+          <p className="font-normal text-[16px] leading-[1.5] text-white whitespace-pre-wrap">
+            {content}
+          </p>
+        ) : (
+          <MarkdownRenderer compact maxWidth="full">
+            {sanitizeMarkdown(content)}
+          </MarkdownRenderer>
+        )}
       </div>
 
       {/* User Avatar - right side */}

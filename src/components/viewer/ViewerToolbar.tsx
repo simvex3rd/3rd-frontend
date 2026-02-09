@@ -24,14 +24,12 @@ interface ViewerToolbarProps {
 }
 
 export function ViewerToolbar({ className }: ViewerToolbarProps) {
-  const {
-    activeViewerTool,
-    setViewerTool,
-    isWireframeMode,
-    toggleWireframe,
-    isCameraLocked,
-    toggleCameraLock,
-  } = useUIStore();
+  const activeViewerTool = useUIStore((s) => s.activeViewerTool);
+  const setViewerTool = useUIStore((s) => s.setViewerTool);
+  const isWireframeMode = useUIStore((s) => s.isWireframeMode);
+  const toggleWireframe = useUIStore((s) => s.toggleWireframe);
+  const isCameraLocked = useUIStore((s) => s.isCameraLocked);
+  const toggleCameraLock = useUIStore((s) => s.toggleCameraLock);
   const { toast } = useToast();
 
   const isFocusActive = activeViewerTool === "focus";
