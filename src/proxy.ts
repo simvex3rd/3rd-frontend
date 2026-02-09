@@ -10,6 +10,7 @@ const hasClerkKeys =
  * Public routes that don't require authentication
  * - Landing page: / (scroll-snap landing page)
  * - 3D viewer: /viewer (no auth required)
+ * - Toast demo: /toast-demo (demo page)
  * - Sign in/up pages
  * - Model API: /api/models, /api/parts (read-only)
  *
@@ -21,6 +22,7 @@ const hasClerkKeys =
 const isPublicRoute = createRouteMatcher([
   "/",
   "/viewer(.*)",
+  "/toast-demo(.*)",
   "/sign-in(.*)",
   "/sign-up(.*)",
   "/api/models(.*)",
