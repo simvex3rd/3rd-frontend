@@ -92,7 +92,7 @@ export function ValueCard({
             {title}
           </h3>
           <p
-            className="text-[32px] font-semibold text-neutral-300 leading-normal"
+            className="text-[24px] font-semibold text-neutral-300 leading-normal"
             dangerouslySetInnerHTML={{ __html: description }}
           />
         </div>

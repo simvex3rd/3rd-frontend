@@ -94,7 +94,7 @@ function FeatureCard({
             {title}
           </h3>
           <p
-            className="font-semibold text-[20px] leading-[1.25] text-neutral-300"
+            className="font-semibold text-[18px] leading-[1.25] text-neutral-300"
             dangerouslySetInnerHTML={{ __html: description }}
           />
         </div>
