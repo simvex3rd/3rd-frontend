@@ -12,6 +12,7 @@
 
 import { cn } from "@/lib/utils";
 import { useUIStore } from "@/stores/ui-store";
+import { useSceneStore } from "@/stores/scene-store";
 import { useToast } from "@/hooks/use-toast";
 import {
   Tooltip,
@@ -30,6 +31,9 @@ export function ViewerToolbar({ className }: ViewerToolbarProps) {
   const toggleWireframe = useUIStore((s) => s.toggleWireframe);
   const isCameraLocked = useUIStore((s) => s.isCameraLocked);
   const toggleCameraLock = useUIStore((s) => s.toggleCameraLock);
+  const isColorMode = useUIStore((s) => s.isColorMode);
+  const toggleColorMode = useUIStore((s) => s.toggleColorMode);
+  const hasColorData = useSceneStore((s) => s.hasColorData);
   const { toast } = useToast();
 
   const isFocusActive = activeViewerTool === "focus";
@@ -158,31 +162,67 @@ export function ViewerToolbar({ className }: ViewerToolbarProps) {
         <TooltipContent side="bottom">Camera Lock</TooltipContent>
       </Tooltip>
 
-      {/* Measurement Tool — line icon */}
+      {/* Color Mode Toggle — fillable palette */}
       <Tooltip>
         <TooltipTrigger asChild>
           <button
-            onClick={() => toast.info("준비 중", "준비 중인 기능이에요!")}
+            onClick={() => {
+              if (!hasColorData) {
+                toast.info("색상 미지원", "아직 지원하지 않는 모델이에요 ㅜㅜ");
+                return;
+              }
+              toggleColorMode();
+            }}
             className={cn(
               "group w-[44px] h-[44px] flex items-center justify-center text-primary transition-all rounded-full",
               "focus-visible:ring-[2px] focus-visible:ring-primary focus-visible:ring-offset-[2px]",
               "disabled:opacity-50 disabled:cursor-not-allowed",
-              "hover:bg-primary/10"
+              "hover:bg-primary/10",
+              isColorMode && hasColorData && "bg-primary/15",
+              !hasColorData && "opacity-40"
             )}
-            aria-label="Measure distances"
+            aria-label="Toggle color mode"
+            aria-pressed={isColorMode}
           >
             <svg width="36" height="36" viewBox="0 0 40 40" fill="none">
               <path
-                d="M10 8L32 30M10 8V16M10 8H18M32 30H24M32 30V22"
+                d="M20 4C11.16 4 4 11.16 4 20C4 28.84 11.16 36 20 36C21.1 36 22 35.1 22 34C22 33.5 21.8 33.04 21.48 32.68C21.18 32.34 21 31.9 21 31.4C21 30.3 21.9 29.4 23 29.4H26C31.52 29.4 36 24.92 36 19.4C36 10.88 28.84 4 20 4Z"
                 stroke="currentColor"
                 strokeWidth="2"
                 strokeLinecap="round"
                 strokeLinejoin="round"
+                className={cn(
+                  "transition-colors",
+                  isColorMode && hasColorData
+                    ? "fill-primary/35 group-hover:fill-primary/45"
+                    : "group-hover:fill-primary/15"
+                )}
+              />
+              <circle
+                cx="13"
+                cy="17"
+                r="2.5"
+                fill="currentColor"
+                opacity="0.7"
+              />
+              <circle
+                cx="20"
+                cy="12"
+                r="2.5"
+                fill="currentColor"
+                opacity="0.7"
+              />
+              <circle
+                cx="27"
+                cy="17"
+                r="2.5"
+                fill="currentColor"
+                opacity="0.7"
               />
             </svg>
           </button>
         </TooltipTrigger>
-        <TooltipContent side="bottom">Measure</TooltipContent>
+        <TooltipContent side="bottom">Color</TooltipContent>
       </Tooltip>
     </div>
   );

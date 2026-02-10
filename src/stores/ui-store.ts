@@ -33,6 +33,8 @@ interface UIState {
   isWireframeMode: boolean;
   /** Whether camera lock is enabled */
   isCameraLocked: boolean;
+  /** Whether color mode (MTL materials) is enabled */
+  isColorMode: boolean;
 
   // Actions
   /** Toggle chat panel open/closed */
@@ -49,6 +51,8 @@ interface UIState {
   toggleWireframe: () => void;
   /** Toggle camera lock on/off */
   toggleCameraLock: () => void;
+  /** Toggle color mode on/off */
+  toggleColorMode: () => void;
   /** Reset all toolbar states to null */
   resetToolbar: () => void;
 }
@@ -82,6 +86,7 @@ export const useUIStore = create<UIState>()(
         // View modes
         isWireframeMode: false,
         isCameraLocked: false,
+        isColorMode: false,
 
         // Actions
         toggleChat: () => set((state) => ({ isChatOpen: !state.isChatOpen })),
@@ -96,6 +101,8 @@ export const useUIStore = create<UIState>()(
           set((state) => ({ isWireframeMode: !state.isWireframeMode })),
         toggleCameraLock: () =>
           set((state) => ({ isCameraLocked: !state.isCameraLocked })),
+        toggleColorMode: () =>
+          set((state) => ({ isColorMode: !state.isColorMode })),
         resetToolbar: () =>
           set({ activeViewerTool: null, activeSideTool: null }),
       }),
@@ -110,6 +117,7 @@ export const useUIStore = create<UIState>()(
           isNotesVisible: state.isNotesVisible,
           isWireframeMode: state.isWireframeMode,
           isCameraLocked: state.isCameraLocked,
+          isColorMode: state.isColorMode,
           // DO NOT persist activeViewerTool or activeSideTool
         }),
       }

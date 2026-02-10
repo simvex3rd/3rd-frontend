@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import { useFrame } from "@react-three/fiber";
 import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader.js";
+import { MTLLoader } from "three/examples/jsm/loaders/MTLLoader.js";
 import {
   Mesh,
   MeshStandardMaterial,
@@ -71,117 +72,164 @@ export function ModelOBJ({ url }: ModelOBJProps) {
   const selectedObject = useSceneStore((state) => state.selectedObject);
   const explodeLevel = useSceneStore((state) => state.explodeLevel);
   const isWireframeMode = useUIStore((state) => state.isWireframeMode);
+  const isColorMode = useUIStore((state) => state.isColorMode);
+  const setHasColorData = useSceneStore((state) => state.setHasColorData);
 
-  // Load OBJ file
+  // Load OBJ file (with optional MTL for colors)
   useEffect(() => {
     let cancelled = false;
-    const loader = new OBJLoader();
+    const basePath = url.substring(0, url.lastIndexOf("/") + 1);
+    const mtlUrl = url.replace(/\.obj$/i, ".mtl");
 
-    loader.load(
-      url,
-      (object) => {
-        if (cancelled || !groupRef.current) {
-          disposeObject(object);
-          return;
-        }
+    /** Process loaded OBJ object */
+    const processObject = (object: Group, hasMtl: boolean) => {
+      if (cancelled || !groupRef.current) {
+        disposeObject(object);
+        return;
+      }
 
-        // Dispose and clear previous model to prevent VRAM leaks
-        while (groupRef.current.children.length > 0) {
-          const child = groupRef.current.children[0];
-          disposeObject(child);
-          groupRef.current.remove(child);
-        }
+      // Dispose and clear previous model to prevent VRAM leaks
+      while (groupRef.current.children.length > 0) {
+        const child = groupRef.current.children[0];
+        disposeObject(child);
+        groupRef.current.remove(child);
+      }
 
-        // Add loaded model
-        groupRef.current.add(object);
+      // Add loaded model
+      groupRef.current.add(object);
 
-        // Compute model bounding box center for explode
-        const modelBox = new Box3().setFromObject(object);
-        modelCenterRef.current = modelBox.getCenter(new Vector3());
+      // Store whether this model has color data
+      setHasColorData(hasMtl);
 
-        // Initialize meshes and cache refs for useFrame (avoid traverse at 60fps)
-        const cachedMeshes: Mesh[] = [];
-        let meshIndex = 0;
-        object.traverse((child) => {
-          if (child instanceof Mesh) {
-            cachedMeshes.push(child);
+      // Compute model bounding box center for explode
+      const modelBox = new Box3().setFromObject(object);
+      modelCenterRef.current = modelBox.getCenter(new Vector3());
 
-            // Set name
-            if (!child.userData.name) {
-              child.userData.name = child.name || child.uuid;
-            }
+      // Initialize meshes and cache refs for useFrame (avoid traverse at 60fps)
+      const cachedMeshes: Mesh[] = [];
+      let meshIndex = 0;
+      object.traverse((child) => {
+        if (child instanceof Mesh) {
+          cachedMeshes.push(child);
 
-            // Apply standard material if needed
-            if (!(child.material instanceof MeshStandardMaterial)) {
-              child.material = new MeshStandardMaterial({
-                color: 0xcccccc,
-                metalness: 0.3,
-                roughness: 0.7,
-              });
-            }
-
-            // Store original emissive color
-            if (
-              child.material instanceof MeshStandardMaterial &&
-              !child.userData.originalEmissive
-            ) {
-              child.userData.originalEmissive = child.material.emissive.clone();
-            }
-
-            // Enable raycasting
-            child.userData.selectable = true;
-
-            // Store initial position for explode animation
-            if (!child.userData.initialPosition) {
-              child.userData.initialPosition = child.position.clone();
-            }
-
-            // Store mesh index for fallback explode direction
-            child.userData.meshIndex = meshIndex++;
+          // Set name
+          if (!child.userData.name) {
+            child.userData.name = child.name || child.uuid;
           }
-        });
-        meshesRef.current = cachedMeshes;
 
-        // Center and scale model
-        const box = new Box3().setFromObject(object);
-        const center = box.getCenter(new Vector3());
-        const size = box.getSize(new Vector3());
-        const maxDim = Math.max(size.x, size.y, size.z);
-        const scale = maxDim > 0 ? 5 / maxDim : 1; // Scale to fit in 5 units
+          // Convert to MeshStandardMaterial, preserving color from MTL
+          if (!(child.material instanceof MeshStandardMaterial)) {
+            const oldMat = child.material as {
+              color?: Color;
+              dispose?: () => void;
+            };
+            const originalColor = oldMat.color
+              ? oldMat.color.clone()
+              : new Color(0xcccccc);
+            child.material = new MeshStandardMaterial({
+              color: hasMtl ? originalColor : new Color(0xcccccc),
+              metalness: 0.3,
+              roughness: 0.7,
+            });
+            oldMat.dispose?.();
+            // Store original MTL color for color mode toggle
+            child.userData.mtlColor = originalColor;
+          } else {
+            child.userData.mtlColor = child.material.color.clone();
+          }
 
-        // Apply scale first
-        object.scale.setScalar(scale);
+          // Store original emissive color
+          if (
+            child.material instanceof MeshStandardMaterial &&
+            !child.userData.originalEmissive
+          ) {
+            child.userData.originalEmissive = child.material.emissive.clone();
+          }
 
-        // Then center by moving the object
-        object.position.x = -center.x * scale;
-        object.position.y = -center.y * scale;
-        object.position.z = -center.z * scale;
+          // Enable raycasting
+          child.userData.selectable = true;
 
-        // Recompute model center after centering/scaling (should be ~origin now)
-        groupRef.current.updateMatrixWorld(true);
-        const finalBox = new Box3().setFromObject(groupRef.current);
-        modelCenterRef.current = finalBox.getCenter(new Vector3());
+          // Store initial position for explode animation
+          if (!child.userData.initialPosition) {
+            child.userData.initialPosition = child.position.clone();
+          }
 
-        // Signal camera fit needed (done in useFrame where camera/controls are available)
-        if (!useSceneStore.getState().hasSavedCamera) {
-          needsCameraFitRef.current = true;
+          // Store mesh index for fallback explode direction
+          child.userData.meshIndex = meshIndex++;
         }
+      });
+      meshesRef.current = cachedMeshes;
 
-        setIsLoaded(true);
+      // Center and scale model
+      const box = new Box3().setFromObject(object);
+      const center = box.getCenter(new Vector3());
+      const size = box.getSize(new Vector3());
+      const maxDim = Math.max(size.x, size.y, size.z);
+      const scale = maxDim > 0 ? 5 / maxDim : 1; // Scale to fit in 5 units
+
+      // Apply scale first
+      object.scale.setScalar(scale);
+
+      // Then center by moving the object
+      object.position.x = -center.x * scale;
+      object.position.y = -center.y * scale;
+      object.position.z = -center.z * scale;
+
+      // Recompute model center after centering/scaling (should be ~origin now)
+      groupRef.current.updateMatrixWorld(true);
+      const finalBox = new Box3().setFromObject(groupRef.current);
+      modelCenterRef.current = finalBox.getCenter(new Vector3());
+
+      // Signal camera fit needed (done in useFrame where camera/controls are available)
+      if (!useSceneStore.getState().hasSavedCamera) {
+        needsCameraFitRef.current = true;
+      }
+
+      setIsLoaded(true);
+    };
+
+    const onProgress = (progress: ProgressEvent) => {
+      const pct =
+        progress.total > 0
+          ? ((progress.loaded / progress.total) * 100).toFixed(2)
+          : "?";
+      if (process.env.NODE_ENV === "development")
+        console.log(`Loading OBJ: ${pct}%`);
+    };
+
+    const onError = (error: unknown) => {
+      if (!cancelled) {
+        console.error("Error loading OBJ:", error);
+        toast.error("3D 모델 로드 실패", "모델 파일을 불러올 수 없습니다");
+      }
+    };
+
+    /** Load OBJ with optional pre-loaded materials */
+    const loadObj = (materials?: MTLLoader.MaterialCreator) => {
+      const objLoader = new OBJLoader();
+      if (materials) objLoader.setMaterials(materials);
+      objLoader.load(
+        url,
+        (obj) => processObject(obj, !!materials),
+        onProgress,
+        onError
+      );
+    };
+
+    // Try loading MTL first, then OBJ
+    const mtlLoader = new MTLLoader();
+    mtlLoader.setResourcePath(basePath);
+    mtlLoader.load(
+      mtlUrl,
+      (materials) => {
+        if (cancelled) return;
+        materials.preload();
+        loadObj(materials);
       },
-      (progress) => {
-        const pct =
-          progress.total > 0
-            ? ((progress.loaded / progress.total) * 100).toFixed(2)
-            : "?";
-        if (process.env.NODE_ENV === "development")
-          console.log(`Loading OBJ: ${pct}%`);
-      },
-      (error) => {
-        if (!cancelled) {
-          console.error("Error loading OBJ:", error);
-          toast.error("3D 모델 로드 실패", "모델 파일을 불러올 수 없습니다");
-        }
+      undefined,
+      () => {
+        // MTL not found — load OBJ without materials (fallback gray)
+        if (!cancelled) loadObj();
       }
     );
 
@@ -196,8 +244,9 @@ export function ModelOBJ({ url }: ModelOBJProps) {
         }
       }
       meshesRef.current = [];
+      setHasColorData(false);
     };
-  }, [url]);
+  }, [url, setHasColorData]);
 
   // Apply wireframe mode (uses cached meshes)
   useEffect(() => {
@@ -209,6 +258,24 @@ export function ModelOBJ({ url }: ModelOBJProps) {
       }
     }
   }, [isWireframeMode, isLoaded]);
+
+  // Apply color mode toggle (MTL colors vs default gray)
+  useEffect(() => {
+    if (!isLoaded) return;
+
+    const _gray = new Color(0xcccccc);
+    for (const child of meshesRef.current) {
+      if (
+        child.material instanceof MeshStandardMaterial &&
+        child.userData.mtlColor
+      ) {
+        child.material.color.copy(
+          isColorMode ? child.userData.mtlColor : _gray
+        );
+        child.material.needsUpdate = true;
+      }
+    }
+  }, [isColorMode, isLoaded]);
 
   // Combined: camera fit (once) + selection highlight + explode animation
   useFrame((state) => {
