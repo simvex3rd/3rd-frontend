@@ -14,6 +14,8 @@ import type {
   HealthCheck,
   UserResponse,
   ClerkLoginRequest,
+  QuizGenerateResponse,
+  QuizSubmitResponse,
 } from "@/types/api";
 import { api as realApi, ApiClientError } from "./client";
 import { mockApi } from "./mock";
@@ -61,6 +63,16 @@ export interface SimvexApi {
       content: string,
       partId?: number | string
     ) => Promise<StudyNoteResponse>;
+  };
+  quiz: {
+    generate: (
+      modelId: number | string,
+      options?: { partId?: number | string; count?: number }
+    ) => Promise<QuizGenerateResponse>;
+    submit: (
+      quizId: number,
+      answers: { question_id: number; answer: string }[]
+    ) => Promise<QuizSubmitResponse>;
   };
 }
 
@@ -123,6 +135,7 @@ export const api: SimvexApi = USE_MOCK_API
       chat: withMockFallback(realApi.chat, mockApi.chat),
       notes: withMockFallback(realApi.notes, mockApi.notes),
       auth: withMockFallback(realApi.auth, mockApi.auth),
+      quiz: withMockFallback(realApi.quiz, mockApi.quiz),
     };
 
 /**
@@ -133,6 +146,7 @@ export const authApi = api.auth;
 export const modelsApi = api.models;
 export const chatApi = api.chat;
 export const notesApi = api.notes;
+export const quizApi = api.quiz;
 
 /**
  * Re-export error utilities and ApiClientError

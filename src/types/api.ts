@@ -367,6 +367,90 @@ export interface ChatMessageResponse {
 }
 
 // ============================================================================
+// Quiz API
+// ============================================================================
+
+/**
+ * Quiz generation request (POST /api/v1/quiz/generate)
+ */
+export interface QuizGenerateRequest {
+  /** Model ID */
+  model_id: number;
+  /** Part ID (optional - quiz for specific part) */
+  part_id?: number | null;
+  /** Number of questions (default: 5) */
+  count?: number;
+  /** Quiz type (default: "multiple_choice") */
+  type?: string;
+}
+
+/**
+ * Quiz generation response
+ */
+export interface QuizGenerateResponse {
+  /** Generated quiz ID */
+  quiz_id: number;
+  /** Questions list */
+  questions: QuizQuestionResponse[];
+}
+
+/**
+ * Single quiz question
+ */
+export interface QuizQuestionResponse {
+  /** Question ID */
+  id: number;
+  /** Question text */
+  question: string;
+  /** Question type */
+  type: string;
+  /** Answer options */
+  options: string[];
+}
+
+/**
+ * Quiz submit request (POST /api/v1/quiz/{quiz_id}/submit)
+ */
+export interface QuizSubmitRequest {
+  /** User answers */
+  answers: QuizAnswer[];
+}
+
+/**
+ * Single quiz answer
+ */
+export interface QuizAnswer {
+  /** Question ID */
+  question_id: number;
+  /** Selected answer */
+  answer: string;
+}
+
+/**
+ * Quiz submit response
+ */
+export interface QuizSubmitResponse {
+  /** Number of correct answers */
+  score: number;
+  /** Total questions */
+  total: number;
+  /** Per-question results */
+  results: QuizResultDetail[];
+}
+
+/**
+ * Per-question result detail
+ */
+export interface QuizResultDetail {
+  /** Question ID */
+  question_id: number;
+  /** Whether answer was correct */
+  correct: boolean;
+  /** Correct answer (shown on wrong answers) */
+  correct_answer?: string | null;
+}
+
+// ============================================================================
 // Error Handling
 // ============================================================================
 

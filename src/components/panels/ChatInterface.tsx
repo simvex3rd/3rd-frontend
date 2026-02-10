@@ -10,6 +10,8 @@ import { usePartData } from "@/hooks/use-part-data";
 import { api } from "@/lib/api";
 import { useChatStream } from "@/hooks/use-chat-stream";
 import { sanitizeMarkdown } from "@/lib/sanitize";
+import { toast } from "@/hooks/use-toast";
+import { withRetry } from "@/lib/api/retry";
 
 /**
  * ChatInterface component - Fixed right panel with collapsible chat interface.
@@ -127,12 +129,15 @@ export function ChatInterface({
     sessionCreatingRef.current = true;
     const promise = (async () => {
       try {
-        const session = await api.chat.createSession(modelId || "1");
+        const session = await withRetry(() =>
+          api.chat.createSession(modelId || "1")
+        );
         const newId = String(session.id);
         setSessionId(newId);
         return newId;
       } catch (err) {
         console.error("Failed to create session:", err);
+        toast.error("채팅 세션 생성 실패", "잠시 후 다시 시도해주세요");
         return null;
       } finally {
         sessionCreatingRef.current = false;

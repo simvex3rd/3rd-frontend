@@ -9,26 +9,54 @@ import {
   LucideSparkles,
   LucideSquarePen,
   LucideChevronRight,
+  LucideFileText,
+  LucideBrain,
   Loader2,
 } from "lucide-react";
 import { ViewerHeader } from "@/components/viewer/ViewerHeader";
 import { ChatInput } from "@/components/panels/ChatInput";
 import { GradientBorder } from "@/components/ui/GradientBorder";
 import { api } from "@/lib/api";
+import { generateReport } from "@/lib/pdf-export";
+import { toast } from "@/hooks/use-toast";
+import { withRetry } from "@/lib/api/retry";
+import { useSceneStore } from "@/stores/scene-store";
+import { useMemoStore } from "@/stores/memo-store";
+import { QuizModal } from "@/components/panels/QuizModal";
+import { MemoModal } from "@/components/panels/MemoModal";
 
 const QUICK_ACTIONS = [
   { label: "학습에 관한 도움받기", action: "help" },
-  { label: "학습 내용 바탕의 퀴즈", action: "quiz" },
   { label: "부품 정보 불러오기", action: "parts" },
-  { label: "PDF 리포트 출력", action: "pdf" },
 ] as const;
+
+async function downloadReport(modelId: string) {
+  const model = await withRetry(() => api.models.getDetail(modelId));
+  let notes: string | undefined;
+  try {
+    const noteRes = await api.notes.get(modelId);
+    if (noteRes?.content) notes = noteRes.content;
+  } catch {
+    // notes are optional
+  }
+
+  await generateReport({
+    modelName: model.name ?? "Untitled Model",
+    parts: model.parts.map((p) => ({
+      name: p.name ?? "Unknown Part",
+      description: p.description ?? undefined,
+    })),
+    notes,
+    generatedAt: new Date(),
+  });
+}
 
 /**
  * Study Dashboard Page
  *
  * 2-column layout:
  * - Left (~55%): AI Chat card (character + welcome + input + chips)
- * - Right (~45%): Memo card (top) + AI Quiz card (bottom)
+ * - Right (~45%): Memo card (top) + Report card (bottom)
  *
  * @see {@link https://www.figma.com/design/Vz80RydxWcYHVnn2iuyV0m?node-id=474-1663} Figma Design
  */
@@ -36,18 +64,39 @@ export default function StudyPage() {
   const router = useRouter();
   const { user } = useUser();
   const { isReady } = useAuthGuard();
+  const storeModelId = useSceneStore((s) => s.modelId);
+  const modelId = storeModelId ?? "1";
   const [aiAvatar, setAiAvatar] = useState("/chat/character1.png");
+  const [pdfLoading, setPdfLoading] = useState(false);
+  const [showQuiz, setShowQuiz] = useState(false);
+  const [showMemo, setShowMemo] = useState(false);
+  const memoStore = useMemoStore();
+  const memos = memoStore.getMemos(modelId);
 
   useEffect(() => {
     const AVATARS = ["/chat/character1.png", "/chat/character2.png"];
     setAiAvatar(AVATARS[Math.floor(Math.random() * AVATARS.length)]);
   }, []);
 
+  const handleDownloadReport = useCallback(async () => {
+    if (pdfLoading) return;
+    setPdfLoading(true);
+    try {
+      await downloadReport(modelId);
+      toast.success("PDF 다운로드 완료");
+    } catch (err) {
+      console.error("Report generation failed:", err);
+      toast.error("PDF 생성 실패", "잠시 후 다시 시도해주세요");
+    } finally {
+      setPdfLoading(false);
+    }
+  }, [pdfLoading, modelId]);
+
   const handleSendMessage = useCallback(
     async (message: string) => {
       if (!message.trim()) return;
       try {
-        const session = await api.chat.createSession("1");
+        const session = await api.chat.createSession(modelId);
         router.push(
           `/study/chat?sessionId=${session.id}&q=${encodeURIComponent(message)}`
         );
@@ -55,16 +104,14 @@ export default function StudyPage() {
         router.push(`/study/chat?q=${encodeURIComponent(message)}`);
       }
     },
-    [router]
+    [router, modelId]
   );
 
   const handleQuickAction = useCallback(
     (action: string) => {
       const messages: Record<string, string> = {
         help: "학습에 관한 도움을 받고 싶어요",
-        quiz: "현재 학습 내용을 바탕으로 퀴즈를 만들어주세요",
         parts: "현재 모델의 부품 정보를 알려주세요",
-        pdf: "학습 리포트를 PDF로 출력하고 싶어요",
       };
       const msg = messages[action];
       if (msg) handleSendMessage(msg);
@@ -112,7 +159,6 @@ export default function StudyPage() {
             </div>
 
             {/* Card */}
-            {/* Card */}
             <div className="flex-1 relative flex flex-col items-center justify-end gap-[24px] rounded-[24px] bg-gray-30 p-[40px] overflow-hidden">
               <GradientBorder />
 
@@ -156,59 +202,101 @@ export default function StudyPage() {
             </div>
           </section>
 
-          {/* ===== Right Column ===== */}
-          <div className="flex-[45] flex flex-col gap-[24px] min-w-0">
-            {/* Memo */}
-            <section className="flex-1 flex flex-col gap-[16px] min-h-0">
-              <div className="flex items-center gap-[16px] shrink-0">
+          {/* ===== Right: 3 Feature Cards ===== */}
+          <div className="flex-[45] grid grid-rows-3 gap-[20px] min-w-0">
+            {/* Memo Card */}
+            <section className="flex flex-col gap-[12px]">
+              <div className="flex items-center gap-[12px] shrink-0">
                 <LucideSquarePen
-                  className="w-[32px] h-[32px] text-primary"
+                  className="w-[28px] h-[28px] text-primary"
                   strokeWidth={2}
                 />
-                <h2 className="font-semibold text-[32px] leading-[1.25] text-primary">
+                <h2 className="font-semibold text-[24px] leading-[1.25] text-primary">
                   Memo
                 </h2>
+                {memos.length > 0 && (
+                  <span className="text-[13px] text-neutral-500">
+                    {memos.length}개
+                  </span>
+                )}
               </div>
 
-              <div className="flex-1 relative flex items-center justify-center rounded-[24px] bg-gray-30 p-[32px] overflow-hidden">
+              <button
+                onClick={() => setShowMemo(true)}
+                className="flex-1 relative flex flex-col items-center justify-center gap-[12px] rounded-[24px] bg-gray-30 p-[24px] overflow-hidden hover:bg-neutral-800/80 transition-colors cursor-pointer"
+              >
                 <GradientBorder />
-
-                <div className="flex gap-[16px] z-10">
-                  {[1, 2, 3].map((i) => (
-                    <button
-                      key={i}
-                      className="w-[140px] h-[140px] rounded-[24px] bg-primary/30 flex items-center justify-center text-white font-semibold text-[16px] hover:bg-primary/40 transition-colors"
-                    >
-                      메모
-                    </button>
-                  ))}
-                </div>
-              </div>
+                <LucideSquarePen className="w-[32px] h-[32px] text-primary z-10" />
+                <p className="font-medium text-[14px] text-neutral-400 z-10">
+                  {memos.length > 0
+                    ? `메모 보기 (${memos.length})`
+                    : "메모 작성하기"}
+                </p>
+              </button>
             </section>
 
-            {/* AI Quiz */}
-            <section className="flex-1 flex flex-col gap-[16px] min-h-0">
-              <div className="flex items-center gap-[16px] shrink-0">
-                <LucideSparkles
-                  className="w-[32px] h-[32px] text-primary"
+            {/* Report Card */}
+            <section className="flex flex-col gap-[12px]">
+              <div className="flex items-center gap-[12px] shrink-0">
+                <LucideFileText
+                  className="w-[28px] h-[28px] text-primary"
                   strokeWidth={2}
                 />
-                <h2 className="font-semibold text-[32px] leading-[1.25] text-primary">
-                  AI Quiz
+                <h2 className="font-semibold text-[24px] leading-[1.25] text-primary">
+                  Report
                 </h2>
               </div>
 
-              <div className="flex-1 relative flex items-center justify-center rounded-[24px] bg-gray-30">
+              <button
+                onClick={handleDownloadReport}
+                disabled={pdfLoading}
+                className="flex-1 relative flex flex-col items-center justify-center gap-[12px] rounded-[24px] bg-gray-30 p-[24px] overflow-hidden hover:bg-neutral-800/80 transition-colors cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
+              >
                 <GradientBorder />
-
-                <p className="font-medium text-[16px] leading-[1.5] text-white z-10">
-                  ai quiz
+                {pdfLoading ? (
+                  <Loader2 className="w-[32px] h-[32px] animate-spin text-primary z-10" />
+                ) : (
+                  <LucideFileText className="w-[32px] h-[32px] text-primary z-10" />
+                )}
+                <p className="font-medium text-[14px] text-neutral-400 z-10">
+                  {pdfLoading ? "생성 중..." : "PDF 내보내기"}
                 </p>
+              </button>
+            </section>
+
+            {/* Quiz Card */}
+            <section className="flex flex-col gap-[12px]">
+              <div className="flex items-center gap-[12px] shrink-0">
+                <LucideBrain
+                  className="w-[28px] h-[28px] text-primary"
+                  strokeWidth={2}
+                />
+                <h2 className="font-semibold text-[24px] leading-[1.25] text-primary">
+                  Quiz
+                </h2>
               </div>
+
+              <button
+                onClick={() => setShowQuiz(true)}
+                className="flex-1 relative flex flex-col items-center justify-center gap-[12px] rounded-[24px] bg-gray-30 p-[24px] overflow-hidden hover:bg-neutral-800/80 transition-colors cursor-pointer"
+              >
+                <GradientBorder />
+                <LucideBrain className="w-[32px] h-[32px] text-primary z-10" />
+                <p className="font-medium text-[14px] text-neutral-400 z-10">
+                  학습 퀴즈 풀기
+                </p>
+              </button>
             </section>
           </div>
         </div>
       </main>
+
+      {showMemo && (
+        <MemoModal modelId={modelId} onClose={() => setShowMemo(false)} />
+      )}
+      {showQuiz && (
+        <QuizModal modelId={modelId} onClose={() => setShowQuiz(false)} />
+      )}
     </div>
   );
 }

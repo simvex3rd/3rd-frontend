@@ -931,6 +931,102 @@ export const mockNotesApi = {
 };
 
 /**
+ * Mock Quiz API
+ */
+let quizIdCounter = 1;
+
+export const mockQuizApi = {
+  generate: async (
+    modelId: number | string,
+    options?: { partId?: number | string; count?: number }
+  ): Promise<import("@/types/api").QuizGenerateResponse> => {
+    await delay();
+
+    const numericModelId = Number(modelId);
+    const model = mockData.modelDetails[numericModelId];
+    const partNames = model?.parts.map((p) => p.name ?? "Unknown") ?? ["Part"];
+    const count = options?.count ?? 5;
+    const quizId = ++quizIdCounter;
+
+    const questions: import("@/types/api").QuizQuestionResponse[] = [];
+    const templates = [
+      {
+        q: (p: string) => `${p}의 주요 재질은 무엇인가요?`,
+        opts: [
+          "강철 (Steel)",
+          "알루미늄 합금",
+          "주철 (Cast Iron)",
+          "탄소 섬유",
+        ],
+        correct: 0,
+      },
+      {
+        q: (p: string) => `${p}의 주요 기능은 무엇인가요?`,
+        opts: ["운동 변환", "열 방출", "윤활 공급", "전기 전도"],
+        correct: 0,
+      },
+      {
+        q: (_p: string) => `이 모델의 부품 수는 몇 개인가요?`,
+        opts: [
+          `${partNames.length}개`,
+          `${partNames.length + 2}개`,
+          `${partNames.length - 1}개`,
+          `${partNames.length + 5}개`,
+        ],
+        correct: 0,
+      },
+      {
+        q: (p: string) => `${p}이(가) 고장나면 어떤 문제가 발생하나요?`,
+        opts: ["엔진 정지", "소음 증가", "연료 누출", "온도 상승"],
+        correct: 0,
+      },
+      {
+        q: (_p: string) => `다음 중 이 모델에 포함된 부품은?`,
+        opts: [partNames[0] ?? "Part A", "터보차저", "라디에이터", "머플러"],
+        correct: 0,
+      },
+    ];
+
+    for (let i = 0; i < Math.min(count, templates.length); i++) {
+      const t = templates[i];
+      const partName = partNames[i % partNames.length] ?? "Part";
+      questions.push({
+        id: quizId * 100 + i + 1,
+        question: t.q(partName),
+        type: "multiple_choice",
+        options: t.opts,
+      });
+    }
+
+    return { quiz_id: quizId, questions };
+  },
+
+  submit: async (
+    _quizId: number,
+    answers: { question_id: number; answer: string }[]
+  ): Promise<import("@/types/api").QuizSubmitResponse> => {
+    await delay();
+
+    // Mock: first option is always correct
+    const results = answers.map((a) => ({
+      question_id: a.question_id,
+      correct:
+        a.answer === "0" ||
+        a.answer.includes("강철") ||
+        a.answer.includes("운동") ||
+        a.answer.includes(`개`),
+      correct_answer: null,
+    }));
+
+    return {
+      score: results.filter((r) => r.correct).length,
+      total: answers.length,
+      results,
+    };
+  },
+};
+
+/**
  * Unified Mock API (matches client.ts interface)
  */
 export const mockApi = {
@@ -952,4 +1048,5 @@ export const mockApi = {
   models: mockModelsApi,
   chat: mockChatApi,
   notes: mockNotesApi,
+  quiz: mockQuizApi,
 };

@@ -4,6 +4,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 import { dark } from "@clerk/themes";
 import { Analytics } from "@vercel/analytics/react";
 import { AuthInit } from "@/components/common/AuthInit";
+import { Toaster } from "@/components/ui/toaster";
 import "./globals.css";
 
 const geistMono = Geist_Mono({
@@ -94,6 +95,7 @@ export default function RootLayout({
       </head>
       <body className={`${geistMono.variable} antialiased`}>
         {children}
+        <Toaster />
         <Analytics />
       </body>
     </html>
