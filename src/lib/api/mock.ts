@@ -29,16 +29,6 @@ async function delay(ms?: number): Promise<void> {
 const mockData = {
   models: [
     {
-      id: 1,
-      name: "V4 Engine",
-      thumbnail_url: "/models/v4-engine/thumbnail.jpg",
-    },
-    {
-      id: 2,
-      name: "Robot Arm",
-      thumbnail_url: "/models/robot-arm/thumbnail.jpg",
-    },
-    {
       id: 3,
       name: "Machine Vice",
       thumbnail_url: "/models/machine-vice/thumbnail.jpg",
@@ -62,6 +52,16 @@ const mockData = {
       id: 7,
       name: "Leaf Spring",
       thumbnail_url: "/models/leaf-spring/thumbnail.jpg",
+    },
+    {
+      id: 1,
+      name: "V4 Engine",
+      thumbnail_url: "/models/v4-engine/thumbnail.jpg",
+    },
+    {
+      id: 2,
+      name: "Robot Arm",
+      thumbnail_url: "/models/robot-arm/thumbnail.jpg",
     },
   ] as ModelListItem[],
 
