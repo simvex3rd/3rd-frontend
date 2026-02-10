@@ -17,6 +17,7 @@ import { ChatInput } from "@/components/panels/ChatInput";
 import { GradientBorder } from "@/components/ui/GradientBorder";
 import { api } from "@/lib/api";
 import { generateReport } from "@/lib/pdf-export";
+import { useSceneStore } from "@/stores/scene-store";
 
 const QUICK_ACTIONS = [
   { label: "학습에 관한 도움받기", action: "help" },
@@ -25,11 +26,11 @@ const QUICK_ACTIONS = [
   { label: "PDF 리포트 출력", action: "pdf" },
 ] as const;
 
-async function downloadReport() {
-  const model = await api.models.getDetail("1");
+async function downloadReport(modelId: string) {
+  const model = await api.models.getDetail(modelId);
   let notes: string | undefined;
   try {
-    const noteRes = await api.notes.get("1");
+    const noteRes = await api.notes.get(modelId);
     if (noteRes?.content) notes = noteRes.content;
   } catch {
     // notes are optional
@@ -59,6 +60,8 @@ export default function StudyPage() {
   const router = useRouter();
   const { user } = useUser();
   const { isReady } = useAuthGuard();
+  const storeModelId = useSceneStore((s) => s.modelId);
+  const modelId = storeModelId ?? "1";
   const [aiAvatar, setAiAvatar] = useState("/chat/character1.png");
   const [pdfLoading, setPdfLoading] = useState(false);
 
@@ -71,19 +74,19 @@ export default function StudyPage() {
     if (pdfLoading) return;
     setPdfLoading(true);
     try {
-      await downloadReport();
+      await downloadReport(modelId);
     } catch (err) {
       console.error("Report generation failed:", err);
     } finally {
       setPdfLoading(false);
     }
-  }, [pdfLoading]);
+  }, [pdfLoading, modelId]);
 
   const handleSendMessage = useCallback(
     async (message: string) => {
       if (!message.trim()) return;
       try {
-        const session = await api.chat.createSession("1");
+        const session = await api.chat.createSession(modelId);
         router.push(
           `/study/chat?sessionId=${session.id}&q=${encodeURIComponent(message)}`
         );
@@ -91,7 +94,7 @@ export default function StudyPage() {
         router.push(`/study/chat?q=${encodeURIComponent(message)}`);
       }
     },
-    [router]
+    [router, modelId]
   );
 
   const handleQuickAction = useCallback(

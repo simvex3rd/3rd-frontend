@@ -173,7 +173,8 @@ export function ModelOBJ({ url }: ModelOBJProps) {
           progress.total > 0
             ? ((progress.loaded / progress.total) * 100).toFixed(2)
             : "?";
-        console.log(`Loading OBJ: ${pct}%`);
+        if (process.env.NODE_ENV === "development")
+          console.log(`Loading OBJ: ${pct}%`);
       },
       (error) => {
         if (!cancelled) console.error("Error loading OBJ:", error);

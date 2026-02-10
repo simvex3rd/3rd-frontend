@@ -163,9 +163,11 @@ export function Model({ url }: ModelProps) {
     scene.scale.setScalar(scale);
     scene.position.copy(center).multiplyScalar(-scale);
 
-    console.log(
-      `Model scaled: ${scale.toFixed(3)}x, centered at (${center.x.toFixed(2)}, ${center.y.toFixed(2)}, ${center.z.toFixed(2)})`
-    );
+    if (process.env.NODE_ENV === "development") {
+      console.log(
+        `Model scaled: ${scale.toFixed(3)}x, centered at (${center.x.toFixed(2)}, ${center.y.toFixed(2)}, ${center.z.toFixed(2)})`
+      );
+    }
   }, [scene]);
 
   // Cleanup Three.js resources on unmount to prevent memory leaks
