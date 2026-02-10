@@ -34,7 +34,10 @@ export function usePartData(partId: string | null) {
       .then((model) => {
         if (cancelled) return;
         const rawPart = model.parts.find(
-          (p) => String(p.id) === partId || p.name === partId
+          (p) =>
+            String(p.id) === partId ||
+            p.name === partId ||
+            p.mesh_names?.includes(partId)
         );
         const normalized = rawPart
           ? normalizePart(rawPart as unknown as Record<string, unknown>)

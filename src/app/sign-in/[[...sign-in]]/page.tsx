@@ -250,7 +250,7 @@ function SignInContent() {
                   await signIn.authenticateWithRedirect({
                     strategy: "oauth_google",
                     redirectUrl: "/sso-callback",
-                    redirectUrlComplete: "/sso-callback",
+                    redirectUrlComplete: redirectUrl,
                   });
                 } catch {
                   setOAuthLoading(null);
@@ -297,7 +297,7 @@ function SignInContent() {
                   await signIn.authenticateWithRedirect({
                     strategy: "oauth_github",
                     redirectUrl: "/sso-callback",
-                    redirectUrlComplete: "/sso-callback",
+                    redirectUrlComplete: redirectUrl,
                   });
                 } catch {
                   setOAuthLoading(null);
