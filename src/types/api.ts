@@ -254,6 +254,8 @@ export interface PartWithGeometry {
   material?: string | null;
   /** Part metadata (JSON) */
   metadata?: Record<string, unknown> | null;
+  /** OBJ mesh group names that belong to this part */
+  mesh_names?: string[] | null;
   /** 3D geometry information */
   geometry?: PartGeometryResponse | null;
 }

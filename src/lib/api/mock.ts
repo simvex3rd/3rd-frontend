@@ -80,6 +80,18 @@ const mockData = {
             "Converts reciprocating motion of pistons into rotational motion",
           material: "Forged Steel",
           metadata: { weight_kg: 12.5, max_rpm: 7000, bearing_count: 5 },
+          mesh_names: [
+            "11",
+            "12",
+            "13",
+            "14",
+            "15",
+            "16",
+            "17",
+            "18",
+            "19",
+            "110",
+          ],
           geometry: {
             id: 1001,
             part_id: 101,
@@ -101,6 +113,18 @@ const mockData = {
             stroke_mm: 90,
             compression_ratio: 10.5,
           },
+          mesh_names: [
+            "111",
+            "112",
+            "113",
+            "114",
+            "115",
+            "116",
+            "117",
+            "118",
+            "119",
+            "120",
+          ],
           geometry: {
             id: 1002,
             part_id: 102,
@@ -122,6 +146,18 @@ const mockData = {
             stroke_mm: 90,
             compression_ratio: 10.5,
           },
+          mesh_names: [
+            "121",
+            "122",
+            "123",
+            "124",
+            "125",
+            "126",
+            "127",
+            "128",
+            "129",
+            "130",
+          ],
           geometry: {
             id: 1003,
             part_id: 103,
@@ -138,6 +174,7 @@ const mockData = {
           description: "Houses valves, camshafts, and combustion chambers",
           material: "Cast Aluminum",
           metadata: { weight_kg: 8.2, valve_count: 16, camshaft_count: 2 },
+          mesh_names: ["131", "132", "133", "134", "135", "136", "137"],
           geometry: {
             id: 1004,
             part_id: 104,
@@ -163,6 +200,18 @@ const mockData = {
           description: "Stationary base platform with mounting holes",
           material: "Cast Aluminum",
           metadata: { weight_kg: 12.0, mounting_bolts: 6 },
+          mesh_names: [
+            "Solid11",
+            "Solid12",
+            "Solid13",
+            "Solid14",
+            "Solid15",
+            "Solid16",
+            "Solid17",
+            "Solid18",
+            "Solid19",
+            "Solid21",
+          ],
           geometry: {
             id: 2001,
             part_id: 201,
@@ -179,6 +228,18 @@ const mockData = {
           description: "Primary rotation joint with servo motor",
           material: "Hardened Steel",
           metadata: { weight_kg: 5.4, max_torque_nm: 120 },
+          mesh_names: [
+            "Solid121",
+            "Solid122",
+            "Solid123",
+            "Solid124",
+            "Solid125",
+            "Solid126",
+            "Solid127",
+            "Solid131",
+            "Solid132",
+            "Solid133",
+          ],
           geometry: {
             id: 2002,
             part_id: 202,
@@ -204,6 +265,7 @@ const mockData = {
           description: "Guide rail",
           material: "Steel",
           metadata: { weight_kg: 0.8, length_mm: 180, hardness_hrc: 58 },
+          mesh_names: ["Solid11"],
           geometry: {
             id: 3001,
             part_id: 301,
@@ -224,6 +286,7 @@ const mockData = {
             jaw_width_mm: 100,
             clamping_force_kn: 30,
           },
+          mesh_names: ["Solid12"],
           geometry: {
             id: 3002,
             part_id: 302,
@@ -240,6 +303,7 @@ const mockData = {
           description: "Movable jaw",
           material: "Cast Iron",
           metadata: { weight_kg: 1.2, jaw_width_mm: 100, travel_mm: 80 },
+          mesh_names: ["Solid13"],
           geometry: {
             id: 3003,
             part_id: 303,
@@ -256,6 +320,7 @@ const mockData = {
           description: "Trapezoidal spindle",
           material: "Steel",
           metadata: { weight_kg: 0.6, thread_pitch_mm: 3, diameter_mm: 16 },
+          mesh_names: ["Solid17"],
           geometry: {
             id: 3004,
             part_id: 304,
@@ -272,6 +337,7 @@ const mockData = {
           description: "Base plate",
           material: "Cast Iron",
           metadata: { weight_kg: 3.8, length_mm: 220, width_mm: 100 },
+          mesh_names: ["Solid18"],
           geometry: {
             id: 3005,
             part_id: 305,
@@ -301,6 +367,7 @@ const mockData = {
             dimensions_mm: "250x250x40",
             motor_mounts: 4,
           },
+          mesh_names: ["Solid11", "Solid12", "Solid13", "Solid14", "Solid15"],
           geometry: {
             id: 4001,
             part_id: 401,
@@ -317,6 +384,7 @@ const mockData = {
           description: "Motor arm gear mechanism",
           material: "Aluminum",
           metadata: { weight_kg: 0.12, gear_ratio: "3:1", teeth_count: 24 },
+          mesh_names: ["Solid16", "Solid17", "Solid18", "Solid19", "Solid110"],
           geometry: {
             id: 4002,
             part_id: 402,
@@ -338,6 +406,13 @@ const mockData = {
             blade_count: 2,
             max_rpm: 12000,
           },
+          mesh_names: [
+            "Solid111",
+            "Solid112",
+            "Solid113",
+            "Solid114",
+            "Solid115",
+          ],
           geometry: {
             id: 4003,
             part_id: 403,
@@ -354,6 +429,7 @@ const mockData = {
           description: "Landing leg",
           material: "Carbon Fiber",
           metadata: { weight_kg: 0.03, height_mm: 65, shock_absorbing: true },
+          mesh_names: ["Solid116", "Solid117", "Solid118", "Solid119"],
           geometry: {
             id: 4004,
             part_id: 404,
@@ -370,6 +446,22 @@ const mockData = {
           description: "Internal gear train",
           material: "Steel",
           metadata: { weight_kg: 0.08, gear_ratio: "5:1", module: 0.5 },
+          mesh_names: [
+            "Solid121",
+            "Solid122",
+            "Solid123",
+            "Solid124",
+            "Solid125",
+            "Solid126",
+            "Solid127",
+            "Solid128",
+            "Solid129",
+            "Solid130",
+            "Solid131",
+            "Solid132",
+            "Solid133",
+            "Solid134",
+          ],
           geometry: {
             id: 4005,
             part_id: 405,
@@ -395,6 +487,7 @@ const mockData = {
           description: "Gripper mounting base",
           material: "Aluminum",
           metadata: { weight_kg: 0.35, thickness_mm: 8, mounting_holes: 4 },
+          mesh_names: ["Solid11", "Solid12", "Solid13", "Solid14"],
           geometry: {
             id: 5001,
             part_id: 501,
@@ -411,6 +504,7 @@ const mockData = {
           description: "Drive gear mechanism",
           material: "Steel",
           metadata: { weight_kg: 0.18, teeth_count: 32, module: 1.0 },
+          mesh_names: ["Solid15", "Solid16", "Solid17", "Solid18", "Solid19"],
           geometry: {
             id: 5002,
             part_id: 502,
@@ -427,6 +521,13 @@ const mockData = {
           description: "Gripper finger assembly",
           material: "Hardened Steel",
           metadata: { weight_kg: 0.15, grip_force_n: 80, stroke_mm: 40 },
+          mesh_names: [
+            "Solid110",
+            "Solid111",
+            "Solid112",
+            "Solid113",
+            "Solid114",
+          ],
           geometry: {
             id: 5003,
             part_id: 503,
@@ -443,6 +544,13 @@ const mockData = {
           description: "Connecting linkage",
           material: "Steel",
           metadata: { weight_kg: 0.08, length_mm: 60, pin_diameter_mm: 5 },
+          mesh_names: [
+            "Solid115",
+            "Solid116",
+            "Solid117",
+            "Solid118",
+            "Solid119",
+          ],
           geometry: {
             id: 5004,
             part_id: 504,
@@ -472,6 +580,7 @@ const mockData = {
             bolt_pattern_mm: "4x100",
             thickness_mm: 12,
           },
+          mesh_names: ["Solid11"],
           geometry: {
             id: 6001,
             part_id: 601,
@@ -493,6 +602,7 @@ const mockData = {
             free_length_mm: 300,
             coil_count: 8,
           },
+          mesh_names: ["Solid12", "Solid121"],
           geometry: {
             id: 6002,
             part_id: 602,
@@ -509,6 +619,7 @@ const mockData = {
           description: "Damper rod",
           material: "Chrome Steel",
           metadata: { weight_kg: 0.5, diameter_mm: 22, stroke_mm: 150 },
+          mesh_names: ["Solid13"],
           geometry: {
             id: 6003,
             part_id: 603,
@@ -529,6 +640,7 @@ const mockData = {
             thread_size: "M22x1.5",
             wrench_size_mm: 32,
           },
+          mesh_names: ["Solid14"],
           geometry: {
             id: 6004,
             part_id: 604,
@@ -559,6 +671,15 @@ const mockData = {
             length_mm: 1200,
             width_mm: 70,
           },
+          mesh_names: [
+            "Solid11",
+            "Solid12",
+            "Solid13",
+            "Solid14",
+            "Solid15",
+            "Solid16",
+            "Solid17",
+          ],
           geometry: {
             id: 7001,
             part_id: 701,
@@ -575,6 +696,13 @@ const mockData = {
           description: "Center clamp bolt assembly",
           material: "Steel",
           metadata: { weight_kg: 0.6, bolt_size: "M16", torque_nm: 120 },
+          mesh_names: [
+            "Solid121",
+            "Solid122",
+            "Solid123",
+            "Solid124",
+            "Solid125",
+          ],
           geometry: {
             id: 7002,
             part_id: 702,
@@ -591,6 +719,7 @@ const mockData = {
           description: "Chassis mount support",
           material: "Cast Iron",
           metadata: { weight_kg: 1.8, bolt_holes: 2, load_capacity_kg: 500 },
+          mesh_names: ["Solid21", "Solid22", "Solid23"],
           geometry: {
             id: 7003,
             part_id: 703,
@@ -611,6 +740,7 @@ const mockData = {
             shore_hardness: 70,
             inner_diameter_mm: 16,
           },
+          mesh_names: ["Solid221", "Solid231"],
           geometry: {
             id: 7004,
             part_id: 704,
