@@ -24,7 +24,8 @@ export const useMemoStore = create<MemoState>()(
       (set, get) => ({
         memos: {},
 
-        getMemos: (modelId: string) => get().memos[modelId] ?? [],
+        getMemos: (modelId: string) =>
+          (get().memos[modelId] ?? []).filter((m) => m.content),
 
         addMemo: (modelId: string, content: string) =>
           set((state) => {
