@@ -223,7 +223,7 @@ export default function StudyPage() {
                 <GradientBorder />
 
                 {editingSlot !== null ? (
-                  <div className="flex flex-col gap-[12px] w-full z-10">
+                  <div className="flex flex-col gap-[12px] w-full h-full z-10">
                     <textarea
                       autoFocus
                       value={editContent}
@@ -232,7 +232,7 @@ export default function StudyPage() {
                         if (e.key === "Escape") setEditingSlot(null);
                       }}
                       placeholder="메모를 입력하세요..."
-                      className="w-full h-[100px] rounded-[12px] bg-neutral-800 border border-neutral-700 text-white text-[14px] p-[12px] resize-none focus:outline-none focus:border-primary"
+                      className="w-full flex-1 min-h-[100px] rounded-[12px] bg-neutral-800 border border-neutral-700 text-white text-[14px] p-[12px] resize-none focus:outline-none focus:border-primary"
                     />
                     <div className="flex justify-end gap-[8px]">
                       <button
@@ -263,7 +263,7 @@ export default function StudyPage() {
                     </div>
                   </div>
                 ) : (
-                  <div className="flex gap-[16px] z-10">
+                  <div className="flex gap-[16px] z-10 w-full h-full">
                     {memos.map((memo, i) => (
                       <button
                         key={memo.id}
@@ -271,14 +271,14 @@ export default function StudyPage() {
                           setEditingSlot(i);
                           setEditContent(memo.content);
                         }}
-                        className="w-[140px] h-[140px] rounded-[24px] bg-primary/30 flex flex-col items-center justify-center text-white text-[14px] hover:bg-primary/40 transition-colors p-[12px] gap-[4px]"
+                        className="flex-1 min-h-[140px] h-full rounded-[24px] bg-primary/30 flex flex-col items-center justify-center text-white text-[14px] hover:bg-primary/40 transition-colors p-[16px] gap-[4px]"
                       >
                         {memo.content ? (
-                          <span className="line-clamp-4 text-center break-words w-full">
+                          <span className="line-clamp-6 text-center break-words w-full">
                             {memo.content}
                           </span>
                         ) : (
-                          <LucidePlus className="w-[24px] h-[24px] text-white/60" />
+                          <LucidePlus className="w-[28px] h-[28px] text-white/60" />
                         )}
                       </button>
                     ))}
