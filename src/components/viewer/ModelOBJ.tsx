@@ -147,7 +147,7 @@ export function ModelOBJ({ url }: ModelOBJProps) {
         const center = box.getCenter(new Vector3());
         const size = box.getSize(new Vector3());
         const maxDim = Math.max(size.x, size.y, size.z);
-        const scale = 5 / maxDim; // Scale to fit in 5 units
+        const scale = maxDim > 0 ? 5 / maxDim : 1; // Scale to fit in 5 units
 
         // Apply scale first
         object.scale.setScalar(scale);
@@ -187,6 +187,15 @@ export function ModelOBJ({ url }: ModelOBJProps) {
 
     return () => {
       cancelled = true;
+      // Dispose GPU resources on unmount to prevent VRAM leaks
+      if (groupRef.current) {
+        while (groupRef.current.children.length > 0) {
+          const child = groupRef.current.children[0];
+          disposeObject(child);
+          groupRef.current.remove(child);
+        }
+      }
+      meshesRef.current = [];
     };
   }, [url]);
 
@@ -300,7 +309,10 @@ export function ModelOBJ({ url }: ModelOBJProps) {
         const name = mesh.userData.name || mesh.name || mesh.uuid;
         setSelectedObject(name);
         // Auto-show PartInfoPanel
-        useUIStore.setState({ isPartInfoVisible: true });
+        useUIStore.setState({
+          isPartInfoVisible: true,
+          activeSideTool: "search",
+        });
       }
     },
     [setSelectedObject]
@@ -309,7 +321,7 @@ export function ModelOBJ({ url }: ModelOBJProps) {
   // Handle click on empty space (missed) to deselect
   const handlePointerMissed = useCallback(() => {
     setSelectedObject(null);
-    useUIStore.setState({ isPartInfoVisible: false });
+    useUIStore.setState({ isPartInfoVisible: false, activeSideTool: null });
   }, [setSelectedObject]);
 
   return (
