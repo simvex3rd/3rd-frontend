@@ -3,7 +3,6 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import { useFrame } from "@react-three/fiber";
 import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader.js";
-import { MTLLoader } from "three/examples/jsm/loaders/MTLLoader.js";
 import {
   Mesh,
   MeshStandardMaterial,
@@ -46,9 +45,38 @@ import type { OrbitControls as OrbitControlsImpl } from "three-stdlib";
 import { useSceneStore } from "@/stores/scene-store";
 import { useUIStore } from "@/stores/ui-store";
 import { toast } from "@/hooks/use-toast";
+import type { PartWithGeometry } from "@/types/api";
+
+/** Distinct color palette for part groups (10 colors, high contrast on dark bg) */
+const PART_COLORS = [
+  new Color(0x4fc3f7), // light blue
+  new Color(0xef5350), // red
+  new Color(0x66bb6a), // green
+  new Color(0xffa726), // orange
+  new Color(0xab47bc), // purple
+  new Color(0x26c6da), // cyan
+  new Color(0xffee58), // yellow
+  new Color(0xec407a), // pink
+  new Color(0x8d6e63), // brown
+  new Color(0x78909c), // blue-gray
+];
+
+/** Build a map from mesh name → part color index */
+function buildMeshColorMap(parts: PartWithGeometry[]): Map<string, number> {
+  const map = new Map<string, number>();
+  parts.forEach((part, index) => {
+    if (part.mesh_names) {
+      for (const meshName of part.mesh_names) {
+        map.set(meshName, index);
+      }
+    }
+  });
+  return map;
+}
 
 interface ModelOBJProps {
   url: string;
+  parts?: PartWithGeometry[];
 }
 
 /**
@@ -62,7 +90,7 @@ interface ModelOBJProps {
  * - Wireframe mode toggle
  * - Focus on selected part
  */
-export function ModelOBJ({ url }: ModelOBJProps) {
+export function ModelOBJ({ url, parts = [] }: ModelOBJProps) {
   const groupRef = useRef<Group>(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const modelCenterRef = useRef<Vector3>(new Vector3());
@@ -78,11 +106,9 @@ export function ModelOBJ({ url }: ModelOBJProps) {
   // Load OBJ file (with optional MTL for colors)
   useEffect(() => {
     let cancelled = false;
-    const basePath = url.substring(0, url.lastIndexOf("/") + 1);
-    const mtlUrl = url.replace(/\.obj$/i, ".mtl");
 
     /** Process loaded OBJ object */
-    const processObject = (object: Group, hasMtl: boolean) => {
+    const processObject = (object: Group) => {
       if (cancelled || !groupRef.current) {
         disposeObject(object);
         return;
@@ -98,8 +124,10 @@ export function ModelOBJ({ url }: ModelOBJProps) {
       // Add loaded model
       groupRef.current.add(object);
 
-      // Store whether this model has color data
-      setHasColorData(hasMtl);
+      // Build mesh→part color map and determine if color data is available
+      const meshColorMap = buildMeshColorMap(parts);
+      const hasColors = meshColorMap.size > 0;
+      setHasColorData(hasColors);
 
       // Compute model bounding box center for explode
       const modelBox = new Box3().setFromObject(object);
@@ -117,25 +145,23 @@ export function ModelOBJ({ url }: ModelOBJProps) {
             child.userData.name = child.name || child.uuid;
           }
 
-          // Convert to MeshStandardMaterial, preserving color from MTL
+          // Convert to MeshStandardMaterial with default gray
           if (!(child.material instanceof MeshStandardMaterial)) {
-            const oldMat = child.material as {
-              color?: Color;
-              dispose?: () => void;
-            };
-            const originalColor = oldMat.color
-              ? oldMat.color.clone()
-              : new Color(0xcccccc);
+            const oldMat = child.material as { dispose?: () => void };
             child.material = new MeshStandardMaterial({
-              color: hasMtl ? originalColor : new Color(0xcccccc),
+              color: 0xcccccc,
               metalness: 0.3,
               roughness: 0.7,
             });
             oldMat.dispose?.();
-            // Store original MTL color for color mode toggle
-            child.userData.mtlColor = originalColor;
-          } else {
-            child.userData.mtlColor = child.material.color.clone();
+          }
+
+          // Assign part color based on mesh_names mapping
+          const meshName = child.userData.name;
+          const partIndex = meshColorMap.get(meshName);
+          if (partIndex !== undefined) {
+            child.userData.partColor =
+              PART_COLORS[partIndex % PART_COLORS.length].clone();
           }
 
           // Store original emissive color
@@ -204,34 +230,9 @@ export function ModelOBJ({ url }: ModelOBJProps) {
       }
     };
 
-    /** Load OBJ with optional pre-loaded materials */
-    const loadObj = (materials?: MTLLoader.MaterialCreator) => {
-      const objLoader = new OBJLoader();
-      if (materials) objLoader.setMaterials(materials);
-      objLoader.load(
-        url,
-        (obj) => processObject(obj, !!materials),
-        onProgress,
-        onError
-      );
-    };
-
-    // Try loading MTL first, then OBJ
-    const mtlLoader = new MTLLoader();
-    mtlLoader.setResourcePath(basePath);
-    mtlLoader.load(
-      mtlUrl,
-      (materials) => {
-        if (cancelled) return;
-        materials.preload();
-        loadObj(materials);
-      },
-      undefined,
-      () => {
-        // MTL not found — load OBJ without materials (fallback gray)
-        if (!cancelled) loadObj();
-      }
-    );
+    // Load OBJ
+    const objLoader = new OBJLoader();
+    objLoader.load(url, processObject, onProgress, onError);
 
     return () => {
       cancelled = true;
@@ -246,7 +247,7 @@ export function ModelOBJ({ url }: ModelOBJProps) {
       meshesRef.current = [];
       setHasColorData(false);
     };
-  }, [url, setHasColorData]);
+  }, [url, parts, setHasColorData]);
 
   // Apply wireframe mode (uses cached meshes)
   useEffect(() => {
@@ -259,19 +260,18 @@ export function ModelOBJ({ url }: ModelOBJProps) {
     }
   }, [isWireframeMode, isLoaded]);
 
-  // Apply color mode toggle (MTL colors vs default gray)
+  // Apply color mode toggle (part colors vs default gray)
   useEffect(() => {
     if (!isLoaded) return;
 
     const _gray = new Color(0xcccccc);
     for (const child of meshesRef.current) {
-      if (
-        child.material instanceof MeshStandardMaterial &&
-        child.userData.mtlColor
-      ) {
-        child.material.color.copy(
-          isColorMode ? child.userData.mtlColor : _gray
-        );
+      if (child.material instanceof MeshStandardMaterial) {
+        if (isColorMode && child.userData.partColor) {
+          child.material.color.copy(child.userData.partColor);
+        } else {
+          child.material.color.copy(_gray);
+        }
         child.material.needsUpdate = true;
       }
     }
