@@ -68,7 +68,7 @@ export default function StudyPage() {
   const modelId = storeModelId ?? "1";
   const [aiAvatar, setAiAvatar] = useState("/chat/character1.png");
   const [pdfLoading, setPdfLoading] = useState(false);
-  const [editingSlot, setEditingSlot] = useState<number | null>(null);
+  const [editingMemoId, setEditingMemoId] = useState<string | null>(null);
   const [editContent, setEditContent] = useState("");
   const memoStore = useMemoStore();
   const memos = memoStore.getMemos(modelId);
@@ -219,24 +219,24 @@ export default function StudyPage() {
                 </h2>
               </div>
 
-              <div className="flex-1 relative flex items-center justify-center rounded-[24px] bg-gray-30 p-[32px] overflow-hidden">
+              <div className="flex-1 relative flex items-center rounded-[24px] bg-gray-30 p-[24px] overflow-hidden">
                 <GradientBorder />
 
-                {editingSlot !== null ? (
+                {editingMemoId !== null ? (
                   <div className="flex flex-col gap-[12px] w-full h-full z-10">
                     <textarea
                       autoFocus
                       value={editContent}
                       onChange={(e) => setEditContent(e.target.value)}
                       onKeyDown={(e) => {
-                        if (e.key === "Escape") setEditingSlot(null);
+                        if (e.key === "Escape") setEditingMemoId(null);
                       }}
                       placeholder="메모를 입력하세요..."
                       className="w-full flex-1 min-h-[100px] rounded-[12px] bg-neutral-800 border border-neutral-700 text-white text-[14px] p-[12px] resize-none focus:outline-none focus:border-primary"
                     />
                     <div className="flex justify-end gap-[8px]">
                       <button
-                        onClick={() => setEditingSlot(null)}
+                        onClick={() => setEditingMemoId(null)}
                         className="flex items-center gap-[4px] px-[12px] py-[6px] rounded-[8px] bg-neutral-700 text-neutral-300 text-[13px] hover:bg-neutral-600 transition-colors"
                       >
                         <LucideX className="w-[14px] h-[14px]" />
@@ -245,15 +245,17 @@ export default function StudyPage() {
                       <button
                         onClick={() => {
                           if (editContent.trim()) {
-                            memoStore.saveMemo(
-                              modelId,
-                              editingSlot,
-                              editContent.trim()
-                            );
-                          } else {
-                            memoStore.deleteMemo(modelId, editingSlot);
+                            if (editingMemoId === "__new__") {
+                              memoStore.addMemo(modelId, editContent.trim());
+                            } else {
+                              memoStore.updateMemo(
+                                modelId,
+                                editingMemoId,
+                                editContent.trim()
+                              );
+                            }
                           }
-                          setEditingSlot(null);
+                          setEditingMemoId(null);
                         }}
                         className="flex items-center gap-[4px] px-[12px] py-[6px] rounded-[8px] bg-primary text-white text-[13px] hover:bg-primary/80 transition-colors"
                       >
@@ -263,25 +265,40 @@ export default function StudyPage() {
                     </div>
                   </div>
                 ) : (
-                  <div className="flex gap-[16px] z-10 w-full h-full">
-                    {memos.map((memo, i) => (
-                      <button
+                  <div className="flex gap-[12px] z-10 w-full h-full overflow-x-auto">
+                    {memos.map((memo) => (
+                      <div
                         key={memo.id}
+                        className="relative group shrink-0 w-[160px] h-full min-h-[120px] rounded-[16px] bg-primary/30 flex flex-col items-center justify-center text-white text-[14px] hover:bg-primary/40 transition-colors p-[14px] cursor-pointer"
                         onClick={() => {
-                          setEditingSlot(i);
+                          setEditingMemoId(memo.id);
                           setEditContent(memo.content);
                         }}
-                        className="flex-1 min-h-[140px] h-full rounded-[24px] bg-primary/30 flex flex-col items-center justify-center text-white text-[14px] hover:bg-primary/40 transition-colors p-[16px] gap-[4px]"
                       >
-                        {memo.content ? (
-                          <span className="line-clamp-6 text-center break-words w-full">
-                            {memo.content}
-                          </span>
-                        ) : (
-                          <LucidePlus className="w-[28px] h-[28px] text-white/60" />
-                        )}
-                      </button>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            memoStore.deleteMemo(modelId, memo.id);
+                          }}
+                          className="absolute top-[8px] right-[8px] w-[20px] h-[20px] rounded-full bg-neutral-800/80 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:bg-error/80"
+                          aria-label="Delete memo"
+                        >
+                          <LucideX className="w-[12px] h-[12px]" />
+                        </button>
+                        <span className="line-clamp-5 text-center break-words w-full text-[13px]">
+                          {memo.content}
+                        </span>
+                      </div>
                     ))}
+                    <button
+                      onClick={() => {
+                        setEditingMemoId("__new__");
+                        setEditContent("");
+                      }}
+                      className="shrink-0 w-[120px] h-full min-h-[120px] rounded-[16px] border-[2px] border-dashed border-primary/40 flex items-center justify-center hover:border-primary/70 hover:bg-primary/10 transition-colors"
+                    >
+                      <LucidePlus className="w-[28px] h-[28px] text-primary/60" />
+                    </button>
                   </div>
                 )}
               </div>

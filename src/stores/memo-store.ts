@@ -8,22 +8,15 @@ export interface MemoItem {
 }
 
 interface MemoState {
-  /** modelId → MemoItem[] (max 3 per model) */
+  /** modelId → MemoItem[] (dynamic, no limit) */
   memos: Record<string, MemoItem[]>;
   getMemos: (modelId: string) => MemoItem[];
-  saveMemo: (modelId: string, slot: number, content: string) => void;
-  deleteMemo: (modelId: string, slot: number) => void;
+  addMemo: (modelId: string, content: string) => void;
+  updateMemo: (modelId: string, memoId: string, content: string) => void;
+  deleteMemo: (modelId: string, memoId: string) => void;
 }
 
-const MAX_SLOTS = 3;
-
-function ensureSlots(items: MemoItem[] | undefined): MemoItem[] {
-  const arr = items ?? [];
-  return Array.from(
-    { length: MAX_SLOTS },
-    (_, i) => arr[i] ?? { id: `memo-${i}`, content: "", updatedAt: 0 }
-  );
-}
+let counter = Date.now();
 
 export const useMemoStore = create<MemoState>()(
   devtools(
@@ -31,24 +24,33 @@ export const useMemoStore = create<MemoState>()(
       (set, get) => ({
         memos: {},
 
-        getMemos: (modelId: string) => ensureSlots(get().memos[modelId]),
+        getMemos: (modelId: string) => get().memos[modelId] ?? [],
 
-        saveMemo: (modelId: string, slot: number, content: string) =>
+        addMemo: (modelId: string, content: string) =>
           set((state) => {
-            const slots = ensureSlots(state.memos[modelId]);
-            slots[slot] = {
-              id: `memo-${slot}`,
+            const list = [...(state.memos[modelId] ?? [])];
+            list.push({
+              id: `memo-${++counter}`,
               content,
               updatedAt: Date.now(),
-            };
-            return { memos: { ...state.memos, [modelId]: slots } };
+            });
+            return { memos: { ...state.memos, [modelId]: list } };
           }),
 
-        deleteMemo: (modelId: string, slot: number) =>
+        updateMemo: (modelId: string, memoId: string, content: string) =>
           set((state) => {
-            const slots = ensureSlots(state.memos[modelId]);
-            slots[slot] = { id: `memo-${slot}`, content: "", updatedAt: 0 };
-            return { memos: { ...state.memos, [modelId]: slots } };
+            const list = (state.memos[modelId] ?? []).map((m) =>
+              m.id === memoId ? { ...m, content, updatedAt: Date.now() } : m
+            );
+            return { memos: { ...state.memos, [modelId]: list } };
+          }),
+
+        deleteMemo: (modelId: string, memoId: string) =>
+          set((state) => {
+            const list = (state.memos[modelId] ?? []).filter(
+              (m) => m.id !== memoId
+            );
+            return { memos: { ...state.memos, [modelId]: list } };
           }),
       }),
       {
