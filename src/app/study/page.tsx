@@ -8,6 +8,7 @@ import {
   LucideSparkles,
   LucideSquarePen,
   LucideChevronRight,
+  Loader2,
 } from "lucide-react";
 import { ViewerHeader } from "@/components/viewer/ViewerHeader";
 import { ChatInput } from "@/components/panels/ChatInput";
@@ -32,8 +33,15 @@ const QUICK_ACTIONS = [
  */
 export default function StudyPage() {
   const router = useRouter();
-  const { user } = useUser();
+  const { user, isLoaded, isSignedIn } = useUser();
   const [aiAvatar, setAiAvatar] = useState("/chat/character1.png");
+
+  // Client-side auth guard
+  useEffect(() => {
+    if (isLoaded && !isSignedIn) {
+      router.replace("/sign-in");
+    }
+  }, [isLoaded, isSignedIn, router]);
 
   useEffect(() => {
     const AVATARS = ["/chat/character1.png", "/chat/character2.png"];
@@ -68,6 +76,14 @@ export default function StudyPage() {
     },
     [handleSendMessage]
   );
+
+  if (!isLoaded || !isSignedIn) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-neutral-900">
+        <Loader2 className="h-[32px] w-[32px] animate-spin text-primary" />
+      </div>
+    );
+  }
 
   return (
     <div className="relative w-full max-[1919px]:h-[133.33vh] h-screen bg-neutral-900 overflow-hidden">

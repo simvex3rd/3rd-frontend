@@ -8,31 +8,37 @@ const hasClerkKeys =
 
 /**
  * Public routes that don't require authentication
- * - Landing page: / (scroll-snap landing page)
- * - 3D viewer: /viewer (no auth required)
- * - Study page: /study (AI learning interface)
- * - Chat page: /chat (AI chat interface)
- * - Toast demo: /toast-demo (demo page)
+ * - Landing page: /
+ * - 3D viewer: /viewer
+ * - Lab (placeholder): /lab
+ * - Legal pages: /privacy, /terms
+ * - Demo page: /toast-demo
  * - Sign in/up pages
- * - Model API: /api/models, /api/parts (read-only)
+ * - Read-only APIs: /api/models, /api/parts
  *
  * Protected routes (require authentication):
- * - Chat API: /api/chat/*
- * - Notes API: /api/notes/*
- * - User profile: /api/users/*
+ * - Study dashboard: /study
+ * - AI chat: /chat
+ *
+ * Note: Backend API at Railway handles its own authentication.
+ * Frontend middleware only protects Next.js page routes.
  */
 const isPublicRoute = createRouteMatcher([
   "/",
   "/viewer(.*)",
+  "/lab(.*)",
   "/study(.*)",
-  "/chat(.*)",
   "/toast-demo(.*)",
+  "/privacy(.*)",
+  "/terms(.*)",
   "/sign-in(.*)",
   "/sign-up(.*)",
   "/sso-callback(.*)",
   "/api/models(.*)",
   "/api/parts(.*)",
 ]);
+
+const isAuthRoute = createRouteMatcher(["/sign-in(.*)", "/sign-up(.*)"]);
 
 /**
  * Protected routes that require authentication
@@ -48,8 +54,18 @@ if (!hasClerkKeys && process.env.NODE_ENV !== "production") {
 
 const middleware = hasClerkKeys
   ? clerkMiddleware(async (auth, request) => {
+      const { userId } = await auth();
+      // Redirect signed-in users away from auth pages
+      if (userId && isAuthRoute(request)) {
+        const url = new URL("/", request.url);
+        return NextResponse.redirect(url);
+      }
       if (!isPublicRoute(request)) {
-        await auth.protect();
+        if (!userId) {
+          const signInUrl = new URL("/sign-in", request.url);
+          signInUrl.searchParams.set("redirect_url", request.nextUrl.pathname);
+          return NextResponse.redirect(signInUrl);
+        }
       }
     })
   : (request: NextRequest) => {
