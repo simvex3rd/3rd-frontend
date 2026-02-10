@@ -45,9 +45,10 @@ export function LandingStudyModelSection() {
             "text-[52px]", // 1920px Figma design
             "leading-[1.25]"
           )}
-        >
-          {landingContent.studyModel.heading}
-        </h2>
+          dangerouslySetInnerHTML={{
+            __html: landingContent.studyModel.heading,
+          }}
+        />
 
         {/* Model Cards - Grid - 1920px Figma Design */}
         <div className={cn("flex gap-[24px] w-full")}>
