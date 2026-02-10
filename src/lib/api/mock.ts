@@ -203,7 +203,7 @@ const mockData = {
           name: "Part1 Fuhrung",
           description: "Guide rail",
           material: "Steel",
-          metadata: {},
+          metadata: { weight_kg: 0.8, length_mm: 180, hardness_hrc: 58 },
           geometry: {
             id: 3001,
             part_id: 301,
@@ -219,7 +219,11 @@ const mockData = {
           name: "Part2 Feste Backe",
           description: "Fixed jaw",
           material: "Cast Iron",
-          metadata: {},
+          metadata: {
+            weight_kg: 1.5,
+            jaw_width_mm: 100,
+            clamping_force_kn: 30,
+          },
           geometry: {
             id: 3002,
             part_id: 302,
@@ -235,7 +239,7 @@ const mockData = {
           name: "Part3-lose backe",
           description: "Movable jaw",
           material: "Cast Iron",
-          metadata: {},
+          metadata: { weight_kg: 1.2, jaw_width_mm: 100, travel_mm: 80 },
           geometry: {
             id: 3003,
             part_id: 303,
@@ -251,7 +255,7 @@ const mockData = {
           name: "Part7-TrapezSpindel",
           description: "Trapezoidal spindle",
           material: "Steel",
-          metadata: {},
+          metadata: { weight_kg: 0.6, thread_pitch_mm: 3, diameter_mm: 16 },
           geometry: {
             id: 3004,
             part_id: 304,
@@ -267,7 +271,7 @@ const mockData = {
           name: "Part8-grundplatte",
           description: "Base plate",
           material: "Cast Iron",
-          metadata: {},
+          metadata: { weight_kg: 3.8, length_mm: 220, width_mm: 100 },
           geometry: {
             id: 3005,
             part_id: 305,
@@ -292,7 +296,11 @@ const mockData = {
           name: "Main frame",
           description: "Central drone body frame",
           material: "Carbon Fiber",
-          metadata: {},
+          metadata: {
+            weight_kg: 0.45,
+            dimensions_mm: "250x250x40",
+            motor_mounts: 4,
+          },
           geometry: {
             id: 4001,
             part_id: 401,
@@ -308,7 +316,7 @@ const mockData = {
           name: "Arm gear",
           description: "Motor arm gear mechanism",
           material: "Aluminum",
-          metadata: {},
+          metadata: { weight_kg: 0.12, gear_ratio: "3:1", teeth_count: 24 },
           geometry: {
             id: 4002,
             part_id: 402,
@@ -324,7 +332,12 @@ const mockData = {
           name: "Impellar Blade",
           description: "Propeller blade assembly",
           material: "ABS Plastic",
-          metadata: {},
+          metadata: {
+            weight_kg: 0.02,
+            diameter_mm: 127,
+            blade_count: 2,
+            max_rpm: 12000,
+          },
           geometry: {
             id: 4003,
             part_id: 403,
@@ -340,7 +353,7 @@ const mockData = {
           name: "Leg",
           description: "Landing leg",
           material: "Carbon Fiber",
-          metadata: {},
+          metadata: { weight_kg: 0.03, height_mm: 65, shock_absorbing: true },
           geometry: {
             id: 4004,
             part_id: 404,
@@ -356,7 +369,7 @@ const mockData = {
           name: "Gearing",
           description: "Internal gear train",
           material: "Steel",
-          metadata: {},
+          metadata: { weight_kg: 0.08, gear_ratio: "5:1", module: 0.5 },
           geometry: {
             id: 4005,
             part_id: 405,
@@ -381,7 +394,7 @@ const mockData = {
           name: "Base Plate",
           description: "Gripper mounting base",
           material: "Aluminum",
-          metadata: {},
+          metadata: { weight_kg: 0.35, thickness_mm: 8, mounting_holes: 4 },
           geometry: {
             id: 5001,
             part_id: 501,
@@ -397,7 +410,7 @@ const mockData = {
           name: "Base Gear",
           description: "Drive gear mechanism",
           material: "Steel",
-          metadata: {},
+          metadata: { weight_kg: 0.18, teeth_count: 32, module: 1.0 },
           geometry: {
             id: 5002,
             part_id: 502,
@@ -413,7 +426,7 @@ const mockData = {
           name: "Gripper",
           description: "Gripper finger assembly",
           material: "Hardened Steel",
-          metadata: {},
+          metadata: { weight_kg: 0.15, grip_force_n: 80, stroke_mm: 40 },
           geometry: {
             id: 5003,
             part_id: 503,
@@ -429,7 +442,7 @@ const mockData = {
           name: "Link",
           description: "Connecting linkage",
           material: "Steel",
-          metadata: {},
+          metadata: { weight_kg: 0.08, length_mm: 60, pin_diameter_mm: 5 },
           geometry: {
             id: 5004,
             part_id: 504,
@@ -454,7 +467,11 @@ const mockData = {
           name: "BASE",
           description: "Suspension mount base",
           material: "Steel",
-          metadata: {},
+          metadata: {
+            weight_kg: 2.1,
+            bolt_pattern_mm: "4x100",
+            thickness_mm: 12,
+          },
           geometry: {
             id: 6001,
             part_id: 601,
@@ -470,7 +487,12 @@ const mockData = {
           name: "SPRING",
           description: "Coil spring",
           material: "Spring Steel",
-          metadata: {},
+          metadata: {
+            weight_kg: 1.8,
+            spring_rate_n_mm: 35,
+            free_length_mm: 300,
+            coil_count: 8,
+          },
           geometry: {
             id: 6002,
             part_id: 602,
@@ -486,7 +508,7 @@ const mockData = {
           name: "ROD",
           description: "Damper rod",
           material: "Chrome Steel",
-          metadata: {},
+          metadata: { weight_kg: 0.5, diameter_mm: 22, stroke_mm: 150 },
           geometry: {
             id: 6003,
             part_id: 603,
@@ -502,7 +524,11 @@ const mockData = {
           name: "NUT",
           description: "Lock nut",
           material: "Steel",
-          metadata: {},
+          metadata: {
+            weight_kg: 0.05,
+            thread_size: "M22x1.5",
+            wrench_size_mm: 32,
+          },
           geometry: {
             id: 6004,
             part_id: 604,
@@ -527,7 +553,12 @@ const mockData = {
           name: "Leaf-Layer",
           description: "Multi-layered spring blade",
           material: "Spring Steel",
-          metadata: {},
+          metadata: {
+            weight_kg: 4.5,
+            leaf_count: 5,
+            length_mm: 1200,
+            width_mm: 70,
+          },
           geometry: {
             id: 7001,
             part_id: 701,
@@ -543,7 +574,7 @@ const mockData = {
           name: "Clamp-Center",
           description: "Center clamp bolt assembly",
           material: "Steel",
-          metadata: {},
+          metadata: { weight_kg: 0.6, bolt_size: "M16", torque_nm: 120 },
           geometry: {
             id: 7002,
             part_id: 702,
@@ -559,7 +590,7 @@ const mockData = {
           name: "Support-Chassis",
           description: "Chassis mount support",
           material: "Cast Iron",
-          metadata: {},
+          metadata: { weight_kg: 1.8, bolt_holes: 2, load_capacity_kg: 500 },
           geometry: {
             id: 7003,
             part_id: 703,
@@ -575,7 +606,11 @@ const mockData = {
           name: "Support-Rubber",
           description: "Rubber bushing mount",
           material: "Rubber/Steel",
-          metadata: {},
+          metadata: {
+            weight_kg: 0.3,
+            shore_hardness: 70,
+            inner_diameter_mm: 16,
+          },
           geometry: {
             id: 7004,
             part_id: 704,
