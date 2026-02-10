@@ -15,7 +15,7 @@ import type {
   UserResponse,
   ClerkLoginRequest,
 } from "@/types/api";
-import { api as realApi } from "./client";
+import { api as realApi, ApiClientError } from "./client";
 import { mockApi } from "./mock";
 
 /**
@@ -71,12 +71,54 @@ export interface SimvexApi {
 const USE_MOCK_API = process.env.NEXT_PUBLIC_USE_MOCK_API === "true";
 
 /**
+ * Wrap an API module so network errors (no HTTP status) fall back to mock.
+ * Server errors (4xx/5xx) are NOT caught — only connection failures.
+ */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function withMockFallback<T extends Record<string, (...args: any[]) => any>>(
+  real: T,
+  mock: T
+): T {
+  const wrapped = {} as T;
+  for (const key of Object.keys(real) as (keyof T & string)[]) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    wrapped[key] = (async (...args: any[]) => {
+      try {
+        return await (real[key] as (...a: unknown[]) => Promise<unknown>)(
+          ...args
+        );
+      } catch (err) {
+        // Only fallback on network errors (no HTTP status = server unreachable)
+        if (err instanceof ApiClientError && !err.status) {
+          console.warn(
+            `[api] ${key} network error, falling back to mock:`,
+            err.message
+          );
+          return await (mock[key] as (...a: unknown[]) => Promise<unknown>)(
+            ...args
+          );
+        }
+        throw err;
+      }
+    }) as T[keyof T & string];
+  }
+  return wrapped;
+}
+
+/**
  * Export the appropriate API based on environment.
  * Models always use mock data (loaded from public/models/).
+ * When backend is unreachable, chat/notes/auth automatically fall back to mock.
  */
 export const api: SimvexApi = USE_MOCK_API
   ? mockApi
-  : { ...realApi, models: mockApi.models };
+  : {
+      ...realApi,
+      models: mockApi.models,
+      chat: withMockFallback(realApi.chat, mockApi.chat),
+      notes: withMockFallback(realApi.notes, mockApi.notes),
+      auth: withMockFallback(realApi.auth, mockApi.auth),
+    };
 
 /**
  * Export individual API modules for convenience

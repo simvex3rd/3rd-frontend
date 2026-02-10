@@ -2,6 +2,7 @@
 
 import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
+import { useAuthGuard } from "@/hooks/use-auth-guard";
 import { ViewerHeader } from "@/components/viewer/ViewerHeader";
 import { ChatSidebar } from "@/components/panels/ChatSidebar";
 import { ChatMessage } from "@/components/panels/ChatMessage";
@@ -19,6 +20,7 @@ import { useChatSession } from "@/hooks/use-chat-session";
  * @see {@link https://www.figma.com/design/Vz80RydxWcYHVnn2iuyV0m?node-id=376-1358} Figma Design
  */
 function StudyChatContent() {
+  useAuthGuard();
   const searchParams = useSearchParams();
   const [aiAvatar, setAiAvatar] = useState("");
 

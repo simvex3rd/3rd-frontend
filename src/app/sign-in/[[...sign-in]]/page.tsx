@@ -1,7 +1,8 @@
 "use client";
 
+import { Suspense } from "react";
 import { useSignIn, useAuth } from "@clerk/nextjs";
-import { useRouter } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { useState, useEffect, useRef } from "react";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
@@ -29,10 +30,11 @@ function translateClerkError(message: string): string {
   return clerkErrorMap[message] || message;
 }
 
-export default function SignInPage() {
+function SignInContent() {
   const { isLoaded, signIn, setActive } = useSignIn();
   const { isSignedIn } = useAuth();
-  const router = useRouter();
+  const searchParams = useSearchParams();
+  const redirectUrl = searchParams.get("redirect_url") || "/";
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -41,12 +43,12 @@ export default function SignInPage() {
   const [oauthLoading, setOAuthLoading] = useState<string | null>(null);
   const isSubmittingRef = useRef(false);
 
-  // Redirect already signed-in users to home
+  // Redirect already signed-in users to their intended destination
   useEffect(() => {
     if (isSignedIn) {
-      router.replace("/");
+      window.location.href = redirectUrl;
     }
-  }, [isSignedIn, router]);
+  }, [isSignedIn, redirectUrl]);
 
   if (!isLoaded || isSignedIn) {
     return (
@@ -85,7 +87,10 @@ export default function SignInPage() {
           // Backend sync failure is non-blocking
           console.warn("Backend user sync failed after sign-in");
         }
-        router.push("/");
+        // Full page reload so Clerk middleware re-reads the session cookie.
+        // router.push keeps stale client auth state (pending tasks → isSignedIn false).
+        window.location.href = redirectUrl;
+        return; // stop further execution
       } else {
         setError("로그인에 실패했습니다. 다시 시도해주세요.");
       }
@@ -319,5 +324,19 @@ export default function SignInPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function SignInPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="flex min-h-screen items-center justify-center bg-neutral-950">
+          <Loader2 className="h-[32px] w-[32px] animate-spin text-primary" />
+        </div>
+      }
+    >
+      <SignInContent />
+    </Suspense>
   );
 }
