@@ -54,19 +54,18 @@ export function LandingIntroSection() {
           {/* Heading */}
           <h1
             className={cn(
-              "font-extrabold text-foreground whitespace-pre-line",
+              "font-extrabold text-foreground",
               "text-[96px]",
               "leading-[1.25]"
             )}
-          >
-            {landingContent.intro.heading}
-          </h1>
+            dangerouslySetInnerHTML={{ __html: landingContent.intro.heading }}
+          />
 
           {/* Subtitle + CTA */}
           <div className="flex flex-col gap-[40px]">
             <p
               className={cn(
-                "text-neutral-200 whitespace-pre-line font-bold",
+                "text-neutral-200 font-bold",
                 "text-[40px]",
                 "leading-[1.25]"
               )}
@@ -75,13 +74,21 @@ export function LandingIntroSection() {
                 .split("3D 인터랙션")
                 .map((part, i) =>
                   i === 0 ? (
-                    <span key={i}>{part}</span>
+                    <span key={i} dangerouslySetInnerHTML={{ __html: part }} />
                   ) : (
                     <span key={i}>
                       <span className="text-primary">3D 인터랙션</span>
-                      {part.split("AI 튜터")[0]}
+                      <span
+                        dangerouslySetInnerHTML={{
+                          __html: part.split("AI 튜터")[0],
+                        }}
+                      />
                       <span className="text-primary">AI 튜터</span>
-                      {part.split("AI 튜터")[1]}
+                      <span
+                        dangerouslySetInnerHTML={{
+                          __html: part.split("AI 튜터")[1],
+                        }}
+                      />
                     </span>
                   )
                 )}

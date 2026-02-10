@@ -4,6 +4,7 @@ import { useIntersectionObserver } from "@/hooks/use-intersection-observer";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import { MessageSquare, Bot, FileQuestion } from "lucide-react";
+import { landingContent } from "@/app/landing/content";
 
 /**
  * Landing page pivot section featuring the "Pivot" persona.
@@ -16,6 +17,12 @@ export function LandingPivotSection() {
     threshold: 0.1,
     once: true,
   });
+
+  const icons = [
+    <MessageSquare className="w-[118px] h-[118px] text-primary" key="msg" />,
+    <Bot className="w-[118px] h-[118px] text-primary" key="bot" />,
+    <FileQuestion className="w-[118px] h-[118px] text-primary" key="quiz" />,
+  ];
 
   return (
     <section
@@ -47,39 +54,14 @@ export function LandingPivotSection() {
 
       {/* Bottom Part: Feature Cards */}
       <div className="flex items-center justify-between w-[1773px] relative shrink-0 gap-[24px] mt-[-70px]">
-        <FeatureCard
-          icon={<MessageSquare className="w-[118px] h-[118px] text-primary" />}
-          title="실시간 설계 지능, AI 텍스트 쿼리"
-          description={
-            <>
-              공학 수식부터 개념까지,
-              <br />
-              3D 데이터 기반의 정확한 설계 답변을 즉시 제공합니다.
-            </>
-          }
-        />
-        <FeatureCard
-          icon={<Bot className="w-[118px] h-[118px] text-primary" />}
-          title="1:1 맞춤형 가이드, 어댑티브 튜터링"
-          description={
-            <>
-              사용자의 학습 진도를 분석하여
-              <br />
-              Simvex 환경에 최적화된 맞춤형 커리큘럼을 제안합니다.
-            </>
-          }
-        />
-        <FeatureCard
-          icon={<FileQuestion className="w-[118px] h-[118px] text-primary" />}
-          title="경험의 데이터화, 인터랙티브 챌린지"
-          description={
-            <>
-              직접 조작한 시뮬레이션 데이터를 바탕으로
-              <br />
-              설계 역량을 검증하는 실전형 퀴즈를 생성합니다.
-            </>
-          }
-        />
+        {landingContent.pivot.features.map((feature, index) => (
+          <FeatureCard
+            key={index}
+            icon={icons[index]}
+            title={feature.title}
+            description={feature.description}
+          />
+        ))}
       </div>
     </section>
   );
@@ -92,7 +74,7 @@ function FeatureCard({
 }: {
   icon: React.ReactNode;
   title: string;
-  description: React.ReactNode;
+  description: string;
 }) {
   return (
     <div className="relative w-[567px] h-[358px] rounded-[24px] overflow-hidden group transition-all duration-300 hover:-translate-y-2 cursor-pointer">
@@ -111,9 +93,10 @@ function FeatureCard({
           <h3 className="font-bold text-[36px] leading-[1.25] text-primary drop-shadow-md">
             {title}
           </h3>
-          <div className="font-semibold text-[20px] leading-[1.25] text-neutral-300 whitespace-nowrap">
-            {description}
-          </div>
+          <p
+            className="font-semibold text-[20px] leading-[1.25] text-neutral-300"
+            dangerouslySetInnerHTML={{ __html: description }}
+          />
         </div>
       </div>
     </div>

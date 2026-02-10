@@ -48,13 +48,13 @@ export function LandingFunctionsSection() {
           .split(landingContent.functions.headingHighlight)
           .map((part, i) =>
             i === 0 ? (
-              <span key={i}>{part}</span>
+              <span key={i} dangerouslySetInnerHTML={{ __html: part }} />
             ) : (
               <span key={i}>
                 <span className="text-primary">
                   {landingContent.functions.headingHighlight}
                 </span>
-                {part}
+                <span dangerouslySetInnerHTML={{ __html: part }} />
               </span>
             )
           )}
