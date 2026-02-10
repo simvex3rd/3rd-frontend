@@ -265,29 +265,29 @@ export default function StudyPage() {
                     </div>
                   </div>
                 ) : (
-                  <div className="flex gap-[12px] z-10 w-full h-full overflow-x-auto">
+                  <div className="flex flex-col gap-[8px] z-10 w-full h-full overflow-y-auto pr-[4px]">
                     {memos.map((memo) => (
                       <div
                         key={memo.id}
-                        className="relative group shrink-0 w-[160px] h-full min-h-[120px] rounded-[16px] bg-primary/30 flex flex-col items-center justify-center text-white text-[14px] hover:bg-primary/40 transition-colors p-[14px] cursor-pointer"
+                        className="relative group flex items-start gap-[12px] rounded-[12px] bg-neutral-800 border-l-[3px] border-primary/60 px-[14px] py-[10px] cursor-pointer hover:bg-neutral-750 hover:border-primary transition-colors"
                         onClick={() => {
                           setEditingMemoId(memo.id);
                           setEditContent(memo.content);
                         }}
                       >
+                        <span className="flex-1 text-[13px] text-neutral-300 leading-[1.5] line-clamp-2 break-words">
+                          {memo.content}
+                        </span>
                         <button
                           onClick={(e) => {
                             e.stopPropagation();
                             memoStore.deleteMemo(modelId, memo.id);
                           }}
-                          className="absolute top-[8px] right-[8px] w-[20px] h-[20px] rounded-full bg-neutral-800/80 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:bg-error/80"
+                          className="shrink-0 w-[18px] h-[18px] rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity text-neutral-500 hover:text-error"
                           aria-label="Delete memo"
                         >
                           <LucideX className="w-[12px] h-[12px]" />
                         </button>
-                        <span className="line-clamp-5 text-center break-words w-full text-[13px]">
-                          {memo.content}
-                        </span>
                       </div>
                     ))}
                     <button
@@ -295,9 +295,10 @@ export default function StudyPage() {
                         setEditingMemoId("__new__");
                         setEditContent("");
                       }}
-                      className="shrink-0 w-[120px] h-full min-h-[120px] rounded-[16px] border-[2px] border-dashed border-primary/40 flex items-center justify-center hover:border-primary/70 hover:bg-primary/10 transition-colors"
+                      className="flex items-center justify-center gap-[6px] rounded-[12px] border border-dashed border-neutral-600 px-[14px] py-[8px] text-neutral-500 text-[13px] hover:border-primary/60 hover:text-primary/80 transition-colors"
                     >
-                      <LucidePlus className="w-[28px] h-[28px] text-primary/60" />
+                      <LucidePlus className="w-[14px] h-[14px]" />
+                      메모 추가
                     </button>
                   </div>
                 )}
