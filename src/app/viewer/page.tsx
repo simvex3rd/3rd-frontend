@@ -10,7 +10,7 @@ import { ViewerToolbar } from "@/components/viewer/ViewerToolbar";
 import { ViewerSideToolbar } from "@/components/viewer/ViewerSideToolbar";
 import { ViewerZoomSlider } from "@/components/viewer/ViewerZoomSlider";
 import { DraggablePanel } from "@/components/viewer/DraggablePanel";
-import { NotesPanel } from "@/components/panels/NotesPanel";
+import { MemoPanel } from "@/components/panels/MemoPanel";
 import { ChatInterface } from "@/components/panels/ChatInterface";
 import { PartInfoPanel } from "@/components/panels/PartInfoPanel";
 import { useStoreHydration } from "@/hooks/use-store-hydration";
@@ -154,10 +154,10 @@ function ViewerContent() {
               title="Memo"
               onClose={closePanel}
               width={360}
-              height={300}
-              className="right-[120px] top-[390px]"
+              height={460}
+              className="right-[120px] top-[300px]"
             >
-              <NotesPanel />
+              <MemoPanel />
             </DraggablePanel>
           )}
         </AnimatePresence>
