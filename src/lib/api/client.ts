@@ -16,6 +16,8 @@ import type {
   HealthCheck,
   ClerkLoginRequest,
   UserResponse,
+  QuizGenerateResponse,
+  QuizSubmitResponse,
 } from "@/types/api";
 
 const API_URL =
@@ -359,6 +361,42 @@ export const notesApi = {
 };
 
 // ---------------------------------------------------------------------------
+// Quiz API
+// ---------------------------------------------------------------------------
+
+export const quizApi = {
+  /**
+   * Generate quiz for a model (optionally scoped to a part)
+   */
+  generate: async (
+    modelId: number | string,
+    options?: { partId?: number | string; count?: number }
+  ): Promise<QuizGenerateResponse> => {
+    return apiFetch<QuizGenerateResponse>("/quiz/generate", {
+      method: "POST",
+      body: JSON.stringify({
+        model_id: Number(modelId),
+        part_id: options?.partId != null ? Number(options.partId) : null,
+        count: options?.count ?? 5,
+      }),
+    });
+  },
+
+  /**
+   * Submit quiz answers and get score
+   */
+  submit: async (
+    quizId: number,
+    answers: { question_id: number; answer: string }[]
+  ): Promise<QuizSubmitResponse> => {
+    return apiFetch<QuizSubmitResponse>(`/quiz/${quizId}/submit`, {
+      method: "POST",
+      body: JSON.stringify({ answers }),
+    });
+  },
+};
+
+// ---------------------------------------------------------------------------
 // Unified API client
 // ---------------------------------------------------------------------------
 
@@ -368,4 +406,5 @@ export const api = {
   models: modelsApi,
   chat: chatApi,
   notes: notesApi,
+  quiz: quizApi,
 };

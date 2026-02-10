@@ -10,6 +10,7 @@ import {
   LucideSquarePen,
   LucideChevronRight,
   LucideFileText,
+  LucideBrain,
   LucidePlus,
   LucideX,
   LucideCheck,
@@ -24,12 +25,11 @@ import { toast } from "@/hooks/use-toast";
 import { withRetry } from "@/lib/api/retry";
 import { useSceneStore } from "@/stores/scene-store";
 import { useMemoStore } from "@/stores/memo-store";
+import { QuizModal } from "@/components/panels/QuizModal";
 
 const QUICK_ACTIONS = [
   { label: "학습에 관한 도움받기", action: "help" },
-  { label: "학습 내용 바탕의 퀴즈", action: "quiz" },
   { label: "부품 정보 불러오기", action: "parts" },
-  { label: "PDF 리포트 출력", action: "pdf" },
 ] as const;
 
 async function downloadReport(modelId: string) {
@@ -72,6 +72,7 @@ export default function StudyPage() {
   const [pdfLoading, setPdfLoading] = useState(false);
   const [editingMemoId, setEditingMemoId] = useState<string | null>(null);
   const [editContent, setEditContent] = useState("");
+  const [showQuiz, setShowQuiz] = useState(false);
   const memoStore = useMemoStore();
   const memos = memoStore.getMemos(modelId);
 
@@ -111,19 +112,14 @@ export default function StudyPage() {
 
   const handleQuickAction = useCallback(
     (action: string) => {
-      if (action === "pdf") {
-        handleDownloadReport();
-        return;
-      }
       const messages: Record<string, string> = {
         help: "학습에 관한 도움을 받고 싶어요",
-        quiz: "현재 학습 내용을 바탕으로 퀴즈를 만들어주세요",
         parts: "현재 모델의 부품 정보를 알려주세요",
       };
       const msg = messages[action];
       if (msg) handleSendMessage(msg);
     },
-    [handleSendMessage, handleDownloadReport]
+    [handleSendMessage]
   );
 
   if (!isReady) {
@@ -308,47 +304,68 @@ export default function StudyPage() {
               </div>
             </section>
 
-            {/* Report */}
-            <section className="flex-1 flex flex-col gap-[16px] min-h-0">
-              <div className="flex items-center gap-[16px] shrink-0">
-                <LucideFileText
-                  className="w-[32px] h-[32px] text-primary"
-                  strokeWidth={2}
-                />
-                <h2 className="font-semibold text-[32px] leading-[1.25] text-primary">
-                  Report
-                </h2>
-              </div>
-
-              <div className="flex-1 relative flex flex-col items-center justify-center gap-[16px] rounded-[24px] bg-gray-30 p-[32px] overflow-hidden">
-                <GradientBorder />
-
-                <p className="font-medium text-[16px] leading-[1.5] text-neutral-400 z-10">
-                  학습 내용을 PDF로 내보내기
-                </p>
+            {/* Report + Quiz (1:1) */}
+            <div className="flex gap-[24px] min-h-0">
+              {/* Report */}
+              <section className="flex-1 flex flex-col gap-[16px]">
+                <div className="flex items-center gap-[12px] shrink-0">
+                  <LucideFileText
+                    className="w-[28px] h-[28px] text-primary"
+                    strokeWidth={2}
+                  />
+                  <h2 className="font-semibold text-[24px] leading-[1.25] text-primary">
+                    Report
+                  </h2>
+                </div>
 
                 <button
                   onClick={handleDownloadReport}
                   disabled={pdfLoading}
-                  className="flex items-center gap-[8px] px-[24px] py-[12px] rounded-[12px] bg-primary text-white font-semibold text-[16px] leading-[1.5] hover:bg-primary/80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors z-10"
+                  className="flex-1 relative flex flex-col items-center justify-center gap-[12px] rounded-[24px] bg-gray-30 p-[24px] overflow-hidden hover:bg-neutral-800/80 transition-colors cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
                 >
+                  <GradientBorder />
                   {pdfLoading ? (
-                    <>
-                      <Loader2 className="w-[20px] h-[20px] animate-spin" />
-                      생성 중...
-                    </>
+                    <Loader2 className="w-[32px] h-[32px] animate-spin text-primary z-10" />
                   ) : (
-                    <>
-                      <LucideFileText className="w-[20px] h-[20px]" />
-                      PDF 다운로드
-                    </>
+                    <LucideFileText className="w-[32px] h-[32px] text-primary z-10" />
                   )}
+                  <p className="font-medium text-[14px] text-neutral-400 z-10">
+                    {pdfLoading ? "생성 중..." : "PDF 내보내기"}
+                  </p>
                 </button>
-              </div>
-            </section>
+              </section>
+
+              {/* Quiz */}
+              <section className="flex-1 flex flex-col gap-[16px]">
+                <div className="flex items-center gap-[12px] shrink-0">
+                  <LucideBrain
+                    className="w-[28px] h-[28px] text-primary"
+                    strokeWidth={2}
+                  />
+                  <h2 className="font-semibold text-[24px] leading-[1.25] text-primary">
+                    Quiz
+                  </h2>
+                </div>
+
+                <button
+                  onClick={() => setShowQuiz(true)}
+                  className="flex-1 relative flex flex-col items-center justify-center gap-[12px] rounded-[24px] bg-gray-30 p-[24px] overflow-hidden hover:bg-neutral-800/80 transition-colors cursor-pointer"
+                >
+                  <GradientBorder />
+                  <LucideBrain className="w-[32px] h-[32px] text-primary z-10" />
+                  <p className="font-medium text-[14px] text-neutral-400 z-10">
+                    학습 퀴즈 풀기
+                  </p>
+                </button>
+              </section>
+            </div>
           </div>
         </div>
       </main>
+
+      {showQuiz && (
+        <QuizModal modelId={modelId} onClose={() => setShowQuiz(false)} />
+      )}
     </div>
   );
 }
