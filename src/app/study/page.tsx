@@ -10,6 +10,9 @@ import {
   LucideSquarePen,
   LucideChevronRight,
   LucideFileText,
+  LucidePlus,
+  LucideX,
+  LucideCheck,
   Loader2,
 } from "lucide-react";
 import { ViewerHeader } from "@/components/viewer/ViewerHeader";
@@ -18,6 +21,7 @@ import { GradientBorder } from "@/components/ui/GradientBorder";
 import { api } from "@/lib/api";
 import { generateReport } from "@/lib/pdf-export";
 import { useSceneStore } from "@/stores/scene-store";
+import { useMemoStore } from "@/stores/memo-store";
 
 const QUICK_ACTIONS = [
   { label: "학습에 관한 도움받기", action: "help" },
@@ -64,6 +68,10 @@ export default function StudyPage() {
   const modelId = storeModelId ?? "1";
   const [aiAvatar, setAiAvatar] = useState("/chat/character1.png");
   const [pdfLoading, setPdfLoading] = useState(false);
+  const [editingSlot, setEditingSlot] = useState<number | null>(null);
+  const [editContent, setEditContent] = useState("");
+  const memoStore = useMemoStore();
+  const memos = memoStore.getMemos(modelId);
 
   useEffect(() => {
     const AVATARS = ["/chat/character1.png", "/chat/character2.png"];
@@ -214,16 +222,68 @@ export default function StudyPage() {
               <div className="flex-1 relative flex items-center justify-center rounded-[24px] bg-gray-30 p-[32px] overflow-hidden">
                 <GradientBorder />
 
-                <div className="flex gap-[16px] z-10">
-                  {[1, 2, 3].map((i) => (
-                    <button
-                      key={i}
-                      className="w-[140px] h-[140px] rounded-[24px] bg-primary/30 flex items-center justify-center text-white font-semibold text-[16px] hover:bg-primary/40 transition-colors"
-                    >
-                      메모
-                    </button>
-                  ))}
-                </div>
+                {editingSlot !== null ? (
+                  <div className="flex flex-col gap-[12px] w-full z-10">
+                    <textarea
+                      autoFocus
+                      value={editContent}
+                      onChange={(e) => setEditContent(e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === "Escape") setEditingSlot(null);
+                      }}
+                      placeholder="메모를 입력하세요..."
+                      className="w-full h-[100px] rounded-[12px] bg-neutral-800 border border-neutral-700 text-white text-[14px] p-[12px] resize-none focus:outline-none focus:border-primary"
+                    />
+                    <div className="flex justify-end gap-[8px]">
+                      <button
+                        onClick={() => setEditingSlot(null)}
+                        className="flex items-center gap-[4px] px-[12px] py-[6px] rounded-[8px] bg-neutral-700 text-neutral-300 text-[13px] hover:bg-neutral-600 transition-colors"
+                      >
+                        <LucideX className="w-[14px] h-[14px]" />
+                        취소
+                      </button>
+                      <button
+                        onClick={() => {
+                          if (editContent.trim()) {
+                            memoStore.saveMemo(
+                              modelId,
+                              editingSlot,
+                              editContent.trim()
+                            );
+                          } else {
+                            memoStore.deleteMemo(modelId, editingSlot);
+                          }
+                          setEditingSlot(null);
+                        }}
+                        className="flex items-center gap-[4px] px-[12px] py-[6px] rounded-[8px] bg-primary text-white text-[13px] hover:bg-primary/80 transition-colors"
+                      >
+                        <LucideCheck className="w-[14px] h-[14px]" />
+                        저장
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="flex gap-[16px] z-10">
+                    {memos.map((memo, i) => (
+                      <button
+                        key={memo.id}
+                        onClick={() => {
+                          setEditingSlot(i);
+                          setEditContent(memo.content);
+                        }}
+                        className="w-[140px] h-[140px] rounded-[24px] bg-primary/30 flex flex-col items-center justify-center text-white text-[14px] hover:bg-primary/40 transition-colors p-[12px] gap-[4px]"
+                      >
+                        {memo.content ? (
+                          <span className="line-clamp-4 text-center break-words w-full">
+                            {memo.content}
+                          </span>
+                        ) : (
+                          <LucidePlus className="w-[24px] h-[24px] text-white/60" />
+                        )}
+                      </button>
+                    ))}
+                  </div>
+                )}
               </div>
             </section>
 
