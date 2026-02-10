@@ -18,6 +18,7 @@ import { useSceneStore } from "@/stores/scene-store";
 import { useUIStore } from "@/stores/ui-store";
 import { ViewerHeader } from "@/components/viewer/ViewerHeader";
 import { api } from "@/lib/api";
+import type { PartWithGeometry } from "@/types/api";
 
 function ViewerContent() {
   const { isReady } = useAuthGuard();
@@ -27,6 +28,7 @@ function ViewerContent() {
   const searchParams = useSearchParams();
   const modelId = useSceneStore((state) => state.modelId);
   const [modelUrl, setModelUrl] = useState<string | null>(null);
+  const [modelParts, setModelParts] = useState<PartWithGeometry[]>([]);
   const [modelError, setModelError] = useState<string | null>(null);
 
   // Set modelId from URL params (e.g., /viewer?modelId=2)
@@ -48,6 +50,7 @@ function ViewerContent() {
         if (cancelled) return;
         if (detail.file_url) {
           setModelUrl(detail.file_url);
+          setModelParts(detail.parts ?? []);
         } else {
           setModelError("3D model file not available");
         }
@@ -89,7 +92,9 @@ function ViewerContent() {
         {/* 3D Canvas Background (z-0) - Full viewport with scale compensation */}
         {isHydrated && (
           <div className="absolute left-1/2 top-1/2 z-0 w-screen h-screen -translate-x-1/2 -translate-y-1/2 max-[1919px]:scale-[1.3333]">
-            <SceneCanvas>{modelUrl && <ModelOBJ url={modelUrl} />}</SceneCanvas>
+            <SceneCanvas>
+              {modelUrl && <ModelOBJ url={modelUrl} parts={modelParts} />}
+            </SceneCanvas>
             {modelError && (
               <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                 <p className="text-neutral-400 text-[16px]">{modelError}</p>

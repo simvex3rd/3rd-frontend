@@ -43,6 +43,12 @@ interface SceneState {
   /** Reset camera to default position and clear saved state */
   resetCamera: () => void;
 
+  // 색상 데이터 여부
+  /** Whether the current model has MTL color data loaded */
+  hasColorData: boolean;
+  /** Set whether color data is available */
+  setHasColorData: (has: boolean) => void;
+
   // 분해 상태
   /** Explode animation level (0-1, where 0=assembled, 1=fully exploded) */
   explodeLevel: number;
@@ -90,6 +96,10 @@ export const useSceneStore = create<SceneState>()(
             cameraTarget: [0, 0, 0],
             hasSavedCamera: false,
           }),
+
+        // 색상 데이터 여부
+        hasColorData: false,
+        setHasColorData: (has) => set({ hasColorData: has }),
 
         // 분해 상태
         explodeLevel: 0,

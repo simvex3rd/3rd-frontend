@@ -45,9 +45,38 @@ import type { OrbitControls as OrbitControlsImpl } from "three-stdlib";
 import { useSceneStore } from "@/stores/scene-store";
 import { useUIStore } from "@/stores/ui-store";
 import { toast } from "@/hooks/use-toast";
+import type { PartWithGeometry } from "@/types/api";
+
+/** Distinct color palette for part groups (10 colors, high contrast on dark bg) */
+const PART_COLORS = [
+  new Color(0x4fc3f7), // light blue
+  new Color(0xef5350), // red
+  new Color(0x66bb6a), // green
+  new Color(0xffa726), // orange
+  new Color(0xab47bc), // purple
+  new Color(0x26c6da), // cyan
+  new Color(0xffee58), // yellow
+  new Color(0xec407a), // pink
+  new Color(0x8d6e63), // brown
+  new Color(0x78909c), // blue-gray
+];
+
+/** Build a map from mesh name → part color index */
+function buildMeshColorMap(parts: PartWithGeometry[]): Map<string, number> {
+  const map = new Map<string, number>();
+  parts.forEach((part, index) => {
+    if (part.mesh_names) {
+      for (const meshName of part.mesh_names) {
+        map.set(meshName, index);
+      }
+    }
+  });
+  return map;
+}
 
 interface ModelOBJProps {
   url: string;
+  parts?: PartWithGeometry[];
 }
 
 /**
@@ -61,7 +90,7 @@ interface ModelOBJProps {
  * - Wireframe mode toggle
  * - Focus on selected part
  */
-export function ModelOBJ({ url }: ModelOBJProps) {
+export function ModelOBJ({ url, parts = [] }: ModelOBJProps) {
   const groupRef = useRef<Group>(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const modelCenterRef = useRef<Vector3>(new Vector3());
@@ -71,119 +100,139 @@ export function ModelOBJ({ url }: ModelOBJProps) {
   const selectedObject = useSceneStore((state) => state.selectedObject);
   const explodeLevel = useSceneStore((state) => state.explodeLevel);
   const isWireframeMode = useUIStore((state) => state.isWireframeMode);
+  const isColorMode = useUIStore((state) => state.isColorMode);
+  const setHasColorData = useSceneStore((state) => state.setHasColorData);
 
-  // Load OBJ file
+  // Load OBJ file (with optional MTL for colors)
   useEffect(() => {
     let cancelled = false;
-    const loader = new OBJLoader();
 
-    loader.load(
-      url,
-      (object) => {
-        if (cancelled || !groupRef.current) {
-          disposeObject(object);
-          return;
-        }
-
-        // Dispose and clear previous model to prevent VRAM leaks
-        while (groupRef.current.children.length > 0) {
-          const child = groupRef.current.children[0];
-          disposeObject(child);
-          groupRef.current.remove(child);
-        }
-
-        // Add loaded model
-        groupRef.current.add(object);
-
-        // Compute model bounding box center for explode
-        const modelBox = new Box3().setFromObject(object);
-        modelCenterRef.current = modelBox.getCenter(new Vector3());
-
-        // Initialize meshes and cache refs for useFrame (avoid traverse at 60fps)
-        const cachedMeshes: Mesh[] = [];
-        let meshIndex = 0;
-        object.traverse((child) => {
-          if (child instanceof Mesh) {
-            cachedMeshes.push(child);
-
-            // Set name
-            if (!child.userData.name) {
-              child.userData.name = child.name || child.uuid;
-            }
-
-            // Apply standard material if needed
-            if (!(child.material instanceof MeshStandardMaterial)) {
-              child.material = new MeshStandardMaterial({
-                color: 0xcccccc,
-                metalness: 0.3,
-                roughness: 0.7,
-              });
-            }
-
-            // Store original emissive color
-            if (
-              child.material instanceof MeshStandardMaterial &&
-              !child.userData.originalEmissive
-            ) {
-              child.userData.originalEmissive = child.material.emissive.clone();
-            }
-
-            // Enable raycasting
-            child.userData.selectable = true;
-
-            // Store initial position for explode animation
-            if (!child.userData.initialPosition) {
-              child.userData.initialPosition = child.position.clone();
-            }
-
-            // Store mesh index for fallback explode direction
-            child.userData.meshIndex = meshIndex++;
-          }
-        });
-        meshesRef.current = cachedMeshes;
-
-        // Center and scale model
-        const box = new Box3().setFromObject(object);
-        const center = box.getCenter(new Vector3());
-        const size = box.getSize(new Vector3());
-        const maxDim = Math.max(size.x, size.y, size.z);
-        const scale = maxDim > 0 ? 5 / maxDim : 1; // Scale to fit in 5 units
-
-        // Apply scale first
-        object.scale.setScalar(scale);
-
-        // Then center by moving the object
-        object.position.x = -center.x * scale;
-        object.position.y = -center.y * scale;
-        object.position.z = -center.z * scale;
-
-        // Recompute model center after centering/scaling (should be ~origin now)
-        groupRef.current.updateMatrixWorld(true);
-        const finalBox = new Box3().setFromObject(groupRef.current);
-        modelCenterRef.current = finalBox.getCenter(new Vector3());
-
-        // Signal camera fit needed (done in useFrame where camera/controls are available)
-        if (!useSceneStore.getState().hasSavedCamera) {
-          needsCameraFitRef.current = true;
-        }
-
-        setIsLoaded(true);
-      },
-      (progress) => {
-        const pct =
-          progress.total > 0
-            ? ((progress.loaded / progress.total) * 100).toFixed(2)
-            : "?";
-        if (process.env.NODE_ENV === "development")
-          console.log(`Loading OBJ: ${pct}%`);
-      },
-      (error) => {
-        if (!cancelled) {
-          console.error("Error loading OBJ:", error);
-          toast.error("3D 모델 로드 실패", "모델 파일을 불러올 수 없습니다");
-        }
+    /** Process loaded OBJ object */
+    const processObject = (object: Group) => {
+      if (cancelled || !groupRef.current) {
+        disposeObject(object);
+        return;
       }
-    );
+
+      // Dispose and clear previous model to prevent VRAM leaks
+      while (groupRef.current.children.length > 0) {
+        const child = groupRef.current.children[0];
+        disposeObject(child);
+        groupRef.current.remove(child);
+      }
+
+      // Add loaded model
+      groupRef.current.add(object);
+
+      // Build mesh→part color map and determine if color data is available
+      const meshColorMap = buildMeshColorMap(parts);
+      const hasColors = meshColorMap.size > 0;
+      setHasColorData(hasColors);
+
+      // Compute model bounding box center for explode
+      const modelBox = new Box3().setFromObject(object);
+      modelCenterRef.current = modelBox.getCenter(new Vector3());
+
+      // Initialize meshes and cache refs for useFrame (avoid traverse at 60fps)
+      const cachedMeshes: Mesh[] = [];
+      let meshIndex = 0;
+      object.traverse((child) => {
+        if (child instanceof Mesh) {
+          cachedMeshes.push(child);
+
+          // Set name
+          if (!child.userData.name) {
+            child.userData.name = child.name || child.uuid;
+          }
+
+          // Convert to MeshStandardMaterial with default gray
+          if (!(child.material instanceof MeshStandardMaterial)) {
+            const oldMat = child.material as { dispose?: () => void };
+            child.material = new MeshStandardMaterial({
+              color: 0xcccccc,
+              metalness: 0.3,
+              roughness: 0.7,
+            });
+            oldMat.dispose?.();
+          }
+
+          // Assign part color based on mesh_names mapping
+          const meshName = child.userData.name;
+          const partIndex = meshColorMap.get(meshName);
+          if (partIndex !== undefined) {
+            child.userData.partColor =
+              PART_COLORS[partIndex % PART_COLORS.length].clone();
+          }
+
+          // Store original emissive color
+          if (
+            child.material instanceof MeshStandardMaterial &&
+            !child.userData.originalEmissive
+          ) {
+            child.userData.originalEmissive = child.material.emissive.clone();
+          }
+
+          // Enable raycasting
+          child.userData.selectable = true;
+
+          // Store initial position for explode animation
+          if (!child.userData.initialPosition) {
+            child.userData.initialPosition = child.position.clone();
+          }
+
+          // Store mesh index for fallback explode direction
+          child.userData.meshIndex = meshIndex++;
+        }
+      });
+      meshesRef.current = cachedMeshes;
+
+      // Center and scale model
+      const box = new Box3().setFromObject(object);
+      const center = box.getCenter(new Vector3());
+      const size = box.getSize(new Vector3());
+      const maxDim = Math.max(size.x, size.y, size.z);
+      const scale = maxDim > 0 ? 5 / maxDim : 1; // Scale to fit in 5 units
+
+      // Apply scale first
+      object.scale.setScalar(scale);
+
+      // Then center by moving the object
+      object.position.x = -center.x * scale;
+      object.position.y = -center.y * scale;
+      object.position.z = -center.z * scale;
+
+      // Recompute model center after centering/scaling (should be ~origin now)
+      groupRef.current.updateMatrixWorld(true);
+      const finalBox = new Box3().setFromObject(groupRef.current);
+      modelCenterRef.current = finalBox.getCenter(new Vector3());
+
+      // Signal camera fit needed (done in useFrame where camera/controls are available)
+      if (!useSceneStore.getState().hasSavedCamera) {
+        needsCameraFitRef.current = true;
+      }
+
+      setIsLoaded(true);
+    };
+
+    const onProgress = (progress: ProgressEvent) => {
+      const pct =
+        progress.total > 0
+          ? ((progress.loaded / progress.total) * 100).toFixed(2)
+          : "?";
+      if (process.env.NODE_ENV === "development")
+        console.log(`Loading OBJ: ${pct}%`);
+    };
+
+    const onError = (error: unknown) => {
+      if (!cancelled) {
+        console.error("Error loading OBJ:", error);
+        toast.error("3D 모델 로드 실패", "모델 파일을 불러올 수 없습니다");
+      }
+    };
+
+    // Load OBJ
+    const objLoader = new OBJLoader();
+    objLoader.load(url, processObject, onProgress, onError);
 
     return () => {
       cancelled = true;
@@ -196,8 +245,9 @@ export function ModelOBJ({ url }: ModelOBJProps) {
         }
       }
       meshesRef.current = [];
+      setHasColorData(false);
     };
-  }, [url]);
+  }, [url, parts, setHasColorData]);
 
   // Apply wireframe mode (uses cached meshes)
   useEffect(() => {
@@ -209,6 +259,23 @@ export function ModelOBJ({ url }: ModelOBJProps) {
       }
     }
   }, [isWireframeMode, isLoaded]);
+
+  // Apply color mode toggle (part colors vs default gray)
+  useEffect(() => {
+    if (!isLoaded) return;
+
+    const _gray = new Color(0xcccccc);
+    for (const child of meshesRef.current) {
+      if (child.material instanceof MeshStandardMaterial) {
+        if (isColorMode && child.userData.partColor) {
+          child.material.color.copy(child.userData.partColor);
+        } else {
+          child.material.color.copy(_gray);
+        }
+        child.material.needsUpdate = true;
+      }
+    }
+  }, [isColorMode, isLoaded]);
 
   // Combined: camera fit (once) + selection highlight + explode animation
   useFrame((state) => {
