@@ -73,6 +73,18 @@ function removeToast(id: string) {
   });
 }
 
+// Standalone toast for use outside React components (hooks, utilities)
+export const toast = {
+  success: (title: string, description?: string, duration?: number) =>
+    addToast({ title, description, variant: "success", duration }),
+  error: (title: string, description?: string, duration?: number) =>
+    addToast({ title, description, variant: "error", duration }),
+  info: (title: string, description?: string, duration?: number) =>
+    addToast({ title, description, variant: "info", duration }),
+  warning: (title: string, description?: string, duration?: number) =>
+    addToast({ title, description, variant: "warning", duration }),
+};
+
 export function useToast() {
   const [, setLocalState] = useState(state);
 

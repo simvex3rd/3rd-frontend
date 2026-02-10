@@ -44,6 +44,7 @@ function disposeObject(obj: Object3D) {
 import type { OrbitControls as OrbitControlsImpl } from "three-stdlib";
 import { useSceneStore } from "@/stores/scene-store";
 import { useUIStore } from "@/stores/ui-store";
+import { toast } from "@/hooks/use-toast";
 
 interface ModelOBJProps {
   url: string;
@@ -177,7 +178,10 @@ export function ModelOBJ({ url }: ModelOBJProps) {
           console.log(`Loading OBJ: ${pct}%`);
       },
       (error) => {
-        if (!cancelled) console.error("Error loading OBJ:", error);
+        if (!cancelled) {
+          console.error("Error loading OBJ:", error);
+          toast.error("3D 모델 로드 실패", "모델 파일을 불러올 수 없습니다");
+        }
       }
     );
 
