@@ -27,7 +27,6 @@ const API_URL =
 // ---------------------------------------------------------------------------
 
 let _getToken: (() => Promise<string | null>) | null = null;
-let isRedirectingToLogin = false;
 
 /**
  * Configure the auth token getter (call once from a Clerk-aware component).
@@ -95,14 +94,11 @@ async function apiFetch<T>(
       const status = response.status;
 
       // Handle 401: Unauthorized (expired/invalid token)
+      // Note: useAuthGuard handles client-side redirect to sign-in.
+      // We do NOT hard-redirect here to avoid conflicting with mock fallback.
       if (status === 401) {
-        // Redirect to sign-in (deduplicated)
-        if (typeof window !== "undefined" && !isRedirectingToLogin) {
-          isRedirectingToLogin = true;
-          window.location.href = "/sign-in";
-        }
         throw new ApiClientError(
-          "Authentication required. Redirecting to sign in...",
+          "Authentication required",
           401,
           errorData.code
         );
@@ -248,14 +244,7 @@ export const chatApi = {
 
         // Handle 401: Unauthorized
         if (status === 401) {
-          if (typeof window !== "undefined" && !isRedirectingToLogin) {
-            isRedirectingToLogin = true;
-            window.location.href = "/sign-in";
-          }
-          throw new ApiClientError(
-            "Authentication required. Redirecting to sign in...",
-            401
-          );
+          throw new ApiClientError("Authentication required", 401);
         }
 
         // Handle 503: Service unavailable
