@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev --webpack",
     "dev:3001": "next dev --webpack -p 3001",
-    "vercel-build": "git lfs install --skip-smudge && git lfs pull && next build --webpack",
+    "vercel-build": "git lfs install --skip-repo && git lfs pull && next build --webpack",
     "build": "next build --webpack",
     "start": "next start",
     "lint": "eslint",
