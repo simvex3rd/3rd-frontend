@@ -4,32 +4,30 @@ import { useState, useEffect, useRef } from "react";
 import { useSceneStore } from "@/stores/scene-store";
 import { api } from "@/lib/api";
 import type { PartWithGeometry } from "@/types/api";
+import { mockParts } from "@/lib/mock-data";
 
-/** Resolve mesh name to human-readable part name from model parts list */
+/** Resolve mesh name to human-readable part name */
 function resolvePartName(meshName: string, parts: PartWithGeometry[]): string {
-  // 1. Exact name match
+  // 1. Exact match in API parts
   const exact = parts.find(
     (p) => p.name?.toLowerCase() === meshName.toLowerCase()
   );
   if (exact?.name) return exact.name;
 
-  // 2. Numeric index match (mesh "1" → parts[0])
-  const num = parseInt(meshName, 10);
-  if (!isNaN(num) && num >= 1 && num <= parts.length) {
-    const byIndex = parts[num - 1];
-    if (byIndex?.name) return byIndex.name;
-  }
+  // 2. Match in mockParts (keyed by mesh name)
+  const mock = mockParts[meshName];
+  if (mock?.name) return mock.name;
 
-  // 3. Partial match (mesh name contains part name or vice versa)
-  const partial = parts.find(
-    (p) =>
-      p.name &&
-      (meshName.toLowerCase().includes(p.name.toLowerCase()) ||
-        p.name.toLowerCase().includes(meshName.toLowerCase()))
+  // 3. Case-insensitive mockParts lookup
+  const mockKey = Object.keys(mockParts).find(
+    (k) => k.toLowerCase() === meshName.toLowerCase()
   );
-  if (partial?.name) return partial.name;
+  if (mockKey && mockParts[mockKey]?.name) return mockParts[mockKey].name;
 
-  // 4. Fallback
+  // 4. Numeric → "Part N" format
+  if (/^\d+$/.test(meshName)) return `Part ${meshName}`;
+
+  // 5. Fallback
   return meshName;
 }
 
