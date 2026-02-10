@@ -3,6 +3,8 @@
 import { useState, useEffect, useRef } from "react";
 import { useSceneStore } from "@/stores/scene-store";
 import { api } from "@/lib/api";
+import { toast } from "@/hooks/use-toast";
+import { withRetry } from "@/lib/api/retry";
 import type { PartWithGeometry } from "@/types/api";
 
 /** Resolve mesh name to human-readable part name from model parts list */
@@ -88,10 +90,11 @@ export function NotesPanel() {
     if (!savePart || !modelId) return;
 
     try {
-      await api.notes.save(modelId, note, savePart);
+      await withRetry(() => api.notes.save(modelId, note, savePart));
       setLastSaved(new Date());
     } catch (err) {
       console.error("Failed to save note:", err);
+      toast.error("메모 저장 실패", "잠시 후 다시 시도해주세요");
     }
   };
 

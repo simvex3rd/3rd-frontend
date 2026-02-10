@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useRef } from "react";
 import { api } from "@/lib/api";
+import { toast } from "@/hooks/use-toast";
 import type { Message } from "@/types/chat";
 
 function nextId(prefix: string) {
@@ -134,8 +135,10 @@ export function useChatStream(sessionId: string | null) {
 
         if (err instanceof Error && err.name === "AbortError") {
           setError("Request timed out after 30 seconds");
+          toast.error("응답 시간 초과", "30초 내에 응답을 받지 못했습니다");
         } else {
           setError("Failed to get AI response");
+          toast.error("AI 응답 실패", "네트워크 상태를 확인해주세요");
         }
       } finally {
         setIsStreaming(false);

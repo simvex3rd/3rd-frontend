@@ -20,6 +20,8 @@ import { ChatInput } from "@/components/panels/ChatInput";
 import { GradientBorder } from "@/components/ui/GradientBorder";
 import { api } from "@/lib/api";
 import { generateReport } from "@/lib/pdf-export";
+import { toast } from "@/hooks/use-toast";
+import { withRetry } from "@/lib/api/retry";
 import { useSceneStore } from "@/stores/scene-store";
 import { useMemoStore } from "@/stores/memo-store";
 
@@ -31,7 +33,7 @@ const QUICK_ACTIONS = [
 ] as const;
 
 async function downloadReport(modelId: string) {
-  const model = await api.models.getDetail(modelId);
+  const model = await withRetry(() => api.models.getDetail(modelId));
   let notes: string | undefined;
   try {
     const noteRes = await api.notes.get(modelId);
@@ -83,8 +85,10 @@ export default function StudyPage() {
     setPdfLoading(true);
     try {
       await downloadReport(modelId);
+      toast.success("PDF 다운로드 완료");
     } catch (err) {
       console.error("Report generation failed:", err);
+      toast.error("PDF 생성 실패", "잠시 후 다시 시도해주세요");
     } finally {
       setPdfLoading(false);
     }

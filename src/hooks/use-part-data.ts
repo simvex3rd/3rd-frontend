@@ -4,6 +4,8 @@ import { useState, useEffect } from "react";
 import { api } from "@/lib/api";
 import { useSceneStore } from "@/stores/scene-store";
 import { normalizePart, type NormalizedPart } from "@/lib/api/normalize";
+import { toast } from "@/hooks/use-toast";
+import { withRetry } from "@/lib/api/retry";
 
 export function usePartData(partId: string | null) {
   const modelId = useSceneStore((state) => state.modelId);
@@ -28,8 +30,7 @@ export function usePartData(partId: string | null) {
 
     setState((prev) => ({ ...prev, loading: true, error: null }));
 
-    api.models
-      .getDetail(modelId)
+    withRetry(() => api.models.getDetail(modelId))
       .then((model) => {
         if (cancelled) return;
         const rawPart = model.parts.find(
@@ -43,6 +44,7 @@ export function usePartData(partId: string | null) {
       .catch((err) => {
         if (cancelled) return;
         console.error("Failed to fetch part data:", err);
+        toast.error("부품 정보 로드 실패", "잠시 후 다시 시도해주세요");
         setState({
           partData: null,
           loading: false,
