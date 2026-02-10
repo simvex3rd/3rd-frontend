@@ -79,7 +79,10 @@ export function ModelOBJ({ url }: ModelOBJProps) {
     loader.load(
       url,
       (object) => {
-        if (cancelled || !groupRef.current) return;
+        if (cancelled || !groupRef.current) {
+          disposeObject(object);
+          return;
+        }
 
         // Dispose and clear previous model to prevent VRAM leaks
         while (groupRef.current.children.length > 0) {

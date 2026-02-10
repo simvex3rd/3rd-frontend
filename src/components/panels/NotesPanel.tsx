@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useSceneStore } from "@/stores/scene-store";
 import { api } from "@/lib/api";
 
@@ -9,6 +9,8 @@ export function NotesPanel() {
   const modelId = useSceneStore((state) => state.modelId);
   const [note, setNote] = useState("");
   const [lastSaved, setLastSaved] = useState<Date | null>(null);
+  // Track which part the current note belongs to (prevents saving to wrong part on blur)
+  const notePartRef = useRef<string | null>(null);
 
   // Load note when part is selected
   useEffect(() => {
@@ -18,6 +20,7 @@ export function NotesPanel() {
     setNote("");
     setLastSaved(null);
 
+    notePartRef.current = selectedPart;
     let cancelled = false;
     api.notes
       .get(modelId, selectedPart)
@@ -34,10 +37,11 @@ export function NotesPanel() {
   }, [selectedPart, modelId]);
 
   const handleSave = async () => {
-    if (!selectedPart || !modelId) return;
+    const savePart = notePartRef.current;
+    if (!savePart || !modelId) return;
 
     try {
-      await api.notes.save(modelId, note, selectedPart);
+      await api.notes.save(modelId, note, savePart);
       setLastSaved(new Date());
     } catch (err) {
       console.error("Failed to save note:", err);

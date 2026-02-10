@@ -115,22 +115,33 @@ export function ChatInterface({
   }, [selectedPart, partData?.name, addPartSystemMessage]);
 
   // Create session on demand (before first message)
+  const sessionPromiseRef = useRef<Promise<string | null> | null>(null);
   const ensureSession = useCallback(async (): Promise<string | null> => {
     if (sessionId) return sessionId;
-    if (sessionCreatingRef.current) return null;
+
+    // If already creating, wait for the in-flight promise instead of returning null
+    if (sessionCreatingRef.current && sessionPromiseRef.current) {
+      return sessionPromiseRef.current;
+    }
 
     sessionCreatingRef.current = true;
-    try {
-      const session = await api.chat.createSession(modelId || "1");
-      const newId = String(session.id);
-      setSessionId(newId);
-      return newId;
-    } catch (err) {
-      console.error("Failed to create session:", err);
-      return null;
-    } finally {
-      sessionCreatingRef.current = false;
-    }
+    const promise = (async () => {
+      try {
+        const session = await api.chat.createSession(modelId || "1");
+        const newId = String(session.id);
+        setSessionId(newId);
+        return newId;
+      } catch (err) {
+        console.error("Failed to create session:", err);
+        return null;
+      } finally {
+        sessionCreatingRef.current = false;
+        sessionPromiseRef.current = null;
+      }
+    })();
+
+    sessionPromiseRef.current = promise;
+    return promise;
   }, [sessionId, modelId]);
 
   const handleSend = async (message: string) => {

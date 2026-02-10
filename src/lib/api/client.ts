@@ -27,6 +27,7 @@ const API_URL =
 // ---------------------------------------------------------------------------
 
 let _getToken: (() => Promise<string | null>) | null = null;
+let isRedirectingToLogin = false;
 
 /**
  * Configure the auth token getter (call once from a Clerk-aware component).
@@ -95,10 +96,9 @@ async function apiFetch<T>(
 
       // Handle 401: Unauthorized (expired/invalid token)
       if (status === 401) {
-        // Clear auth token
-        _getToken = null;
-        // Redirect to sign-in
-        if (typeof window !== "undefined") {
+        // Redirect to sign-in (deduplicated)
+        if (typeof window !== "undefined" && !isRedirectingToLogin) {
+          isRedirectingToLogin = true;
           window.location.href = "/sign-in";
         }
         throw new ApiClientError(
@@ -248,8 +248,8 @@ export const chatApi = {
 
         // Handle 401: Unauthorized
         if (status === 401) {
-          _getToken = null;
-          if (typeof window !== "undefined") {
+          if (typeof window !== "undefined" && !isRedirectingToLogin) {
+            isRedirectingToLogin = true;
             window.location.href = "/sign-in";
           }
           throw new ApiClientError(

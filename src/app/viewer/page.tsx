@@ -2,6 +2,7 @@
 
 import { useEffect, useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
+import { useAuthGuard } from "@/hooks/use-auth-guard";
 import { AnimatePresence } from "motion/react";
 import { SceneCanvas } from "@/components/viewer/SceneCanvas";
 import { ModelOBJ } from "@/components/viewer/ModelOBJ";
@@ -19,6 +20,7 @@ import { ViewerHeader } from "@/components/viewer/ViewerHeader";
 import { api } from "@/lib/api";
 
 function ViewerContent() {
+  const { isReady } = useAuthGuard();
   const isHydrated = useStoreHydration();
   const activeSideTool = useUIStore((state) => state.activeSideTool);
   const setSideTool = useUIStore((state) => state.setSideTool);
@@ -75,8 +77,8 @@ function ViewerContent() {
       {/* Header - Always visible on top */}
       <ViewerHeader />
 
-      {/* Loading state */}
-      {!isHydrated && (
+      {/* Auth loading or store hydration */}
+      {(!isReady || !isHydrated) && (
         <div className="absolute inset-0 flex items-center justify-center z-50 pointer-events-none">
           <p className="text-neutral-400">Loading...</p>
         </div>

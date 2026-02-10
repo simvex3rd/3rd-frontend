@@ -1,9 +1,20 @@
 "use client";
 
 import { ViewerHeader } from "@/components/viewer/ViewerHeader";
-import { Rocket } from "lucide-react";
+import { Rocket, Loader2 } from "lucide-react";
+import { useAuthGuard } from "@/hooks/use-auth-guard";
 
 export default function LabPage() {
+  const { isReady } = useAuthGuard();
+
+  if (!isReady) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-neutral-900">
+        <Loader2 className="h-[32px] w-[32px] animate-spin text-primary" />
+      </div>
+    );
+  }
+
   return (
     <div className="relative w-full max-[1919px]:h-[133.33vh] h-screen bg-neutral-900 overflow-hidden">
       <a

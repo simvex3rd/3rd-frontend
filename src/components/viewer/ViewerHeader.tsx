@@ -1,10 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { cn } from "@/lib/utils";
 import { Logo } from "@/components/ui/logo";
 import Link from "next/link";
-import dynamic from "next/dynamic";
 import { usePathname, useRouter } from "next/navigation";
 import { useSceneStore } from "@/stores/scene-store";
 import { api } from "@/lib/api";
@@ -15,43 +14,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
-import { ChevronDown, Check } from "lucide-react";
-
-const ClerkAuth = dynamic(
-  () =>
-    import("@clerk/nextjs").then((mod) => {
-      const { SignedOut, SignedIn, UserButton } = mod;
-      return {
-        default: function ClerkAuthButtons() {
-          return (
-            <>
-              <SignedOut>
-                <Link href="/sign-in">
-                  <button
-                    className="w-[210px] h-[72px] flex items-center justify-center rounded-[24px] px-[24px] py-[16px] text-[32px] font-semibold leading-[1.25] text-neutral-50 shadow-[4px_4px_20px_rgba(2,238,225,0.1)] hover:brightness-125 transition-all"
-                    style={{
-                      background:
-                        "radial-gradient(50% 50% at 50% 50%, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0.3) 100%)",
-                    }}
-                  >
-                    로그인/가입
-                  </button>
-                </Link>
-              </SignedOut>
-              <SignedIn>
-                <UserButton
-                  appearance={{
-                    elements: { avatarBox: "w-[48px] h-[48px]" },
-                  }}
-                />
-              </SignedIn>
-            </>
-          );
-        },
-      };
-    }),
-  { ssr: false }
-);
+import { ChevronDown, Check, Loader2 } from "lucide-react";
 
 interface ViewerHeaderProps {
   className?: string;
@@ -66,13 +29,36 @@ export function ViewerHeader({
   const router = useRouter();
   const modelId = useSceneStore((state) => state.modelId);
   const [models, setModels] = useState<ModelListItem[]>([]);
+  const [modelsLoading, setModelsLoading] = useState(true);
 
-  useEffect(() => {
-    api.models.list().then(setModels).catch(console.error);
+  const fetchModels = useCallback(() => {
+    setModelsLoading(true);
+    api.models
+      .list()
+      .then((data) => {
+        setModels(data);
+        setModelsLoading(false);
+      })
+      .catch((err) => {
+        console.error("Failed to load models:", err);
+        setModelsLoading(false);
+      });
   }, []);
 
+  useEffect(() => {
+    fetchModels();
+  }, [fetchModels]);
+
   const currentModel = models.find((m) => String(m.id) === String(modelId));
-  const currentModelName = currentModel?.name ?? "Select Model";
+  const currentModelName =
+    currentModel?.name ?? models[0]?.name ?? "Select Model";
+
+  // Auto-select first model if current modelId is invalid
+  useEffect(() => {
+    if (models.length > 0 && !currentModel && modelId) {
+      router.replace(`/viewer?modelId=${models[0].id}`);
+    }
+  }, [models, currentModel, modelId, router]);
 
   const navItems = [
     { label: "STUDY", href: "/study" },
@@ -116,7 +102,7 @@ export function ViewerHeader({
             <DropdownMenuTrigger asChild>
               <button
                 className={cn(
-                  "flex items-center gap-[8px] font-bold text-[30px] leading-[1.25] transition-colors",
+                  "flex items-center gap-[8px] font-bold text-[30px] leading-[1.25] transition-colors cursor-pointer",
                   "text-primary focus-visible:ring-[2px] focus-visible:ring-primary focus-visible:ring-offset-[2px] focus-visible:outline-none"
                 )}
               >
@@ -129,28 +115,50 @@ export function ViewerHeader({
               sideOffset={16}
               className="min-w-[260px] bg-neutral-800/95 backdrop-blur-sm border-neutral-700 rounded-[12px] p-[8px]"
             >
-              {models.map((model) => {
-                const isSelected = String(model.id) === String(modelId);
-                return (
-                  <DropdownMenuItem
-                    key={model.id}
-                    onClick={() => handleModelSelect(model.id)}
-                    className={cn(
-                      "flex items-center gap-[12px] px-[12px] py-[10px] rounded-[8px] cursor-pointer transition-colors",
-                      isSelected
-                        ? "text-primary bg-primary/10"
-                        : "text-neutral-200 hover:text-neutral-50"
-                    )}
+              {modelsLoading ? (
+                <div className="flex items-center justify-center gap-[8px] px-[12px] py-[16px]">
+                  <Loader2 className="w-[16px] h-[16px] animate-spin text-neutral-400" />
+                  <span className="text-[14px] text-neutral-400">
+                    Loading...
+                  </span>
+                </div>
+              ) : models.length === 0 ? (
+                <div className="px-[12px] py-[16px] text-center">
+                  <p className="text-[14px] text-neutral-400">
+                    No models available
+                  </p>
+                  <button
+                    type="button"
+                    onClick={fetchModels}
+                    className="mt-[8px] text-[13px] text-primary hover:underline"
                   >
-                    <span className="text-[16px] font-medium">
-                      {model.name}
-                    </span>
-                    {isSelected && (
-                      <Check className="w-[16px] h-[16px] ml-auto text-primary" />
-                    )}
-                  </DropdownMenuItem>
-                );
-              })}
+                    Retry
+                  </button>
+                </div>
+              ) : (
+                models.map((model) => {
+                  const isSelected = String(model.id) === String(modelId);
+                  return (
+                    <DropdownMenuItem
+                      key={model.id}
+                      onClick={() => handleModelSelect(model.id)}
+                      className={cn(
+                        "flex items-center gap-[12px] px-[12px] py-[10px] rounded-[8px] cursor-pointer transition-colors",
+                        isSelected
+                          ? "text-primary bg-primary/10"
+                          : "text-neutral-200 hover:text-neutral-50"
+                      )}
+                    >
+                      <span className="text-[16px] font-medium">
+                        {model.name}
+                      </span>
+                      {isSelected && (
+                        <Check className="w-[16px] h-[16px] ml-auto text-primary" />
+                      )}
+                    </DropdownMenuItem>
+                  );
+                })
+              )}
             </DropdownMenuContent>
           </DropdownMenu>
 
@@ -185,12 +193,6 @@ export function ViewerHeader({
               </Link>
             );
           })}
-
-          {/* Auth Button */}
-          {process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY &&
-            !process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY.includes(
-              "your_"
-            ) && <ClerkAuth />}
         </nav>
       </div>
     </header>

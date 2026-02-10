@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 import { CTAButton } from "@/components/ui/cta-button";
 import { landingContent } from "@/app/landing/content";
 import Image from "next/image";
+import Link from "next/link";
 
 /**
  * Landing page intro/hero section with logo, heading, subtitle, and CTA buttons.
@@ -88,9 +89,14 @@ export function LandingIntroSection() {
 
             {/* CTA Button */}
             <div className="flex items-center">
-              <CTAButton variant="primary" className="shadow-glow-md w-[415px]">
-                지금 바로 학습 시작하기
-              </CTAButton>
+              <Link href="/viewer">
+                <CTAButton
+                  variant="primary"
+                  className="shadow-glow-md w-[415px]"
+                >
+                  지금 바로 학습 시작하기
+                </CTAButton>
+              </Link>
             </div>
           </div>
         </div>

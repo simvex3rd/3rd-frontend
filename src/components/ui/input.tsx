@@ -78,7 +78,7 @@ export function Input({
       )}
     >
       <input
-        className="flex-1 bg-transparent outline-none placeholder:text-inherit disabled:cursor-not-allowed"
+        className="flex-1 bg-transparent outline-none focus-visible:ring-2 focus-visible:ring-primary placeholder:text-inherit disabled:cursor-not-allowed"
         disabled={disabled}
         aria-invalid={variant === "error" ? "true" : undefined}
         aria-disabled={disabled ? "true" : undefined}

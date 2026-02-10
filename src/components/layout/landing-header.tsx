@@ -2,46 +2,70 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import dynamic from "next/dynamic";
-
-const ClerkAuthButton = dynamic(
-  () =>
-    import("@clerk/nextjs").then((mod) => {
-      const { SignedOut, SignedIn, UserButton } = mod;
-      return {
-        default: function ClerkAuth() {
-          return (
-            <>
-              <SignedOut>
-                <Link href="/sign-in">
-                  <button
-                    className="w-[210px] h-[72px] flex items-center justify-center rounded-[24px] px-[24px] py-[16px] text-[32px] font-semibold leading-[1.25] text-neutral-50 shadow-[4px_4px_20px_rgba(2,238,225,0.1)] hover:brightness-125 transition-all"
-                    style={{
-                      background:
-                        "radial-gradient(50% 50% at 50% 50%, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0.3) 100%)",
-                    }}
-                  >
-                    로그인/가입
-                  </button>
-                </Link>
-              </SignedOut>
-              <SignedIn>
-                <UserButton
-                  appearance={{
-                    elements: { avatarBox: "w-[48px] h-[48px]" },
-                  }}
-                />
-              </SignedIn>
-            </>
-          );
-        },
-      };
-    }),
-  { ssr: false }
-);
+import { useUser, useClerk } from "@clerk/nextjs";
+/* eslint-disable @next/next/no-img-element */
 import { Logo } from "@/components/ui/logo";
 import { CTAButton } from "@/components/ui/cta-button";
 
+function AuthButtons() {
+  const { user, isLoaded, isSignedIn } = useUser();
+  const { signOut } = useClerk();
+
+  if (!isLoaded) {
+    return (
+      <CTAButton
+        variant="default"
+        size="default"
+        className="!w-[157.5px] !text-[24px] !rounded-[18px] !border-[3.75px] whitespace-nowrap !px-[8px] opacity-50"
+      >
+        로그인/가입
+      </CTAButton>
+    );
+  }
+
+  if (isSignedIn && user) {
+    return (
+      <div className="flex items-center gap-[12px]">
+        {user.imageUrl ? (
+          <img
+            src={user.imageUrl}
+            alt="프로필"
+            className="h-[44px] w-[44px] rounded-full border-[2px] border-primary/50 object-cover"
+          />
+        ) : (
+          <div className="flex h-[44px] w-[44px] items-center justify-center rounded-full border-[2px] border-primary/50 bg-primary/20">
+            <span className="font-[Pretendard] text-[20px] font-bold text-primary">
+              {(user.fullName || user.firstName || "U").charAt(0).toUpperCase()}
+            </span>
+          </div>
+        )}
+        <span className="font-[Pretendard] text-[20px] font-medium text-neutral-100 hidden min-[1200px]:block">
+          {user.fullName || user.firstName || "User"}
+        </span>
+        <CTAButton
+          variant="default"
+          size="default"
+          className="!w-[157.5px] !text-[24px] !rounded-[18px] !border-[3.75px] whitespace-nowrap !px-[8px]"
+          onClick={() => signOut({ redirectUrl: "/" })}
+        >
+          로그아웃
+        </CTAButton>
+      </div>
+    );
+  }
+
+  return (
+    <Link href="/sign-in">
+      <CTAButton
+        variant="default"
+        size="default"
+        className="!w-[157.5px] !text-[24px] !rounded-[18px] !border-[3.75px] whitespace-nowrap !px-[8px]"
+      >
+        로그인/가입
+      </CTAButton>
+    </Link>
+  );
+}
 const navLinks = [
   { label: "소개", href: "#intro" },
   { label: "기능", href: "#functions" },
@@ -84,7 +108,7 @@ export function LandingHeader() {
           <a
             href="#intro"
             aria-label="SIMVEX Home"
-            className="transition-opacity duration-300 hover:opacity-70"
+            className="cursor-pointer transition-opacity duration-300 hover:opacity-70"
             onClick={(e) => {
               e.preventDefault();
               window.dispatchEvent(
@@ -128,17 +152,9 @@ export function LandingHeader() {
           ))}
         </nav>
 
-        {/* Right: Auth Buttons (Scaled 0.75x) */}
+        {/* Right: Auth + CTA */}
         <div className="flex-shrink-0 flex items-center gap-[12px]">
-          <Link href="/sign-in">
-            <CTAButton
-              variant="default"
-              size="default"
-              className="!w-[157.5px] !text-[24px] !rounded-[18px] !border-[3.75px] whitespace-nowrap !px-[8px]"
-            >
-              로그인/가입
-            </CTAButton>
-          </Link>
+          <AuthButtons />
           <Link href="/viewer">
             <CTAButton
               variant="primary"
