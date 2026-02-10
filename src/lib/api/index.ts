@@ -71,8 +71,9 @@ export interface SimvexApi {
 const USE_MOCK_API = process.env.NEXT_PUBLIC_USE_MOCK_API === "true";
 
 /**
- * Wrap an API module so network errors (no HTTP status) fall back to mock.
- * Server errors (4xx/5xx) are NOT caught — only connection failures.
+ * Wrap an API module so connection failures and auth/server errors fall back to mock.
+ * Falls back on: network errors (no status), 401 (backend auth mismatch), 503 (service down).
+ * Other HTTP errors (400, 404, 422, etc.) are NOT caught — they indicate real client bugs.
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function withMockFallback<T extends Record<string, (...args: any[]) => any>>(
@@ -88,15 +89,19 @@ function withMockFallback<T extends Record<string, (...args: any[]) => any>>(
           ...args
         );
       } catch (err) {
-        // Only fallback on network errors (no HTTP status = server unreachable)
-        if (err instanceof ApiClientError && !err.status) {
-          console.warn(
-            `[api] ${key} network error, falling back to mock:`,
-            err.message
-          );
-          return await (mock[key] as (...a: unknown[]) => Promise<unknown>)(
-            ...args
-          );
+        if (err instanceof ApiClientError) {
+          // Fallback on: network errors, 401 (auth mismatch), 503 (service down)
+          const shouldFallback =
+            !err.status || err.status === 401 || err.status === 503;
+          if (shouldFallback) {
+            console.warn(
+              `[api] ${key} error (${err.status ?? "network"}), falling back to mock:`,
+              err.message
+            );
+            return await (mock[key] as (...a: unknown[]) => Promise<unknown>)(
+              ...args
+            );
+          }
         }
         throw err;
       }
