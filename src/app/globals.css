@@ -218,6 +218,20 @@
     line-height: var(--line-height-tight);
   }
 
+  /* Pointer cursor for interactive elements */
+  button,
+  a,
+  [role="button"],
+  [role="tab"],
+  [role="menuitem"],
+  select,
+  label[for],
+  input[type="checkbox"],
+  input[type="radio"],
+  summary {
+    cursor: pointer;
+  }
+
   /* Scrollbar styling for dark theme */
   ::-webkit-scrollbar {
     width: 8px;
