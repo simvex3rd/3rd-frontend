@@ -265,7 +265,7 @@ const mockData = {
           description: "Guide rail",
           material: "Steel",
           metadata: { weight_kg: 0.8, length_mm: 180, hardness_hrc: 58 },
-          mesh_names: ["Solid11"],
+          mesh_names: ["Solid11", "Solid14", "Solid15"],
           geometry: {
             id: 3001,
             part_id: 301,
@@ -286,7 +286,7 @@ const mockData = {
             jaw_width_mm: 100,
             clamping_force_kn: 30,
           },
-          mesh_names: ["Solid12"],
+          mesh_names: ["Solid12", "Solid16"],
           geometry: {
             id: 3002,
             part_id: 302,
@@ -303,7 +303,7 @@ const mockData = {
           description: "Movable jaw",
           material: "Cast Iron",
           metadata: { weight_kg: 1.2, jaw_width_mm: 100, travel_mm: 80 },
-          mesh_names: ["Solid13"],
+          mesh_names: ["Solid13", "Solid19"],
           geometry: {
             id: 3003,
             part_id: 303,
@@ -320,7 +320,7 @@ const mockData = {
           description: "Trapezoidal spindle",
           material: "Steel",
           metadata: { weight_kg: 0.6, thread_pitch_mm: 3, diameter_mm: 16 },
-          mesh_names: ["Solid17"],
+          mesh_names: ["Solid17", "Solid110", "Solid111"],
           geometry: {
             id: 3004,
             part_id: 304,
@@ -337,7 +337,7 @@ const mockData = {
           description: "Base plate",
           material: "Cast Iron",
           metadata: { weight_kg: 3.8, length_mm: 220, width_mm: 100 },
-          mesh_names: ["Solid18"],
+          mesh_names: ["Solid18", "Solid112"],
           geometry: {
             id: 3005,
             part_id: 305,
@@ -1100,6 +1100,15 @@ export const mockNotesApi = {
  */
 let quizIdCounter = 1;
 
+/** Store generated quiz data so submit can validate answers */
+const generatedQuizStore = new Map<
+  number,
+  {
+    questions: import("@/types/api").QuizQuestionResponse[];
+    correctIndices: number[];
+  }
+>();
+
 export const mockQuizApi = {
   generate: async (
     modelId: number | string,
@@ -1163,25 +1172,36 @@ export const mockQuizApi = {
       });
     }
 
+    generatedQuizStore.set(quizId, {
+      questions,
+      correctIndices: templates
+        .slice(0, Math.min(count, templates.length))
+        .map((t) => t.correct),
+    });
+
     return { quiz_id: quizId, questions };
   },
 
   submit: async (
-    _quizId: number,
+    quizId: number,
     answers: { question_id: number; answer: string }[]
   ): Promise<import("@/types/api").QuizSubmitResponse> => {
     await delay();
 
-    // Mock: first option is always correct
-    const results = answers.map((a) => ({
-      question_id: a.question_id,
-      correct:
-        a.answer === "0" ||
-        a.answer.includes("강철") ||
-        a.answer.includes("운동") ||
-        a.answer.includes(`개`),
-      correct_answer: null,
-    }));
+    const stored = generatedQuizStore.get(quizId);
+    const results = answers.map((a) => {
+      const qIdx =
+        stored?.questions.findIndex((q) => q.id === a.question_id) ?? -1;
+      const question = stored?.questions[qIdx];
+      const correctIdx = stored?.correctIndices[qIdx] ?? 0;
+      const correctAnswer = question?.options[correctIdx] ?? "";
+      const isCorrect = a.answer === correctAnswer;
+      return {
+        question_id: a.question_id,
+        correct: isCorrect,
+        correct_answer: isCorrect ? null : correctAnswer,
+      };
+    });
 
     return {
       score: results.filter((r) => r.correct).length,
