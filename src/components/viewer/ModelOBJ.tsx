@@ -308,11 +308,14 @@ export function ModelOBJ({ url }: ModelOBJProps) {
       if (mesh.userData.selectable) {
         const name = mesh.userData.name || mesh.name || mesh.uuid;
         setSelectedObject(name);
-        // Auto-show PartInfoPanel
-        useUIStore.setState({
-          isPartInfoVisible: true,
-          activeSideTool: "search",
-        });
+        // Auto-show PartInfoPanel only if no other panel is open
+        const { activeSideTool } = useUIStore.getState();
+        if (!activeSideTool) {
+          useUIStore.setState({
+            isPartInfoVisible: true,
+            activeSideTool: "search",
+          });
+        }
       }
     },
     [setSelectedObject]
@@ -321,7 +324,13 @@ export function ModelOBJ({ url }: ModelOBJProps) {
   // Handle click on empty space (missed) to deselect
   const handlePointerMissed = useCallback(() => {
     setSelectedObject(null);
-    useUIStore.setState({ isPartInfoVisible: false, activeSideTool: null });
+    // Only close Part Info panel, leave AI/Memo panels alone
+    const { activeSideTool } = useUIStore.getState();
+    if (activeSideTool === "search") {
+      useUIStore.setState({ isPartInfoVisible: false, activeSideTool: null });
+    } else {
+      useUIStore.setState({ isPartInfoVisible: false });
+    }
   }, [setSelectedObject]);
 
   return (
